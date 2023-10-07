@@ -1,9 +1,9 @@
 plugins {
     id("groovy")
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.0.2"
-    id("io.micronaut.aot") version "4.0.2"
-//    id "io.freefair.lombok" version "8.1.0"
+    id("io.micronaut.application") version "4.0.3"
+    id("io.micronaut.aot") version "4.0.3"
+    id("io.micronaut.openapi") version "4.0.3"
 }
 
 version = "0.1"
@@ -19,31 +19,31 @@ repositories {
 
 dependencies {
     // These lombok must stay at the top for ordering issues
-    compileOnly 'org.projectlombok:lombok:1.18.28'
-    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly "org.projectlombok:lombok:1.18.28"
+    annotationProcessor "org.projectlombok:lombok:1.18.28"
     // These lombok must stay at the top for ordering issues
-    annotationProcessor 'io.micronaut.serde:micronaut-serde-processor'
-    runtimeOnly 'ch.qos.logback:logback-classic'
-    implementation platform('software.amazon.awssdk:bom:2.20.56')
+    annotationProcessor "io.micronaut.serde:micronaut-serde-processor"
+    runtimeOnly "ch.qos.logback:logback-classic"
+    implementation platform("software.amazon.awssdk:bom:2.20.56")
 
     // Micronaut dependencies
-    annotationProcessor 'io.micronaut.validation:micronaut-validation-processor'
-    implementation 'io.micronaut.serde:micronaut-serde-jackson'
-    implementation 'io.micronaut.validation:micronaut-validation'
+    annotationProcessor "io.micronaut.validation:micronaut-validation-processor"
+    implementation "io.micronaut.serde:micronaut-serde-jackson"
+    implementation "io.micronaut.validation:micronaut-validation"
 
     // AWS Dependencies
-    implementation 'software.amazon.awssdk:dynamodb-enhanced'
-    implementation 'com.opencsv:opencsv:5.8'
+    implementation "software.amazon.awssdk:dynamodb-enhanced"
+    implementation "com.opencsv:opencsv:5.8"
 
     // Third Party
-    implementation 'org.apache.commons:commons-lang3:3.13.0'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation "org.apache.commons:commons-lang3:3.13.0"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
 
     // Testing dependencies
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "io.micronaut.test:micronaut-test-spock"
-    testImplementation 'io.micronaut:micronaut-http-client'
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation "io.micronaut:micronaut-http-client"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind"
 }
 
 
@@ -56,6 +56,7 @@ java {
 }
 
 graalvmNative.toolchainDetection = false
+
 micronaut {
     runtime("netty")
     testRuntime("spock2")
@@ -63,6 +64,7 @@ micronaut {
         incremental(true)
         annotations("com.ebsolutions.*")
     }
+
     aot {
         // Please review carefully the optimizations enabled below
         // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
@@ -74,7 +76,10 @@ micronaut {
         deduceEnvironment = true
         optimizeNetty = true
     }
+    openapi {
+        client(file("contracts/client.yaml")) {
+            apiPackageName = "com.ebsolutions.eventsadminservice.api"
+            modelPackageName = "com.ebsolutions.eventsadminservice.model"
+        }
+    }
 }
-
-
-
