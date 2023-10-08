@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+  title: Base Classes
+  version: 1.0
+components:
+  schemas:
+    EventType:
+      type: string
+      enum:
+        - SINGLE
+        - RECURRING
+    Base:
+      type: object
+      properties:
+        clientId:
+          type: string
+        name:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        lastUpdatedOn:
+          type: string
+          format: date-time
+      required:
+        - clientId
+        - createdOn
+        - lastUpdatedOn
+        - name
+
+
+

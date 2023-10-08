@@ -5,7 +5,7 @@ import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dtos.ClientDto;
 import com.ebsolutions.eventsadminservice.dal.utils.KeyBuilder;
 import com.ebsolutions.eventsadminservice.exceptions.DataProcessingException;
-import com.ebsolutions.eventsadminservice.models.Client;
+import com.ebsolutions.eventsadminservice.models.Client2;
 import com.ebsolutions.eventsadminservice.models.MetricsStopWatch;
 import com.ebsolutions.eventsadminservice.utils.UniqueIdGenerator;
 import io.micronaut.context.annotation.Prototype;
@@ -28,7 +28,7 @@ public class ClientDao {
         this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(ClientDto.class));
     }
 
-    public Client read(String clientId) {
+    public Client2 read(String clientId) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             Key key = KeyBuilder.build(clientId, SortKeyType.CLIENT);
@@ -37,7 +37,7 @@ public class ClientDao {
 
             return clientDto == null
                     ? null
-                    : Client.builder()
+                    : Client2.builder()
                     .clientId(clientDto.getPartitionKey())
                     .name(clientDto.getName())
                     .createdOn(clientDto.getCreatedOn())
@@ -65,7 +65,7 @@ public class ClientDao {
         }
     }
 
-    public Client create(Client client) {
+    public Client2 create(Client2 client) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             LocalDateTime now = LocalDateTime.now();
@@ -80,7 +80,7 @@ public class ClientDao {
 
             ddbTable.updateItem(clientDto);
 
-            return Client.builder()
+            return Client2.builder()
                     .clientId(clientDto.getPartitionKey())
                     .name(clientDto.getName())
                     .createdOn(clientDto.getCreatedOn())
@@ -99,7 +99,7 @@ public class ClientDao {
      *
      * @param client the object to replace the current database object
      */
-    public Client update(Client client) {
+    public Client2 update(Client2 client) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             ClientDto clientDto = ClientDto.builder()
@@ -112,7 +112,7 @@ public class ClientDao {
 
             ddbTable.putItem(clientDto);
 
-            return Client.builder()
+            return Client2.builder()
                     .clientId(clientDto.getPartitionKey())
                     .name(clientDto.getName())
                     .createdOn(clientDto.getCreatedOn())

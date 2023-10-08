@@ -3,7 +3,7 @@ package com.ebsolutions.eventsadminservice.data
 
 import com.ebsolutions.eventsadminservice.config.TestConstants
 import com.ebsolutions.eventsadminservice.constants.OrganizerTestConstants
-import com.ebsolutions.eventsadminservice.models.Client
+import com.ebsolutions.eventsadminservice.models.Client2
 import com.ebsolutions.eventsadminservice.models.Organizer
 import com.ebsolutions.eventsadminservice.utils.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.utils.DateAndTimeComparisonUtil
@@ -189,7 +189,7 @@ class OrganizerSpec extends Specification {
                     TestConstants.nonExistentClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(incorrectUrl), updatedOrganizer)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
@@ -224,7 +224,7 @@ class OrganizerSpec extends Specification {
                     OrganizerTestConstants.updateOrganizerClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(updateUrl), updatedOrganizer)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
@@ -260,7 +260,7 @@ class OrganizerSpec extends Specification {
                     OrganizerTestConstants.updateOrganizerClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(updateUrl), updatedOrganizer)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()

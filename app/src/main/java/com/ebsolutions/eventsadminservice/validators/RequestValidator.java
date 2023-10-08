@@ -1,7 +1,6 @@
 package com.ebsolutions.eventsadminservice.validators;
 
 import com.ebsolutions.eventsadminservice.models.*;
-import com.ebsolutions.models.*;
 
 import java.time.LocalDate;
 

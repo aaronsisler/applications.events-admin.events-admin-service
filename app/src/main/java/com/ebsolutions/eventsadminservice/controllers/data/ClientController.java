@@ -2,7 +2,7 @@ package com.ebsolutions.eventsadminservice.controllers.data;
 
 import com.ebsolutions.eventsadminservice.dal.daos.ClientDao;
 import com.ebsolutions.eventsadminservice.exceptions.DataProcessingException;
-import com.ebsolutions.eventsadminservice.models.Client;
+import com.ebsolutions.eventsadminservice.models.Client2;
 import com.ebsolutions.eventsadminservice.validators.LocalDateValidator;
 import com.ebsolutions.eventsadminservice.validators.StringValidator;
 import io.micronaut.http.HttpResponse;
@@ -26,7 +26,7 @@ public class ClientController {
     @Get(value = "/{clientId}", produces = MediaType.APPLICATION_JSON)
     public HttpResponse<?> get(@NotBlank @PathVariable String clientId) {
         try {
-            Client client = clientDao.read(clientId);
+            Client2 client = clientDao.read(clientId);
 
             return client != null ? ok(client) : noContent();
         } catch (DataProcessingException dbe) {
@@ -35,7 +35,7 @@ public class ClientController {
     }
 
     @Post()
-    public HttpResponse<?> post(@Valid @Body Client client) {
+    public HttpResponse<?> post(@Valid @Body Client2 client) {
         try {
             return ok(clientDao.create(client));
         } catch (DataProcessingException dbe) {
@@ -44,7 +44,7 @@ public class ClientController {
     }
 
     @Put()
-    public HttpResponse<?> put(@Valid @Body Client client) {
+    public HttpResponse<?> put(@Valid @Body Client2 client) {
         try {
             if (StringValidator.isBlank(client.getClientId())
                     || !LocalDateValidator.isBeforeNow(client.getCreatedOn())

@@ -1,9 +1,8 @@
 package com.ebsolutions.eventsadminservice.services;
 
 import com.ebsolutions.eventsadminservice.dal.daos.*;
-import com.ebsolutions.eventsadminservice.models.*;
 import com.ebsolutions.eventsadminservice.exceptions.CsvGenerationException;
-import com.ebsolutions.models.*;
+import com.ebsolutions.eventsadminservice.models.*;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +25,7 @@ public class OrchestrationService {
     private final EventDao eventDao;
     private final CsvDao csvDao;
     private final List<CalendarEvent> calendarEvents = new ArrayList<>();
-    private Client client;
+    private Client2 client;
     private final Map<DayOfWeek, ArrayList<Event>> dayOfWeekEventListMap = new HashMap<>();
     private List<Location> locations;
     private List<Organizer> organizers;

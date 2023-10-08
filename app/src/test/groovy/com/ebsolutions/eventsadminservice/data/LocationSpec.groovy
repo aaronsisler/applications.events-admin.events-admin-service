@@ -3,7 +3,7 @@ package com.ebsolutions.eventsadminservice.data
 
 import com.ebsolutions.eventsadminservice.config.TestConstants
 import com.ebsolutions.eventsadminservice.constants.LocationTestConstants
-import com.ebsolutions.eventsadminservice.models.Client
+import com.ebsolutions.eventsadminservice.models.Client2
 import com.ebsolutions.eventsadminservice.models.Location
 import com.ebsolutions.eventsadminservice.utils.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.utils.DateAndTimeComparisonUtil
@@ -225,7 +225,7 @@ class LocationSpec extends Specification {
                     TestConstants.nonExistentClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(incorrectUrl), updatedLocation)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
@@ -260,7 +260,7 @@ class LocationSpec extends Specification {
                     LocationTestConstants.updateLocationClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(updateUrl), updatedLocation)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
@@ -296,7 +296,7 @@ class LocationSpec extends Specification {
                     LocationTestConstants.updateLocationClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(updateUrl), updatedLocation)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()

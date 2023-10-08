@@ -3,7 +3,7 @@ package com.ebsolutions.eventsadminservice.data
 
 import com.ebsolutions.eventsadminservice.constants.WorkshopTestConstants
 import com.ebsolutions.eventsadminservice.config.TestConstants
-import com.ebsolutions.eventsadminservice.models.Client
+import com.ebsolutions.eventsadminservice.models.Client2
 import com.ebsolutions.eventsadminservice.models.Workshop
 import com.ebsolutions.eventsadminservice.utils.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.utils.DateAndTimeComparisonUtil
@@ -282,7 +282,7 @@ class WorkshopSpec extends Specification {
                     TestConstants.nonExistentClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(incorrectUrl), updatedWorkshop)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
@@ -325,7 +325,7 @@ class WorkshopSpec extends Specification {
                     WorkshopTestConstants.updateWorkshopClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(updateUrl), updatedWorkshop)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
@@ -369,7 +369,7 @@ class WorkshopSpec extends Specification {
                     WorkshopTestConstants.updateWorkshopClientId)
 
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(updateUrl), updatedWorkshop)
-            httpClient.toBlocking().exchange(httpRequest, Client)
+            httpClient.toBlocking().exchange(httpRequest, Client2)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()

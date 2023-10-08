@@ -77,9 +77,9 @@ micronaut {
         optimizeNetty = true
     }
     openapi {
-        client(file("contracts/client.yaml")) {
+        client(file("contracts/root.yaml")) {
             apiPackageName = "com.ebsolutions.eventsadminservice.api"
-            modelPackageName = "com.ebsolutions.eventsadminservice.model"
+            modelPackageName = "com.ebsolutions.eventsadminservice.models"
         }
     }
 }

@@ -1,14 +1,14 @@
 package com.ebsolutions.eventsadminservice.utils
 
-import com.ebsolutions.eventsadminservice.models.Client
+import com.ebsolutions.eventsadminservice.models.Client2
 import com.ebsolutions.eventsadminservice.models.Event
 import com.ebsolutions.eventsadminservice.models.Location
 import com.ebsolutions.eventsadminservice.models.Organizer
 import com.ebsolutions.eventsadminservice.models.Workshop
 
 class CopyObjectUtil {
-    static Client client(Client client) {
-        return Client.builder()
+    static Client2 client(Client2 client) {
+        return Client2.builder()
                 .clientId(client.getClientId())
                 .name(client.getName())
                 .createdOn(client.getCreatedOn())

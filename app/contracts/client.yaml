@@ -20,20 +20,18 @@ paths:
                 type: object
 components:
   schemas:
-#    Base:
-#      type: object
-    Taco:
-      type: object
-      properties:
-        clientId:
-          type: string
-        createdOn:
-          type: string
-          format: date-time
-        lastUpdatedOn:
-          type: string
-          format: date-time
-      required:
-        - clientId
-        - createdOn
-        - lastUpdatedOn
+    Location:
+      allOf:
+        - $ref: "generic.yaml#/components/schemas/Base"
+    Organizer:
+      allOf:
+        - $ref: "generic.yaml#/components/schemas/Base"
+    Event:
+      allOf:
+        - $ref: "generic.yaml#/components/schemas/Base"
+        - properties:
+            eventType:
+              $ref: "generic.yaml#/components/schemas/EventType"
+
+
+
