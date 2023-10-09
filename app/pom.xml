@@ -8,7 +8,6 @@
         <version>0.1</version>
     </parent>
 
-
     <groupId>com.ebsolutions.eventsadminservice</groupId>
     <artifactId>events-admin-service</artifactId>
     <version>0.1</version>
@@ -22,7 +21,6 @@
         <io.micronaut.serde.version>2.2.5</io.micronaut.serde.version>
         <micronaut.runtime>netty</micronaut.runtime>
         <micronaut.aot.enabled>false</micronaut.aot.enabled>
-        <!--        <micronaut.aot.packageName>com.ebsolutions.eventsadminservice.generated</micronaut.aot.packageName>-->
         <exec.mainClass>com.ebsolutions.eventsadminservice.Application</exec.mainClass>
     </properties>
 
@@ -39,13 +37,13 @@
             <artifactId>micronaut-serde-jackson</artifactId>
         </dependency>
 
-        <!-- Needed for Application logging to workt-->
+        <!-- Needed for Application logging to work -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
         </dependency>
 
-        <!-- Needed for Application logging to workt-->
+        <!-- Needed for Application logging to work -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
