@@ -60,6 +60,12 @@
             <artifactId>micronaut-serde-jackson</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.micronaut.test</groupId>
+            <artifactId>micronaut-test-spock</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Needed for Application logging to work -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -92,6 +98,7 @@
             <artifactId>dynamodb-enhanced</artifactId>
         </dependency>
 
+        <!-- Handles testing for OpenAPI generated classes -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -99,23 +106,85 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Handles Spock testing with Micronaut -->
+        <dependency>
+            <groupId>io.micronaut.test</groupId>
+            <artifactId>micronaut-test-spock</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Handles Spock testing with Micronaut -->
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>2.3-groovy-4.0</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!-- Handles Spock testing with Micronaut -->
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.4.21</version>
+            <groupId>io.micronaut</groupId>
+            <artifactId>micronaut-inject-groovy</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Makes sure that all dependencies are non-conflicting -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <id>dependency-convergence</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <DependencyConvergence/>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Generates Java classes from OpenAPI contracts -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <configuration>
+                    <modelPackage>com.ebsolutions.eventsadminservice.models</modelPackage>
+                    <generatorName>java</generatorName>
+                    <skipValidateSpec>true</skipValidateSpec>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>shared-models</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>client-models</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/client.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>io.micronaut.maven</groupId>
                 <artifactId>micronaut-maven-plugin</artifactId>
@@ -123,31 +192,25 @@
                     <configFile>aot-${packaging}.properties</configFile>
                 </configuration>
             </plugin>
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-surefire-plugin</artifactId>-->
-            <!--                <configuration>-->
-            <!--                    <includes>-->
-            <!--                        <include>**/*Spec.*</include>-->
-            <!--                        <include>**/*Test.*</include>-->
-            <!--                    </includes>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
-            <!--            <plugin>-->
-            <!--                <groupId>org.codehaus.gmavenplus</groupId>-->
-            <!--                <artifactId>gmavenplus-plugin</artifactId>-->
-            <!--            </plugin>-->
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-enforcer-plugin</artifactId>-->
-            <!--            </plugin>-->
+            <!-- The gmavenplus-plugin is used to compile Groovy code in the tests-->
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compileTests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- This handles injection of the annotated classes -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <!-- Uncomment to enable incremental compilation -->
-                    <!-- <useIncrementalCompilation>false</useIncrementalCompilation> -->
-
                     <annotationProcessorPaths combine.self="override">
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -169,17 +232,6 @@
                             <artifactId>micronaut-http-validation</artifactId>
                             <version>${micronaut.version}</version>
                         </path>
-                        <!--                        <path>-->
-                        <!--                            <groupId>io.micronaut.openapi</groupId>-->
-                        <!--                            <artifactId>micronaut-openapi</artifactId>-->
-                        <!--                            <version>${micronaut.openapi.version}</version>-->
-                        <!--                            <exclusions>-->
-                        <!--                                <exclusion>-->
-                        <!--                                    <groupId>io.micronaut</groupId>-->
-                        <!--                                    <artifactId>micronaut-inject</artifactId>-->
-                        <!--                                </exclusion>-->
-                        <!--                            </exclusions>-->
-                        <!--                        </path>-->
                         <path>
                             <groupId>io.micronaut.serde</groupId>
                             <artifactId>micronaut-serde-processor</artifactId>
@@ -193,41 +245,11 @@
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
-                        <arg>-Amicronaut.processing.group=com.example</arg>
-                        <arg>-Amicronaut.processing.module=demo</arg>
+                        <arg>-Amicronaut.processing.group=com.ebsolutions.eventsadminservice</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>shared-models</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
-                            <modelPackage>com.ebsolutions.eventsadminservice.models</modelPackage>
-                            <generatorName>java</generatorName>
-                            <skipValidateSpec>true</skipValidateSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>client-models</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/client.yaml</inputSpec>
-                            <modelPackage>com.ebsolutions.eventsadminservice.models</modelPackage>
-                            <generatorName>java</generatorName>
-                            <skipValidateSpec>true</skipValidateSpec>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
         </plugins>
     </build>
 </project>

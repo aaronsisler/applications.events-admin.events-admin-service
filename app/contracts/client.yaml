@@ -17,18 +17,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/Client"
+
 components:
   schemas:
-    Location:
+    Client:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
-    Organizer:
-      allOf:
-        - $ref: "shared.yaml#/components/schemas/Base"
-    Event:
-      allOf:
-        - $ref: "shared.yaml#/components/schemas/Base"
-        - properties:
-            eventType:
-              $ref: "shared.yaml#/components/schemas/EventType"

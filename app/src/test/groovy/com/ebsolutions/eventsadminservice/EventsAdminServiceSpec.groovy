@@ -2,8 +2,8 @@ package com.ebsolutions.eventsadminservice
 
 import io.micronaut.runtime.EmbeddedApplication
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
-import spock.lang.Specification
 import jakarta.inject.Inject
+import spock.lang.Specification
 
 @MicronautTest
 class EventsAdminServiceSpec extends Specification {
@@ -13,7 +13,6 @@ class EventsAdminServiceSpec extends Specification {
 
     void 'test it works'() {
         expect:
-        application.running
+            application.running
     }
-
 }
