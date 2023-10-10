@@ -6,11 +6,25 @@ paths:
   /clients:
     get:
       parameters:
-        - name: x-api-version
-          in: header
+        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  type: array
+                  $ref: "#/components/schemas/Client"
+  /clients/{clientId}:
+    get:
+      parameters:
+        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - name: clientId
+          in: path
+          required: true
           schema:
-            type: integer
-            default: 1
+            type: string
       responses:
         200:
           description: OK

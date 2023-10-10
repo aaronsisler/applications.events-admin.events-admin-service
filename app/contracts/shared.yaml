@@ -29,3 +29,11 @@ components:
         - createdOn
         - lastUpdatedOn
         - name
+  parameters:
+    ApiVersion:
+      in: header
+      name: x-api-version
+      required: false
+      schema:
+        type: integer
+        default: 1

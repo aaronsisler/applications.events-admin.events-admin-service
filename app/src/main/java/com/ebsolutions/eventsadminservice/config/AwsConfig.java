@@ -14,7 +14,6 @@ import java.net.URI;
 @Slf4j
 @Factory
 public class AwsConfig {
-    //    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AwsConfig.class);
     private final String awsAccessKeyId = "access_key_id";
     private final String awsSecretAccessKey = "secret_access_key";
     private final String endpoint = "http://dynamo-db-local:8000";
