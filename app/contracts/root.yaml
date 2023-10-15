@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: Client REST API
+  version: 1.0
+paths:
+  /health:
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '5XX':
+          description: Unexpected error
