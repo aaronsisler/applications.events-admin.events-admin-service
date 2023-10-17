@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Client REST API
-  version: 1.0
+  version: "1.0"
 paths:
   /clients:
     get:
@@ -13,18 +13,20 @@ paths:
           content:
             application/json:
               schema:
+                type: array
                 items:
-                  type: array
                   $ref: "#/components/schemas/Client"
-  /clients/{clientId}:
-    get:
+        '5XX':
+          description: Server error
+    post:
       parameters:
         - $ref: "shared.yaml#/components/parameters/ApiVersion"
-        - name: clientId
-          in: path
-          required: true
-          schema:
-            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Client"
       responses:
         200:
           description: OK
@@ -32,9 +34,43 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Client"
+        '5XX':
+          description: Server Error
+  /clients/{clientId}:
+    get:
+      parameters:
+        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientId"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        '5XX':
+          description: Server Error
+    delete:
+      parameters:
+        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientId"
+      responses:
+        204:
+          description: The resource was deleted successfully.
+        '5XX':
+          description: Server Error
 
 components:
   schemas:
     Client:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
+  parameters:
+    ClientId:
+      in: path
+      name: clientId
+      required: true
+      schema:
+        type: string
+
+

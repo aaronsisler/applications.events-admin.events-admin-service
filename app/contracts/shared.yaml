@@ -1,16 +1,11 @@
 openapi: 3.0.0
 info:
   title: Shared Classes
-  version: 1.0
+  version: "1.0"
 paths:
 
 components:
   schemas:
-    EventType:
-      type: string
-      enum:
-        - SINGLE
-        - RECURRING
     Base:
       type: object
       properties:

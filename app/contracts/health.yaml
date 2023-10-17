@@ -13,4 +13,4 @@ paths:
               schema:
                 type: string
         '5XX':
-          description: Unexpected error
+          description: Server error
