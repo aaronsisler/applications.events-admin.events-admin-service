@@ -8,7 +8,6 @@
         <version>0.1</version>
     </parent>
 
-    <groupId>com.ebsolutions.eventsadminservice</groupId>
     <artifactId>events-admin-service</artifactId>
     <version>0.1</version>
     <packaging>${packaging}</packaging>
@@ -48,6 +47,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Needed for Application.yml parsing-->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!-- Needed for Application to start-->
         <dependency>
             <groupId>io.micronaut</groupId>
@@ -58,12 +63,6 @@
         <dependency>
             <groupId>io.micronaut.serde</groupId>
             <artifactId>micronaut-serde-jackson</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.micronaut.test</groupId>
-            <artifactId>micronaut-test-spock</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <!-- Needed for Application logging to work -->
@@ -152,7 +151,7 @@
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <configuration>
-                    <modelPackage>com.ebsolutions.eventsadminservice.models</modelPackage>
+                    <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
                     <generatorName>java</generatorName>
                     <skipValidateSpec>true</skipValidateSpec>
                     <generateApiTests>false</generateApiTests>

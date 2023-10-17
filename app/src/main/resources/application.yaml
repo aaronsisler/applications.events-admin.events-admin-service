@@ -1,0 +1,17 @@
+micronaut:
+  application:
+    name: eventsAdminService
+  server:
+    port: 8080
+    context-path: "/"
+  security:
+  # authentication: bearer | cookie | session | idtoken
+
+#jackson:
+#  serialization:
+#    writeEnumsUsingToString: true
+#    writeDatesAsTimestamps: false
+#  deserialization:
+#    readEnumsUsingToString: true
+#    failOnUnknownProperties: false
+#    failOnInvalidSubtype: false
