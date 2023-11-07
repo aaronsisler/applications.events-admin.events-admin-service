@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 
 class TestConstants {
     // Generic Test Constants
-    public static String adminServiceUrl = "http://localhost:8080"
-    public static String clientsUrl = TestConstants.adminServiceUrl + "/data/clients"
+    public static String eventsAdminServiceUrl = "http://localhost:8080"
+
     // Does Not Exist Client
     public static String nonExistentClientId = "non-existent-client-id"
     public static LocalDateTime createdOn = LocalDateTime.of(2023, 7, 04, 1, 2, 34)

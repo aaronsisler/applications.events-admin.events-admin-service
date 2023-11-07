@@ -13,8 +13,7 @@ class HealthyServiceSpec extends Specification {
     @Inject
     private HttpClient httpClient
 
-    private String healthUrl = TestConstants.adminServiceUrl + "/health"
-
+    private String healthUrl = TestConstants.eventsAdminServiceUrl + "/health"
 
     def "Health endpoint is available"() {
         given: "The application is running"
@@ -25,6 +24,6 @@ class HealthyServiceSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
         and: "the correct message is returned"
-            Assertions.assertEquals("Service is healthy!", response.body())
+            Assertions.assertTrue(response.body().startsWith("Service is alive and the time is "))
     }
 }

@@ -1,0 +1,33 @@
+openapi: 3.0.0
+info:
+  title: Client REST API
+  version: "1.0"
+paths:
+  /events:
+    get:
+      parameters:
+        - name: x-api-version
+          in: header
+          schema:
+            type: integer
+            default: 1
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    EventType:
+      type: string
+      enum:
+        - SINGLE
+        - RECURRING
+    Event:
+      allOf:
+        - $ref: "shared.yaml#/components/schemas/Base"
+        - properties:
+            eventType:
+              $ref: "#/components/schemas/EventType"

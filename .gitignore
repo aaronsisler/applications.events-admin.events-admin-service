@@ -1,6 +1,12 @@
-.idea
+# IDE files
+.idea/
+.vscode/
 
+
+# Compiled and build files
 build/
+target/
 
-*.csv
+
+# System files
 .DS_Store
