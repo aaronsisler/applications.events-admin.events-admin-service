@@ -21,6 +21,7 @@
     <properties>
         <jdk.version>17</jdk.version>
         <release.version>17</release.version>
+        <lombok.version>1.18.28</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -112,8 +113,72 @@
                     <artifactId>openapi-generator-maven-plugin</artifactId>
                     <version>7.0.1</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.2</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                        <annotationProcessors>
+                            <annotationProcessor>
+                                lombok.launch.AnnotationProcessorHider$AnnotationProcessor
+                            </annotationProcessor>
+                        </annotationProcessors>
+                        <compilerArgs>
+                            <arg>-Amicronaut.processing.group=com.ebsolutions.eventsadminservice</arg>
+                        </compilerArgs>
+
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
-    </build>
+        <plugins>
+            <!-- Generates Java classes from OpenAPI contracts -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.micronaut</groupId>
+                            <artifactId>micronaut-inject-java</artifactId>
+                            <version>${micronaut.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.micronaut</groupId>
+                            <artifactId>micronaut-graal</artifactId>
+                            <version>${micronaut.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.micronaut</groupId>
+                            <artifactId>micronaut-http-validation</artifactId>
+                            <version>${micronaut.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.micronaut.serde</groupId>
+                            <artifactId>micronaut-serde-processor</artifactId>
+                            <version>${micronaut.serialization.version}</version>
+                            <exclusions>
+                                <exclusion>
+                                    <groupId>io.micronaut</groupId>
+                                    <artifactId>micronaut-inject</artifactId>
+                                </exclusion>
+                            </exclusions>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
 
+            </plugin>
+        </plugins>
+    </build>
 </project>

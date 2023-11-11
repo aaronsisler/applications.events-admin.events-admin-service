@@ -23,8 +23,8 @@
         <!-- Versions -->
         <io.micronaut.version>4.1.9</io.micronaut.version>
         <io.micronaut.serde.version>2.2.5</io.micronaut.serde.version>
-        <aws.sdk.version>2.20.162</aws.sdk.version>
-        <lombok.version>1.18.28</lombok.version>
+        <aws.sdk.version>2.21.15</aws.sdk.version>
+
     </properties>
 
     <dependencyManagement>
@@ -53,6 +53,7 @@
             <artifactId>snakeyaml</artifactId>
             <scope>runtime</scope>
         </dependency>
+
         <!-- Needed for Application to start-->
         <dependency>
             <groupId>io.micronaut</groupId>
@@ -88,7 +89,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-            <scope>provided</scope>
+            <!--            <scope>provided</scope>-->
         </dependency>
 
         <!-- AWS DynamoDB config and methods -->
@@ -121,17 +122,18 @@
             <artifactId>micronaut-inject-groovy</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Handles JUnit methods like assertEquals, etc. -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Handles HTTP Client that makes calls to mock server -->
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-http-client</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -176,6 +178,15 @@
                         </goals>
                         <configuration>
                             <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
+                            <configOptions>
+                                <additionalModelTypeAnnotations>
+                                    @lombok.AllArgsConstructor
+                                    @lombok.Builder
+                                </additionalModelTypeAnnotations>
+                            </configOptions>
+                            <generateApis>false</generateApis>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <generateApiDocumentation>false</generateApiDocumentation>
                         </configuration>
                     </execution>
                     <execution>
@@ -185,6 +196,15 @@
                         </goals>
                         <configuration>
                             <inputSpec>${pom.basedir}/contracts/client.yaml</inputSpec>
+                            <configOptions>
+                                <additionalModelTypeAnnotations>
+                                    @lombok.AllArgsConstructor
+                                    @lombok.Builder
+                                </additionalModelTypeAnnotations>
+                            </configOptions>
+                            <generateApis>false</generateApis>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <generateApiDocumentation>false</generateApiDocumentation>
                         </configuration>
                     </execution>
                 </executions>
@@ -214,46 +234,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths combine.self="override">
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-inject-java</artifactId>
-                            <version>${micronaut.version}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-graal</artifactId>
-                            <version>${micronaut.version}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-http-validation</artifactId>
-                            <version>${micronaut.version}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut.serde</groupId>
-                            <artifactId>micronaut-serde-processor</artifactId>
-                            <version>${micronaut.serialization.version}</version>
-                            <exclusions>
-                                <exclusion>
-                                    <groupId>io.micronaut</groupId>
-                                    <artifactId>micronaut-inject</artifactId>
-                                </exclusion>
-                            </exclusions>
-                        </path>
-                    </annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-Amicronaut.processing.group=com.ebsolutions.eventsadminservice</arg>
-                    </compilerArgs>
-                </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>
