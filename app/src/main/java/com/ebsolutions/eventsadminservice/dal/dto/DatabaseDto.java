@@ -8,7 +8,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 @DynamoDbBean
@@ -27,10 +27,10 @@ public class DatabaseDto {
     private String sortKey;
 
     @NonNull
-    private LocalDateTime createdOn;
+    private Instant createdOn;
 
     @NonNull
-    private LocalDateTime lastUpdatedOn;
+    private Instant lastUpdatedOn;
 
     /**
      * Date that record is no longer to remain in database

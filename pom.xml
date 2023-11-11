@@ -20,7 +20,6 @@
 
     <properties>
         <jdk.version>17</jdk.version>
-        <release.version>17</release.version>
         <lombok.version>1.18.28</lombok.version>
     </properties>
 
@@ -107,78 +106,56 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- Makes sure that all dependencies are non-conflicting -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.4.1</version>
+                </plugin>
+                <!-- The gmavenplus-plugin is used to compile Groovy code in the tests-->
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
                 <!-- Generates Java classes from OpenAPI contracts -->
                 <plugin>
                     <groupId>org.openapitools</groupId>
                     <artifactId>openapi-generator-maven-plugin</artifactId>
                     <version>7.0.1</version>
+                    <configuration>
+                        <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
+                        <generatorName>java</generatorName>
+                        <skipValidateSpec>true</skipValidateSpec>
+                        <generateApiTests>false</generateApiTests>
+                        <generateModelTests>false</generateModelTests>
+                        <generateApis>false</generateApis>
+                        <generateSupportingFiles>true</generateSupportingFiles>
+                        <generateApiDocumentation>false</generateApiDocumentation>
+                        <configOptions>
+                            <additionalModelTypeAnnotations>
+                                @lombok.AllArgsConstructor
+                                @lombok.experimental.SuperBuilder
+                            </additionalModelTypeAnnotations>
+                        </configOptions>
+                        <typeMappings>
+                            <typeMapping>DateTime=Instant</typeMapping>
+                        </typeMappings>
+                        <importMappings>
+                            <importMapping>Instant=java.time.Instant</importMapping>
+                        </importMappings>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.2</version>
+                    <version>3.11.0</version>
                     <configuration>
                         <source>${jdk.version}</source>
                         <target>${jdk.version}</target>
-                        <annotationProcessors>
-                            <annotationProcessor>
-                                lombok.launch.AnnotationProcessorHider$AnnotationProcessor
-                            </annotationProcessor>
-                        </annotationProcessors>
-                        <compilerArgs>
-                            <arg>-Amicronaut.processing.group=com.ebsolutions.eventsadminservice</arg>
-                        </compilerArgs>
-
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <!-- Generates Java classes from OpenAPI contracts -->
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-inject-java</artifactId>
-                            <version>${micronaut.version}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-graal</artifactId>
-                            <version>${micronaut.version}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-http-validation</artifactId>
-                            <version>${micronaut.version}</version>
-                        </path>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut.serde</groupId>
-                            <artifactId>micronaut-serde-processor</artifactId>
-                            <version>${micronaut.serialization.version}</version>
-                            <exclusions>
-                                <exclusion>
-                                    <groupId>io.micronaut</groupId>
-                                    <artifactId>micronaut-inject</artifactId>
-                                </exclusion>
-                            </exclusions>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-
-            </plugin>
-        </plugins>
     </build>
 </project>

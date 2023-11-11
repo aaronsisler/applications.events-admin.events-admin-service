@@ -14,11 +14,9 @@
 
     <properties>
         <packaging>jar</packaging>
-        <jdk.version>17</jdk.version>
-        <release.version>17</release.version>
         <micronaut.runtime>netty</micronaut.runtime>
         <micronaut.aot.enabled>false</micronaut.aot.enabled>
-        <exec.mainClass>com.ebsolutions.eventsadminservice.Application</exec.mainClass>
+        <exec.mainClass>com.ebsolutions.eventsadminservice.EventsAdminServiceApplication</exec.mainClass>
 
         <!-- Versions -->
         <io.micronaut.version>4.1.9</io.micronaut.version>
@@ -142,7 +140,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <id>dependency-convergence</id>
@@ -163,13 +160,6 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <configuration>
-                    <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
-                    <generatorName>java</generatorName>
-                    <skipValidateSpec>true</skipValidateSpec>
-                    <generateApiTests>false</generateApiTests>
-                    <generateModelTests>false</generateModelTests>
-                </configuration>
                 <executions>
                     <execution>
                         <id>shared-models</id>
@@ -178,15 +168,6 @@
                         </goals>
                         <configuration>
                             <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
-                            <configOptions>
-                                <additionalModelTypeAnnotations>
-                                    @lombok.AllArgsConstructor
-                                    @lombok.Builder
-                                </additionalModelTypeAnnotations>
-                            </configOptions>
-                            <generateApis>false</generateApis>
-                            <generateSupportingFiles>false</generateSupportingFiles>
-                            <generateApiDocumentation>false</generateApiDocumentation>
                         </configuration>
                     </execution>
                     <execution>
@@ -196,15 +177,6 @@
                         </goals>
                         <configuration>
                             <inputSpec>${pom.basedir}/contracts/client.yaml</inputSpec>
-                            <configOptions>
-                                <additionalModelTypeAnnotations>
-                                    @lombok.AllArgsConstructor
-                                    @lombok.Builder
-                                </additionalModelTypeAnnotations>
-                            </configOptions>
-                            <generateApis>false</generateApis>
-                            <generateSupportingFiles>false</generateSupportingFiles>
-                            <generateApiDocumentation>false</generateApiDocumentation>
                         </configuration>
                     </execution>
                 </executions>
@@ -220,7 +192,6 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>3.0.2</version>
                 <executions>
                     <execution>
                         <goals>
@@ -234,6 +205,41 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.micronaut</groupId>
+                            <artifactId>micronaut-inject-java</artifactId>
+                            <version>${micronaut.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.micronaut</groupId>
+                            <artifactId>micronaut-graal</artifactId>
+                            <version>${micronaut.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.micronaut</groupId>
+                            <artifactId>micronaut-http-validation</artifactId>
+                            <version>${micronaut.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.micronaut.serde</groupId>
+                            <artifactId>micronaut-serde-processor</artifactId>
+                            <version>${micronaut.serialization.version}</version>
+                            <exclusions>
+                                <exclusion>
+                                    <groupId>io.micronaut</groupId>
+                                    <artifactId>micronaut-inject</artifactId>
+                                </exclusion>
+                            </exclusions>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>

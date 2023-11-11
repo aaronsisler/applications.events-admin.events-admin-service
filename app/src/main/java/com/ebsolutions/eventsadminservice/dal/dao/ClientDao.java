@@ -33,16 +33,14 @@ public class ClientDao {
 
             ClientDto clientDto = ddbTable.getItem(key);
 
-//            return null;
             return clientDto == null
                     ? null
-                    : new Client();
-//                    : Client.builder();
-//                    .clientId(clientDto.getPartitionKey())
-//                    .name(clientDto.getName())
-//                    .createdOn(clientDto.getCreatedOn())
-//                    .lastUpdatedOn(clientDto.getLastUpdatedOn())
-//                    .build();
+                    : Client.builder()
+                    .clientId(clientDto.getPartitionKey())
+                    .name(clientDto.getName())
+                    .createdOn(clientDto.getCreatedOn())
+                    .lastUpdatedOn(clientDto.getLastUpdatedOn())
+                    .build();
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
