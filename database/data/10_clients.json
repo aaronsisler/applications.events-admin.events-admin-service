@@ -1,5 +1,5 @@
 {
-  "SERVICES_ADMIN_DUTIES_TESTS": [
+  "SERVICES_EVENTS_ADMIN_LOCAL": [
     {
       "PutRequest": {
         "Item": {
@@ -13,10 +13,10 @@
             "S": "Get Mock Client Name"
           },
           "createdOn": {
-            "S": "2023-07-04T01:02:34"
+            "S": "2023-11-11T21:09:23.816158Z"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-11T21:09:23.816158Z"
           }
         }
       }
@@ -34,10 +34,10 @@
             "S": "Delete Mock Client Name"
           },
           "createdOn": {
-            "S": "2023-07-04T01:02:34"
+            "S": "2023-11-11T21:09:23.816158Z"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-11T21:09:23.816158Z"
           }
         }
       }
@@ -55,10 +55,10 @@
             "S": "Update Mock Client Name"
           },
           "createdOn": {
-            "S": "2023-07-04T01:02:34"
+            "S": "2023-11-11T21:09:23.816158Z"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-11T21:09:23.816158Z"
           }
         }
       }

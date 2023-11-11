@@ -35,3 +35,7 @@ Stop the Docker containers
 ```bash
 docker compose -f ./docker-compose.local.yml down
 ```
+
+```bash
+MICRONAUT_ENVIRONMENTS=local
+```

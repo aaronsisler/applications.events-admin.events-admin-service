@@ -135,7 +135,9 @@
                         <configOptions>
                             <additionalModelTypeAnnotations>
                                 @lombok.AllArgsConstructor
+                                @lombok.Data
                                 @lombok.experimental.SuperBuilder
+                                @io.micronaut.serde.annotation.Serdeable
                             </additionalModelTypeAnnotations>
                         </configOptions>
                         <typeMappings>

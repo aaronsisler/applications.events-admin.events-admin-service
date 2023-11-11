@@ -16,7 +16,7 @@ import java.net.URI;
 public class AwsConfig {
     private final String awsAccessKeyId = "access_key_id";
     private final String awsSecretAccessKey = "secret_access_key";
-    private final String endpoint = "http://dynamo-db-local:8000";
+    private final String endpoint = "http://localhost:8000";
 
     @Prototype
     @Requires(env = "local")
