@@ -17,7 +17,7 @@ public class RequestValidator {
         }
 
         if (client.getCreatedOn() == null) {
-            return true;
+            return false;
         }
 
         return DateValidator.isBeforeNow(client.getCreatedOn());

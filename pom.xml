@@ -141,10 +141,10 @@
                             </additionalModelTypeAnnotations>
                         </configOptions>
                         <typeMappings>
-                            <typeMapping>DateTime=Instant</typeMapping>
+                            <typeMapping>DateTime=LocalDateTime</typeMapping>
                         </typeMappings>
                         <importMappings>
-                            <importMapping>Instant=java.time.Instant</importMapping>
+                            <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
                         </importMappings>
                     </configuration>
                 </plugin>

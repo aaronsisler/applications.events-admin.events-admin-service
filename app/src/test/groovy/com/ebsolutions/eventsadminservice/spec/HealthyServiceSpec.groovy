@@ -1,6 +1,6 @@
-package com.ebsolutions.eventsadminservice
+package com.ebsolutions.eventsadminservice.spec
 
-import com.ebsolutions.eventsadminservice.config.TestConstants
+import com.ebsolutions.eventsadminservice.constant.TestConstants
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.client.HttpClient
 import io.micronaut.test.extensions.spock.annotation.MicronautTest

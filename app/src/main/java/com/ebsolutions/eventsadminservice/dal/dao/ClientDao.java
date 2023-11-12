@@ -16,7 +16,7 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 import java.text.MessageFormat;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Prototype
@@ -53,7 +53,7 @@ public class ClientDao {
     public Client create(Client client) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Instant now = Instant.now();
+            LocalDateTime now = LocalDateTime.now();
 
             ClientDto clientDto = ClientDto.builder()
                     .partitionKey(UniqueIdGenerator.generate())
@@ -92,7 +92,7 @@ public class ClientDao {
                     .sortKey(SortKeyType.CLIENT.name())
                     .name(client.getName())
                     .createdOn(client.getCreatedOn())
-                    .lastUpdatedOn(Instant.now())
+                    .lastUpdatedOn(LocalDateTime.now())
                     .build();
 
             ddbTable.putItem(clientDto);

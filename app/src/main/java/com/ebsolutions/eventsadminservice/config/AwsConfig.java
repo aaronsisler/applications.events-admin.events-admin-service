@@ -19,7 +19,7 @@ public class AwsConfig {
     private final String endpoint = "http://localhost:8000";
 
     @Prototype
-    @Requires(env = "local")
+    @Requires(env = {"local", "test"})
     public DynamoDbEnhancedClient createLocal() {
         log.info("Here creating the Local DDB Config");
         URI localEndpoint = URI.create(endpoint);

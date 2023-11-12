@@ -1,4 +1,4 @@
-package com.ebsolutions.eventsadminservice
+package com.ebsolutions.eventsadminservice.spec
 
 import io.micronaut.runtime.EmbeddedApplication
 import io.micronaut.test.extensions.spock.annotation.MicronautTest

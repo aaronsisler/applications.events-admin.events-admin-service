@@ -1,9 +1,9 @@
 package com.ebsolutions.eventsadminservice.validator;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class DateValidator {
-    public static boolean isBeforeNow(Instant input) {
-        return input != null && input.isBefore(Instant.now());
+    public static boolean isBeforeNow(LocalDateTime input) {
+        return input != null && input.isBefore(LocalDateTime.now());
     }
 }
