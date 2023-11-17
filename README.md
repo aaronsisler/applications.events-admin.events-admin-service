@@ -12,6 +12,12 @@ Start the Docker containers
 docker compose -f ./docker-compose.local.yml up -d
 ```
 
+Stop the Docker containers
+
+```bash
+docker compose -f ./docker-compose.local.yml down
+```
+
 List out the tables created
 
 **Note** There is an alias assumed if using the `awslocal` command below. The alias assumes you have set the following:
@@ -28,12 +34,6 @@ List out data in a table
 
 ```bash
 awslocal dynamodb scan --table-name SERVICES_ADMIN_DUTIES_LOCAL
-```
-
-Stop the Docker containers
-
-```bash
-docker compose -f ./docker-compose.local.yml down
 ```
 
 ```bash

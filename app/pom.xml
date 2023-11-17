@@ -101,6 +101,11 @@
             <artifactId>micronaut-validation</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+
         <!-- Handles Spock testing with Micronaut -->
         <dependency>
             <groupId>io.micronaut.test</groupId>
