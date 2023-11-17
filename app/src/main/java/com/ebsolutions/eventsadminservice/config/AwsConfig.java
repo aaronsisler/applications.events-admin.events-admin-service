@@ -16,10 +16,10 @@ import java.net.URI;
 public class AwsConfig {
     private final String awsAccessKeyId = "access_key_id";
     private final String awsSecretAccessKey = "secret_access_key";
-    private final String endpoint = "http://dynamo-db-local:8000";
+    private final String endpoint = "http://localhost:8000";
 
     @Prototype
-    @Requires(env = "local")
+    @Requires(env = {"local", "test"})
     public DynamoDbEnhancedClient createLocal() {
         log.info("Here creating the Local DDB Config");
         URI localEndpoint = URI.create(endpoint);

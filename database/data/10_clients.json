@@ -1,0 +1,67 @@
+{
+  "SERVICES_EVENTS_ADMIN_LOCAL": [
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "get-client-mock-client-id"
+          },
+          "sortKey": {
+            "S": "CLIENT"
+          },
+          "name": {
+            "S": "Get Mock Client Name"
+          },
+          "createdOn": {
+            "S": "2023-11-11T21:09:23"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-11T21:09:23"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "delete-client-mock-client-id"
+          },
+          "sortKey": {
+            "S": "CLIENT"
+          },
+          "name": {
+            "S": "Delete Mock Client Name"
+          },
+          "createdOn": {
+            "S": "2023-11-11T21:09:23"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-11T21:09:23"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "update-client-mock-client-id"
+          },
+          "sortKey": {
+            "S": "CLIENT"
+          },
+          "name": {
+            "S": "Update Mock Client Name"
+          },
+          "createdOn": {
+            "S": "2023-11-11T21:09:23"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-11T21:09:23"
+          }
+        }
+      }
+    }
+  ]
+}

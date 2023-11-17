@@ -14,17 +14,15 @@
 
     <properties>
         <packaging>jar</packaging>
-        <jdk.version>17</jdk.version>
-        <release.version>17</release.version>
         <micronaut.runtime>netty</micronaut.runtime>
         <micronaut.aot.enabled>false</micronaut.aot.enabled>
-        <exec.mainClass>com.ebsolutions.eventsadminservice.Application</exec.mainClass>
+        <exec.mainClass>com.ebsolutions.eventsadminservice.EventsAdminServiceApplication</exec.mainClass>
 
         <!-- Versions -->
         <io.micronaut.version>4.1.9</io.micronaut.version>
         <io.micronaut.serde.version>2.2.5</io.micronaut.serde.version>
-        <aws.sdk.version>2.20.162</aws.sdk.version>
-        <lombok.version>1.18.28</lombok.version>
+        <aws.sdk.version>2.21.15</aws.sdk.version>
+
     </properties>
 
     <dependencyManagement>
@@ -53,6 +51,7 @@
             <artifactId>snakeyaml</artifactId>
             <scope>runtime</scope>
         </dependency>
+
         <!-- Needed for Application to start-->
         <dependency>
             <groupId>io.micronaut</groupId>
@@ -97,6 +96,16 @@
             <artifactId>dynamodb-enhanced</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.micronaut.validation</groupId>
+            <artifactId>micronaut-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+
         <!-- Handles Spock testing with Micronaut -->
         <dependency>
             <groupId>io.micronaut.test</groupId>
@@ -121,17 +130,22 @@
             <artifactId>micronaut-inject-groovy</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Handles JUnit methods like assertEquals, etc. -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Handles HTTP Client that makes calls to mock server -->
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-http-client</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -140,7 +154,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <id>dependency-convergence</id>
@@ -161,13 +174,6 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <configuration>
-                    <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
-                    <generatorName>java</generatorName>
-                    <skipValidateSpec>true</skipValidateSpec>
-                    <generateApiTests>false</generateApiTests>
-                    <generateModelTests>false</generateModelTests>
-                </configuration>
                 <executions>
                     <execution>
                         <id>shared-models</id>
@@ -200,7 +206,6 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>3.0.2</version>
                 <executions>
                     <execution>
                         <goals>
@@ -215,12 +220,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <annotationProcessorPaths combine.self="override">
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
+                    <annotationProcessorPaths>
                         <path>
                             <groupId>io.micronaut</groupId>
                             <artifactId>micronaut-inject-java</artifactId>
@@ -237,6 +237,16 @@
                             <version>${micronaut.version}</version>
                         </path>
                         <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>com.fasterxml.jackson.datatype</groupId>
+                            <artifactId>jackson-datatype-jsr310</artifactId>
+                            <version>2.15.2</version>
+                        </path>
+                        <path>
                             <groupId>io.micronaut.serde</groupId>
                             <artifactId>micronaut-serde-processor</artifactId>
                             <version>${micronaut.serialization.version}</version>
@@ -248,12 +258,8 @@
                             </exclusions>
                         </path>
                     </annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-Amicronaut.processing.group=com.ebsolutions.eventsadminservice</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>
