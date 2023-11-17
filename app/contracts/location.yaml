@@ -65,6 +65,9 @@ components:
     Location:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
+      properties:
+        locationId:
+          type: string
   parameters:
     LocationId:
       in: path
