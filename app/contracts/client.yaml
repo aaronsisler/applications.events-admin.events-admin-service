@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Client REST API
+  title: Clients REST API
   version: "1.0"
 paths:
   /clients:

@@ -142,10 +142,10 @@
             <artifactId>micronaut-http-client</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
+        <!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -191,6 +191,15 @@
                         </goals>
                         <configuration>
                             <inputSpec>${pom.basedir}/contracts/client.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>location-models</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/location.yaml</inputSpec>
                         </configuration>
                     </execution>
                 </executions>
