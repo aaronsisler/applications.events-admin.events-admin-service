@@ -28,95 +28,108 @@ class NewLocationSpec extends Specification {
         then: "the correct status code is returned"
     }
 
-    // TODO
     // Get all locations
-    def "Get all locations: URL Client id does not exist"() {}
+    def "Get all locations: URL Client id does not exist"() {
+        given: "the client id is not in the url"
+        when: "a request is made to retrieve locations for a client"
+        then: "the correct status code is returned"
+    }
 
-    def "Get all locations: URL Client id exists: Locations exist for client"() {}
-
-    def "Get all locations: URL Client id exists: No locations exist for client"() {}
-
-    def "Get all Locations: Locations exist for client"() {
-        given: "A set of locations exist in the database for a given client"
-        when: "a request is made to retrieve the locations"
+    def "Get all locations: URL Client id exists: Locations exist for client"() {
+        given: "the client id is in the url"
+        when: "a request is made to retrieve locations for a client"
         then: "the correct status code is returned"
         and: "the correct locations are returned"
     }
 
-    def "Get all Locations: No locations exist for client"() {
-        given: "No locations exist in the database for a given client"
-        when: "a request is made to retrieve the locations"
+    def "Get all locations: URL Client id exists: No locations exist for client"() {
+        given: "the client id is in the url"
+        when: "a request is made to retrieve locations for a client"
         then: "the correct status code is returned"
     }
 
-    // TODO
     // Delete a location
-    def "Delete a location: URL Client id does not exist"() {}
-
-    def "Delete a location: URL Client id exists: Delete location is successful"() {}
-
-
-    def "Delete a Location"() {
-        given: "A location exists in the database"
-        when: "a request is made to delete the location"
+    def "Delete a location: URL Client id does not exist"() {
+        given: "the client id is not in the url"
+        when: "a request is made to delete the location for a client"
         then: "the correct status code is returned"
-        and: "the location no longer exists in the database"
     }
 
-    // TODO
-    // Create a location
-    def "Create a location: URL Client id does not exist"() {}
+    def "Delete a location: URL Client id exists: Delete location is successful"() {
+        given: "the client id is in the url"
+        when: "a request is made to delete the location for a client"
+        then: "the correct status code is returned"
+    }
 
-    def "Create a location: URL Client id exists: Create fails given location client id is blank"() {}
+    // Create a location
+    def "Create a location: URL Client id does not exist"() {
+        given: "the client id is not in the url"
+        when: "a request is made to create a location for a client"
+        then: "the correct status code is returned"
+    }
+
+    def "Create a location: URL Client id exists: Create fails given location client id is blank"() {
+        given: "the client id is in the url"
+        and: "the location's client id is blank"
+        when: "a request is made to create a location for a client"
+        then: "the correct status code is returned"
+    }
 
     def "Create a location: URL Client id exists: Create fails given location client id and URL client id do not match"() {
-    }
-
-    def "Create a location: URL Client id exists: Create location is successful"() {}
-
-    def "Create a Location: Success"() {
-        given: "A valid location"
-        when: "a request is made to create a location"
+        given: "the client id is in the url"
+        and: "the location's client id does not match the URL client id"
+        when: "a request is made to create a location for a client"
         then: "the correct status code is returned"
-        and: "the new location is returned"
     }
 
-    // TODO
-    // Update a location
-    def "Update a location: URL Client id does not exist"() {}
+    def "Create a location: URL Client id exists: Create location is successful"() {
+        given: "the client id is in the url"
+        and: "the location is valid"
+        when: "a request is made to create a location for a client"
+        then: "the correct status code is returned"
+        and: "the correct location is returned"
+    }
 
-    def "Update a location: URL Client id exists: Update fails given location client id is blank"() {}
+    // Update a location
+    def "Update a location: URL Client id does not exist"() {
+        given: "the client id is not in the url"
+        when: "a request is made to update a location for a client"
+        then: "the correct status code is returned"
+    }
+
+    def "Update a location: URL Client id exists: Update fails given location client id is blank"() {
+        given: "the client id is in the url"
+        and: "the location's client id is blank"
+        when: "a request is made to update a location for a client"
+        then: "the correct status code is returned"
+    }
 
     def "Update a location: URL Client id exists: Update fails given location client id and URL client id do not match"() {
-    }
-
-    def "Update a location: URL Client id exists: Update fails given create date is empty"() {}
-
-    def "Update a location: URL Client id exists: Update fails given create date is after 'now'"() {}
-
-    def "Update a location: URL Client id exists: Update location is successful"() {}
-
-    def "Update a Location: Fails given invalid Location Id"() {
-        given: "A location exists in the database"
-        and: "an update is made to the location id that is invalid"
-        when: "a request is made to update the location"
+        given: "the client id is in the url"
+        and: "the location's client id does not match the URL client id"
+        when: "a request is made to update a location for a client"
         then: "the correct status code is returned"
     }
 
-    def "Update a Location: Fails given create date is after 'now'"() {
-        given: "A location exists in the database"
-        and: "an update is made to the created on date that is invalid"
-        when: "a request is made to update the location"
+    def "Update a location: URL Client id exists: Update fails given create date is empty"() {
+        given: "the client id is in the url"
+        and: "the location's create date is empty"
+        when: "a request is made to update a location for a client"
         then: "the correct status code is returned"
     }
 
-    def "Update a Location: Success"() {
-        given: "A location exists in the database"
-        and: "an update is made to location"
-        when: "a request is made to update the location"
+    def "Update a location: URL Client id exists: Update fails given create date is after 'now'"() {
+        given: "the client id is in the url"
+        and: "the location's create date is after the current date and time"
+        when: "a request is made to update a location for a client"
+        then: "the correct status code is returned"
+    }
+
+    def "Update a location: URL Client id exists: Update location is successful"() {
+        given: "the client id is in the url"
+        and: "the location is valid"
+        when: "a request is made to update a location for a client"
         then: "the correct status code is returned"
         and: "the updated location is returned"
     }
-
-
 }
