@@ -25,7 +25,7 @@ class ClientSpec extends Specification {
 
     private String clientsUrl = TestConstants.eventsAdminServiceUrl + "/clients"
 
-    def "Get a Client: Given client exists"() {
+    def "Get a Client: Client exists"() {
         given: "A client exists in the database"
             // Data seeded from Database init scripts
         when: "a request is made to retrieve the client"
@@ -43,7 +43,7 @@ class ClientSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, client.getLastUpdatedOn()))
     }
 
-    def "Get a Client: Given client does not exist"() {
+    def "Get a Client: Client does not exist"() {
         given: "A client does not exist in the database"
             // No data seeded from Database init scripts
         when: "a request is made to retrieve the client"
@@ -54,7 +54,7 @@ class ClientSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.code())
     }
 
-    def "Create a Client: Success"() {
+    def "Create a Client: Create client is successful"() {
         given: "A valid client"
             Client newClient = Client.builder().name("Create Mock Client Name").build()
         when: "a request is made to create a client"
@@ -72,7 +72,7 @@ class ClientSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(client.getLastUpdatedOn()))
     }
 
-    def "Update a Client: Fails given invalid Client Id"() {
+    def "Update a Client: Update fails given invalid Client Id"() {
         given: "A client exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Client> initResponse = httpClient.toBlocking()
@@ -98,7 +98,9 @@ class ClientSpec extends Specification {
             ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a Client: Fails given create date is after 'now'"() {
+    def "Update a client: Update fails given create date is empty"() {}
+
+    def "Update a client: Update fails given create date is after 'now'"() {
         given: "A client exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Client> initResponse = httpClient.toBlocking()
@@ -125,7 +127,7 @@ class ClientSpec extends Specification {
             ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a Client: Success"() {
+    def "Update a Client: Update client is successful"() {
         given: "A client exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Client> initResponse = httpClient.toBlocking()
@@ -157,7 +159,7 @@ class ClientSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(client.getLastUpdatedOn()))
     }
 
-    def "Delete a Client"() {
+    def "Delete a client: Delete client is successful"() {
         given: "A client exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Client> initResponse = httpClient.toBlocking()

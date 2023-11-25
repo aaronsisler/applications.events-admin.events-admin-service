@@ -6,27 +6,29 @@ import spock.lang.Specification
 
 @MicronautTest
 class NewLocationSpec extends Specification {
-    // Get a location
-    def "Get a location: URL Client id does not exist"() {}
+    // DONE: Get a location
+    def "Get a location: URL Client id does not exist"() {
+        given: "the client id is not in the url"
+        when: "a request is made to retrieve a location"
+        then: "the correct status code is returned"
+    }
 
-    def "Get a location: URL Client id exists: Location Exists"() {}
-
-    def "Get a location: URL Client id exists: Location does not exist"() {}
-
-
-    def "Get a Location: Given location exists"() {
-        given: "A location exists in the database"
-        when: "a request is made to retrieve the location"
+    def "Get a location: URL Client id exists: Location Exists"() {
+        given: "the client id is in the url"
+        and: "a location exists in the database"
+        when: "a request is made to retrieve a location"
         then: "the correct status code is returned"
         and: "the correct location is returned"
     }
 
-    def "Get a Location: Given location does not exist"() {
-        given: "A location does not exist in the database"
-        when: "a request is made to retrieve the location"
+    def "Get a location: URL Client id exists: Location does not exist"() {
+        given: "the client id is in the url"
+        and: "a location does not exist in the database"
+        when: "a request is made to retrieve a location"
         then: "the correct status code is returned"
     }
 
+    // TODO
     // Get all locations
     def "Get all locations: URL Client id does not exist"() {}
 
@@ -47,6 +49,7 @@ class NewLocationSpec extends Specification {
         then: "the correct status code is returned"
     }
 
+    // TODO
     // Delete a location
     def "Delete a location: URL Client id does not exist"() {}
 
@@ -60,6 +63,7 @@ class NewLocationSpec extends Specification {
         and: "the location no longer exists in the database"
     }
 
+    // TODO
     // Create a location
     def "Create a location: URL Client id does not exist"() {}
 
@@ -77,6 +81,7 @@ class NewLocationSpec extends Specification {
         and: "the new location is returned"
     }
 
+    // TODO
     // Update a location
     def "Update a location: URL Client id does not exist"() {}
 
