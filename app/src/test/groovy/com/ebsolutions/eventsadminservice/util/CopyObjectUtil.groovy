@@ -1,6 +1,7 @@
 package com.ebsolutions.eventsadminservice.util
 
 import com.ebsolutions.eventsadminservice.model.Client
+import com.ebsolutions.eventsadminservice.model.Location
 
 class CopyObjectUtil {
 
@@ -10,6 +11,16 @@ class CopyObjectUtil {
                 .name(client.getName())
                 .createdOn(client.getCreatedOn())
                 .lastUpdatedOn(client.getLastUpdatedOn())
+                .build()
+    }
+
+    static Location location(Location location) {
+        return Location.builder()
+                .clientId(location.getClientId())
+                .locationId(location.getLocationId())
+                .name(location.getName())
+                .createdOn(location.getCreatedOn())
+                .lastUpdatedOn(location.getLastUpdatedOn())
                 .build()
     }
 }

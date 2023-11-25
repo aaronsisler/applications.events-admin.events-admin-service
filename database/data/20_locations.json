@@ -25,10 +25,10 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-location-mock-client-id"
+            "S": "get-all-locations-mock-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-get-all-location-mock-location-1-id"
+            "S": "LOCATION-get-all-locations-mock-location-1-id"
           },
           "name": {
             "S": "Get All Mock Location Name 1"
@@ -46,10 +46,10 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-location-mock-client-id"
+            "S": "get-all-locations-mock-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-get-all-location-mock-location-2-id"
+            "S": "LOCATION-get-all-locations-mock-location-2-id"
           },
           "name": {
             "S": "Get All Mock Location Name 2"

@@ -1,4 +1,4 @@
-package com.ebsolutions.eventsadminservice.spec.data
+package com.ebsolutions.eventsadminservice.spec
 
 import com.ebsolutions.eventsadminservice.constant.ClientTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
@@ -23,7 +23,7 @@ class ClientSpec extends Specification {
     @Inject
     private HttpClient httpClient
 
-    private String clientsUrl = TestConstants.eventsAdminServiceUrl + "/data/clients"
+    private String clientsUrl = TestConstants.eventsAdminServiceUrl + "/clients"
 
     def "Get a Client: Given client exists"() {
         given: "A client exists in the database"

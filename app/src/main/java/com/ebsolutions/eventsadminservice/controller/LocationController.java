@@ -1,6 +1,6 @@
-package com.ebsolutions.eventsadminservice.controller.data;
+package com.ebsolutions.eventsadminservice.controller;
 
-import com.ebsolutions.eventsadminservice.controller.RequestMethod;
+import com.ebsolutions.eventsadminservice.config.AllowableRequestMethod;
 import com.ebsolutions.eventsadminservice.dal.dao.LocationDao;
 import com.ebsolutions.eventsadminservice.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.model.Location;
@@ -17,7 +17,7 @@ import static io.micronaut.http.HttpResponse.*;
 
 @Slf4j
 @AllArgsConstructor
-@Controller("/data/locations")
+@Controller("/clients/{clientId}/locations")
 public class LocationController {
     private final LocationDao locationDao;
 
@@ -33,7 +33,7 @@ public class LocationController {
     }
 
     @Post()
-    public HttpResponse<?> post(@Valid @Body Location location) {
+    public HttpResponse<?> post(@NotBlank @PathVariable String clientId, @Valid @Body Location location) {
         try {
             return ok(locationDao.create(location));
         } catch (DataProcessingException dbe) {
@@ -42,9 +42,9 @@ public class LocationController {
     }
 
     @Put()
-    public HttpResponse<?> put(@Valid @Body Location location) {
+    public HttpResponse<?> put(@NotBlank @PathVariable String clientId, @Valid @Body Location location) {
         try {
-            if (!RequestValidator.isLocationValid(RequestMethod.PUT, location)) {
+            if (!RequestValidator.isLocationValid(AllowableRequestMethod.PUT, clientId, location)) {
                 return badRequest();
             }
 
@@ -56,7 +56,7 @@ public class LocationController {
 
 
     @Delete(value = "/{locationId}")
-    public HttpResponse<?> delete(@NotBlank @PathVariable String locationId) {
+    public HttpResponse<?> delete(@NotBlank @PathVariable String clientId, @NotBlank @PathVariable String locationId) {
         try {
             locationDao.delete(locationId);
 
