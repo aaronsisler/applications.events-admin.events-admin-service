@@ -8,6 +8,7 @@ class TestConstants {
     public static String eventsAdminServiceUrl = "http://localhost:8080"
 
     // Does Not Exist Client
+    public static String noChildrenClientId = "get-all-no-children-client-mock-client-id"
     public static String nonExistentClientId = "non-existent-client-id"
     public static String nonExistentLocationId = "non-existent-location-id"
     public static String nonExistentOrganizerId = "non-existent-organizer-id"

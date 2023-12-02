@@ -62,6 +62,27 @@
           }
         }
       }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "get-all-no-children-client-mock-client-id"
+          },
+          "sortKey": {
+            "S": "CLIENT"
+          },
+          "name": {
+            "S": "Get All No Children Mock Client Name"
+          },
+          "createdOn": {
+            "S": "2023-11-11T21:09:23"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-11T21:09:23"
+          }
+        }
+      }
     }
   ]
 }
