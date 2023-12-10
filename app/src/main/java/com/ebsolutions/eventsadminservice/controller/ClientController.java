@@ -1,6 +1,6 @@
-package com.ebsolutions.eventsadminservice.controller.data;
+package com.ebsolutions.eventsadminservice.controller;
 
-import com.ebsolutions.eventsadminservice.controller.RequestMethod;
+import com.ebsolutions.eventsadminservice.config.AllowableRequestMethod;
 import com.ebsolutions.eventsadminservice.dal.dao.ClientDao;
 import com.ebsolutions.eventsadminservice.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.model.Client;
@@ -15,7 +15,7 @@ import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBl
 import static io.micronaut.http.HttpResponse.*;
 
 @Slf4j
-@Controller("/data/clients")
+@Controller("/clients")
 public class ClientController {
     private final ClientDao clientDao;
 
@@ -46,7 +46,7 @@ public class ClientController {
     @Put()
     public HttpResponse<?> put(@Valid @Body Client client) {
         try {
-            if (!RequestValidator.isClientValid(RequestMethod.PUT, client)) {
+            if (!RequestValidator.isClientValid(AllowableRequestMethod.PUT, client)) {
                 return badRequest();
             }
 

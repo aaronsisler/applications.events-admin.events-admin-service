@@ -13,10 +13,10 @@
             "S": "Get Mock Client Name"
           },
           "createdOn": {
-            "S": "2023-11-11T21:09:23"
+            "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-11-11T21:09:23"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -34,10 +34,10 @@
             "S": "Delete Mock Client Name"
           },
           "createdOn": {
-            "S": "2023-11-11T21:09:23"
+            "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-11-11T21:09:23"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -55,10 +55,31 @@
             "S": "Update Mock Client Name"
           },
           "createdOn": {
-            "S": "2023-11-11T21:09:23"
+            "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-11-11T21:09:23"
+            "S": "2023-11-05T12:34:56"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "get-all-no-children-client-mock-client-id"
+          },
+          "sortKey": {
+            "S": "CLIENT"
+          },
+          "name": {
+            "S": "Get All No Children Mock Client Name"
+          },
+          "createdOn": {
+            "S": "2023-07-04T01:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
