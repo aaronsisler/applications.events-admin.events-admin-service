@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DatabaseDto {
+public abstract class DatabaseDto {
     @NonNull
     @Getter(onMethod_ = @DynamoDbPartitionKey)
     private String partitionKey;
@@ -25,6 +25,9 @@ public class DatabaseDto {
     @NonNull
     @Getter(onMethod_ = @DynamoDbSortKey)
     private String sortKey;
+
+    @NonNull
+    private String name;
 
     private LocalDateTime createdOn;
 

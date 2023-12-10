@@ -11,5 +11,5 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @Serdeable
 @Slf4j
 @SuperBuilder
-public class LocationDto extends DatabaseDto {
+public class OrganizerDto extends DatabaseDto {
 }

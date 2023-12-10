@@ -1,34 +1,81 @@
 openapi: 3.0.0
 info:
-  title: Client REST API
-  version: 1.0
+  title: Locations REST API
+  version: "1.0"
 paths:
-  /clients:
+  /clients/{clientId}/locations:
     get:
       parameters:
-        - name: x-api-version
-          in: header
-          schema:
-            type: integer
-            default: 1
+        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organizer"
+        '5XX':
+          description: Server error
+    post:
+      parameters:
+        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Organizer"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organizer"
+        '5XX':
+          description: Server Error
+  /clients/{clientId}/locations/{locationId}:
+    get:
+      parameters:
+        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+        - $ref: "#/components/parameters/OrganizerId"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organizer"
+        '5XX':
+          description: Server Error
+    delete:
+      parameters:
+        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+        - $ref: "#/components/parameters/OrganizerId"
+      responses:
+        204:
+          description: The resource was deleted successfully.
+        '5XX':
+          description: Server Error
+
 components:
   schemas:
-    Location:
-      allOf:
-        - $ref: "shared.yaml#/components/schemas/Base"
     Organizer:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
-    Event:
-      allOf:
-        - $ref: "shared.yaml#/components/schemas/Base"
-        - properties:
-            eventType:
-              $ref: "shared.yaml#/components/schemas/EventType"
+      properties:
+        organizerId:
+          type: string
+  parameters:
+    OrganizerId:
+      in: path
+      name: organizerId
+      required: true
+      schema:
+        type: string
