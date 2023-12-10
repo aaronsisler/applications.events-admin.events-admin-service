@@ -14,7 +14,6 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
-import spock.lang.Ignore
 import spock.lang.Specification
 
 @MicronautTest
@@ -284,7 +283,6 @@ class LocationSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    @Ignore
     def "Update a location: URL Client id exists: Update fails given location client id and URL client id do not match"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
