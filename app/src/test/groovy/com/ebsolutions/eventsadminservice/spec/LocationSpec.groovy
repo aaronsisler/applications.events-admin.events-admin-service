@@ -18,7 +18,7 @@ import spock.lang.Ignore
 import spock.lang.Specification
 
 @MicronautTest
-class NewLocationSpec extends Specification {
+class LocationSpec extends Specification {
     @Inject
     private HttpClient httpClient
 
