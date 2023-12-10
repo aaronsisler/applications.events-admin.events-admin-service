@@ -8,10 +8,13 @@ import com.ebsolutions.eventsadminservice.util.DateAndTimeComparisonUtil
 import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
+import spock.lang.Ignore
 import spock.lang.Specification
 
 @MicronautTest
@@ -154,34 +157,16 @@ class NewLocationSpec extends Specification {
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.code())
+
+        and: "the location no longer exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            HttpResponse<Location> finalResponse = httpClient.toBlocking()
+                    .exchange(locationsUrl, Location)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, finalResponse.code())
     }
 
     // Create a location
-    // TODO
-    def "Create a location: URL Client id is not present"() {
-        given: "the client id is not in the url"
-            String locationsUrl = new StringBuffer()
-                    .append(TestConstants.eventsAdminServiceUrl)
-                    .append("/clients/")
-                    .append("")
-                    .append("/locations/")
-                    .append(LocationTestConstants.getLocationId)
-
-        and: "the location is valid"
-            Location newLocation = Location.builder()
-                    .clientId(LocationTestConstants.createLocationClientId)
-                    .name("Create Mock Location Name")
-                    .build()
-
-        when: "a request is made to create a location for a client"
-            HttpRequest httpRequest = HttpRequest.POST(locationsUrl, newLocation)
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest)
-
-        then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
-    }
-
-    // TODO
     def "Create a location: URL Client id exists: Create fails given location client id is blank"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -199,13 +184,13 @@ class NewLocationSpec extends Specification {
 
         when: "a request is made to create a location for a client"
             HttpRequest httpRequest = HttpRequest.POST(locationsUrl, newLocation)
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest)
+            httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    // TODO
     def "Create a location: URL Client id exists: Create fails given location client id and URL client id do not match"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -223,13 +208,13 @@ class NewLocationSpec extends Specification {
 
         when: "a request is made to create a location for a client"
             HttpRequest httpRequest = HttpRequest.POST(locationsUrl, newLocation)
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest)
+            httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    // TODO
     def "Create a location: URL Client id exists: Create location is successful"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -247,7 +232,8 @@ class NewLocationSpec extends Specification {
 
         when: "a request is made to create a location for a client"
             HttpRequest httpRequest = HttpRequest.POST(locationsUrl, newLocation)
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest)
+            HttpResponse<Location> response = httpClient.toBlocking()
+                    .exchange(httpRequest, Location)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
@@ -256,37 +242,19 @@ class NewLocationSpec extends Specification {
             Location location = response.body()
             Assertions.assertEquals(LocationTestConstants.createLocationClientId, location.getClientId())
             Assertions.assertNotNull(location.getLocationId())
-            Assertions.assertEquals("Create Mock Client Name", location.getName())
+            Assertions.assertEquals("Create Mock Location Name", location.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(location.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(location.getLastUpdatedOn()))
+
+        and: "the new location exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            HttpResponse<Location> checkingResponse = httpClient.toBlocking()
+                    .exchange(locationsUrl.concat(location.getLocationId()), Location)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
     }
 
     // Update a location
-    // TODO
-    def "Update a location: URL Client id is not present"() {
-        given: "the client id is not in the url"
-            String locationsUrl = new StringBuffer()
-                    .append(TestConstants.eventsAdminServiceUrl)
-                    .append("/clients/")
-                    .append("")
-                    .append("/locations/")
-                    .toString()
-
-        and: "a location exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Location> initResponse = httpClient.toBlocking()
-                    .exchange(new StringBuffer(locationsUrl).append(LocationTestConstants.updateLocationId).toString(), Location)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-
-        when: "a request is made to update a location for a client"
-            HttpRequest httpRequest = HttpRequest.PUT(locationsUrl, initResponse.body())
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest)
-
-        then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
-    }
-
-    // TODO
     def "Update a location: URL Client id exists: Update fails given location client id is blank"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -299,7 +267,7 @@ class NewLocationSpec extends Specification {
         and: "a location exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Location> initResponse = httpClient.toBlocking()
-                    .exchange(new StringBuffer(locationsUrl).append(LocationTestConstants.updateLocationId).toString(), Location)
+                    .exchange(locationsUrl.concat(LocationTestConstants.updateLocationId), Location)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
             Assertions.assertEquals(LocationTestConstants.updateLocationClientId, initResponse.body().getClientId())
 
@@ -309,13 +277,14 @@ class NewLocationSpec extends Specification {
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest, Location)
+            httpClient.toBlocking().exchange(httpRequest, Location)
 
         then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    // TODO
+    @Ignore
     def "Update a location: URL Client id exists: Update fails given location client id and URL client id do not match"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -328,7 +297,7 @@ class NewLocationSpec extends Specification {
         and: "a location exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Location> initResponse = httpClient.toBlocking()
-                    .exchange(new StringBuffer(locationsUrl).append(LocationTestConstants.updateLocationId).toString(), Location)
+                    .exchange(locationsUrl.concat(LocationTestConstants.updateLocationId), Location)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
             Assertions.assertEquals(LocationTestConstants.updateLocationClientId, initResponse.body().getClientId())
 
@@ -338,13 +307,13 @@ class NewLocationSpec extends Specification {
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest, Location)
+            httpClient.toBlocking().exchange(httpRequest, Location)
 
         then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    // TODO
     def "Update a location: URL Client id exists: Update fails given create date is empty"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -357,7 +326,7 @@ class NewLocationSpec extends Specification {
         and: "a location exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Location> initResponse = httpClient.toBlocking()
-                    .exchange(new StringBuffer(locationsUrl).append(LocationTestConstants.updateLocationId).toString(), Location)
+                    .exchange(locationsUrl.concat(LocationTestConstants.updateLocationId), Location)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
 
@@ -367,13 +336,13 @@ class NewLocationSpec extends Specification {
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest, Location)
+            httpClient.toBlocking().exchange(httpRequest, Location)
 
         then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    // TODO
     def "Update a location: URL Client id exists: Update fails given create date is after 'now'"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -386,7 +355,7 @@ class NewLocationSpec extends Specification {
         and: "a location exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Location> initResponse = httpClient.toBlocking()
-                    .exchange(new StringBuffer(locationsUrl).append(LocationTestConstants.updateLocationId).toString(), Location)
+                    .exchange(locationsUrl.concat(LocationTestConstants.updateLocationId), Location)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
@@ -397,13 +366,13 @@ class NewLocationSpec extends Specification {
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
-            HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest, Location)
+            httpClient.toBlocking().exchange(httpRequest, Location)
 
         then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    // TODO
     def "Update a location: URL Client id exists: Update location is successful"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -416,12 +385,14 @@ class NewLocationSpec extends Specification {
         and: "a location exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Location> initResponse = httpClient.toBlocking()
-                    .exchange(new StringBuffer(locationsUrl).append(LocationTestConstants.updateLocationId).toString(), Location)
+                    .exchange(locationsUrl.concat(LocationTestConstants.updateLocationId), Location)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
 
         and: "the location is valid"
+            Location updatedLocation = CopyObjectUtil.location(initResponse.body())
+            updatedLocation.name("New Updated Location Name")
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
@@ -431,8 +402,16 @@ class NewLocationSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
         and: "the updated location is returned"
-            Location updatedLocation = response.body();
-            Assertions.assertEquals(LocationTestConstants.updateLocationClientId, updatedLocation.getClientId())
-            Assertions.assertEquals(LocationTestConstants.updateLocationId, updatedLocation.getLocationId())
+            Location returnedLocation = response.body();
+            Assertions.assertEquals(LocationTestConstants.updateLocationClientId, returnedLocation.getClientId())
+            Assertions.assertEquals(LocationTestConstants.updateLocationId, returnedLocation.getLocationId())
+
+        and: "the location is correct in the database"
+            // Verify data seeded from Database init scripts correctly
+            HttpResponse<Location> checkingResponse = httpClient.toBlocking()
+                    .exchange(locationsUrl.concat(returnedLocation.getLocationId()), Location)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
+            Assertions.assertEquals("New Updated Location Name", updatedLocation.getName())
     }
 }

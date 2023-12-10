@@ -47,7 +47,7 @@ public class LocationController {
         }
     }
 
-    @Post()
+    @Post(produces = MediaType.APPLICATION_JSON)
     public HttpResponse<?> post(@NotBlank @PathVariable String clientId, @Valid @Body Location location) {
         try {
             if (!RequestValidator.isLocationValid(AllowableRequestMethod.POST, clientId, location)) {

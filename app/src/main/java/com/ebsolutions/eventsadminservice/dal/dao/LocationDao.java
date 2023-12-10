@@ -43,7 +43,7 @@ public class LocationDao {
                     ? null
                     : Location.builder()
                     .clientId(locationDto.getPartitionKey())
-                    .locationId(locationDto.getSortKey())
+                    .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
                     .name(locationDto.getName())
                     .createdOn(locationDto.getCreatedOn())
                     .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -91,9 +91,11 @@ public class LocationDao {
         try {
             LocalDateTime now = LocalDateTime.now();
 
+            assert location.getClientId() != null;
+
             LocationDto locationDto = LocationDto.builder()
                     .partitionKey(location.getClientId())
-                    .sortKey(UniqueIdGenerator.generate())
+                    .sortKey(SortKeyType.LOCATION + UniqueIdGenerator.generate())
                     .name(location.getName())
                     .createdOn(now)
                     .lastUpdatedOn(now)
@@ -103,7 +105,7 @@ public class LocationDao {
 
             return Location.builder()
                     .clientId(locationDto.getPartitionKey())
-                    .locationId(locationDto.getSortKey())
+                    .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
                     .name(locationDto.getName())
                     .createdOn(locationDto.getCreatedOn())
                     .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -124,6 +126,9 @@ public class LocationDao {
     public Location update(Location location) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
+            assert location.getClientId() != null;
+            assert location.getLocationId() != null;
+
             LocationDto locationDto = LocationDto.builder()
                     .partitionKey(location.getClientId())
                     .sortKey(location.getLocationId())
@@ -136,7 +141,7 @@ public class LocationDao {
 
             return Location.builder()
                     .clientId(locationDto.getPartitionKey())
-                    .locationId(locationDto.getSortKey())
+                    .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
                     .name(locationDto.getName())
                     .createdOn(locationDto.getCreatedOn())
                     .lastUpdatedOn(locationDto.getLastUpdatedOn())
