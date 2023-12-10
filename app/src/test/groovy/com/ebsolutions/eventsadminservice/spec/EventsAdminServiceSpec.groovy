@@ -11,7 +11,7 @@ class EventsAdminServiceSpec extends Specification {
     @Inject
     EmbeddedApplication<?> application
 
-    void 'test it works'() {
+    def "Application starts correctly"() {
         expect:
             application.running
     }

@@ -1,7 +1,10 @@
 package com.ebsolutions.eventsadminservice.dal.dto;
 
 import io.micronaut.serde.annotation.Serdeable;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
@@ -15,8 +18,7 @@ import java.time.LocalDateTime;
 @Serdeable
 @Slf4j
 @SuperBuilder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public abstract class DatabaseDto {
     @NonNull
     @Getter(onMethod_ = @DynamoDbPartitionKey)
