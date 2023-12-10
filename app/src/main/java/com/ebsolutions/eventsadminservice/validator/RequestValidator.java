@@ -21,6 +21,10 @@ public class RequestValidator {
     }
 
     private static boolean isClientUpdateValid(Client client) {
+        if (client == null) {
+            return false;
+        }
+
         if (StringValidator.isBlank(client.getClientId())) {
             return false;
         }
@@ -33,19 +37,35 @@ public class RequestValidator {
     }
 
     private static boolean isLocationCreateValid(String clientId, Location location) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (location == null) {
+            return false;
+        }
+
         if (StringValidator.isBlank(location.getClientId())) {
             return false;
         }
 
-        return location.getClientId().equals(clientId);
+        return clientId.equals(location.getClientId());
     }
 
     private static boolean isLocationUpdateValid(String clientId, Location location) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (location == null) {
+            return false;
+        }
+
         if (StringValidator.isBlank(location.getClientId())) {
             return false;
         }
 
-        if (!location.getClientId().equals(clientId)) {
+        if (!clientId.equals(location.getClientId())) {
             return false;
         }
 
@@ -55,6 +75,7 @@ public class RequestValidator {
 
         return DateValidator.isBeforeNow(location.getCreatedOn());
     }
+
 //    public static boolean isEventValid(RequestMethod requestMethod, Event event) {
 //        return switch (requestMethod) {
 //            case POST -> RequestValidator.isEventValid(event);

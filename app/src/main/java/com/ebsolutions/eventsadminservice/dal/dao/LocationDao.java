@@ -10,6 +10,7 @@ import com.ebsolutions.eventsadminservice.util.MetricsStopWatch;
 import com.ebsolutions.eventsadminservice.util.UniqueIdGenerator;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -17,6 +18,10 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
 
 @Slf4j
 @Prototype
@@ -27,10 +32,10 @@ public class LocationDao {
         this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(LocationDto.class));
     }
 
-    public Location read(String locationId) throws DataProcessingException {
+    public Location read(String clientId, String locationId) throws DataProcessingException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(locationId, SortKeyType.LOCATION);
+            Key key = KeyBuilder.build(clientId, SortKeyType.LOCATION, locationId);
 
             LocationDto locationDto = ddbTable.getItem(key);
 
@@ -43,6 +48,36 @@ public class LocationDao {
                     .createdOn(locationDto.getCreatedOn())
                     .lastUpdatedOn(locationDto.getLastUpdatedOn())
                     .build();
+        } catch (Exception e) {
+            log.error("ERROR::{}", this.getClass().getName(), e);
+            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+        } finally {
+            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
+        }
+    }
+
+    public List<Location> readAll(String clientId) throws DataProcessingException {
+        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
+        try {
+            List<LocationDto> locationDtos = ddbTable
+                    .query(r -> r.queryConditional(
+                            sortBeginsWith(s
+                                    -> s.partitionValue(clientId).sortValue(SortKeyType.LOCATION.name()).build()))
+                    )
+                    .items()
+                    .stream()
+                    .toList();
+
+            return locationDtos.stream()
+                    .map(locationDto ->
+                            Location.builder()
+                                    .clientId(locationDto.getPartitionKey())
+                                    .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
+                                    .name(locationDto.getName())
+                                    .createdOn(locationDto.getCreatedOn())
+                                    .lastUpdatedOn(locationDto.getLastUpdatedOn())
+                                    .build()
+                    ).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
@@ -114,10 +149,10 @@ public class LocationDao {
         }
     }
 
-    public void delete(String locationId) {
+    public void delete(String clientId, String locationId) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(locationId, SortKeyType.LOCATION);
+            Key key = KeyBuilder.build(clientId, SortKeyType.LOCATION, locationId);
 
             ddbTable.deleteItem(key);
         } catch (Exception e) {

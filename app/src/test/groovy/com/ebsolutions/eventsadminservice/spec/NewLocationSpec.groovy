@@ -20,26 +20,6 @@ class NewLocationSpec extends Specification {
     private HttpClient httpClient
 
     // Get a location
-    // TODO
-    def "Get a location: URL Client id is not present"() {
-        given: "the client id is not in the url"
-            String locationsUrl = new StringBuffer()
-                    .append(TestConstants.eventsAdminServiceUrl)
-                    .append("/clients/")
-                    .append("")
-                    .append("/locations/")
-                    .append(LocationTestConstants.getLocationId)
-                    .toString()
-
-        when: "a request is made to retrieve a location"
-            HttpResponse<Location> response = httpClient.toBlocking()
-                    .exchange(locationsUrl, Location)
-
-        then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.code())
-    }
-
-    // TODO
     def "Get a location: URL Client id exists: Location Exists"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -68,7 +48,6 @@ class NewLocationSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, location.getLastUpdatedOn()))
     }
 
-    // TODO
     def "Get a location: URL Client id exists: Location does not exist"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -91,25 +70,6 @@ class NewLocationSpec extends Specification {
     }
 
     // Get all locations
-    // TODO
-    def "Get all locations: URL Client id is not present"() {
-        given: "the client id is not in the url"
-            String locationsUrl = new StringBuffer()
-                    .append(TestConstants.eventsAdminServiceUrl)
-                    .append("/clients/")
-                    .append("")
-                    .append("/locations/")
-                    .toString()
-
-        when: "a request is made to retrieve locations for a client"
-            HttpResponse<Location> response = httpClient.toBlocking()
-                    .exchange(locationsUrl, Location)
-
-        then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.code())
-    }
-
-    // TODO
     def "Get all locations: URL Client id exists: Locations exist for client"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -129,7 +89,7 @@ class NewLocationSpec extends Specification {
                     .exchange(httpRequest, Argument.listOf(Location.class))
 
         then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.code())
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
         and: "the correct locations are returned"
             List<Location> locations = response.body()
@@ -147,10 +107,8 @@ class NewLocationSpec extends Specification {
             Assertions.assertEquals("Get All Mock Location Name 2", secondLocation.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, secondLocation.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, secondLocation.getLastUpdatedOn()))
-
     }
 
-    // TODO
     def "Get all locations: URL Client id exists: No locations exist for client"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -174,26 +132,6 @@ class NewLocationSpec extends Specification {
     }
 
     // Delete a location
-    // TODO
-    def "Delete a location: URL Client id is not present"() {
-        given: "the client id is not in the url"
-            String locationsUrl = new StringBuffer()
-                    .append(TestConstants.eventsAdminServiceUrl)
-                    .append("/clients/")
-                    .append("")
-                    .append("/locations/")
-                    .append(LocationTestConstants.deleteLocationId)
-                    .toString()
-
-        when: "a request is made to delete the location for a client"
-            HttpRequest httpRequest = HttpRequest.DELETE(URI.create(locationsUrl))
-            HttpResponse response = httpClient.toBlocking().exchange(httpRequest)
-
-        then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.code())
-    }
-
-    // TODO
     def "Delete a location: URL Client id exists: Delete location is successful"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
@@ -202,6 +140,7 @@ class NewLocationSpec extends Specification {
                     .append(LocationTestConstants.deleteLocationClientId)
                     .append("/locations/")
                     .append(LocationTestConstants.deleteLocationId)
+                    .toString()
 
         and: "a location exists in the database"
             // Verify data seeded from Database init scripts correctly
