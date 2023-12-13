@@ -2,6 +2,7 @@ package com.ebsolutions.eventsadminservice.util
 
 import com.ebsolutions.eventsadminservice.model.Client
 import com.ebsolutions.eventsadminservice.model.Location
+import com.ebsolutions.eventsadminservice.model.Organizer
 
 class CopyObjectUtil {
 
@@ -21,6 +22,16 @@ class CopyObjectUtil {
                 .name(location.getName())
                 .createdOn(location.getCreatedOn())
                 .lastUpdatedOn(location.getLastUpdatedOn())
+                .build()
+    }
+
+    static Organizer organizer(Organizer organizer) {
+        return Organizer.builder()
+                .clientId(organizer.getClientId())
+                .organizerId(organizer.getOrganizerId())
+                .name(organizer.getName())
+                .createdOn(organizer.getCreatedOn())
+                .lastUpdatedOn(organizer.getLastUpdatedOn())
                 .build()
     }
 }

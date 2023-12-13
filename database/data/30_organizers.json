@@ -16,7 +16,7 @@
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -25,10 +25,10 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-organizer-mock-client-id"
+            "S": "get-all-organizers-mock-client-id"
           },
           "sortKey": {
-            "S": "ORGANIZER-get-all-organizer-mock-organizer-1-id"
+            "S": "ORGANIZER-get-all-organizers-mock-organizer-1-id"
           },
           "name": {
             "S": "Get All Mock Organizer Name 1"
@@ -37,7 +37,7 @@
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -46,10 +46,10 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-organizer-mock-client-id"
+            "S": "get-all-organizers-mock-client-id"
           },
           "sortKey": {
-            "S": "ORGANIZER-get-all-organizer-mock-organizer-2-id"
+            "S": "ORGANIZER-get-all-organizers-mock-organizer-2-id"
           },
           "name": {
             "S": "Get All Mock Organizer Name 2"
@@ -58,7 +58,7 @@
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -79,7 +79,7 @@
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -100,7 +100,7 @@
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }

@@ -5,7 +5,6 @@ import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.OrganizerDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.exception.DataProcessingException;
-import com.ebsolutions.eventsadminservice.model.Location;
 import com.ebsolutions.eventsadminservice.model.Organizer;
 import com.ebsolutions.eventsadminservice.util.MetricsStopWatch;
 import com.ebsolutions.eventsadminservice.util.UniqueIdGenerator;
@@ -33,10 +32,10 @@ public class OrganizerDao {
         this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(OrganizerDto.class));
     }
 
-    public Organizer read(String clientId, String locationId) throws DataProcessingException {
+    public Organizer read(String clientId, String organizerId) throws DataProcessingException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, locationId);
+            Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
 
             OrganizerDto organizerDto = ddbTable.getItem(key);
 
@@ -87,17 +86,17 @@ public class OrganizerDao {
         }
     }
 
-    public Organizer create(Location location) {
+    public Organizer create(Organizer organizer) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             LocalDateTime now = LocalDateTime.now();
 
-            assert location.getClientId() != null;
+            assert organizer.getClientId() != null;
 
             OrganizerDto organizerDto = OrganizerDto.builder()
-                    .partitionKey(location.getClientId())
+                    .partitionKey(organizer.getClientId())
                     .sortKey(SortKeyType.ORGANIZER + UniqueIdGenerator.generate())
-                    .name(location.getName())
+                    .name(organizer.getName())
                     .createdOn(now)
                     .lastUpdatedOn(now)
                     .build();
@@ -120,21 +119,21 @@ public class OrganizerDao {
     }
 
     /**
-     * This will replace the entire database object with the input location
+     * This will replace the entire database object with the input organizer
      *
-     * @param location the object to replace the current database object
+     * @param organizer the object to replace the current database object
      */
-    public Organizer update(Location location) {
+    public Organizer update(Organizer organizer) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            assert location.getClientId() != null;
-            assert location.getLocationId() != null;
+            assert organizer.getClientId() != null;
+            assert organizer.getOrganizerId() != null;
 
             OrganizerDto organizerDto = OrganizerDto.builder()
-                    .partitionKey(location.getClientId())
-                    .sortKey(location.getLocationId())
-                    .name(location.getName())
-                    .createdOn(location.getCreatedOn())
+                    .partitionKey(organizer.getClientId())
+                    .sortKey(organizer.getOrganizerId())
+                    .name(organizer.getName())
+                    .createdOn(organizer.getCreatedOn())
                     .lastUpdatedOn(LocalDateTime.now())
                     .build();
 
@@ -155,10 +154,10 @@ public class OrganizerDao {
         }
     }
 
-    public void delete(String clientId, String locationId) {
+    public void delete(String clientId, String organizerId) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, locationId);
+            Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
 
             ddbTable.deleteItem(key);
         } catch (Exception e) {
