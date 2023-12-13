@@ -3,6 +3,7 @@ package com.ebsolutions.eventsadminservice.validator;
 import com.ebsolutions.eventsadminservice.config.AllowableRequestMethod;
 import com.ebsolutions.eventsadminservice.model.Client;
 import com.ebsolutions.eventsadminservice.model.Location;
+import com.ebsolutions.eventsadminservice.model.Organizer;
 
 public class RequestValidator {
     public static boolean isClientValid(AllowableRequestMethod allowableRequestMethod, Client client) {
@@ -16,6 +17,14 @@ public class RequestValidator {
         return switch (allowableRequestMethod) {
             case PUT -> RequestValidator.isLocationUpdateValid(clientId, location);
             case POST -> RequestValidator.isLocationCreateValid(clientId, location);
+            case GET, DELETE -> true;
+        };
+    }
+
+    public static boolean isOrganizerValid(AllowableRequestMethod allowableRequestMethod, String clientId, Organizer organizer) {
+        return switch (allowableRequestMethod) {
+            case PUT -> RequestValidator.isOrganizerUpdateValid(clientId, organizer);
+            case POST -> RequestValidator.isOrganizerCreateValid(clientId, organizer);
             case GET, DELETE -> true;
         };
     }
@@ -74,6 +83,46 @@ public class RequestValidator {
         }
 
         return DateValidator.isBeforeNow(location.getCreatedOn());
+    }
+
+    private static boolean isOrganizerCreateValid(String clientId, Organizer organizer) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (organizer == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(organizer.getClientId())) {
+            return false;
+        }
+
+        return clientId.equals(organizer.getClientId());
+    }
+
+    private static boolean isOrganizerUpdateValid(String clientId, Organizer organizer) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (organizer == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(organizer.getClientId())) {
+            return false;
+        }
+
+        if (!clientId.equals(organizer.getClientId())) {
+            return false;
+        }
+
+        if (organizer.getCreatedOn() == null) {
+            return false;
+        }
+
+        return DateValidator.isBeforeNow(organizer.getCreatedOn());
     }
 
 //    public static boolean isEventValid(RequestMethod requestMethod, Event event) {

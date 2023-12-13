@@ -176,7 +176,7 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>shared-models</id>
+                        <id>models-shared</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -185,7 +185,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>client-models</id>
+                        <id>models-client</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -194,12 +194,21 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>location-models</id>
+                        <id>models-location</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <inputSpec>${pom.basedir}/contracts/location.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>models-organizer</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/organizer.yaml</inputSpec>
                         </configuration>
                     </execution>
                 </executions>

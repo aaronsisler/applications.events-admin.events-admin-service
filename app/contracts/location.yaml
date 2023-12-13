@@ -3,10 +3,11 @@ info:
   title: Locations REST API
   version: "1.0"
 paths:
-  /locations:
+  /clients/{clientId}/locations:
     get:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
       responses:
         200:
           description: OK
@@ -20,7 +21,11 @@ paths:
           description: Server error
     post:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+          Taco:
+            in: header
+
       requestBody:
         required: true
         content:
@@ -36,10 +41,11 @@ paths:
                 $ref: "#/components/schemas/Location"
         '5XX':
           description: Server Error
-  /locations/{locationId}:
+  /clients/{clientId}/locations/{locationId}:
     get:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
         - $ref: "#/components/parameters/LocationId"
       responses:
         200:
@@ -52,7 +58,8 @@ paths:
           description: Server Error
     delete:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
         - $ref: "#/components/parameters/LocationId"
       responses:
         204:
@@ -75,3 +82,4 @@ components:
       required: true
       schema:
         type: string
+

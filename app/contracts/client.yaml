@@ -6,7 +6,7 @@ paths:
   /clients:
     get:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
       responses:
         200:
           description: OK
@@ -20,7 +20,7 @@ paths:
           description: Server error
     post:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
       requestBody:
         required: true
         content:
@@ -39,7 +39,7 @@ paths:
   /clients/{clientId}:
     get:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
         - $ref: "#/components/parameters/ClientId"
       responses:
         200:
@@ -52,7 +52,7 @@ paths:
           description: Server Error
     delete:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
         - $ref: "#/components/parameters/ClientId"
       responses:
         204:
