@@ -6,7 +6,7 @@ paths:
   /clients/{clientId}/locations:
     get:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
         - $ref: "client.yaml#/components/parameters/ClientId"
       responses:
         200:
@@ -21,7 +21,7 @@ paths:
           description: Server error
     post:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
         - $ref: "client.yaml#/components/parameters/ClientId"
       requestBody:
         required: true
@@ -41,7 +41,7 @@ paths:
   /clients/{clientId}/locations/{locationId}:
     get:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
         - $ref: "client.yaml#/components/parameters/ClientId"
         - $ref: "#/components/parameters/OrganizerId"
       responses:
@@ -55,7 +55,7 @@ paths:
           description: Server Error
     delete:
       parameters:
-        - $ref: "shared.yaml#/components/parameters/ApiVersion"
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
         - $ref: "client.yaml#/components/parameters/ClientId"
         - $ref: "#/components/parameters/OrganizerId"
       responses:

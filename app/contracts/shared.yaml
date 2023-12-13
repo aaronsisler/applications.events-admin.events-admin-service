@@ -21,9 +21,8 @@ components:
           format: date-time
       required:
         - name
-  parameters:
+  headers:
     ApiVersion:
-      in: header
       name: x-api-version
       required: false
       schema:
