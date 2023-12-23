@@ -2,6 +2,7 @@ package com.ebsolutions.eventsadminservice.validator;
 
 import com.ebsolutions.eventsadminservice.config.AllowableRequestMethod;
 import com.ebsolutions.eventsadminservice.model.Client;
+import com.ebsolutions.eventsadminservice.model.Event;
 import com.ebsolutions.eventsadminservice.model.Location;
 import com.ebsolutions.eventsadminservice.model.Organizer;
 
@@ -25,6 +26,14 @@ public class RequestValidator {
         return switch (allowableRequestMethod) {
             case PUT -> RequestValidator.isOrganizerUpdateValid(clientId, organizer);
             case POST -> RequestValidator.isOrganizerCreateValid(clientId, organizer);
+            case GET, DELETE -> true;
+        };
+    }
+
+    public static boolean isEventValid(AllowableRequestMethod allowableRequestMethod, String clientId, Event event) {
+        return switch (allowableRequestMethod) {
+            case PUT -> RequestValidator.isEventUpdateValid(clientId, event);
+            case POST -> RequestValidator.isEventCreateValid(clientId, event);
             case GET, DELETE -> true;
         };
     }
@@ -125,28 +134,46 @@ public class RequestValidator {
         return DateValidator.isBeforeNow(organizer.getCreatedOn());
     }
 
-//    public static boolean isEventValid(RequestMethod requestMethod, Event event) {
-//        return switch (requestMethod) {
-//            case POST -> RequestValidator.isEventValid(event);
-//            case GET, PUT, DELETE -> true;
-//        };
-//    }
-//
-//    public static boolean isWorkshopValid(RequestMethod requestMethod, Workshop workshop) {
-//        return switch (requestMethod) {
-//            case POST -> RequestValidator.isPostBaseEventValid(workshop);
-//            case GET, PUT, DELETE -> true;
-//        };
-//    }
-//
-//    private static boolean isPostBaseEventValid(BaseEvent baseEvent) {
-//        if (baseEvent.getDuration() <= 0) {
-//            return false;
-//        }
-//
-//        return baseEvent.getStartTime() != null;
-//    }
-//
+    private static boolean isEventCreateValid(String clientId, Event event) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (event == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(event.getClientId())) {
+            return false;
+        }
+
+        return clientId.equals(event.getClientId());
+    }
+
+    private static boolean isEventUpdateValid(String clientId, Event event) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (event == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(event.getClientId())) {
+            return false;
+        }
+
+        if (!clientId.equals(event.getClientId())) {
+            return false;
+        }
+
+        if (event.getCreatedOn() == null) {
+            return false;
+        }
+
+        return DateValidator.isBeforeNow(event.getCreatedOn());
+    }
+
 //    public static boolean isCsvRequestValid(CsvRequest csvRequest) {
 //        boolean isYearValid = csvRequest.getYear() >= LocalDate.now().getYear();
 //        boolean isMonthValid = (1 <= csvRequest.getMonth() && csvRequest.getMonth() <= 12);

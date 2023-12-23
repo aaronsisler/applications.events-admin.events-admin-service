@@ -1,33 +1,88 @@
 openapi: 3.0.0
 info:
-  title: Client REST API
+  title: Locations REST API
   version: "1.0"
 paths:
-  /events:
+  /clients/{clientId}/events:
     get:
       parameters:
-        - name: x-api-version
-          in: header
-          schema:
-            type: integer
-            default: 1
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+        '5XX':
+          description: Server error
+    post:
+      parameters:
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        '5XX':
+          description: Server Error
+  /clients/{clientId}/events/{eventId}:
+    get:
+      parameters:
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+        - $ref: "#/components/parameters/EventId"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        '5XX':
+          description: Server Error
+    delete:
+      parameters:
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+        - $ref: "#/components/parameters/EventId"
+      responses:
+        204:
+          description: The resource was deleted successfully.
+        '5XX':
+          description: Server Error
 components:
   schemas:
-    EventType:
-      type: string
-      enum:
-        - SINGLE
-        - RECURRING
     Event:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
-        - properties:
-            eventType:
-              $ref: "#/components/schemas/EventType"
+      properties:
+        eventId:
+          type: string
+        description:
+          type: string
+        locationId:
+          type: string
+        organizerIds:
+          type: array
+          items:
+            type: string
+  parameters:
+    EventId:
+      in: path
+      name: eventId
+      required: true
+      schema:
+        type: string

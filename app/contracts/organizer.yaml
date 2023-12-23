@@ -3,7 +3,7 @@ info:
   title: Locations REST API
   version: "1.0"
 paths:
-  /clients/{clientId}/locations:
+  /clients/{clientId}/organizers:
     get:
       parameters:
         - $ref: "shared.yaml#/components/headers/ApiVersion"
@@ -38,7 +38,7 @@ paths:
                 $ref: "#/components/schemas/Organizer"
         '5XX':
           description: Server Error
-  /clients/{clientId}/locations/{locationId}:
+  /clients/{clientId}/organizers/{organizerId}:
     get:
       parameters:
         - $ref: "shared.yaml#/components/headers/ApiVersion"
