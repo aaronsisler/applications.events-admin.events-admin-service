@@ -179,7 +179,7 @@ class OrganizerSpec extends Specification {
             Organizer newOrganizer = Organizer.builder()
                     .clientId("")
                     .name("Create Mock Organizer Name")
-                    .build();
+                    .build()
 
         when: "a request is made to create a organizer for a client"
             HttpRequest httpRequest = HttpRequest.POST(organizersUrl, newOrganizer)
@@ -203,7 +203,7 @@ class OrganizerSpec extends Specification {
             Organizer newOrganizer = Organizer.builder()
                     .clientId("not-the-url-client-id")
                     .name("Create Mock Organizer Name")
-                    .build();
+                    .build()
 
         when: "a request is made to create a organizer for a client"
             HttpRequest httpRequest = HttpRequest.POST(organizersUrl, newOrganizer)
@@ -330,7 +330,7 @@ class OrganizerSpec extends Specification {
 
         and: "the organizer's create date is empty"
             Organizer updatedOrganizer = CopyObjectUtil.organizer(initResponse.body())
-            updatedOrganizer.createdOn(null);
+            updatedOrganizer.createdOn(null)
 
         when: "a request is made to update a organizer for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(organizersUrl), updatedOrganizer)
@@ -360,7 +360,7 @@ class OrganizerSpec extends Specification {
 
         and: "the organizer's create date is after the current date and time"
             Organizer updatedOrganizer = CopyObjectUtil.organizer(initResponse.body())
-            updatedOrganizer.createdOn(null);
+            updatedOrganizer.createdOn(null)
 
         when: "a request is made to update a organizer for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(organizersUrl), updatedOrganizer)
@@ -400,7 +400,7 @@ class OrganizerSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
         and: "the updated organizer is returned"
-            Organizer returnedOrganizer = response.body();
+            Organizer returnedOrganizer = response.body()
             Assertions.assertEquals(OrganizerTestConstants.updateOrganizerClientId, returnedOrganizer.getClientId())
             Assertions.assertEquals(OrganizerTestConstants.updateOrganizerId, returnedOrganizer.getOrganizerId())
 

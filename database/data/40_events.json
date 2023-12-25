@@ -9,20 +9,22 @@
           "sortKey": {
             "S": "EVENT-get-event-mock-event-id"
           },
-          "locationId": {
-            "S": "LOCATION-get-event-mock-location-id"
-          },
-          "organizerId": {
-            "S": "ORGANIZER-get-event-mock-organizer-id"
-          },
           "name": {
             "S": "Get Mock Event Name"
           },
-          "category": {
-            "S": "Get Mock Event Category"
-          },
           "description": {
             "S": "Get Mock Event Description"
+          },
+          "locationId": {
+            "S": "LOCATION-get-event-mock-location-id"
+          },
+          "organizerIds": {
+            "SS": [
+              "ORGANIZER-get-event-mock-organizer-id"
+            ]
+          },
+          "category": {
+            "S": "Get Mock Event Category"
           },
           "startTime": {
             "S": "08:30:00"

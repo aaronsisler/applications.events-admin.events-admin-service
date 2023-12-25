@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EventDto extends DatabaseDto {
     private String description;
+    private String category;
     private String locationId;
     private List<String> organizerIds;
 }
