@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Locations REST API
+  title: Events REST API
   version: "1.0"
 paths:
   /clients/{clientId}/events:
