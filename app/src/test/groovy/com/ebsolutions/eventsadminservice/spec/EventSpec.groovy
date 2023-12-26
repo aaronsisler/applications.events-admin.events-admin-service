@@ -100,13 +100,13 @@ class EventSpec extends Specification {
 
             Assertions.assertEquals(EventTestConstants.getAllEventsClientId, firstEvent.getClientId())
             Assertions.assertEquals(EventTestConstants.getAllEventsIdOne, firstEvent.getEventId())
-            Assertions.assertEquals("Get All Mock Event Name 1", firstEvent.getName())
+            Assertions.assertEquals("Get All Events Mock Event Name 1", firstEvent.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, firstEvent.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, firstEvent.getLastUpdatedOn()))
 
             Assertions.assertEquals(EventTestConstants.getAllEventsClientId, secondEvent.getClientId())
             Assertions.assertEquals(EventTestConstants.getAllEventsIdTwo, secondEvent.getEventId())
-            Assertions.assertEquals("Get All Mock Event Name 2", secondEvent.getName())
+            Assertions.assertEquals("Get All Events Mock Event Name 2", secondEvent.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, secondEvent.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, secondEvent.getLastUpdatedOn()))
     }
