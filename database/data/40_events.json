@@ -4,16 +4,10 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-event-mock-client-id"
+            "S": "get-event-mock-event-client-id"
           },
           "sortKey": {
             "S": "EVENT-get-event-mock-event-id"
-          },
-          "name": {
-            "S": "Get Mock Event Name"
-          },
-          "description": {
-            "S": "Get Mock Event Description"
           },
           "locationId": {
             "S": "LOCATION-get-event-mock-location-id"
@@ -23,23 +17,20 @@
               "ORGANIZER-get-event-mock-organizer-id"
             ]
           },
+          "name": {
+            "S": "Get Mock Event Name"
+          },
+          "description": {
+            "S": "Get Mock Event Description"
+          },
           "category": {
             "S": "Get Mock Event Category"
           },
-          "startTime": {
-            "S": "08:30:00"
-          },
-          "duration": {
-            "N": "60"
-          },
-          "dayOfWeek": {
-            "N": "1"
-          },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -48,40 +39,33 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-event-mock-client-id"
+            "S": "get-all-events-mock-client-id"
           },
           "sortKey": {
-            "S": "EVENT-get-all-event-mock-event-1-id"
+            "S": "EVENT-get-all-events-mock-event-1-id"
           },
           "locationId": {
-            "S": "LOCATION-get-all-event-mock-location-1-id"
+            "S": "LOCATION-get-all-events-mock-location-1-id"
           },
-          "organizerId": {
-            "S": "ORGANIZER-get-all-event-mock-organizer-1-id"
+          "organizerIds": {
+            "SS": [
+              "ORGANIZER-get-all-events-mock-organizer-1-id"
+            ]
           },
           "name": {
-            "S": "Get All Mock Event Name 1"
-          },
-          "category": {
-            "S": "Get All Mock Event Category 1"
+            "S": "Get All Events Mock Event Name 1"
           },
           "description": {
-            "S": "Get All Mock Event Description 1"
+            "S": "Get All Events Mock Event Description 1"
           },
-          "startTime": {
-            "S": "08:30:00"
-          },
-          "duration": {
-            "N": "60"
-          },
-          "dayOfWeek": {
-            "N": "1"
+          "category": {
+            "S": "Get All Events Mock Event Category 1"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -90,40 +74,33 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-event-mock-client-id"
+            "S": "get-all-events-mock-client-id"
           },
           "sortKey": {
-            "S": "EVENT-get-all-event-mock-event-2-id"
+            "S": "EVENT-get-all-events-mock-event-2-id"
           },
           "locationId": {
-            "S": "LOCATION-get-all-event-mock-location-2-id"
+            "S": "LOCATION-get-all-events-mock-location-2-id"
           },
-          "organizerId": {
-            "S": "ORGANIZER-get-all-event-mock-organizer-2-id"
+          "organizerIds": {
+            "SS": [
+              "ORGANIZER-get-all-events-mock-organizer-2-id"
+            ]
           },
           "name": {
-            "S": "Get All Mock Event Name 2"
+            "S": "Get All Events Mock Event Name 2"
           },
           "category": {
-            "S": "Get All Mock Event Category 2"
+            "S": "Get All Events Mock Event Category 2"
           },
           "description": {
-            "S": "Get All Mock Event Description 2"
-          },
-          "startTime": {
-            "S": "09:30:00"
-          },
-          "duration": {
-            "N": "75"
-          },
-          "dayOfWeek": {
-            "N": "2"
+            "S": "Get All Events Mock Event Description 2"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -140,8 +117,10 @@
           "locationId": {
             "S": "LOCATION-delete-event-mock-location-id"
           },
-          "organizerId": {
-            "S": "ORGANIZER-delete-event-mock-organizer-id"
+          "organizerIds": {
+            "SS": [
+              "ORGANIZER-delete-event-mock-organizer-id"
+            ]
           },
           "name": {
             "S": "Delete Mock Event Name"
@@ -152,20 +131,11 @@
           "description": {
             "S": "Delete Mock Event Description"
           },
-          "startTime": {
-            "S": "10:30:00"
-          },
-          "duration": {
-            "N": "45"
-          },
-          "dayOfWeek": {
-            "N": "3"
-          },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }
@@ -182,8 +152,10 @@
           "locationId": {
             "S": "LOCATION-update-event-mock-location-id"
           },
-          "organizerId": {
-            "S": "ORGANIZER-update-event-mock-organizer-id"
+          "organizerIds": {
+            "SS": [
+              "ORGANIZER-update-event-mock-organizer-id"
+            ]
           },
           "name": {
             "S": "Update Mock Event Name"
@@ -194,23 +166,11 @@
           "description": {
             "S": "Update Mock Event Description"
           },
-          "startTime": {
-            "S": "11:30:00"
-          },
-          "duration": {
-            "N": "15"
-          },
-          "dayOfWeek": {
-            "N": "4"
-          },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2023-07-04T12:34:56"
-          },
-          "expiryTime": {
-            "N": "1853884800"
+            "S": "2023-11-05T12:34:56"
           }
         }
       }

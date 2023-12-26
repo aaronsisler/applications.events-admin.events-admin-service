@@ -71,16 +71,16 @@ components:
       properties:
         eventId:
           type: string
-        description:
-          type: string
-        category:
-          type: string
         locationId:
           type: string
         organizerIds:
           type: array
           items:
             type: string
+        description:
+          type: string
+        category:
+          type: string
   parameters:
     EventId:
       in: path

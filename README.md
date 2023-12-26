@@ -6,6 +6,8 @@ https://github.com/users/aaronsisler/projects/9/views/1
 
 ## Running Locally
 
+### Docker
+
 Start the Docker containers
 
 ```bash
@@ -35,6 +37,10 @@ List out data in a table
 ```bash
 awslocal dynamodb scan --table-name SERVICES_ADMIN_DUTIES_LOCAL
 ```
+
+### IntelliJ
+
+Place the below in the Environment Variables
 
 ```bash
 MICRONAUT_ENVIRONMENTS=local
