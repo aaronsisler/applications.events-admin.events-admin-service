@@ -5,6 +5,8 @@ class EventTestConstants {
     // Get Event
     public static String getEventClientId = "get-event-mock-event-client-id"
     public static String getEventId = "-get-event-mock-event-id"
+    public static String getEventLocationId = "get-event-mock-location-id"
+    public static String getEventOrganizerId = "get-event-mock-organizer-id"
 
     // Get All Events
     public static String getAllEventsClientId = "get-all-events-mock-client-id"

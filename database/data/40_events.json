@@ -10,11 +10,11 @@
             "S": "EVENT-get-event-mock-event-id"
           },
           "locationId": {
-            "S": "LOCATION-get-event-mock-location-id"
+            "S": "get-event-mock-location-id"
           },
           "organizerIds": {
             "SS": [
-              "ORGANIZER-get-event-mock-organizer-id"
+              "get-event-mock-organizer-id"
             ]
           },
           "name": {

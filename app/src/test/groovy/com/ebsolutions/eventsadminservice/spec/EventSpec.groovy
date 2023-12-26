@@ -45,7 +45,11 @@ class EventSpec extends Specification {
         and: "the correct event is returned"
             Event event = response.body()
             Assertions.assertEquals(EventTestConstants.getEventClientId, event.getClientId())
+            Assertions.assertEquals(EventTestConstants.getEventLocationId, event.getLocationId())
+            Assertions.assertEquals(EventTestConstants.getEventOrganizerId, event.getOrganizerIds().get(0))
             Assertions.assertEquals("Get Mock Event Name", event.getName())
+            Assertions.assertEquals("Get Mock Event Description", event.getDescription())
+            Assertions.assertEquals("Get Mock Event Category", event.getCategory())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, event.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, event.getLastUpdatedOn()))
     }
