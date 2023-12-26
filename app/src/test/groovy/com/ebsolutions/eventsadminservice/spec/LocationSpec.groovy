@@ -179,7 +179,7 @@ class LocationSpec extends Specification {
             Location newLocation = Location.builder()
                     .clientId("")
                     .name("Create Mock Location Name")
-                    .build();
+                    .build()
 
         when: "a request is made to create a location for a client"
             HttpRequest httpRequest = HttpRequest.POST(locationsUrl, newLocation)
@@ -203,7 +203,7 @@ class LocationSpec extends Specification {
             Location newLocation = Location.builder()
                     .clientId("not-the-url-client-id")
                     .name("Create Mock Location Name")
-                    .build();
+                    .build()
 
         when: "a request is made to create a location for a client"
             HttpRequest httpRequest = HttpRequest.POST(locationsUrl, newLocation)
@@ -330,7 +330,7 @@ class LocationSpec extends Specification {
 
         and: "the location's create date is empty"
             Location updatedLocation = CopyObjectUtil.location(initResponse.body())
-            updatedLocation.createdOn(null);
+            updatedLocation.createdOn(null)
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
@@ -360,7 +360,7 @@ class LocationSpec extends Specification {
 
         and: "the location's create date is after the current date and time"
             Location updatedLocation = CopyObjectUtil.location(initResponse.body())
-            updatedLocation.createdOn(null);
+            updatedLocation.createdOn(null)
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
@@ -400,7 +400,7 @@ class LocationSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
         and: "the updated location is returned"
-            Location returnedLocation = response.body();
+            Location returnedLocation = response.body()
             Assertions.assertEquals(LocationTestConstants.updateLocationClientId, returnedLocation.getClientId())
             Assertions.assertEquals(LocationTestConstants.updateLocationId, returnedLocation.getLocationId())
 

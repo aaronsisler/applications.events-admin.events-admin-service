@@ -12,6 +12,7 @@ class TestConstants {
     public static String nonExistentClientId = "non-existent-client-id"
     public static String nonExistentLocationId = "non-existent-location-id"
     public static String nonExistentOrganizerId = "non-existent-organizer-id"
+    public static String nonExistentEventId = "non-existent-event-id"
     public static LocalDateTime createdOn =
             LocalDateTime.of(2023, 7, 4, 1, 2, 34)
     public static LocalDateTime lastUpdatedOn =

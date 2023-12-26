@@ -1,6 +1,7 @@
 package com.ebsolutions.eventsadminservice.util
 
 import com.ebsolutions.eventsadminservice.model.Client
+import com.ebsolutions.eventsadminservice.model.Event
 import com.ebsolutions.eventsadminservice.model.Location
 import com.ebsolutions.eventsadminservice.model.Organizer
 
@@ -32,6 +33,20 @@ class CopyObjectUtil {
                 .name(organizer.getName())
                 .createdOn(organizer.getCreatedOn())
                 .lastUpdatedOn(organizer.getLastUpdatedOn())
+                .build()
+    }
+
+    static Event event(Event event) {
+        return Event.builder()
+                .clientId(event.getClientId())
+                .eventId(event.getEventId())
+                .locationId(event.getLocationId())
+                .organizerIds(event.getOrganizerIds())
+                .name(event.getName())
+                .description(event.getDescription())
+                .category(event.getCategory())
+                .createdOn(event.getCreatedOn())
+                .lastUpdatedOn(event.getLastUpdatedOn())
                 .build()
     }
 }

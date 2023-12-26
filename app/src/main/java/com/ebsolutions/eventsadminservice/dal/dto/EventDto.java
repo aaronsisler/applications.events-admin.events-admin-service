@@ -4,9 +4,12 @@ import io.micronaut.serde.annotation.Serdeable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -15,5 +18,10 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @Slf4j
 @SuperBuilder
 @AllArgsConstructor
-public class ClientDto extends DatabaseDto {
+@NoArgsConstructor
+public class EventDto extends DatabaseDto {
+    private String description;
+    private String category;
+    private String locationId;
+    private List<String> organizerIds;
 }
