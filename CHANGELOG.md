@@ -14,11 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
-## [Unreleased]
+## [0.6.0] Events APIs
 
 ### Added
 
 - Events GET, POST, PUT, DELETE
+
+## [0.5.0] Clients, Locations, Organizer APIs
+
+### Added
+
 - Organizers GET, POST, PUT, DELETE
 - Locations GET, POST, PUT, DELETE
 - Clients GET, POST, PUT, DELETE
