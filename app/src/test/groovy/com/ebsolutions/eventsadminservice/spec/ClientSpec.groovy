@@ -114,6 +114,7 @@ class ClientSpec extends Specification {
             ex.status == HttpStatus.BAD_REQUEST
     }
 
+    // TODO
     def "Update a client: Update fails given create date is empty"() {}
 
     def "Update a client: Update fails given create date is after 'now'"() {
@@ -152,6 +153,7 @@ class ClientSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initClient.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initClient.getLastUpdatedOn()))
 
+            // TODO
         and: "an update is made to client"
             Client updatedClient = CopyObjectUtil.client(initClient)
             updatedClient.setName("New Updated Mock Client Name")
@@ -169,5 +171,19 @@ class ClientSpec extends Specification {
             Assertions.assertEquals("New Updated Mock Client Name", client.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, client.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(client.getLastUpdatedOn()))
+
+            // TODO
+        and: "the updated client is correct in the database"
+            // Verify data seeded from Database init scripts correctly
+            HttpResponse<Client> updatedResponse = httpClient.toBlocking()
+                    .exchange(this.clientsUrl + "/" + ClientTestConstants.updateClientId, Client)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
+
+            Client databaseClient = initResponse.body()
+            Assertions.assertEquals(ClientTestConstants.updateClientId, databaseClient.getClientId())
+            Assertions.assertEquals("Update Mock Client Name", databaseClient.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, databaseClient.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, databaseClient.getLastUpdatedOn()))
     }
 }
