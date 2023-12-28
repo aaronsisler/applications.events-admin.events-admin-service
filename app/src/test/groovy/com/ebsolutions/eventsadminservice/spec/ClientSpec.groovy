@@ -153,37 +153,35 @@ class ClientSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initClient.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initClient.getLastUpdatedOn()))
 
-            // TODO
         and: "an update is made to client"
             Client updatedClient = CopyObjectUtil.client(initClient)
             updatedClient.setName("New Updated Mock Client Name")
+            updatedClient.setCreatedOn(TestConstants.updateCreatedOn)
 
-        when: "a request is made to update the client"
+        when: "a request is made to with the updated client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(this.clientsUrl), updatedClient)
             HttpResponse<Client> response = httpClient.toBlocking().exchange(httpRequest, Client)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
-        and: "the updated client is returned"
+        and: "the updated client is returned in the response"
             Client client = response.body()
             Assertions.assertNotNull(client.getClientId())
             Assertions.assertEquals("New Updated Mock Client Name", client.getName())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, client.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, client.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(client.getLastUpdatedOn()))
 
-            // TODO
-        and: "the updated client is correct in the database"
-            // Verify data seeded from Database init scripts correctly
+        and: "the client updates are correct in the database"
             HttpResponse<Client> updatedResponse = httpClient.toBlocking()
                     .exchange(this.clientsUrl + "/" + ClientTestConstants.updateClientId, Client)
 
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
 
-            Client databaseClient = initResponse.body()
+            Client databaseClient = updatedResponse.body()
             Assertions.assertEquals(ClientTestConstants.updateClientId, databaseClient.getClientId())
-            Assertions.assertEquals("Update Mock Client Name", databaseClient.getName())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, databaseClient.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, databaseClient.getLastUpdatedOn()))
+            Assertions.assertEquals("New Updated Mock Client Name", databaseClient.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseClient.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(LocalDateTime.now(), databaseClient.getLastUpdatedOn()))
     }
 }
