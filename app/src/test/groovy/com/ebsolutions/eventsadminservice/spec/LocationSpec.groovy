@@ -395,7 +395,6 @@ class LocationSpec extends Specification {
             Location updatedLocation = CopyObjectUtil.location(initResponse.body())
             updatedLocation.setName("New Updated Location Name")
             updatedLocation.setCreatedOn(TestConstants.updateCreatedOn)
-            println(updatedLocation)
 
         when: "a request is made to with the updated location"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)

@@ -16,6 +16,8 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 @MicronautTest
 class EventSpec extends Specification {
     @Inject
@@ -392,28 +394,38 @@ class EventSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
 
-        and: "the event is valid"
+        and: "a valid update is made to event"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
             updatedEvent.name("New Updated Event Name")
+            updatedEvent.setCreatedOn(TestConstants.updateCreatedOn)
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to with the updated event"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
             HttpResponse<Event> response = httpClient.toBlocking().exchange(httpRequest, Event)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
-        and: "the updated event is returned"
+        and: "the updated event is returned in the response"
             Event returnedEvent = response.body()
             Assertions.assertEquals(EventTestConstants.updateEventClientId, returnedEvent.getClientId())
             Assertions.assertEquals(EventTestConstants.updateEventId, returnedEvent.getEventId())
+            Assertions.assertEquals("New Updated Event Name", returnedEvent.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, returnedEvent.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(returnedEvent.getLastUpdatedOn()))
 
         and: "the event is correct in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> checkingResponse = httpClient.toBlocking()
+            HttpResponse<Event> checkingDatabaseResponse = httpClient.toBlocking()
                     .exchange(eventsUrl.concat(returnedEvent.getEventId()), Event)
 
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
-            Assertions.assertEquals("New Updated Event Name", updatedEvent.getName())
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
+
+            Event databaseEvent = checkingDatabaseResponse.body()
+            Assertions.assertEquals(EventTestConstants.updateEventClientId, databaseEvent.getClientId())
+            Assertions.assertEquals(EventTestConstants.updateEventId, databaseEvent.getEventId())
+            Assertions.assertEquals("New Updated Event Name", databaseEvent.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseEvent.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(LocalDateTime.now(), databaseEvent.getLastUpdatedOn()))
+
     }
 }

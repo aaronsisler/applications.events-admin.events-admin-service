@@ -137,8 +137,6 @@ public class LocationDao {
                     .lastUpdatedOn(LocalDateTime.now())
                     .build();
 
-            System.out.println(locationDto.getCreatedOn());
-
             ddbTable.putItem(locationDto);
 
             return Location.builder()

@@ -16,6 +16,8 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 @MicronautTest
 class OrganizerSpec extends Specification {
     @Inject
@@ -388,28 +390,37 @@ class OrganizerSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
 
-        and: "the organizer is valid"
+        and: "a valid update is made to organizer"
             Organizer updatedOrganizer = CopyObjectUtil.organizer(initResponse.body())
-            updatedOrganizer.name("New Updated Organizer Name")
+            updatedOrganizer.setName("New Updated Organizer Name")
+            updatedOrganizer.setCreatedOn(TestConstants.updateCreatedOn)
 
-        when: "a request is made to update a organizer for a client"
+        when: "a request is made to with the updated organizer"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(organizersUrl), updatedOrganizer)
             HttpResponse<Organizer> response = httpClient.toBlocking().exchange(httpRequest, Organizer)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
-        and: "the updated organizer is returned"
+        and: "the updated organizer is returned in the response"
             Organizer returnedOrganizer = response.body()
             Assertions.assertEquals(OrganizerTestConstants.updateOrganizerClientId, returnedOrganizer.getClientId())
             Assertions.assertEquals(OrganizerTestConstants.updateOrganizerId, returnedOrganizer.getOrganizerId())
+            Assertions.assertEquals("New Updated Organizer Name", returnedOrganizer.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, returnedOrganizer.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(returnedOrganizer.getLastUpdatedOn()))
 
         and: "the organizer is correct in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Organizer> checkingResponse = httpClient.toBlocking()
+            HttpResponse<Organizer> checkingDatabaseResponse = httpClient.toBlocking()
                     .exchange(organizersUrl.concat(returnedOrganizer.getOrganizerId()), Organizer)
 
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
-            Assertions.assertEquals("New Updated Organizer Name", updatedOrganizer.getName())
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
+
+            Organizer databaseOrganizer = checkingDatabaseResponse.body()
+            Assertions.assertEquals(OrganizerTestConstants.updateOrganizerClientId, databaseOrganizer.getClientId())
+            Assertions.assertEquals(OrganizerTestConstants.updateOrganizerId, databaseOrganizer.getOrganizerId())
+            Assertions.assertEquals("New Updated Organizer Name", databaseOrganizer.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseOrganizer.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(LocalDateTime.now(), databaseOrganizer.getLastUpdatedOn()))
     }
 }
