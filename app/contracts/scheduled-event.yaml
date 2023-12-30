@@ -4,10 +4,10 @@ info:
   version: "1.0"
 paths:
   /clients/{clientId}/scheduled-events:
+    parameters:
+      - $ref: "shared.yaml#/components/headers/X-Api-Version"
+      - $ref: "client.yaml#/components/parameters/ClientId"
     get:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "client.yaml#/components/parameters/ClientId"
       responses:
         200:
           description: OK
@@ -20,9 +20,6 @@ paths:
         '5XX':
           description: Server error
     post:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "client.yaml#/components/parameters/ClientId"
       requestBody:
         required: true
         content:
@@ -39,11 +36,11 @@ paths:
         '5XX':
           description: Server Error
   /clients/{clientId}/scheduled-events/{scheduledEventId}:
+    parameters:
+      - $ref: "shared.yaml#/components/headers/X-Api-Version"
+      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "#/components/parameters/ScheduledEventId"
     get:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "client.yaml#/components/parameters/ClientId"
-        - $ref: "#/components/parameters/ScheduledEventId"
       responses:
         200:
           description: OK
@@ -54,10 +51,6 @@ paths:
         '5XX':
           description: Server Error
     delete:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "client.yaml#/components/parameters/ClientId"
-        - $ref: "#/components/parameters/ScheduledEventId"
       responses:
         204:
           description: The resource was deleted successfully.
@@ -65,6 +58,33 @@ paths:
           description: Server Error
 components:
   schemas:
+    ScheduledEventType:
+      type: string
+      enum:
+        - SINGLE
+        - REOCCURRING
+    ScheduledEventInterval:
+      type: string
+      enum:
+        - DAILY
+        - WEEKLY
+        - BIWEEKLY
+        - MONTHLY
+        - WEEKDAYS
+        - WEEKENDS
+    ScheduledEventDay:
+      type: string
+      enum:
+        - MON
+        - TUE
+        - WED
+        - THU
+        - FRI
+        - SAT
+        - SUN
+    Cost:
+      type: integer
+
     ScheduledEvent:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
@@ -73,10 +93,15 @@ components:
           type: string
         locationId:
           type: string
+          description: Override the default event location id
         organizerIds:
           type: array
           items:
             type: string
+          description: Override the default event organizer id(s)
+        cost:
+          type: integer
+          description: Cost of event in pennies
   parameters:
     ScheduledEventId:
       in: path

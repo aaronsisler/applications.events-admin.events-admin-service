@@ -22,9 +22,7 @@ components:
       required:
         - name
   headers:
-    ApiVersion:
-      name: x-api-version
-      required: false
+    X-Api-Version:
       schema:
         type: integer
         default: 1

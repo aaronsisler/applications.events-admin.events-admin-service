@@ -4,10 +4,10 @@ info:
   version: "1.0"
 paths:
   /clients/{clientId}/locations:
+    parameters:
+      - $ref: "shared.yaml#/components/headers/X-Api-Version"
+      - $ref: "client.yaml#/components/parameters/ClientId"
     get:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "client.yaml#/components/parameters/ClientId"
       responses:
         200:
           description: OK
@@ -20,12 +20,6 @@ paths:
         '5XX':
           description: Server error
     post:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "client.yaml#/components/parameters/ClientId"
-          Taco:
-            in: header
-
       requestBody:
         required: true
         content:
@@ -42,11 +36,11 @@ paths:
         '5XX':
           description: Server Error
   /clients/{clientId}/locations/{locationId}:
+    parameters:
+      - $ref: "shared.yaml#/components/headers/X-Api-Version"
+      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "#/components/parameters/LocationId"
     get:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "client.yaml#/components/parameters/ClientId"
-        - $ref: "#/components/parameters/LocationId"
       responses:
         200:
           description: OK
@@ -57,10 +51,6 @@ paths:
         '5XX':
           description: Server Error
     delete:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "client.yaml#/components/parameters/ClientId"
-        - $ref: "#/components/parameters/LocationId"
       responses:
         204:
           description: The resource was deleted successfully.
