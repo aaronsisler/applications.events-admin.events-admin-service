@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+  title: Scheduled Events REST API
+  version: "1.0"
+paths:
+  /clients/{clientId}/scheduled-events:
+    get:
+      parameters:
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScheduledEvent"
+        '5XX':
+          description: Server error
+    post:
+      parameters:
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduledEvent"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledEvent"
+        '5XX':
+          description: Server Error
+  /clients/{clientId}/scheduled-events/{scheduledEventId}:
+    get:
+      parameters:
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+        - $ref: "#/components/parameters/ScheduledEventId"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledEvent"
+        '5XX':
+          description: Server Error
+    delete:
+      parameters:
+        - $ref: "shared.yaml#/components/headers/ApiVersion"
+        - $ref: "client.yaml#/components/parameters/ClientId"
+        - $ref: "#/components/parameters/ScheduledEventId"
+      responses:
+        204:
+          description: The resource was deleted successfully.
+        '5XX':
+          description: Server Error
+components:
+  schemas:
+    ScheduledEvent:
+      allOf:
+        - $ref: "shared.yaml#/components/schemas/Base"
+      properties:
+        scheduledEventId:
+          type: string
+        locationId:
+          type: string
+        organizerIds:
+          type: array
+          items:
+            type: string
+  parameters:
+    ScheduledEventId:
+      in: path
+      name: eventId
+      required: true
+      schema:
+        type: string
