@@ -78,6 +78,7 @@ class ClientSpec extends Specification {
     def "Create a Client: Create client is successful"() {
         given: "A valid client"
             Client newClient = Client.builder().name("Create Mock Client Name").build()
+
         when: "a request is made to create a client"
             HttpRequest httpRequest = HttpRequest.POST(URI.create(this.clientsUrl), newClient)
             HttpResponse<Client> response = httpClient.toBlocking().exchange(httpRequest, Client)
@@ -105,7 +106,7 @@ class ClientSpec extends Specification {
             Client updatedClient = CopyObjectUtil.client(initResponse.body())
             updatedClient.setClientId("")
 
-        when: "a request is made to update the client"
+        when: "a request is made to with the updated client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(this.clientsUrl), updatedClient)
             httpClient.toBlocking().exchange(httpRequest, Client)
 
@@ -114,8 +115,27 @@ class ClientSpec extends Specification {
             ex.status == HttpStatus.BAD_REQUEST
     }
 
-    // TODO
-    def "Update a client: Update fails given create date is empty"() {}
+    def "Update a client: Update fails given create date is empty"() {
+        given: "A client exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            HttpResponse<Client> initResponse = httpClient.toBlocking()
+                    .exchange(this.clientsUrl + "/" + ClientTestConstants.updateClientId, Client)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
+
+        and: "the client's create date is empty"
+            Client updatedClient = CopyObjectUtil.client(initResponse.body())
+            updatedClient.setCreatedOn(null)
+
+        when: "a request is made to with the updated client"
+            HttpRequest httpRequest = HttpRequest.PUT(URI.create(this.clientsUrl), updatedClient)
+            httpClient.toBlocking().exchange(httpRequest, Client)
+
+        then: "the correct status code is returned"
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
+    }
 
     def "Update a client: Update fails given create date is after 'now'"() {
         given: "A client exists in the database"
@@ -130,7 +150,7 @@ class ClientSpec extends Specification {
             // Add an extra day to "now" since that is what the controller tests
             updatedClient.setCreatedOn(LocalDateTime.now().plus(1, ChronoUnit.DAYS))
 
-        when: "a request is made to update the client"
+        when: "a request is made to with the updated client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(this.clientsUrl), updatedClient)
             httpClient.toBlocking().exchange(httpRequest, Client)
 
@@ -153,7 +173,7 @@ class ClientSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initClient.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initClient.getLastUpdatedOn()))
 
-        and: "an update is made to client"
+        and: "a valid update is made to client"
             Client updatedClient = CopyObjectUtil.client(initClient)
             updatedClient.setName("New Updated Mock Client Name")
             updatedClient.setCreatedOn(TestConstants.updateCreatedOn)
@@ -166,11 +186,11 @@ class ClientSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
         and: "the updated client is returned in the response"
-            Client client = response.body()
-            Assertions.assertNotNull(client.getClientId())
-            Assertions.assertEquals("New Updated Mock Client Name", client.getName())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, client.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(client.getLastUpdatedOn()))
+            Client returnedClient = response.body()
+            Assertions.assertEquals(ClientTestConstants.updateClientId, returnedClient.getClientId())
+            Assertions.assertEquals("New Updated Mock Client Name", returnedClient.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, returnedClient.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(returnedClient.getLastUpdatedOn()))
 
         and: "the client updates are correct in the database"
             HttpResponse<Client> updatedResponse = httpClient.toBlocking()
