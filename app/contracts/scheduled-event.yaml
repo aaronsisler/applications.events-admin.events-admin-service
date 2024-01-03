@@ -5,7 +5,6 @@ info:
 paths:
   /clients/{clientId}/scheduled-events:
     parameters:
-      - $ref: "shared.yaml#/components/headers/X-Api-Version"
       - $ref: "client.yaml#/components/parameters/ClientId"
     get:
       responses:
@@ -37,7 +36,6 @@ paths:
           description: Server Error
   /clients/{clientId}/scheduled-events/{scheduledEventId}:
     parameters:
-      - $ref: "shared.yaml#/components/headers/X-Api-Version"
       - $ref: "client.yaml#/components/parameters/ClientId"
       - $ref: "#/components/parameters/ScheduledEventId"
     get:
@@ -82,12 +80,13 @@ components:
         - FRI
         - SAT
         - SUN
-    Cost:
-      type: integer
-
     ScheduledEvent:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
+      required:
+        - scheduledEventType
+        - startTime
+        - endTime
       properties:
         scheduledEventId:
           type: string
@@ -99,6 +98,25 @@ components:
           items:
             type: string
           description: Override the default event organizer id(s)
+        startTime:
+          type: string
+          format: time
+          example: "13:02:34"
+        endTime:
+          type: string
+          #          format: my-local-time
+          format: date-time
+          example: "13:02:34"
+        scheduledEventType:
+          $ref: "#/components/schemas/ScheduledEventType"
+        scheduledEventInterval:
+          $ref: "#/components/schemas/ScheduledEventInterval"
+        scheduledEventDay:
+          $ref: "#/components/schemas/ScheduledEventDay"
+        scheduledEventDate:
+          type: string
+          #          format: date
+          example: "2019-05-17"
         cost:
           type: integer
           description: Cost of event in pennies

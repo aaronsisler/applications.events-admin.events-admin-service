@@ -4,8 +4,6 @@ info:
   version: "1.0"
 paths:
   /clients:
-    parameters:
-      - $ref: "shared.yaml#/components/headers/X-Api-Version"
     get:
       responses:
         200:
@@ -36,7 +34,6 @@ paths:
           description: Server Error
   /clients/{clientId}:
     parameters:
-      - $ref: "shared.yaml#/components/headers/X-Api-Version"
       - $ref: "#/components/parameters/ClientId"
     get:
       responses:

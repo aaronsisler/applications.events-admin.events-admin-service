@@ -133,6 +133,7 @@
                         <generateSupportingFiles>true</generateSupportingFiles>
                         <generateApiDocumentation>false</generateApiDocumentation>
                         <configOptions>
+                            <!--                            <dateLibrary>custom</dateLibrary>-->
                             <additionalModelTypeAnnotations>
                                 @lombok.AllArgsConstructor
                                 @lombok.Data
@@ -141,10 +142,14 @@
                             </additionalModelTypeAnnotations>
                         </configOptions>
                         <typeMappings>
+                            <typeMapping>Time=LocalTime</typeMapping>
+                            <!--                            <typeMapping>Date=LocalDate</typeMapping>-->
                             <typeMapping>DateTime=LocalDateTime</typeMapping>
                         </typeMappings>
                         <importMappings>
+                            <!--                            <importMapping>LocalDate=java.time.LocalDate</importMapping>-->
                             <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
+                            <importMapping>LocalTime=java.time.LocalTime</importMapping>
                         </importMappings>
                     </configuration>
                 </plugin>

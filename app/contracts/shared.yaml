@@ -8,6 +8,8 @@ components:
   schemas:
     Base:
       type: object
+      required:
+        - name
       properties:
         clientId:
           type: string
@@ -19,10 +21,3 @@ components:
         lastUpdatedOn:
           type: string
           format: date-time
-      required:
-        - name
-  headers:
-    X-Api-Version:
-      schema:
-        type: integer
-        default: 1

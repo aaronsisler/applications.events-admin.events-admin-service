@@ -5,7 +5,6 @@ info:
 paths:
   /clients/{clientId}/locations:
     parameters:
-      - $ref: "shared.yaml#/components/headers/X-Api-Version"
       - $ref: "client.yaml#/components/parameters/ClientId"
     get:
       responses:
@@ -37,7 +36,6 @@ paths:
           description: Server Error
   /clients/{clientId}/locations/{locationId}:
     parameters:
-      - $ref: "shared.yaml#/components/headers/X-Api-Version"
       - $ref: "client.yaml#/components/parameters/ClientId"
       - $ref: "#/components/parameters/LocationId"
     get:
