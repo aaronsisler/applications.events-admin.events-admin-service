@@ -45,21 +45,3 @@ Place the below in the Environment Variables
 ```bash
 MICRONAUT_ENVIRONMENTS=local
 ```
-
-                            <typeMapping>DateTime=LocalDateTime</typeMapping>
-
-<!--                            <dateLibrary>custom</dateLibrary>-->
-
-                        </configOptions>
-                        <typeMappings>
-                            <typeMapping>LocalDateTime=LocalDateTime</typeMapping>
-                            <!--                            <typeMapping>OffsetDateTime=LocalDateTime</typeMapping>-->
-                            <!--                            <typeMapping>Date=LocalDate</typeMapping>-->
-                            <!--                            <typeMapping>Time=LocalTime</typeMapping>-->
-                        </typeMappings>
-                        <importMappings>
-                            <importMapping>LocalDateTime=LocalDateTime</importMapping>
-                            <!--                            <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>-->
-                            <!--                            <importMapping>java.time.LocalDate=java.time.LocalDate</importMapping>-->
-                            <!--                            <importMapping>java.time.LocalTime=java.time.LocalTime</importMapping>-->
-                        </importMappings>
