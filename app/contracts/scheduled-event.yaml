@@ -100,12 +100,11 @@ components:
           description: Override the default event organizer id(s)
         startTime:
           type: string
-          format: time
+          format: local-time
           example: "13:02:34"
         endTime:
           type: string
-          #          format: my-local-time
-          format: date-time
+          format: local-time
           example: "13:02:34"
         scheduledEventType:
           $ref: "#/components/schemas/ScheduledEventType"
@@ -115,7 +114,7 @@ components:
           $ref: "#/components/schemas/ScheduledEventDay"
         scheduledEventDate:
           type: string
-          #          format: date
+          format: local-date
           example: "2019-05-17"
         cost:
           type: integer
