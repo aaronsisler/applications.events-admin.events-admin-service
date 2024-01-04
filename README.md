@@ -35,7 +35,7 @@ awslocal dynamodb list-tables
 List out data in a table
 
 ```bash
-awslocal dynamodb scan --table-name SERVICES_ADMIN_DUTIES_LOCAL
+awslocal dynamodb scan --table-name SERVICES_EVENTS_ADMIN_LOCAL
 ```
 
 ### IntelliJ

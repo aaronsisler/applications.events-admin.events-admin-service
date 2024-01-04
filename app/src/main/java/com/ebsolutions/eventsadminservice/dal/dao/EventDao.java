@@ -147,7 +147,7 @@ public class EventDao {
 
             EventDto eventDto = EventDto.builder()
                     .partitionKey(event.getClientId())
-                    .sortKey(event.getEventId())
+                    .sortKey(SortKeyType.EVENT + event.getEventId())
                     .locationId(event.getLocationId())
                     .organizerIds(event.getOrganizerIds())
                     .name(event.getName())

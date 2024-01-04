@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: Scheduled Events REST API
+  version: "1.0"
+paths:
+  /clients/{clientId}/scheduled-events:
+    parameters:
+      - $ref: "client.yaml#/components/parameters/ClientId"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScheduledEvent"
+        '5XX':
+          description: Server error
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduledEvent"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledEvent"
+        '5XX':
+          description: Server Error
+  /clients/{clientId}/scheduled-events/{scheduledEventId}:
+    parameters:
+      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "#/components/parameters/ScheduledEventId"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledEvent"
+        '5XX':
+          description: Server Error
+    delete:
+      responses:
+        204:
+          description: The resource was deleted successfully.
+        '5XX':
+          description: Server Error
+components:
+  schemas:
+    ScheduledEventType:
+      type: string
+      enum:
+        - SINGLE
+        - REOCCURRING
+    ScheduledEventInterval:
+      type: string
+      enum:
+        - DAILY
+        - WEEKLY
+        - BIWEEKLY
+        - MONTHLY
+        - WEEKDAYS
+        - WEEKENDS
+    ScheduledEventDay:
+      type: string
+      enum:
+        - MON
+        - TUE
+        - WED
+        - THU
+        - FRI
+        - SAT
+        - SUN
+    ScheduledEvent:
+      allOf:
+        - $ref: "shared.yaml#/components/schemas/Base"
+      required:
+        - scheduledEventType
+        - startTime
+        - endTime
+      properties:
+        scheduledEventId:
+          type: string
+        locationId:
+          type: string
+          description: Override the default event location id
+        organizerIds:
+          type: array
+          items:
+            type: string
+          description: Override the default event organizer id(s)
+        startTime:
+          type: string
+          format: local-time
+          example: "13:02:34"
+        endTime:
+          type: string
+          format: local-time
+          example: "13:02:34"
+        scheduledEventType:
+          $ref: "#/components/schemas/ScheduledEventType"
+        scheduledEventInterval:
+          $ref: "#/components/schemas/ScheduledEventInterval"
+        scheduledEventDay:
+          $ref: "#/components/schemas/ScheduledEventDay"
+        scheduledEventDate:
+          type: string
+          format: local-date
+          example: "2019-05-17"
+        cost:
+          type: integer
+          description: Cost of event in pennies
+  parameters:
+    ScheduledEventId:
+      in: path
+      name: eventId
+      required: true
+      schema:
+        type: string

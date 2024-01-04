@@ -131,7 +131,7 @@ public class OrganizerDao {
 
             OrganizerDto organizerDto = OrganizerDto.builder()
                     .partitionKey(organizer.getClientId())
-                    .sortKey(organizer.getOrganizerId())
+                    .sortKey(SortKeyType.ORGANIZER + organizer.getOrganizerId())
                     .name(organizer.getName())
                     .createdOn(organizer.getCreatedOn())
                     .lastUpdatedOn(LocalDateTime.now())

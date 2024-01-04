@@ -13,10 +13,16 @@ class TestConstants {
     public static String nonExistentLocationId = "non-existent-location-id"
     public static String nonExistentOrganizerId = "non-existent-organizer-id"
     public static String nonExistentEventId = "non-existent-event-id"
+
+    // This must be before the updateCreatedOn variable
     public static LocalDateTime createdOn =
             LocalDateTime.of(2023, 7, 4, 1, 2, 34)
+    // This must be after the createdOn variable
+    public static LocalDateTime updateCreatedOn =
+            LocalDateTime.of(2023, 12, 25, 7, 4, 00)
     public static LocalDateTime lastUpdatedOn =
             LocalDateTime.of(2023, 11, 5, 12, 34, 56)
+
     // This is Saturday, September 30, 2028 12:00:00 AM in epoch seconds
     public static long expiryTime = (long) 1853884800
 }

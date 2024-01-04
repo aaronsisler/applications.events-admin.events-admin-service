@@ -1,5 +1,6 @@
 package com.ebsolutions.eventsadminservice.spec
 
+
 import com.ebsolutions.eventsadminservice.constant.LocationTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
 import com.ebsolutions.eventsadminservice.model.Location
@@ -15,6 +16,8 @@ import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
+
+import java.time.LocalDateTime
 
 @MicronautTest
 class LocationSpec extends Specification {
@@ -330,7 +333,7 @@ class LocationSpec extends Specification {
 
         and: "the location's create date is empty"
             Location updatedLocation = CopyObjectUtil.location(initResponse.body())
-            updatedLocation.createdOn(null)
+            updatedLocation.setCreatedOn(null)
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
@@ -360,7 +363,7 @@ class LocationSpec extends Specification {
 
         and: "the location's create date is after the current date and time"
             Location updatedLocation = CopyObjectUtil.location(initResponse.body())
-            updatedLocation.createdOn(null)
+            updatedLocation.setCreatedOn(null)
 
         when: "a request is made to update a location for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
@@ -388,28 +391,37 @@ class LocationSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
 
-        and: "the location is valid"
+        and: "a valid update is made to location"
             Location updatedLocation = CopyObjectUtil.location(initResponse.body())
-            updatedLocation.name("New Updated Location Name")
+            updatedLocation.setName("New Updated Location Name")
+            updatedLocation.setCreatedOn(TestConstants.updateCreatedOn)
 
-        when: "a request is made to update a location for a client"
+        when: "a request is made to with the updated location"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(locationsUrl), updatedLocation)
             HttpResponse<Location> response = httpClient.toBlocking().exchange(httpRequest, Location)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
-        and: "the updated location is returned"
+        and: "the updated location is returned in the response"
             Location returnedLocation = response.body()
             Assertions.assertEquals(LocationTestConstants.updateLocationClientId, returnedLocation.getClientId())
             Assertions.assertEquals(LocationTestConstants.updateLocationId, returnedLocation.getLocationId())
+            Assertions.assertEquals("New Updated Location Name", returnedLocation.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, returnedLocation.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(returnedLocation.getLastUpdatedOn()))
 
         and: "the location is correct in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Location> checkingResponse = httpClient.toBlocking()
-                    .exchange(locationsUrl.concat(returnedLocation.getLocationId()), Location)
+            HttpResponse<Location> checkingDatabaseResponse = httpClient.toBlocking()
+                    .exchange(locationsUrl.concat(LocationTestConstants.updateLocationId), Location)
 
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
-            Assertions.assertEquals("New Updated Location Name", updatedLocation.getName())
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
+
+            Location databaseLocation = checkingDatabaseResponse.body()
+            Assertions.assertEquals(LocationTestConstants.updateLocationClientId, databaseLocation.getClientId())
+            Assertions.assertEquals(LocationTestConstants.updateLocationId, databaseLocation.getLocationId())
+            Assertions.assertEquals("New Updated Location Name", databaseLocation.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseLocation.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(LocalDateTime.now(), databaseLocation.getLastUpdatedOn()))
     }
 }

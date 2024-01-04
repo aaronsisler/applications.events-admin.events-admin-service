@@ -141,10 +141,18 @@
                             </additionalModelTypeAnnotations>
                         </configOptions>
                         <typeMappings>
+                            <!-- This Pascal format is a standard per OpenAPI -->
                             <typeMapping>DateTime=LocalDateTime</typeMapping>
+                            <typeMapping>local-date=LocalDate</typeMapping>
+                            <!-- Custom Kebab format names for importMappings  -->
+                            <typeMapping>local-time=LocalTime</typeMapping>
                         </typeMappings>
                         <importMappings>
+                            <!-- This Pascal format is a standard per OpenAPI -->
                             <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
+                            <!-- Custom Kebab format names in typeMappings  -->
+                            <importMapping>LocalDate=java.time.LocalDate</importMapping>
+                            <importMapping>LocalTime=java.time.LocalTime</importMapping>
                         </importMappings>
                     </configuration>
                 </plugin>

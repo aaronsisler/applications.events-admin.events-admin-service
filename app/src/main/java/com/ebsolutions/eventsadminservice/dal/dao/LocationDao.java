@@ -131,7 +131,7 @@ public class LocationDao {
 
             LocationDto locationDto = LocationDto.builder()
                     .partitionKey(location.getClientId())
-                    .sortKey(location.getLocationId())
+                    .sortKey(SortKeyType.LOCATION + location.getLocationId())
                     .name(location.getName())
                     .createdOn(location.getCreatedOn())
                     .lastUpdatedOn(LocalDateTime.now())

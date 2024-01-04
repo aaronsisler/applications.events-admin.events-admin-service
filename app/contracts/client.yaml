@@ -5,8 +5,6 @@ info:
 paths:
   /clients:
     get:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
       responses:
         200:
           description: OK
@@ -19,8 +17,6 @@ paths:
         '5XX':
           description: Server error
     post:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
       requestBody:
         required: true
         content:
@@ -37,10 +33,9 @@ paths:
         '5XX':
           description: Server Error
   /clients/{clientId}:
+    parameters:
+      - $ref: "#/components/parameters/ClientId"
     get:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "#/components/parameters/ClientId"
       responses:
         200:
           description: OK
@@ -51,9 +46,6 @@ paths:
         '5XX':
           description: Server Error
     delete:
-      parameters:
-        - $ref: "shared.yaml#/components/headers/ApiVersion"
-        - $ref: "#/components/parameters/ClientId"
       responses:
         204:
           description: The resource was deleted successfully.
