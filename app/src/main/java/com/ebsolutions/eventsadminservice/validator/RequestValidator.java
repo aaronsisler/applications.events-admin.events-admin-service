@@ -1,10 +1,7 @@
 package com.ebsolutions.eventsadminservice.validator;
 
 import com.ebsolutions.eventsadminservice.config.AllowableRequestMethod;
-import com.ebsolutions.eventsadminservice.model.Client;
-import com.ebsolutions.eventsadminservice.model.Event;
-import com.ebsolutions.eventsadminservice.model.Location;
-import com.ebsolutions.eventsadminservice.model.Organizer;
+import com.ebsolutions.eventsadminservice.model.*;
 
 public class RequestValidator {
     public static boolean isClientValid(AllowableRequestMethod allowableRequestMethod, Client client) {
@@ -34,6 +31,14 @@ public class RequestValidator {
         return switch (allowableRequestMethod) {
             case PUT -> RequestValidator.isEventUpdateValid(clientId, event);
             case POST -> RequestValidator.isEventCreateValid(clientId, event);
+            case GET, DELETE -> true;
+        };
+    }
+
+    public static boolean isScheduledEventValid(AllowableRequestMethod allowableRequestMethod, String clientId, ScheduledEvent scheduledEvent) {
+        return switch (allowableRequestMethod) {
+            case PUT -> RequestValidator.isScheduledEventUpdateValid(clientId, scheduledEvent);
+            case POST -> RequestValidator.isScheduledEventCreateValid(clientId, scheduledEvent);
             case GET, DELETE -> true;
         };
     }
@@ -172,6 +177,48 @@ public class RequestValidator {
         }
 
         return DateValidator.isBeforeNow(event.getCreatedOn());
+    }
+
+    // TODO
+    private static boolean isScheduledEventCreateValid(String clientId, ScheduledEvent scheduledEvent) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (scheduledEvent == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(scheduledEvent.getClientId())) {
+            return false;
+        }
+
+        return clientId.equals(scheduledEvent.getClientId());
+    }
+
+    // TODO
+    private static boolean isScheduledEventUpdateValid(String clientId, ScheduledEvent scheduledEvent) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (scheduledEvent == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(scheduledEvent.getClientId())) {
+            return false;
+        }
+
+        if (!clientId.equals(scheduledEvent.getClientId())) {
+            return false;
+        }
+
+        if (scheduledEvent.getCreatedOn() == null) {
+            return false;
+        }
+
+        return DateValidator.isBeforeNow(scheduledEvent.getCreatedOn());
     }
 
 //    public static boolean isCsvRequestValid(CsvRequest csvRequest) {
