@@ -217,6 +217,15 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>models-event-schedule</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/event-schedule.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>models-scheduled-event</id>
                         <goals>
                             <goal>generate</goal>

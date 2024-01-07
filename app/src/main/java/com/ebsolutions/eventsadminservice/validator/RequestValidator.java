@@ -4,13 +4,16 @@ import com.ebsolutions.eventsadminservice.config.AllowableRequestMethod;
 import com.ebsolutions.eventsadminservice.model.*;
 
 public class RequestValidator {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isClientValid(AllowableRequestMethod allowableRequestMethod, Client client) {
         return switch (allowableRequestMethod) {
             case PUT -> RequestValidator.isClientUpdateValid(client);
-            case GET, POST, DELETE -> true;
+            case POST -> RequestValidator.isClientCreateValid(client);
+            case GET, DELETE -> true;
         };
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isLocationValid(AllowableRequestMethod allowableRequestMethod, String clientId, Location location) {
         return switch (allowableRequestMethod) {
             case PUT -> RequestValidator.isLocationUpdateValid(clientId, location);
@@ -19,6 +22,7 @@ public class RequestValidator {
         };
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isOrganizerValid(AllowableRequestMethod allowableRequestMethod, String clientId, Organizer organizer) {
         return switch (allowableRequestMethod) {
             case PUT -> RequestValidator.isOrganizerUpdateValid(clientId, organizer);
@@ -27,6 +31,7 @@ public class RequestValidator {
         };
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isEventValid(AllowableRequestMethod allowableRequestMethod, String clientId, Event event) {
         return switch (allowableRequestMethod) {
             case PUT -> RequestValidator.isEventUpdateValid(clientId, event);
@@ -35,12 +40,26 @@ public class RequestValidator {
         };
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean isEventScheduleValid(AllowableRequestMethod allowableRequestMethod, String clientId, EventSchedule eventSchedule) {
+        return switch (allowableRequestMethod) {
+            case PUT -> RequestValidator.isEventScheduleUpdateValid(clientId, eventSchedule);
+            case POST -> RequestValidator.isEventScheduleCreateValid(clientId, eventSchedule);
+            case GET, DELETE -> true;
+        };
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isScheduledEventValid(AllowableRequestMethod allowableRequestMethod, String clientId, ScheduledEvent scheduledEvent) {
         return switch (allowableRequestMethod) {
             case PUT -> RequestValidator.isScheduledEventUpdateValid(clientId, scheduledEvent);
             case POST -> RequestValidator.isScheduledEventCreateValid(clientId, scheduledEvent);
             case GET, DELETE -> true;
         };
+    }
+
+    private static boolean isClientCreateValid(Client client) {
+        return client != null;
     }
 
     private static boolean isClientUpdateValid(Client client) {
@@ -177,6 +196,46 @@ public class RequestValidator {
         }
 
         return DateValidator.isBeforeNow(event.getCreatedOn());
+    }
+
+    private static boolean isEventScheduleCreateValid(String clientId, EventSchedule eventSchedule) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (eventSchedule == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(eventSchedule.getClientId())) {
+            return false;
+        }
+
+        return clientId.equals(eventSchedule.getClientId());
+    }
+
+    private static boolean isEventScheduleUpdateValid(String clientId, EventSchedule eventSchedule) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (eventSchedule == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(eventSchedule.getClientId())) {
+            return false;
+        }
+
+        if (!clientId.equals(eventSchedule.getClientId())) {
+            return false;
+        }
+
+        if (eventSchedule.getCreatedOn() == null) {
+            return false;
+        }
+
+        return DateValidator.isBeforeNow(eventSchedule.getCreatedOn());
     }
 
     // TODO

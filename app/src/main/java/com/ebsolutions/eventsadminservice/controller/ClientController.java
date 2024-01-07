@@ -37,6 +37,9 @@ public class ClientController {
     @Post()
     public HttpResponse<?> post(@Valid @Body Client client) {
         try {
+            if (!RequestValidator.isClientValid(AllowableRequestMethod.POST, client)) {
+                return badRequest();
+            }
             return ok(clientDao.create(client));
         } catch (DataProcessingException dbe) {
             return serverError(dbe);

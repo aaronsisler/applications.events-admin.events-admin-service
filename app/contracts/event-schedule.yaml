@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: Scheduled Events REST API
+  version: "1.0"
+paths:
+  /clients/{clientId}/event-schedules:
+    parameters:
+      - $ref: "client.yaml#/components/parameters/ClientId"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventSchedule"
+        '5XX':
+          description: Server error
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventSchedule"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSchedule"
+        '5XX':
+          description: Server Error
+  /clients/{clientId}/event-schedule/{eventScheduleId}:
+    parameters:
+      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "#/components/parameters/EventScheduleId"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSchedule"
+        '5XX':
+          description: Server Error
+    delete:
+      responses:
+        204:
+          description: The resource was deleted successfully.
+        '5XX':
+          description: Server Error
+components:
+  schemas:
+    EventSchedule:
+      allOf:
+        - $ref: "shared.yaml#/components/schemas/Base"
+      required:
+        - clientId
+      properties:
+        eventScheduleId:
+          type: string
+        scheduleEventIds:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+  parameters:
+    EventScheduleId:
+      in: path
+      name: eventScheduleId
+      required: true
+      schema:
+        type: string
