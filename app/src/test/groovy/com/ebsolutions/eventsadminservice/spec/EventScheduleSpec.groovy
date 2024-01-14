@@ -1,8 +1,8 @@
 package com.ebsolutions.eventsadminservice.spec
 
-import com.ebsolutions.eventsadminservice.constant.EventTestConstants
+import com.ebsolutions.eventsadminservice.constant.EventScheduleTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
-import com.ebsolutions.eventsadminservice.model.Event
+import com.ebsolutions.eventsadminservice.model.EventSchedule
 import com.ebsolutions.eventsadminservice.util.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.util.DateAndTimeComparisonUtil
 import io.micronaut.core.type.Argument
@@ -16,144 +16,154 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
-import java.time.LocalDateTime
-
 @MicronautTest
 class EventScheduleSpec extends Specification {
     @Inject
     private HttpClient httpClient
 
-    // Get a event
-    def "Get a event: URL Client id exists: Event Exists"() {
+    def "Get an event schedule: URL Client id exists: Event Schedule Exists"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.getEventClientId)
-                    .append("/events/")
-                    .append(EventTestConstants.getEventId)
+                    .append(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
+                    .append(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getEventScheduleId())
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event schedule exists in the database"
             // Data seeded from Database init scripts
 
-        when: "a request is made to retrieve a event"
-            HttpResponse<Event> response = httpClient.toBlocking()
-                    .exchange(eventsUrl, Event)
+        when: "a request is made to retrieve an event schedule"
+            HttpResponse<EventSchedule> response = httpClient.toBlocking()
+                    .exchange(eventsUrl, EventSchedule)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
-        and: "the correct event is returned"
-            Event event = response.body()
-            Assertions.assertEquals(EventTestConstants.getEventClientId, event.getClientId())
-            Assertions.assertEquals(EventTestConstants.getEventLocationId, event.getLocationId())
-            Assertions.assertEquals(EventTestConstants.getEventOrganizerId, event.getOrganizerIds().get(0))
-            Assertions.assertEquals("Get Mock Event Name", event.getName())
-            Assertions.assertEquals("Get Mock Event Description", event.getDescription())
-            Assertions.assertEquals("Get Mock Event Category", event.getCategory())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, event.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, event.getLastUpdatedOn()))
+        and: "the correct event schedule is returned"
+            EventSchedule eventSchedule = response.body()
+            Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getClientId(), eventSchedule.getClientId())
+            Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getEventScheduleId(), eventSchedule.getEventScheduleId())
+            Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getScheduledEventIds().get(0), eventSchedule.getScheduledEventIds().get(0))
+            Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getScheduledEventIds().get(1), eventSchedule.getScheduledEventIds().get(1))
+            Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getName(), eventSchedule.getName())
+            Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getDescription(), eventSchedule.getDescription())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getCreatedOn(), eventSchedule.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getLastUpdatedOn(), eventSchedule.getLastUpdatedOn()))
     }
 
-    def "Get a event: URL Client id exists: Event does not exist"() {
+    def "Get an event schedule: URL Client id exists: Event Schedule does not exist"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.getEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .append(TestConstants.nonExistentEventId)
                     .toString()
 
-        and: "a event does not exist in the database"
+        and: "an event schedule does not exist in the database"
             // Data was not seeded for this test scenario
 
-        when: "a request is made to retrieve a event"
-            HttpResponse<Event> response = httpClient.toBlocking()
-                    .exchange(eventsUrl, Event)
+        when: "a request is made to retrieve an event schedule"
+            HttpResponse<EventSchedule> response = httpClient.toBlocking()
+                    .exchange(eventsUrl, EventSchedule)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.code())
     }
 
-    // Get all events
-    def "Get all events: URL Client id exists: Events exist for client"() {
+    def "Get all event schedules: URL Client id exists: Events exist for client"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.getAllEventsClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.getAllEventSchedulesClientId)
+                    .append("/event-schedules/")
                     .toString()
 
-        and: "events exist in the database"
+        and: "event schedules exist in the database"
             // Data seeded from Database init scripts
 
-        when: "a request is made to retrieve events for a client"
+        when: "a request is made to retrieve event schedules for a client"
             HttpRequest httpRequest = HttpRequest.GET(eventsUrl)
 
-            HttpResponse<List<Event>> response = httpClient.toBlocking()
-                    .exchange(httpRequest, Argument.listOf(Event.class))
+            HttpResponse<List<EventSchedule>> response = httpClient.toBlocking()
+                    .exchange(httpRequest, Argument.listOf(EventSchedule.class))
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
-        and: "the correct events are returned"
-            List<Event> events = response.body()
-            Event firstEvent = events.get(0)
-            Event secondEvent = events.get(1)
+        and: "the correct event schedules are returned"
+            List<EventSchedule> events = response.body()
+            EventSchedule firstEventSchedule = events.get(0)
+            EventSchedule secondEventSchedule = events.get(1)
 
-            Assertions.assertEquals(EventTestConstants.getAllEventsClientId, firstEvent.getClientId())
-            Assertions.assertEquals(EventTestConstants.getAllEventsIdOne, firstEvent.getEventId())
-            Assertions.assertEquals("Get All Events Mock Event Name 1", firstEvent.getName())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, firstEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, firstEvent.getLastUpdatedOn()))
+            Assertions.assertEquals(EventScheduleTestConstants.getAllEventSchedulesClientId, firstEventSchedule.getClientId())
+            Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getEventScheduleId(), firstEventSchedule.getEventScheduleId())
+            Assertions.assertEquals(
+                    EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getScheduledEventIds().get(0),
+                    firstEventSchedule.getScheduledEventIds().get(0))
+            Assertions.assertEquals(
+                    EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getScheduledEventIds().get(1),
+                    firstEventSchedule.getScheduledEventIds().get(1))
+            Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getName(), firstEventSchedule.getName())
+            Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getDescription(), firstEventSchedule.getDescription())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getCreatedOn(), firstEventSchedule.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getLastUpdatedOn(), firstEventSchedule.getLastUpdatedOn()))
 
-            Assertions.assertEquals(EventTestConstants.getAllEventsClientId, secondEvent.getClientId())
-            Assertions.assertEquals(EventTestConstants.getAllEventsIdTwo, secondEvent.getEventId())
-            Assertions.assertEquals("Get All Events Mock Event Name 2", secondEvent.getName())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, secondEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, secondEvent.getLastUpdatedOn()))
+            Assertions.assertEquals(EventScheduleTestConstants.getAllEventSchedulesClientId, secondEventSchedule.getClientId())
+            Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getEventScheduleId(), secondEventSchedule.getEventScheduleId())
+            Assertions.assertEquals(
+                    EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getScheduledEventIds().get(0),
+                    secondEventSchedule.getScheduledEventIds().get(0))
+            Assertions.assertEquals(
+                    EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getScheduledEventIds().get(1),
+                    secondEventSchedule.getScheduledEventIds().get(1))
+            Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getName(), secondEventSchedule.getName())
+            Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getDescription(), secondEventSchedule.getDescription())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getCreatedOn(), secondEventSchedule.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getLastUpdatedOn(), secondEventSchedule.getLastUpdatedOn()))
+
     }
 
-    def "Get all events: URL Client id exists: No events exist for client"() {
+    def "Get all event schedules: URL Client id exists: No events exist for client"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
                     .append(TestConstants.noChildrenClientId)
-                    .append("/events/")
+                    .append("/event-schedules/")
                     .toString()
 
-        and: "no events exist in the database"
+        and: "no event schedules exist in the database"
             // Data was not seeded for this test scenario
 
-        when: "a request is made to retrieve events for a client"
+        when: "a request is made to retrieve event schedules for a client"
             HttpRequest httpRequest = HttpRequest.GET(eventsUrl)
 
-            HttpResponse<List<Event>> response = httpClient.toBlocking()
-                    .exchange(httpRequest, Argument.listOf(Event.class))
+            HttpResponse<List<EventSchedule>> response = httpClient.toBlocking()
+                    .exchange(httpRequest, Argument.listOf(EventSchedule.class))
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.code())
     }
 
-    // Delete a event
-    def "Delete a event: URL Client id exists: Delete event is successful"() {
+    def "Delete an event schedule: URL Client id exists: Delete event is successful"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.deleteEventClientId)
-                    .append("/events/")
-                    .append(EventTestConstants.deleteEventId)
+                    .append(EventScheduleTestConstants.DELETE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
+                    .append(EventScheduleTestConstants.DELETE_EVENT_SCHEDULE.getEventScheduleId())
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl, Event)
+            HttpResponse<EventSchedule> initResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl, EventSchedule)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
 
         when: "a request is made to delete the event for a client"
@@ -164,30 +174,28 @@ class EventScheduleSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.code())
 
         and: "the event no longer exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> finalResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl, Event)
+            HttpResponse<EventSchedule> finalResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl, EventSchedule)
 
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, finalResponse.code())
     }
 
-    // Create a event
-    def "Create a event: URL Client id exists: Create fails given event client id is blank"() {
+    def "Create an event: URL Client id exists: Create fails given event client id is blank"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.createEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .toString()
 
         and: "the event's client id is blank"
-            Event newEvent = Event.builder()
+            EventSchedule newEvent = EventSchedule.builder()
                     .clientId("")
-                    .name("Create Mock Event Name")
+                    .name("Create Mock Event ScheduleName")
                     .build()
 
-        when: "a request is made to create a event for a client"
+        when: "a request is made to create an event for a client"
             HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
@@ -196,22 +204,22 @@ class EventScheduleSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Create a event: URL Client id exists: Create fails given event client id and URL client id do not match"() {
+    def "Create an event: URL Client id exists: Create fails given event client id and URL client id do not match"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.createEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .toString()
 
         and: "the event's client id does not match the URL client id"
-            Event newEvent = Event.builder()
+            EventSchedule newEvent = EventSchedule.builder()
                     .clientId("not-the-url-client-id")
                     .name("Create Mock Event Name")
                     .build()
 
-        when: "a request is made to create a event for a client"
+        when: "a request is made to create an event for a client"
             HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
@@ -220,212 +228,244 @@ class EventScheduleSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Create a event: URL Client id exists: Create event is successful"() {
+    def "Create an event: URL Client id exists: Create event is successful"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.createEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .toString()
 
         and: "the event is valid"
-            Event newEvent = Event.builder()
-                    .clientId(EventTestConstants.createEventClientId)
-                    .name("Create Mock Event Name")
+            EventSchedule newEvent = EventSchedule.builder()
+                    .clientId(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId())
+                    .scheduledEventIds(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds())
+                    .name(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getName())
+                    .description(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getDescription())
                     .build()
 
-        when: "a request is made to create a event for a client"
+        when: "a request is made to create an event for a client"
             HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
-            HttpResponse<Event> response = httpClient.toBlocking()
-                    .exchange(httpRequest, Event)
+            HttpResponse<EventSchedule> response = httpClient.toBlocking()
+                    .exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
         and: "the correct event is returned"
-            Event event = response.body()
-            Assertions.assertEquals(EventTestConstants.createEventClientId, event.getClientId())
-            Assertions.assertNotNull(event.getEventId())
-            Assertions.assertEquals("Create Mock Event Name", event.getName())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(event.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(event.getLastUpdatedOn()))
+            EventSchedule eventSchedule = response.body()
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId(), eventSchedule.getClientId())
+            Assertions.assertNotNull(eventSchedule.getEventScheduleId())
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds().get(0), eventSchedule.getScheduledEventIds().get(0))
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds().get(1), eventSchedule.getScheduledEventIds().get(1))
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getName(), eventSchedule.getName())
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getDescription(), eventSchedule.getDescription())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(eventSchedule.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(eventSchedule.getLastUpdatedOn()))
 
         and: "the new event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> checkingResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(event.getEventId()), Event)
+            HttpResponse<EventSchedule> checkingResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl.concat(eventSchedule.getEventScheduleId()), EventSchedule)
 
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
+
+        and: "the new event is correct in the database"
+            HttpResponse<EventSchedule> checkingDatabaseResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl.concat(eventSchedule.getEventScheduleId()), EventSchedule)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
+
+            EventSchedule databaseEvent = checkingDatabaseResponse.body()
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId(), databaseEvent.getClientId())
+            Assertions.assertEquals(eventSchedule.getEventScheduleId(), databaseEvent.getEventScheduleId())
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds().get(0), databaseEvent.getScheduledEventIds().get(0))
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds().get(1), databaseEvent.getScheduledEventIds().get(1))
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getName(), databaseEvent.getName())
+            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getDescription(), databaseEvent.getDescription())
+
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getLastUpdatedOn()))
+
     }
 
-    // Update a event
-    def "Update a event: URL Client id exists: Update fails given event client id is blank"() {
+    def "Update an event: URL Client id exists: Update fails given event client id is blank"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.updateEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
+            HttpResponse<EventSchedule> initResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl.concat(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId()), EventSchedule)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertEquals(EventTestConstants.updateEventClientId, initResponse.body().getClientId())
+            Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId(), initResponse.body().getClientId())
 
         and: "the event's client id is blank"
-            Event updatedEvent = CopyObjectUtil.event(initResponse.body())
+            EventSchedule updatedEvent = CopyObjectUtil.eventSchedule(initResponse.body())
             updatedEvent.setClientId("")
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
-            httpClient.toBlocking().exchange(httpRequest, Event)
+            httpClient.toBlocking().exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a event: URL Client id exists: Update fails given event client id and URL client id do not match"() {
+    def "Update an event schedule: URL Client id exists: Update fails given event client id and URL client id do not match"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.updateEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event schedule exists in the database"
             // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
+            HttpResponse<EventSchedule> initResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl.concat(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId()), EventSchedule)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertEquals(EventTestConstants.updateEventClientId, initResponse.body().getClientId())
+            Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId(), initResponse.body().getClientId())
 
-        and: "the event's client id does not match the URL client id"
-            Event updatedEvent = CopyObjectUtil.event(initResponse.body())
+        and: "the event schedule's client id does not match the URL client id"
+            EventSchedule updatedEvent = CopyObjectUtil.eventSchedule(initResponse.body())
             updatedEvent.setClientId("not-the-url-client-id")
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to update an event schedule for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
-            httpClient.toBlocking().exchange(httpRequest, Event)
+            httpClient.toBlocking().exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a event: URL Client id exists: Update fails given create date is empty"() {
+    def "Update an event schedule: URL Client id exists: Update fails given create date is empty"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.updateEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event schedule exists in the database"
             // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
+            HttpResponse<EventSchedule> initResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl.concat(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId()), EventSchedule)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getCreatedOn(), initResponse.body().getCreatedOn()))
 
-        and: "the event's create date is empty"
-            Event updatedEvent = CopyObjectUtil.event(initResponse.body())
+        and: "the event schedule's create date is empty"
+            EventSchedule updatedEvent = CopyObjectUtil.eventSchedule(initResponse.body())
             updatedEvent.createdOn(null)
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to update an event schedule for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
-            httpClient.toBlocking().exchange(httpRequest, Event)
+            httpClient.toBlocking().exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a event: URL Client id exists: Update fails given create date is after 'now'"() {
+    def "Update an event schedule: URL Client id exists: Update fails given create date is after 'now'"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.updateEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event schedule exists in the database"
             // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
+            HttpResponse<EventSchedule> initResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl.concat(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId()), EventSchedule)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getCreatedOn(), initResponse.body().getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
 
-        and: "the event's create date is after the current date and time"
-            Event updatedEvent = CopyObjectUtil.event(initResponse.body())
+        and: "the event schedule's create date is after the current date and time"
+            EventSchedule updatedEvent = CopyObjectUtil.eventSchedule(initResponse.body())
             updatedEvent.createdOn(null)
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
-            httpClient.toBlocking().exchange(httpRequest, Event)
+            httpClient.toBlocking().exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
             HttpClientResponseException ex = thrown()
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a event: URL Client id exists: Update event is successful"() {
+    def "Update an event schedule: URL Client id exists: Update event schedule is successful"() {
         given: "the client id is in the url"
-            String eventsUrl = new StringBuffer()
+            String eventSchedulesUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.updateEventClientId)
-                    .append("/events/")
+                    .append(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId())
+                    .append("/event-schedules/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event schedule exists in the database"
             // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
+            HttpResponse<EventSchedule> initResponse = httpClient.toBlocking()
+                    .exchange(eventSchedulesUrl.concat(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId()), EventSchedule)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getCreatedOn(), initResponse.body().getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
 
-        and: "a valid update is made to event"
-            Event updatedEvent = CopyObjectUtil.event(initResponse.body())
-            updatedEvent.name("New Updated Event Name")
-            updatedEvent.setCreatedOn(TestConstants.updateCreatedOn)
+        and: "a valid update is made to event schedule"
+            EventSchedule updatedEventSchedule = CopyObjectUtil.eventSchedule(initResponse.body())
+            updatedEventSchedule.getScheduledEventIds().remove(1)
+            updatedEventSchedule.getScheduledEventIds().add(EventScheduleTestConstants.updateEventScheduleScheduledEventThreeId)
+            updatedEventSchedule.setName(EventScheduleTestConstants.updateEventScheduleUpdatedName)
+            updatedEventSchedule.setDescription(EventScheduleTestConstants.updateEventScheduleUpdatedDescription)
+            updatedEventSchedule.setCreatedOn(TestConstants.updateCreatedOn)
 
-        when: "a request is made to with the updated event"
-            HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
-            HttpResponse<Event> response = httpClient.toBlocking().exchange(httpRequest, Event)
+        when: "a request is made to with the updated event schedule"
+            HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventSchedulesUrl), updatedEventSchedule)
+            HttpResponse<EventSchedule> response = httpClient.toBlocking().exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
-        and: "the updated event is returned in the response"
-            Event returnedEvent = response.body()
-            Assertions.assertEquals(EventTestConstants.updateEventClientId, returnedEvent.getClientId())
-            Assertions.assertEquals(EventTestConstants.updateEventId, returnedEvent.getEventId())
-            Assertions.assertEquals("New Updated Event Name", returnedEvent.getName())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, returnedEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(returnedEvent.getLastUpdatedOn()))
+        and: "the updated event schedule is returned in the response"
+            EventSchedule returnedEventSchedule = response.body()
+            Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId(), returnedEventSchedule.getClientId())
+            Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId(), returnedEventSchedule.getEventScheduleId())
+            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleScheduledEventOneId, returnedEventSchedule.getScheduledEventIds().get(0))
+            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleScheduledEventThreeId, returnedEventSchedule.getScheduledEventIds().get(1))
+            Assertions.assertFalse(returnedEventSchedule.getScheduledEventIds().contains(EventScheduleTestConstants.updateEventScheduleScheduledEventTwoId))
+            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleUpdatedName, returnedEventSchedule.getName())
+            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleUpdatedDescription, returnedEventSchedule.getDescription())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, returnedEventSchedule.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(returnedEventSchedule.getLastUpdatedOn()))
 
-        and: "the event is correct in the database"
-            HttpResponse<Event> checkingDatabaseResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(returnedEvent.getEventId()), Event)
+        and: "the event schedule is correct in the database"
+            HttpResponse<EventSchedule> checkingDatabaseResponse = httpClient.toBlocking()
+                    .exchange(eventSchedulesUrl.concat(returnedEventSchedule.getEventScheduleId()), EventSchedule)
 
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
 
-            Event databaseEvent = checkingDatabaseResponse.body()
-            Assertions.assertEquals(EventTestConstants.updateEventClientId, databaseEvent.getClientId())
-            Assertions.assertEquals(EventTestConstants.updateEventId, databaseEvent.getEventId())
-            Assertions.assertEquals("New Updated Event Name", databaseEvent.getName())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(LocalDateTime.now(), databaseEvent.getLastUpdatedOn()))
+            EventSchedule databaseEventSchedule = checkingDatabaseResponse.body()
+            Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId(), databaseEventSchedule.getClientId())
+            Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId(), databaseEventSchedule.getEventScheduleId())
+            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleScheduledEventOneId, databaseEventSchedule.getScheduledEventIds().get(0))
+            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleScheduledEventThreeId, databaseEventSchedule.getScheduledEventIds().get(1))
+            Assertions.assertFalse(databaseEventSchedule.getScheduledEventIds().contains(EventScheduleTestConstants.updateEventScheduleScheduledEventTwoId))
+            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleUpdatedName, databaseEventSchedule.getName())
+            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleUpdatedDescription, databaseEventSchedule.getDescription())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseEventSchedule.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEventSchedule.getLastUpdatedOn()))
 
     }
 }

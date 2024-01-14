@@ -20,6 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventScheduleDto extends DatabaseDto {
-    private List<String> scheduleEventIds;
+    private List<String> scheduledEventIds;
     private String description;
 }

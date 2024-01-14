@@ -21,8 +21,7 @@ class EventSpec extends Specification {
     @Inject
     private HttpClient httpClient
 
-    // Get a event
-    def "Get a event: URL Client id exists: Event Exists"() {
+    def "Get an event: URL Client id exists: Event Exists"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -32,10 +31,10 @@ class EventSpec extends Specification {
                     .append(EventTestConstants.GET_EVENT.getEventId())
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Data seeded from Database init scripts
 
-        when: "a request is made to retrieve a event"
+        when: "a request is made to retrieve an event"
             HttpResponse<Event> response = httpClient.toBlocking()
                     .exchange(eventsUrl, Event)
 
@@ -56,7 +55,7 @@ class EventSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_EVENT.getLastUpdatedOn(), event.getLastUpdatedOn()))
     }
 
-    def "Get a event: URL Client id exists: Event does not exist"() {
+    def "Get an event: URL Client id exists: Event does not exist"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -66,10 +65,10 @@ class EventSpec extends Specification {
                     .append(TestConstants.nonExistentEventId)
                     .toString()
 
-        and: "a event does not exist in the database"
+        and: "an event does not exist in the database"
             // Data was not seeded for this test scenario
 
-        when: "a request is made to retrieve a event"
+        when: "a request is made to retrieve an event"
             HttpResponse<Event> response = httpClient.toBlocking()
                     .exchange(eventsUrl, Event)
 
@@ -77,7 +76,6 @@ class EventSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.code())
     }
 
-    // Get all events
     def "Get all events: URL Client id exists: Events exist for client"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
@@ -111,6 +109,7 @@ class EventSpec extends Specification {
             Assertions.assertEquals(EventTestConstants.getAllEventsOrganizerTwoId, firstEvent.getOrganizerIds().get(1))
             Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getName(), firstEvent.getName())
             Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getDescription(), firstEvent.getDescription())
+            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getCategory(), firstEvent.getCategory())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getCreatedOn(), firstEvent.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getLastUpdatedOn(), firstEvent.getLastUpdatedOn()))
 
@@ -121,6 +120,7 @@ class EventSpec extends Specification {
             Assertions.assertEquals(EventTestConstants.getAllEventsOrganizerTwoId, secondEvent.getOrganizerIds().get(1))
             Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getName(), secondEvent.getName())
             Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getDescription(), secondEvent.getDescription())
+            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getCategory(), secondEvent.getCategory())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getCreatedOn(), secondEvent.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getLastUpdatedOn(), secondEvent.getLastUpdatedOn()))
 
@@ -148,8 +148,7 @@ class EventSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.code())
     }
 
-    // Delete a event
-    def "Delete a event: URL Client id exists: Delete event is successful"() {
+    def "Delete an event: URL Client id exists: Delete event is successful"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -159,7 +158,7 @@ class EventSpec extends Specification {
                     .append(EventTestConstants.DELETE_EVENT.getEventId())
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
                     .exchange(eventsUrl, Event)
@@ -173,15 +172,13 @@ class EventSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.code())
 
         and: "the event no longer exists in the database"
-            // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> finalResponse = httpClient.toBlocking()
                     .exchange(eventsUrl, Event)
 
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, finalResponse.code())
     }
 
-    // Create a event
-    def "Create a event: URL Client id exists: Create fails given event client id is blank"() {
+    def "Create an event: URL Client id exists: Create fails given event client id is blank"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -196,7 +193,7 @@ class EventSpec extends Specification {
                     .name("Create Mock Event Name")
                     .build()
 
-        when: "a request is made to create a event for a client"
+        when: "a request is made to create an event for a client"
             HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
@@ -205,7 +202,7 @@ class EventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Create a event: URL Client id exists: Create fails given event client id and URL client id do not match"() {
+    def "Create an event: URL Client id exists: Create fails given event client id and URL client id do not match"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -220,7 +217,7 @@ class EventSpec extends Specification {
                     .name("Create Mock Event Name")
                     .build()
 
-        when: "a request is made to create a event for a client"
+        when: "a request is made to create an event for a client"
             HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
@@ -229,7 +226,7 @@ class EventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Create a event: URL Client id exists: Create event is successful"() {
+    def "Create an event: URL Client id exists: Create event is successful"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -248,7 +245,7 @@ class EventSpec extends Specification {
                     .category(EventTestConstants.CREATE_EVENT.getCategory())
                     .build()
 
-        when: "a request is made to create a event for a client"
+        when: "a request is made to create an event for a client"
             HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
             HttpResponse<Event> response = httpClient.toBlocking()
                     .exchange(httpRequest, Event)
@@ -270,7 +267,6 @@ class EventSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(event.getLastUpdatedOn()))
 
         and: "the new event exists in the database"
-            // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> checkingResponse = httpClient.toBlocking()
                     .exchange(eventsUrl.concat(event.getEventId()), Event)
 
@@ -297,8 +293,7 @@ class EventSpec extends Specification {
 
     }
 
-    // Update a event
-    def "Update a event: URL Client id exists: Update fails given event client id is blank"() {
+    def "Update an event: URL Client id exists: Update fails given event client id is blank"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -307,7 +302,7 @@ class EventSpec extends Specification {
                     .append("/events/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
                     .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
@@ -318,7 +313,7 @@ class EventSpec extends Specification {
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
             updatedEvent.setClientId("")
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
             httpClient.toBlocking().exchange(httpRequest, Event)
 
@@ -327,7 +322,7 @@ class EventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a event: URL Client id exists: Update fails given event client id and URL client id do not match"() {
+    def "Update an event: URL Client id exists: Update fails given event client id and URL client id do not match"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -336,7 +331,7 @@ class EventSpec extends Specification {
                     .append("/events/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
                     .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
@@ -347,7 +342,7 @@ class EventSpec extends Specification {
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
             updatedEvent.setClientId("not-the-url-client-id")
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
             httpClient.toBlocking().exchange(httpRequest, Event)
 
@@ -356,7 +351,7 @@ class EventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a event: URL Client id exists: Update fails given create date is empty"() {
+    def "Update an event: URL Client id exists: Update fails given create date is empty"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -365,7 +360,7 @@ class EventSpec extends Specification {
                     .append("/events/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
                     .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
@@ -376,7 +371,7 @@ class EventSpec extends Specification {
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
             updatedEvent.createdOn(null)
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
             httpClient.toBlocking().exchange(httpRequest, Event)
 
@@ -385,7 +380,7 @@ class EventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a event: URL Client id exists: Update fails given create date is after 'now'"() {
+    def "Update an event: URL Client id exists: Update fails given create date is after 'now'"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -394,7 +389,7 @@ class EventSpec extends Specification {
                     .append("/events/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
                     .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
@@ -406,7 +401,7 @@ class EventSpec extends Specification {
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
             updatedEvent.createdOn(null)
 
-        when: "a request is made to update a event for a client"
+        when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
             httpClient.toBlocking().exchange(httpRequest, Event)
 
@@ -415,7 +410,7 @@ class EventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a event: URL Client id exists: Update event is successful"() {
+    def "Update an event: URL Client id exists: Update event is successful"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -424,7 +419,7 @@ class EventSpec extends Specification {
                     .append("/events/")
                     .toString()
 
-        and: "a event exists in the database"
+        and: "an event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
                     .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)

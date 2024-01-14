@@ -93,11 +93,11 @@
           "name": {
             "S": "Get All Events - Event 2 Name"
           },
-          "category": {
-            "S": "Get All Events - Event 2 Category"
-          },
           "description": {
             "S": "Get All Events - Event 2 Description"
+          },
+          "category": {
+            "S": "Get All Events - Event 2 Category"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -144,11 +144,11 @@
           "name": {
             "S": "Update Event - Event Name"
           },
-          "category": {
-            "S": "Update Event - Event Category"
-          },
           "description": {
             "S": "Update Event - Event Description"
+          },
+          "category": {
+            "S": "Update Event - Event Category"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"

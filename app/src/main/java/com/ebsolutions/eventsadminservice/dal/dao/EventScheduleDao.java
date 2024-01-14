@@ -44,6 +44,7 @@ public class EventScheduleDao {
                     : EventSchedule.builder()
                     .clientId(eventScheduleDto.getPartitionKey())
                     .eventScheduleId(StringUtils.remove(eventScheduleDto.getSortKey(), SortKeyType.EVENT_SCHEDULE.name()))
+                    .scheduledEventIds(eventScheduleDto.getScheduledEventIds())
                     .name(eventScheduleDto.getName())
                     .description(eventScheduleDto.getDescription())
                     .createdOn(eventScheduleDto.getCreatedOn())
@@ -74,7 +75,7 @@ public class EventScheduleDao {
                             EventSchedule.builder()
                                     .clientId(eventScheduleDto.getPartitionKey())
                                     .eventScheduleId(StringUtils.remove(eventScheduleDto.getSortKey(), SortKeyType.EVENT_SCHEDULE.name()))
-                                    .scheduleEventIds(eventScheduleDto.getScheduleEventIds())
+                                    .scheduledEventIds(eventScheduleDto.getScheduledEventIds())
                                     .name(eventScheduleDto.getName())
                                     .description(eventScheduleDto.getDescription())
                                     .createdOn(eventScheduleDto.getCreatedOn())
@@ -94,12 +95,10 @@ public class EventScheduleDao {
         try {
             LocalDateTime now = LocalDateTime.now();
 
-            assert eventSchedule.getClientId() != null;
-
             EventScheduleDto eventScheduleDto = EventScheduleDto.builder()
                     .partitionKey(eventSchedule.getClientId())
                     .sortKey(SortKeyType.EVENT_SCHEDULE + UniqueIdGenerator.generate())
-                    .scheduleEventIds(eventSchedule.getScheduleEventIds())
+                    .scheduledEventIds(eventSchedule.getScheduledEventIds())
                     .name(eventSchedule.getName())
                     .description(eventSchedule.getDescription())
                     .createdOn(now)
@@ -111,7 +110,7 @@ public class EventScheduleDao {
             return EventSchedule.builder()
                     .clientId(eventScheduleDto.getPartitionKey())
                     .eventScheduleId(StringUtils.remove(eventScheduleDto.getSortKey(), SortKeyType.EVENT_SCHEDULE.name()))
-                    .scheduleEventIds(eventScheduleDto.getScheduleEventIds())
+                    .scheduledEventIds(eventScheduleDto.getScheduledEventIds())
                     .name(eventScheduleDto.getName())
                     .description(eventScheduleDto.getDescription())
                     .createdOn(eventScheduleDto.getCreatedOn())
@@ -133,13 +132,12 @@ public class EventScheduleDao {
     public EventSchedule update(EventSchedule eventSchedule) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            assert eventSchedule.getClientId() != null;
             assert eventSchedule.getEventScheduleId() != null;
 
             EventScheduleDto eventScheduleDto = EventScheduleDto.builder()
                     .partitionKey(eventSchedule.getClientId())
                     .sortKey(SortKeyType.EVENT_SCHEDULE + eventSchedule.getEventScheduleId())
-                    .scheduleEventIds(eventSchedule.getScheduleEventIds())
+                    .scheduledEventIds(eventSchedule.getScheduledEventIds())
                     .name(eventSchedule.getName())
                     .description(eventSchedule.getDescription())
                     .createdOn(eventSchedule.getCreatedOn())
@@ -151,7 +149,7 @@ public class EventScheduleDao {
             return EventSchedule.builder()
                     .clientId(eventScheduleDto.getPartitionKey())
                     .eventScheduleId(StringUtils.remove(eventScheduleDto.getSortKey(), SortKeyType.EVENT_SCHEDULE.name()))
-                    .scheduleEventIds(eventScheduleDto.getScheduleEventIds())
+                    .scheduledEventIds(eventScheduleDto.getScheduledEventIds())
                     .name(eventScheduleDto.getName())
                     .description(eventScheduleDto.getDescription())
                     .createdOn(eventScheduleDto.getCreatedOn())
