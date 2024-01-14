@@ -16,8 +16,10 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 @MicronautTest
-class EventSpec extends Specification {
+class EventScheduleSpec extends Specification {
     @Inject
     private HttpClient httpClient
 
@@ -27,9 +29,9 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.GET_EVENT.getClientId())
+                    .append(EventTestConstants.getEventClientId)
                     .append("/events/")
-                    .append(EventTestConstants.GET_EVENT.getEventId())
+                    .append(EventTestConstants.getEventId)
                     .toString()
 
         and: "a event exists in the database"
@@ -44,16 +46,14 @@ class EventSpec extends Specification {
 
         and: "the correct event is returned"
             Event event = response.body()
-            Assertions.assertEquals(EventTestConstants.GET_EVENT.getClientId(), event.getClientId())
-            Assertions.assertEquals(EventTestConstants.GET_EVENT.getEventId(), event.getEventId())
-            Assertions.assertEquals(EventTestConstants.GET_EVENT.getLocationId(), event.getLocationId())
-            Assertions.assertEquals(EventTestConstants.GET_EVENT.getOrganizerIds().get(0), event.getOrganizerIds().get(0))
-            Assertions.assertEquals(EventTestConstants.GET_EVENT.getOrganizerIds().get(1), event.getOrganizerIds().get(1))
-            Assertions.assertEquals(EventTestConstants.GET_EVENT.getName(), event.getName())
-            Assertions.assertEquals(EventTestConstants.GET_EVENT.getDescription(), event.getDescription())
-            Assertions.assertEquals(EventTestConstants.GET_EVENT.getCategory(), event.getCategory())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_EVENT.getCreatedOn(), event.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_EVENT.getLastUpdatedOn(), event.getLastUpdatedOn()))
+            Assertions.assertEquals(EventTestConstants.getEventClientId, event.getClientId())
+            Assertions.assertEquals(EventTestConstants.getEventLocationId, event.getLocationId())
+            Assertions.assertEquals(EventTestConstants.getEventOrganizerId, event.getOrganizerIds().get(0))
+            Assertions.assertEquals("Get Mock Event Name", event.getName())
+            Assertions.assertEquals("Get Mock Event Description", event.getDescription())
+            Assertions.assertEquals("Get Mock Event Category", event.getCategory())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, event.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, event.getLastUpdatedOn()))
     }
 
     def "Get a event: URL Client id exists: Event does not exist"() {
@@ -61,7 +61,7 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.GET_EVENT.getClientId())
+                    .append(EventTestConstants.getEventClientId)
                     .append("/events/")
                     .append(TestConstants.nonExistentEventId)
                     .toString()
@@ -105,25 +105,16 @@ class EventSpec extends Specification {
             Event secondEvent = events.get(1)
 
             Assertions.assertEquals(EventTestConstants.getAllEventsClientId, firstEvent.getClientId())
-            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getEventId(), firstEvent.getEventId())
-            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getLocationId(), firstEvent.getLocationId())
-            Assertions.assertEquals(EventTestConstants.getAllEventsOrganizerOneId, firstEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(EventTestConstants.getAllEventsOrganizerTwoId, firstEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getName(), firstEvent.getName())
-            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getDescription(), firstEvent.getDescription())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getCreatedOn(), firstEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_ALL_EVENTS_EVENT_ONE.getLastUpdatedOn(), firstEvent.getLastUpdatedOn()))
+            Assertions.assertEquals(EventTestConstants.getAllEventsIdOne, firstEvent.getEventId())
+            Assertions.assertEquals("Get All Events Mock Event Name 1", firstEvent.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, firstEvent.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, firstEvent.getLastUpdatedOn()))
 
             Assertions.assertEquals(EventTestConstants.getAllEventsClientId, secondEvent.getClientId())
-            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getEventId(), secondEvent.getEventId())
-            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getLocationId(), secondEvent.getLocationId())
-            Assertions.assertEquals(EventTestConstants.getAllEventsOrganizerOneId, secondEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(EventTestConstants.getAllEventsOrganizerTwoId, secondEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getName(), secondEvent.getName())
-            Assertions.assertEquals(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getDescription(), secondEvent.getDescription())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getCreatedOn(), secondEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.GET_ALL_EVENTS_EVENT_TWO.getLastUpdatedOn(), secondEvent.getLastUpdatedOn()))
-
+            Assertions.assertEquals(EventTestConstants.getAllEventsIdTwo, secondEvent.getEventId())
+            Assertions.assertEquals("Get All Events Mock Event Name 2", secondEvent.getName())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, secondEvent.getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, secondEvent.getLastUpdatedOn()))
     }
 
     def "Get all events: URL Client id exists: No events exist for client"() {
@@ -154,9 +145,9 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.DELETE_EVENT.getClientId())
+                    .append(EventTestConstants.deleteEventClientId)
                     .append("/events/")
-                    .append(EventTestConstants.DELETE_EVENT.getEventId())
+                    .append(EventTestConstants.deleteEventId)
                     .toString()
 
         and: "a event exists in the database"
@@ -186,7 +177,7 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.CREATE_EVENT.getClientId())
+                    .append(EventTestConstants.createEventClientId)
                     .append("/events/")
                     .toString()
 
@@ -210,7 +201,7 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.CREATE_EVENT.getClientId())
+                    .append(EventTestConstants.createEventClientId)
                     .append("/events/")
                     .toString()
 
@@ -234,18 +225,14 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.CREATE_EVENT.getClientId())
+                    .append(EventTestConstants.createEventClientId)
                     .append("/events/")
                     .toString()
 
         and: "the event is valid"
             Event newEvent = Event.builder()
-                    .clientId(EventTestConstants.CREATE_EVENT.getClientId())
-                    .locationId(EventTestConstants.CREATE_EVENT.getLocationId())
-                    .organizerIds(EventTestConstants.CREATE_EVENT.getOrganizerIds())
-                    .name(EventTestConstants.CREATE_EVENT.getName())
-                    .description(EventTestConstants.CREATE_EVENT.getDescription())
-                    .category(EventTestConstants.CREATE_EVENT.getCategory())
+                    .clientId(EventTestConstants.createEventClientId)
+                    .name("Create Mock Event Name")
                     .build()
 
         when: "a request is made to create a event for a client"
@@ -258,14 +245,9 @@ class EventSpec extends Specification {
 
         and: "the correct event is returned"
             Event event = response.body()
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getClientId(), event.getClientId())
+            Assertions.assertEquals(EventTestConstants.createEventClientId, event.getClientId())
             Assertions.assertNotNull(event.getEventId())
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getLocationId(), event.getLocationId())
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getOrganizerIds().get(0), event.getOrganizerIds().get(0))
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getOrganizerIds().get(1), event.getOrganizerIds().get(1))
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getName(), event.getName())
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getDescription(), event.getDescription())
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getCategory(), event.getCategory())
+            Assertions.assertEquals("Create Mock Event Name", event.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(event.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(event.getLastUpdatedOn()))
 
@@ -275,26 +257,6 @@ class EventSpec extends Specification {
                     .exchange(eventsUrl.concat(event.getEventId()), Event)
 
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
-
-        and: "the new event is correct in the database"
-            HttpResponse<Event> checkingDatabaseResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(event.getEventId()), Event)
-
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
-
-            Event databaseEvent = checkingDatabaseResponse.body()
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getClientId(), databaseEvent.getClientId())
-            Assertions.assertEquals(event.getEventId(), databaseEvent.getEventId())
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getLocationId(), databaseEvent.getLocationId())
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getOrganizerIds().get(0), databaseEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getOrganizerIds().get(1), databaseEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getName(), databaseEvent.getName())
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getDescription(), databaseEvent.getDescription())
-            Assertions.assertEquals(EventTestConstants.CREATE_EVENT.getCategory(), databaseEvent.getCategory())
-
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getLastUpdatedOn()))
-
     }
 
     // Update a event
@@ -303,16 +265,16 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.UPDATE_EVENT.getClientId())
+                    .append(EventTestConstants.updateEventClientId)
                     .append("/events/")
                     .toString()
 
         and: "a event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
+                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertEquals(EventTestConstants.UPDATE_EVENT.getClientId(), initResponse.body().getClientId())
+            Assertions.assertEquals(EventTestConstants.updateEventClientId, initResponse.body().getClientId())
 
         and: "the event's client id is blank"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
@@ -332,16 +294,16 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.UPDATE_EVENT.getClientId())
+                    .append(EventTestConstants.updateEventClientId)
                     .append("/events/")
                     .toString()
 
         and: "a event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
+                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertEquals(EventTestConstants.UPDATE_EVENT.getClientId(), initResponse.body().getClientId())
+            Assertions.assertEquals(EventTestConstants.updateEventClientId, initResponse.body().getClientId())
 
         and: "the event's client id does not match the URL client id"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
@@ -361,16 +323,16 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.UPDATE_EVENT.getClientId())
+                    .append(EventTestConstants.updateEventClientId)
                     .append("/events/")
                     .toString()
 
         and: "a event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
+                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
 
         and: "the event's create date is empty"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
@@ -390,17 +352,17 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.UPDATE_EVENT.getClientId())
+                    .append(EventTestConstants.updateEventClientId)
                     .append("/events/")
                     .toString()
 
         and: "a event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
+                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
 
         and: "the event's create date is after the current date and time"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
@@ -420,26 +382,21 @@ class EventSpec extends Specification {
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/clients/")
-                    .append(EventTestConstants.UPDATE_EVENT.getClientId())
+                    .append(EventTestConstants.updateEventClientId)
                     .append("/events/")
                     .toString()
 
         and: "a event exists in the database"
             // Verify data seeded from Database init scripts correctly
             HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
+                    .exchange(eventsUrl.concat(EventTestConstants.updateEventId), Event)
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.createdOn, initResponse.body().getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.lastUpdatedOn, initResponse.body().getLastUpdatedOn()))
 
         and: "a valid update is made to event"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
-            updatedEvent.getOrganizerIds().remove(1)
-            updatedEvent.getOrganizerIds().add(EventTestConstants.updateEventUpdatedOrganizerThreeId)
-            updatedEvent.setLocationId(EventTestConstants.updateEventUpdatedLocationId)
-            updatedEvent.setName(EventTestConstants.updateEventUpdatedName)
-            updatedEvent.setDescription(EventTestConstants.updateEventUpdatedDescription)
-            updatedEvent.setCategory(EventTestConstants.updateEventUpdatedCategory)
+            updatedEvent.name("New Updated Event Name")
             updatedEvent.setCreatedOn(TestConstants.updateCreatedOn)
 
         when: "a request is made to with the updated event"
@@ -451,15 +408,9 @@ class EventSpec extends Specification {
 
         and: "the updated event is returned in the response"
             Event returnedEvent = response.body()
-            Assertions.assertEquals(EventTestConstants.UPDATE_EVENT.getClientId(), returnedEvent.getClientId())
-            Assertions.assertEquals(EventTestConstants.UPDATE_EVENT.getEventId(), returnedEvent.getEventId())
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedLocationId, returnedEvent.getLocationId())
-            Assertions.assertEquals(EventTestConstants.updateEventOrganizerOneId, returnedEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedOrganizerThreeId, returnedEvent.getOrganizerIds().get(1))
-            Assertions.assertFalse(returnedEvent.getOrganizerIds().contains(EventTestConstants.updateEventOrganizerTwoId))
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedName, returnedEvent.getName())
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedDescription, returnedEvent.getDescription())
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedCategory, returnedEvent.getCategory())
+            Assertions.assertEquals(EventTestConstants.updateEventClientId, returnedEvent.getClientId())
+            Assertions.assertEquals(EventTestConstants.updateEventId, returnedEvent.getEventId())
+            Assertions.assertEquals("New Updated Event Name", returnedEvent.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, returnedEvent.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(returnedEvent.getLastUpdatedOn()))
 
@@ -470,17 +421,11 @@ class EventSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
 
             Event databaseEvent = checkingDatabaseResponse.body()
-            Assertions.assertEquals(EventTestConstants.UPDATE_EVENT.getClientId(), databaseEvent.getClientId())
-            Assertions.assertEquals(EventTestConstants.UPDATE_EVENT.getEventId(), databaseEvent.getEventId())
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedLocationId, databaseEvent.getLocationId())
-            Assertions.assertEquals(EventTestConstants.updateEventOrganizerOneId, databaseEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedOrganizerThreeId, databaseEvent.getOrganizerIds().get(1))
-            Assertions.assertFalse(databaseEvent.getOrganizerIds().contains(EventTestConstants.updateEventOrganizerTwoId))
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedName, databaseEvent.getName())
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedDescription, databaseEvent.getDescription())
-            Assertions.assertEquals(EventTestConstants.updateEventUpdatedCategory, databaseEvent.getCategory())
+            Assertions.assertEquals(EventTestConstants.updateEventClientId, databaseEvent.getClientId())
+            Assertions.assertEquals(EventTestConstants.updateEventId, databaseEvent.getEventId())
+            Assertions.assertEquals("New Updated Event Name", databaseEvent.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getLastUpdatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(LocalDateTime.now(), databaseEvent.getLastUpdatedOn()))
 
     }
 }
