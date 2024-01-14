@@ -51,7 +51,6 @@ class CopyObjectUtil {
         return EventSchedule.builder()
                 .clientId(eventSchedule.getClientId())
                 .eventScheduleId(eventSchedule.getEventScheduleId())
-                .scheduledEventIds(eventSchedule.getScheduledEventIds())
                 .name(eventSchedule.getName())
                 .description(eventSchedule.getDescription())
                 .createdOn(eventSchedule.getCreatedOn())

@@ -9,8 +9,6 @@ import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
-import java.util.List;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @DynamoDbBean
@@ -20,6 +18,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventScheduleDto extends DatabaseDto {
-    private List<String> scheduledEventIds;
     private String description;
 }

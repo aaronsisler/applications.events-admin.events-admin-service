@@ -20,7 +20,7 @@ import static io.micronaut.http.HttpResponse.*;
 
 @Slf4j
 @NoArgsConstructor
-@Controller("/clients/{clientId}/scheduled-events")
+@Controller("/event-schedules/{eventScheduleId}/scheduled-events")
 public class ScheduledEventController {
     @Inject
     private ScheduledEventDao scheduledEventDao;

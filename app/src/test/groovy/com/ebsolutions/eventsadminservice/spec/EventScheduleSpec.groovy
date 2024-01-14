@@ -45,8 +45,6 @@ class EventScheduleSpec extends Specification {
             EventSchedule eventSchedule = response.body()
             Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getClientId(), eventSchedule.getClientId())
             Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getEventScheduleId(), eventSchedule.getEventScheduleId())
-            Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getScheduledEventIds().get(0), eventSchedule.getScheduledEventIds().get(0))
-            Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getScheduledEventIds().get(1), eventSchedule.getScheduledEventIds().get(1))
             Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getName(), eventSchedule.getName())
             Assertions.assertEquals(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getDescription(), eventSchedule.getDescription())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_EVENT_SCHEDULE.getCreatedOn(), eventSchedule.getCreatedOn()))
@@ -102,12 +100,6 @@ class EventScheduleSpec extends Specification {
 
             Assertions.assertEquals(EventScheduleTestConstants.getAllEventSchedulesClientId, firstEventSchedule.getClientId())
             Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getEventScheduleId(), firstEventSchedule.getEventScheduleId())
-            Assertions.assertEquals(
-                    EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getScheduledEventIds().get(0),
-                    firstEventSchedule.getScheduledEventIds().get(0))
-            Assertions.assertEquals(
-                    EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getScheduledEventIds().get(1),
-                    firstEventSchedule.getScheduledEventIds().get(1))
             Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getName(), firstEventSchedule.getName())
             Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getDescription(), firstEventSchedule.getDescription())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE.getCreatedOn(), firstEventSchedule.getCreatedOn()))
@@ -115,12 +107,6 @@ class EventScheduleSpec extends Specification {
 
             Assertions.assertEquals(EventScheduleTestConstants.getAllEventSchedulesClientId, secondEventSchedule.getClientId())
             Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getEventScheduleId(), secondEventSchedule.getEventScheduleId())
-            Assertions.assertEquals(
-                    EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getScheduledEventIds().get(0),
-                    secondEventSchedule.getScheduledEventIds().get(0))
-            Assertions.assertEquals(
-                    EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getScheduledEventIds().get(1),
-                    secondEventSchedule.getScheduledEventIds().get(1))
             Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getName(), secondEventSchedule.getName())
             Assertions.assertEquals(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getDescription(), secondEventSchedule.getDescription())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO.getCreatedOn(), secondEventSchedule.getCreatedOn()))
@@ -240,7 +226,6 @@ class EventScheduleSpec extends Specification {
         and: "the event is valid"
             EventSchedule newEvent = EventSchedule.builder()
                     .clientId(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId())
-                    .scheduledEventIds(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds())
                     .name(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getName())
                     .description(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getDescription())
                     .build()
@@ -257,8 +242,6 @@ class EventScheduleSpec extends Specification {
             EventSchedule eventSchedule = response.body()
             Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId(), eventSchedule.getClientId())
             Assertions.assertNotNull(eventSchedule.getEventScheduleId())
-            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds().get(0), eventSchedule.getScheduledEventIds().get(0))
-            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds().get(1), eventSchedule.getScheduledEventIds().get(1))
             Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getName(), eventSchedule.getName())
             Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getDescription(), eventSchedule.getDescription())
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(eventSchedule.getCreatedOn()))
@@ -279,8 +262,6 @@ class EventScheduleSpec extends Specification {
             EventSchedule databaseEvent = checkingDatabaseResponse.body()
             Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId(), databaseEvent.getClientId())
             Assertions.assertEquals(eventSchedule.getEventScheduleId(), databaseEvent.getEventScheduleId())
-            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds().get(0), databaseEvent.getScheduledEventIds().get(0))
-            Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getScheduledEventIds().get(1), databaseEvent.getScheduledEventIds().get(1))
             Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getName(), databaseEvent.getName())
             Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getDescription(), databaseEvent.getDescription())
 
@@ -425,8 +406,6 @@ class EventScheduleSpec extends Specification {
 
         and: "a valid update is made to event schedule"
             EventSchedule updatedEventSchedule = CopyObjectUtil.eventSchedule(initResponse.body())
-            updatedEventSchedule.getScheduledEventIds().remove(1)
-            updatedEventSchedule.getScheduledEventIds().add(EventScheduleTestConstants.updateEventScheduleScheduledEventThreeId)
             updatedEventSchedule.setName(EventScheduleTestConstants.updateEventScheduleUpdatedName)
             updatedEventSchedule.setDescription(EventScheduleTestConstants.updateEventScheduleUpdatedDescription)
             updatedEventSchedule.setCreatedOn(TestConstants.updateCreatedOn)
@@ -442,9 +421,6 @@ class EventScheduleSpec extends Specification {
             EventSchedule returnedEventSchedule = response.body()
             Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId(), returnedEventSchedule.getClientId())
             Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId(), returnedEventSchedule.getEventScheduleId())
-            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleScheduledEventOneId, returnedEventSchedule.getScheduledEventIds().get(0))
-            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleScheduledEventThreeId, returnedEventSchedule.getScheduledEventIds().get(1))
-            Assertions.assertFalse(returnedEventSchedule.getScheduledEventIds().contains(EventScheduleTestConstants.updateEventScheduleScheduledEventTwoId))
             Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleUpdatedName, returnedEventSchedule.getName())
             Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleUpdatedDescription, returnedEventSchedule.getDescription())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, returnedEventSchedule.getCreatedOn()))
@@ -459,9 +435,6 @@ class EventScheduleSpec extends Specification {
             EventSchedule databaseEventSchedule = checkingDatabaseResponse.body()
             Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId(), databaseEventSchedule.getClientId())
             Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getEventScheduleId(), databaseEventSchedule.getEventScheduleId())
-            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleScheduledEventOneId, databaseEventSchedule.getScheduledEventIds().get(0))
-            Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleScheduledEventThreeId, databaseEventSchedule.getScheduledEventIds().get(1))
-            Assertions.assertFalse(databaseEventSchedule.getScheduledEventIds().contains(EventScheduleTestConstants.updateEventScheduleScheduledEventTwoId))
             Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleUpdatedName, databaseEventSchedule.getName())
             Assertions.assertEquals(EventScheduleTestConstants.updateEventScheduleUpdatedDescription, databaseEventSchedule.getDescription())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseEventSchedule.getCreatedOn()))

@@ -9,12 +9,6 @@
           "sortKey": {
             "S": "EVENT_SCHEDULE-get-event-schedule-event-schedule-id"
           },
-          "scheduledEventIds": {
-            "SS": [
-              "get-event-schedule-scheduled-event-1-id",
-              "get-event-schedule-scheduled-event-2-id"
-            ]
-          },
           "name": {
             "S": "Get Event Schedule - Event Schedule Name"
           },
@@ -38,12 +32,6 @@
           },
           "sortKey": {
             "S": "EVENT_SCHEDULE-get-all-event-schedules-event-schedule-1-event-schedule-id"
-          },
-          "scheduledEventIds": {
-            "SS": [
-              "get-all-event-schedules-event-schedule-1-scheduled-event-1-id",
-              "get-all-event-schedules-event-schedule-1-scheduled-event-2-id"
-            ]
           },
           "name": {
             "S": "Get All Event Schedules - Event Schedule 1 Name"
@@ -69,12 +57,6 @@
           "sortKey": {
             "S": "EVENT_SCHEDULE-get-all-event-schedules-event-schedule-2-event-schedule-id"
           },
-          "scheduledEventIds": {
-            "SS": [
-              "get-all-event-schedules-event-schedule-2-scheduled-event-1-id",
-              "get-all-event-schedules-event-schedule-2-scheduled-event-2-id"
-            ]
-          },
           "name": {
             "S": "Get All Event Schedules - Event Schedule 2 Name"
           },
@@ -99,12 +81,6 @@
           "sortKey": {
             "S": "EVENT_SCHEDULE-delete-event-schedule-event-schedule-id"
           },
-          "scheduledEventIds": {
-            "SS": [
-              "delete-event-schedule-scheduled-event-1-id",
-              "delete-event-schedule-scheduled-event-2-id"
-            ]
-          },
           "name": {
             "S": "Delete Event Schedule - Event Schedule Name"
           }
@@ -119,12 +95,6 @@
           },
           "sortKey": {
             "S": "EVENT_SCHEDULE-update-event-schedule-event-schedule-id"
-          },
-          "scheduledEventIds": {
-            "SS": [
-              "update-event-schedule-scheduled-event-1-id",
-              "update-event-schedule-scheduled-event-2-id"
-            ]
           },
           "name": {
             "S": "Update Event Schedule - Event Schedule Name"
