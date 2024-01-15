@@ -63,6 +63,8 @@ components:
         - clientId
         - scheduleEventIds
       properties:
+        clientId:
+          type: string
         eventScheduleId:
           type: string
         description:

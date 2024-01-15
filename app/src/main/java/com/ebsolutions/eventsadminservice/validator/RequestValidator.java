@@ -239,8 +239,8 @@ public class RequestValidator {
     }
 
     // TODO
-    private static boolean isScheduledEventCreateValid(String clientId, ScheduledEvent scheduledEvent) {
-        if (StringValidator.isBlank(clientId)) {
+    private static boolean isScheduledEventCreateValid(String eventScheduleId, ScheduledEvent scheduledEvent) {
+        if (StringValidator.isBlank(eventScheduleId)) {
             return false;
         }
 
@@ -248,16 +248,16 @@ public class RequestValidator {
             return false;
         }
 
-        if (StringValidator.isBlank(scheduledEvent.getClientId())) {
+        if (StringValidator.isBlank(scheduledEvent.getEventScheduleId())) {
             return false;
         }
 
-        return clientId.equals(scheduledEvent.getClientId());
+        return eventScheduleId.equals(scheduledEvent.getEventScheduleId());
     }
 
     // TODO
-    private static boolean isScheduledEventUpdateValid(String clientId, ScheduledEvent scheduledEvent) {
-        if (StringValidator.isBlank(clientId)) {
+    private static boolean isScheduledEventUpdateValid(String eventScheduleId, ScheduledEvent scheduledEvent) {
+        if (StringValidator.isBlank(eventScheduleId)) {
             return false;
         }
 
@@ -265,11 +265,11 @@ public class RequestValidator {
             return false;
         }
 
-        if (StringValidator.isBlank(scheduledEvent.getClientId())) {
+        if (StringValidator.isBlank(scheduledEvent.getEventScheduleId())) {
             return false;
         }
 
-        if (!clientId.equals(scheduledEvent.getClientId())) {
+        if (!eventScheduleId.equals(scheduledEvent.getEventScheduleId())) {
             return false;
         }
 

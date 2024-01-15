@@ -84,20 +84,21 @@ components:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
       required:
+        - eventScheduleId
         - scheduledEventType
         - startTime
         - endTime
       properties:
+        eventScheduleId:
+          type: string
         scheduledEventId:
           type: string
         locationId:
           type: string
-          description: Override the default event location id
         organizerIds:
           type: array
           items:
             type: string
-          description: Override the default event organizer id(s)
         startTime:
           type: string
           format: local-time

@@ -45,7 +45,7 @@ public class ScheduledEventDao {
             return scheduledEventDto == null
                     ? null
                     : ScheduledEvent.builder()
-                    .clientId(scheduledEventDto.getPartitionKey())
+                    .eventScheduleId(scheduledEventDto.getPartitionKey())
                     .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(), SortKeyType.SCHEDULED_EVENT.name()))
                     .locationId(scheduledEventDto.getLocationId())
                     .organizerIds(scheduledEventDto.getOrganizerIds())
@@ -83,7 +83,7 @@ public class ScheduledEventDao {
             return scheduledEventDtos.stream()
                     .map(scheduledEventDto ->
                             ScheduledEvent.builder()
-                                    .clientId(scheduledEventDto.getPartitionKey())
+                                    .eventScheduleId(scheduledEventDto.getPartitionKey())
                                     .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(), SortKeyType.SCHEDULED_EVENT.name()))
                                     .locationId(scheduledEventDto.getLocationId())
                                     .organizerIds(scheduledEventDto.getOrganizerIds())
@@ -112,10 +112,8 @@ public class ScheduledEventDao {
         try {
             LocalDateTime now = LocalDateTime.now();
 
-            assert scheduledEvent.getClientId() != null;
-
             ScheduledEventDto scheduledEventDto = ScheduledEventDto.builder()
-                    .partitionKey(scheduledEvent.getClientId())
+                    .partitionKey(scheduledEvent.getEventScheduleId())
                     .sortKey(SortKeyType.SCHEDULED_EVENT + UniqueIdGenerator.generate())
                     .locationId(scheduledEvent.getLocationId())
                     .organizerIds(scheduledEvent.getOrganizerIds())
@@ -123,8 +121,8 @@ public class ScheduledEventDao {
                     .startTime(scheduledEvent.getStartTime())
                     .endTime(scheduledEvent.getEndTime())
                     .scheduledEventType(scheduledEvent.getScheduledEventType().getValue())
-                    .scheduledEventInterval(scheduledEvent.getScheduledEventInterval().getValue())
-                    .scheduledEventDay(scheduledEvent.getScheduledEventDay().getValue())
+                    .scheduledEventInterval(scheduledEvent.getScheduledEventInterval() != null ? scheduledEvent.getScheduledEventInterval().getValue() : null)
+                    .scheduledEventDay(scheduledEvent.getScheduledEventDay() != null ? scheduledEvent.getScheduledEventDay().getValue() : null)
                     .scheduledEventDate(scheduledEvent.getScheduledEventDate())
                     .cost(scheduledEvent.getCost())
                     .createdOn(now)
@@ -134,7 +132,7 @@ public class ScheduledEventDao {
             ddbTable.updateItem(scheduledEventDto);
 
             return ScheduledEvent.builder()
-                    .clientId(scheduledEventDto.getPartitionKey())
+                    .eventScheduleId(scheduledEventDto.getPartitionKey())
                     .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(), SortKeyType.SCHEDULED_EVENT.name()))
                     .locationId(scheduledEventDto.getLocationId())
                     .organizerIds(scheduledEventDto.getOrganizerIds())
@@ -165,11 +163,10 @@ public class ScheduledEventDao {
     public ScheduledEvent update(ScheduledEvent scheduledEvent) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            assert scheduledEvent.getClientId() != null;
             assert scheduledEvent.getScheduledEventId() != null;
 
             ScheduledEventDto scheduledEventDto = ScheduledEventDto.builder()
-                    .partitionKey(scheduledEvent.getClientId())
+                    .partitionKey(scheduledEvent.getEventScheduleId())
                     .sortKey(SortKeyType.SCHEDULED_EVENT + scheduledEvent.getScheduledEventId())
                     .locationId(scheduledEvent.getLocationId())
                     .organizerIds(scheduledEvent.getOrganizerIds())
@@ -177,8 +174,8 @@ public class ScheduledEventDao {
                     .startTime(scheduledEvent.getStartTime())
                     .endTime(scheduledEvent.getEndTime())
                     .scheduledEventType(scheduledEvent.getScheduledEventType().getValue())
-                    .scheduledEventInterval(scheduledEvent.getScheduledEventInterval().getValue())
-                    .scheduledEventDay(scheduledEvent.getScheduledEventDay().getValue())
+                    .scheduledEventInterval(scheduledEvent.getScheduledEventInterval() != null ? scheduledEvent.getScheduledEventInterval().getValue() : null)
+                    .scheduledEventDay(scheduledEvent.getScheduledEventDay() != null ? scheduledEvent.getScheduledEventDay().getValue() : null)
                     .scheduledEventDate(scheduledEvent.getScheduledEventDate())
                     .cost(scheduledEvent.getCost())
                     .createdOn(scheduledEvent.getCreatedOn())
@@ -188,7 +185,7 @@ public class ScheduledEventDao {
             ddbTable.putItem(scheduledEventDto);
 
             return ScheduledEvent.builder()
-                    .clientId(scheduledEventDto.getPartitionKey())
+                    .eventScheduleId(scheduledEventDto.getPartitionKey())
                     .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(), SortKeyType.SCHEDULED_EVENT.name()))
                     .locationId(scheduledEventDto.getLocationId())
                     .organizerIds(scheduledEventDto.getOrganizerIds())

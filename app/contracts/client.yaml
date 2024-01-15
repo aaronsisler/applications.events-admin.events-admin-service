@@ -57,6 +57,9 @@ components:
     Client:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
+      properties:
+        clientId:
+          type: string
   parameters:
     ClientId:
       in: path
