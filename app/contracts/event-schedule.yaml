@@ -61,7 +61,6 @@ components:
         - $ref: "shared.yaml#/components/schemas/Base"
       required:
         - clientId
-        - scheduleEventIds
       properties:
         clientId:
           type: string
