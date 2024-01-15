@@ -1,6 +1,5 @@
 package com.ebsolutions.eventsadminservice.constant
 
-
 import java.time.LocalDateTime
 
 class TestConstants {
