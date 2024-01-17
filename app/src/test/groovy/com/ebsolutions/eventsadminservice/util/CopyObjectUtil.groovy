@@ -57,4 +57,16 @@ class CopyObjectUtil {
                 .lastUpdatedOn(eventSchedule.getLastUpdatedOn())
                 .build()
     }
+
+    static ScheduledEvent scheduledEvent(ScheduledEvent scheduledEvent) {
+        return ScheduledEvent.builder()
+                .eventScheduleId(scheduledEvent.getEventScheduleId())
+                .scheduledEventId(scheduledEvent.getScheduledEventId())
+                .locationId(scheduledEvent.getLocationId())
+                .organizerIds(scheduledEvent.getOrganizerIds())
+                .name(scheduledEvent.getName())
+                .createdOn(scheduledEvent.getCreatedOn())
+                .lastUpdatedOn(scheduledEvent.getLastUpdatedOn())
+                .build()
+    }
 }

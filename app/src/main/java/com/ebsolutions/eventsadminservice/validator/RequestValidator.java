@@ -208,7 +208,7 @@ public class RequestValidator {
                 return false;
             }
 
-            return scheduledEvent.getScheduledEventDay() != null
+            return scheduledEvent.getScheduledEventDay() == null
                     || !List.of(
                             ScheduledEventInterval.WEEKLY,
                             ScheduledEventInterval.BIWEEKLY,

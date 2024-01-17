@@ -16,6 +16,8 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 @MicronautTest
 class EventScheduleSpec extends Specification {
     @Inject
@@ -176,13 +178,13 @@ class EventScheduleSpec extends Specification {
                     .toString()
 
         and: "the event's client id is blank"
-            EventSchedule newEvent = EventSchedule.builder()
+            EventSchedule newEventSchedule = EventSchedule.builder()
                     .clientId("")
                     .name("Create Mock Event ScheduleName")
                     .build()
 
         when: "a request is made to create an event for a client"
-            HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
+            HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEventSchedule)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -200,13 +202,13 @@ class EventScheduleSpec extends Specification {
                     .toString()
 
         and: "the event's client id does not match the URL client id"
-            EventSchedule newEvent = EventSchedule.builder()
+            EventSchedule newEventSchedule = EventSchedule.builder()
                     .clientId("not-the-url-client-id")
                     .name("Create Mock Event Name")
                     .build()
 
         when: "a request is made to create an event for a client"
-            HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
+            HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEventSchedule)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -224,14 +226,14 @@ class EventScheduleSpec extends Specification {
                     .toString()
 
         and: "the event is valid"
-            EventSchedule newEvent = EventSchedule.builder()
+            EventSchedule newEventSchedule = EventSchedule.builder()
                     .clientId(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getClientId())
                     .name(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getName())
                     .description(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getDescription())
                     .build()
 
         when: "a request is made to create an event for a client"
-            HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEvent)
+            HttpRequest httpRequest = HttpRequest.POST(eventsUrl, newEventSchedule)
             HttpResponse<EventSchedule> response = httpClient.toBlocking()
                     .exchange(httpRequest, EventSchedule)
 
@@ -246,12 +248,6 @@ class EventScheduleSpec extends Specification {
             Assertions.assertEquals(EventScheduleTestConstants.CREATE_EVENT_SCHEDULE.getDescription(), eventSchedule.getDescription())
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(eventSchedule.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(eventSchedule.getLastUpdatedOn()))
-
-        and: "the new event exists in the database"
-            HttpResponse<EventSchedule> checkingResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(eventSchedule.getEventScheduleId()), EventSchedule)
-
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
 
         and: "the new event is correct in the database"
             HttpResponse<EventSchedule> checkingDatabaseResponse = httpClient.toBlocking()
@@ -287,11 +283,11 @@ class EventScheduleSpec extends Specification {
             Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId(), initResponse.body().getClientId())
 
         and: "the event's client id is blank"
-            EventSchedule updatedEvent = CopyObjectUtil.eventSchedule(initResponse.body())
-            updatedEvent.setClientId("")
+            EventSchedule updatedEventSchedule = CopyObjectUtil.eventSchedule(initResponse.body())
+            updatedEventSchedule.setClientId("")
 
         when: "a request is made to update an event for a client"
-            HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEventSchedule)
             httpClient.toBlocking().exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
@@ -316,11 +312,11 @@ class EventScheduleSpec extends Specification {
             Assertions.assertEquals(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getClientId(), initResponse.body().getClientId())
 
         and: "the event schedule's client id does not match the URL client id"
-            EventSchedule updatedEvent = CopyObjectUtil.eventSchedule(initResponse.body())
-            updatedEvent.setClientId("not-the-url-client-id")
+            EventSchedule updatedEventSchedule = CopyObjectUtil.eventSchedule(initResponse.body())
+            updatedEventSchedule.setClientId("not-the-url-client-id")
 
         when: "a request is made to update an event schedule for a client"
-            HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEventSchedule)
             httpClient.toBlocking().exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
@@ -345,11 +341,11 @@ class EventScheduleSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventScheduleTestConstants.UPDATE_EVENT_SCHEDULE.getCreatedOn(), initResponse.body().getCreatedOn()))
 
         and: "the event schedule's create date is empty"
-            EventSchedule updatedEvent = CopyObjectUtil.eventSchedule(initResponse.body())
-            updatedEvent.createdOn(null)
+            EventSchedule updatedEventSchedule = CopyObjectUtil.eventSchedule(initResponse.body())
+            updatedEventSchedule.setCreatedOn(null)
 
         when: "a request is made to update an event schedule for a client"
-            HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEventSchedule)
             httpClient.toBlocking().exchange(httpRequest, EventSchedule)
 
         then: "the correct status code is returned"
@@ -376,7 +372,7 @@ class EventScheduleSpec extends Specification {
 
         and: "the event schedule's create date is after the current date and time"
             EventSchedule updatedEvent = CopyObjectUtil.eventSchedule(initResponse.body())
-            updatedEvent.createdOn(null)
+            updatedEvent.setCreatedOn(LocalDateTime.now().plusMonths(1))
 
         when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)

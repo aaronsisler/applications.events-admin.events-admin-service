@@ -16,6 +16,8 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 @MicronautTest
 class EventSpec extends Specification {
     @Inject
@@ -266,12 +268,6 @@ class EventSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(event.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(event.getLastUpdatedOn()))
 
-        and: "the new event exists in the database"
-            HttpResponse<Event> checkingResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(event.getEventId()), Event)
-
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingResponse.code())
-
         and: "the new event is correct in the database"
             HttpResponse<Event> checkingDatabaseResponse = httpClient.toBlocking()
                     .exchange(eventsUrl.concat(event.getEventId()), Event)
@@ -369,7 +365,7 @@ class EventSpec extends Specification {
 
         and: "the event's create date is empty"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
-            updatedEvent.createdOn(null)
+            updatedEvent.setCreatedOn(null)
 
         when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
@@ -399,7 +395,7 @@ class EventSpec extends Specification {
 
         and: "the event's create date is after the current date and time"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
-            updatedEvent.createdOn(null)
+            updatedEvent.setCreatedOn(LocalDateTime.now().plusMonths(1))
 
         when: "a request is made to update an event for a client"
             HttpRequest httpRequest = HttpRequest.PUT(URI.create(eventsUrl), updatedEvent)
