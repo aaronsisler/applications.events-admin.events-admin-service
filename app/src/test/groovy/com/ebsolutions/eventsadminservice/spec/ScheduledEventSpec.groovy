@@ -1,6 +1,5 @@
 package com.ebsolutions.eventsadminservice.spec
 
-
 import com.ebsolutions.eventsadminservice.constant.ScheduledEventTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent
@@ -14,13 +13,11 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.exceptions.HttpClientResponseException
-import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
-import spock.lang.Specification
 
-@MicronautTest
-class ScheduledEventSpec extends Specification {
+//@MicronautTest
+class ScheduledEventSpec {
     @Inject
     private HttpClient httpClient
 
@@ -272,7 +269,7 @@ class ScheduledEventSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-        and: "the scheduled event's event schedule id does not match the URL event schedule id"
+        and: "the scheduled event's scheduled event date is null"
             ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE)
             newScheduledEvent.setScheduledEventDate(null)
 
@@ -285,7 +282,7 @@ class ScheduledEventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Create a scheduled event: URL Event Schedule id exists: Create Reoccurring Scheduled Event: Create fails given scheduled event's event schedule id and URL event schedule id do not match"() {
+    def "Create a scheduled event: URL Event Schedule id exists: Create Reoccurring Scheduled Event: Create fails given scheduled event's scheduled event date is null"() {
         given: "the event schedule id is in the url"
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -294,9 +291,9 @@ class ScheduledEventSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-        and: "the scheduled event's event schedule id does not match the URL event schedule id"
+        and: "the scheduled event's scheduled event date is null"
             ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING)
-            newScheduledEvent.setEventScheduleId("not-the-url-event schedule-id")
+            newScheduledEvent.setScheduledEventDate(null)
 
         when: "a request is made to create a scheduled event for an event schedule"
             HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)

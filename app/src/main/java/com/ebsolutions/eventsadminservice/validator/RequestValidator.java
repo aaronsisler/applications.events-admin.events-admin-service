@@ -127,6 +127,10 @@ public class RequestValidator {
     }
 
     private static boolean isClientUpdateValid(Client client) {
+        if (StringValidator.isBlank(client.getClientId())) {
+            return false;
+        }
+
         if (client.getCreatedOn() == null) {
             return false;
         }
