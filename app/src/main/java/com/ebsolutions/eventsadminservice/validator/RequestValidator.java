@@ -212,12 +212,8 @@ public class RequestValidator {
                 return false;
             }
 
-            return scheduledEvent.getScheduledEventDay() == null
-                    || !List.of(
-                            ScheduledEventInterval.WEEKLY,
-                            ScheduledEventInterval.BIWEEKLY,
-                            ScheduledEventInterval.MONTHLY)
-                    .contains(scheduledEvent.getScheduledEventInterval());
+            return (scheduledEvent.getScheduledEventDay() == null
+                    || ScheduledEventInterval.WEEKLY.equals(scheduledEvent.getScheduledEventInterval()));
         }
 
         return true;
@@ -230,19 +226,4 @@ public class RequestValidator {
 
         return DateValidator.isBeforeNow(scheduledEvent.getCreatedOn());
     }
-
-//    public static boolean isCsvRequestValid(CsvRequest csvRequest) {
-//        boolean isYearValid = csvRequest.getYear() >= LocalDate.now().getYear();
-//        boolean isMonthValid = (1 <= csvRequest.getMonth() && csvRequest.getMonth() <= 12);
-//
-//        return isYearValid && isMonthValid;
-//    }
-//
-//    private static boolean isEventValid(Event event) {
-//        if (!RequestValidator.isPostBaseEventValid(event)) {
-//            return false;
-//        }
-//
-//        return event.getDayOfWeek() != null;
-//    }
 }

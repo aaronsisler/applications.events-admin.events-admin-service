@@ -11,13 +11,17 @@ aws dynamodb batch-write-item \
   --request-items file:///data/20_locations.json
 
 aws dynamodb batch-write-item \
- --endpoint-url=http://dynamo-db-local:8000 \
- --request-items file:///data/30_organizers.json
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/30_organizers.json
 
 aws dynamodb batch-write-item \
- --endpoint-url=http://dynamo-db-local:8000 \
- --request-items file:///data/40_events.json
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/40_events.json
 
 aws dynamodb batch-write-item \
- --endpoint-url=http://dynamo-db-local:8000 \
- --request-items file:///data/50_event_schedules.json
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/50_event_schedules.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/60_scheduled_events.json
