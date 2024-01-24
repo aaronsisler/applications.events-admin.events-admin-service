@@ -28,6 +28,7 @@ class ScheduledEventTestConstants {
                     "get-scheduled-event-single-organizer-2-id"
             ))
             .name("Get Scheduled Event Single - Scheduled Event Name")
+            .description("Get Scheduled Event Single - Scheduled Event Description")
             .category("Get Scheduled Event Single - Scheduled Event Category")
             .scheduledEventType(ScheduledEventType.SINGLE)
             .scheduledEventDate(scheduledEventDate)
@@ -110,12 +111,12 @@ class ScheduledEventTestConstants {
     public static ScheduledEvent GET_ALL_SCHEDULED_EVENTS_SCHEDULED_EVENT_TWO = ScheduledEvent.builder()
             .eventScheduleId(getAllScheduledEventsEventScheduleId)
             .scheduledEventId("-get-all-scheduled-events-scheduled-event-2-scheduled-event-id")
-            .clientId("get-all-scheduled-events-reoccurring-weekly-client-id")
-            .eventId("get-all-scheduled-events-reoccurring-weekly-event-id")
-            .locationId("get-all-scheduled-events-reoccurring-weekly-location-id")
+            .clientId("get-all-scheduled-events-scheduled-event-2-client-id")
+            .eventId("get-all-scheduled-events-scheduled-event-2-event-id")
+            .locationId("get-all-scheduled-events-scheduled-event-2-location-id")
             .organizerIds(List.of(
-                    "get-all-scheduled-events-reoccurring-weekly-organizer-1-id",
-                    "get-all-scheduled-events-reoccurring-weekly-organizer-2-id"
+                    "get-all-scheduled-events-scheduled-event-2-organizer-1-id",
+                    "get-all-scheduled-events-scheduled-event-2-organizer-2-id"
             ))
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
@@ -126,6 +127,28 @@ class ScheduledEventTestConstants {
             .startTime(startTime)
             .endTime(endTime)
             .cost(450)
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
+
+    public static ScheduledEvent GET_ALL_SCHEDULED_EVENTS_SCHEDULED_EVENT_THREE = ScheduledEvent.builder()
+            .eventScheduleId(getAllScheduledEventsEventScheduleId)
+            .scheduledEventId("-get-all-scheduled-events-scheduled-event-3-scheduled-event-id")
+            .clientId("get-all-scheduled-events-scheduled-event-3-client-id")
+            .eventId("get-all-scheduled-events-scheduled-event-3-event-id")
+            .locationId("get-all-scheduled-events-scheduled-event-3-location-id")
+            .organizerIds(List.of(
+                    "get-all-scheduled-events-scheduled-event-3-organizer-1-id",
+                    "get-all-scheduled-events-scheduled-event-3-organizer-2-id"
+            ))
+            .scheduledEventType(ScheduledEventType.REOCCURRING)
+            .scheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
+            .name("Get All Scheduled Events - Scheduled Event 3 Name")
+            .description("Get All Scheduled Events - Scheduled Event 3 Description")
+            .category("Get All Scheduled Events - Scheduled Event 3 Category")
+            .startTime(startTime)
+            .endTime(endTime)
+            .cost(350)
             .createdOn(TestConstants.createdOn)
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
             .build()
