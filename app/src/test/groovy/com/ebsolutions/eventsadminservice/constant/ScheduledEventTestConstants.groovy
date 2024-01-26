@@ -159,6 +159,8 @@ class ScheduledEventTestConstants {
             .clientId("delete-scheduled-event-client-id")
             .eventId("delete-scheduled-event-event-id")
             .name("Delete Scheduled Event - Scheduled Event Name")
+            .scheduledEventType(ScheduledEventType.SINGLE)
+            .scheduledEventDate(scheduledEventDate)
             .startTime(startTime)
             .endTime(endTime)
             .createdOn(TestConstants.createdOn)

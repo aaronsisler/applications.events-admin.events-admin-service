@@ -35,10 +35,10 @@ public class ScheduledEventDao {
         this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(ScheduledEventDto.class));
     }
 
-    public ScheduledEvent read(String clientId, String scheduledEventId) throws DataProcessingException {
+    public ScheduledEvent read(String eventScheduleId, String scheduledEventId) throws DataProcessingException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.SCHEDULED_EVENT, scheduledEventId);
+            Key key = KeyBuilder.build(eventScheduleId, SortKeyType.SCHEDULED_EVENT, scheduledEventId);
 
             ScheduledEventDto scheduledEventDto = ddbTable.getItem(key);
 
@@ -47,9 +47,12 @@ public class ScheduledEventDao {
                     : ScheduledEvent.builder()
                     .eventScheduleId(scheduledEventDto.getPartitionKey())
                     .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(), SortKeyType.SCHEDULED_EVENT.name()))
+                    .clientId(scheduledEventDto.getClientId())
+                    .eventId(scheduledEventDto.getEventId())
                     .locationId(scheduledEventDto.getLocationId())
                     .organizerIds(scheduledEventDto.getOrganizerIds())
                     .name(scheduledEventDto.getName())
+                    .description(scheduledEventDto.getDescription())
                     .startTime(scheduledEventDto.getStartTime())
                     .endTime(scheduledEventDto.getEndTime())
                     .scheduledEventType(ScheduledEventType.fromValue(scheduledEventDto.getScheduledEventType()))
@@ -68,13 +71,13 @@ public class ScheduledEventDao {
         }
     }
 
-    public List<ScheduledEvent> readAll(String clientId) throws DataProcessingException {
+    public List<ScheduledEvent> readAll(String eventScheduleId) throws DataProcessingException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             List<ScheduledEventDto> scheduledEventDtos = ddbTable
                     .query(r -> r.queryConditional(
                             sortBeginsWith(s
-                                    -> s.partitionValue(clientId).sortValue(SortKeyType.SCHEDULED_EVENT.name()).build()))
+                                    -> s.partitionValue(eventScheduleId).sortValue(SortKeyType.SCHEDULED_EVENT.name()).build()))
                     )
                     .items()
                     .stream()
@@ -85,9 +88,12 @@ public class ScheduledEventDao {
                             ScheduledEvent.builder()
                                     .eventScheduleId(scheduledEventDto.getPartitionKey())
                                     .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(), SortKeyType.SCHEDULED_EVENT.name()))
+                                    .clientId(scheduledEventDto.getClientId())
+                                    .eventId(scheduledEventDto.getEventId())
                                     .locationId(scheduledEventDto.getLocationId())
                                     .organizerIds(scheduledEventDto.getOrganizerIds())
                                     .name(scheduledEventDto.getName())
+                                    .description(scheduledEventDto.getDescription())
                                     .startTime(scheduledEventDto.getStartTime())
                                     .endTime(scheduledEventDto.getEndTime())
                                     .scheduledEventType(ScheduledEventType.fromValue(scheduledEventDto.getScheduledEventType()))
@@ -115,9 +121,12 @@ public class ScheduledEventDao {
             ScheduledEventDto scheduledEventDto = ScheduledEventDto.builder()
                     .partitionKey(scheduledEvent.getEventScheduleId())
                     .sortKey(SortKeyType.SCHEDULED_EVENT + UniqueIdGenerator.generate())
+                    .clientId(scheduledEvent.getClientId())
+                    .eventId(scheduledEvent.getEventId())
                     .locationId(scheduledEvent.getLocationId())
                     .organizerIds(scheduledEvent.getOrganizerIds())
                     .name(scheduledEvent.getName())
+                    .description(scheduledEvent.getDescription())
                     .startTime(scheduledEvent.getStartTime())
                     .endTime(scheduledEvent.getEndTime())
                     .scheduledEventType(scheduledEvent.getScheduledEventType().getValue())
@@ -134,9 +143,12 @@ public class ScheduledEventDao {
             return ScheduledEvent.builder()
                     .eventScheduleId(scheduledEventDto.getPartitionKey())
                     .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(), SortKeyType.SCHEDULED_EVENT.name()))
+                    .clientId(scheduledEventDto.getClientId())
+                    .eventId(scheduledEventDto.getEventId())
                     .locationId(scheduledEventDto.getLocationId())
                     .organizerIds(scheduledEventDto.getOrganizerIds())
                     .name(scheduledEventDto.getName())
+                    .description(scheduledEventDto.getDescription())
                     .startTime(scheduledEventDto.getStartTime())
                     .endTime(scheduledEventDto.getEndTime())
                     .scheduledEventType(ScheduledEventType.fromValue(scheduledEventDto.getScheduledEventType()))
@@ -168,9 +180,12 @@ public class ScheduledEventDao {
             ScheduledEventDto scheduledEventDto = ScheduledEventDto.builder()
                     .partitionKey(scheduledEvent.getEventScheduleId())
                     .sortKey(SortKeyType.SCHEDULED_EVENT + scheduledEvent.getScheduledEventId())
+                    .clientId(scheduledEvent.getClientId())
+                    .eventId(scheduledEvent.getEventId())
                     .locationId(scheduledEvent.getLocationId())
                     .organizerIds(scheduledEvent.getOrganizerIds())
                     .name(scheduledEvent.getName())
+                    .description(scheduledEvent.getDescription())
                     .startTime(scheduledEvent.getStartTime())
                     .endTime(scheduledEvent.getEndTime())
                     .scheduledEventType(scheduledEvent.getScheduledEventType().getValue())
@@ -187,9 +202,12 @@ public class ScheduledEventDao {
             return ScheduledEvent.builder()
                     .eventScheduleId(scheduledEventDto.getPartitionKey())
                     .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(), SortKeyType.SCHEDULED_EVENT.name()))
+                    .clientId(scheduledEventDto.getClientId())
+                    .eventId(scheduledEventDto.getEventId())
                     .locationId(scheduledEventDto.getLocationId())
                     .organizerIds(scheduledEventDto.getOrganizerIds())
                     .name(scheduledEventDto.getName())
+                    .description(scheduledEventDto.getDescription())
                     .startTime(scheduledEventDto.getStartTime())
                     .endTime(scheduledEventDto.getEndTime())
                     .scheduledEventType(ScheduledEventType.fromValue(scheduledEventDto.getScheduledEventType()))
@@ -208,10 +226,10 @@ public class ScheduledEventDao {
         }
     }
 
-    public void delete(String clientId, String scheduledEventId) {
+    public void delete(String eventScheduleId, String scheduledEventId) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.SCHEDULED_EVENT, scheduledEventId);
+            Key key = KeyBuilder.build(eventScheduleId, SortKeyType.SCHEDULED_EVENT, scheduledEventId);
 
             ddbTable.deleteItem(key);
         } catch (Exception e) {

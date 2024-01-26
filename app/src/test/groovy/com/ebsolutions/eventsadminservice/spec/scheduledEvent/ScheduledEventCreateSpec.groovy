@@ -15,10 +15,9 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
-import spock.lang.Specification
 
 @MicronautTest
-class ScheduledEventCreateSpec extends Specification {
+class ScheduledEventCreateSpec {
     @Inject
     private HttpClient httpClient
 

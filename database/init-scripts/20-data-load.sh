@@ -24,4 +24,12 @@ aws dynamodb batch-write-item \
 
 aws dynamodb batch-write-item \
   --endpoint-url=http://dynamo-db-local:8000 \
-  --request-items file:///data/60_scheduled_events.json
+  --request-items file:///data/61_scheduled_events_get.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/62_scheduled_events_get_all.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/63_scheduled_events_delete.json

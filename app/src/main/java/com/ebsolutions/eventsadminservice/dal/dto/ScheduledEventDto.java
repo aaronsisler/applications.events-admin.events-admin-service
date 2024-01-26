@@ -22,13 +22,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScheduledEventDto extends DatabaseDto {
+    private String clientId;
+    private String eventId;
     private String locationId;
     private List<String> organizerIds;
-    private LocalTime startTime;
-    private LocalTime endTime;
     private String scheduledEventType;
     private String scheduledEventInterval;
     private String scheduledEventDay;
+    private String description;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private LocalDate scheduledEventDate;
     private Integer cost;
 }

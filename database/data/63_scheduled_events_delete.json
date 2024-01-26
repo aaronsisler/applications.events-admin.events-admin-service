@@ -1,0 +1,43 @@
+{
+  "SERVICES_EVENTS_ADMIN_LOCAL": [
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "delete-scheduled-event-event-schedule-id"
+          },
+          "sortKey": {
+            "S": "SCHEDULED_EVENT-delete-scheduled-event-scheduled-event-id"
+          },
+          "clientId": {
+            "S": "delete-scheduled-event-client-id"
+          },
+          "eventId": {
+            "S": "delete-scheduled-event-event-id"
+          },
+          "name": {
+            "S": "Delete Scheduled Event - Scheduled Event Name"
+          },
+          "scheduledEventType": {
+            "S": "SINGLE"
+          },
+          "scheduledEventDate": {
+            "S": "2023-11-25"
+          },
+          "startTime": {
+            "S": "13:45:42"
+          },
+          "endTime": {
+            "S": "20:30:25"
+          },
+          "createdOn": {
+            "S": "2023-07-04T01:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-05T12:34:56"
+          }
+        }
+      }
+    }
+  ]
+}
