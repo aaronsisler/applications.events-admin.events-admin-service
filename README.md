@@ -4,6 +4,19 @@
 
 https://github.com/users/aaronsisler/projects/9/views/1
 
+## Definition of Done
+
+* Contract created/updated
+* Dependencies added to pom(s) are commented with what their usage is for
+* DAL layer is created/updated and follows naming conventions
+    * DAL
+    * DTO
+* Controller is created/updated and follows naming conventions
+* Integration tests added/updated
+    * Test(s) created/updated
+    * Data set(s) created/updated
+* API collection (Bruno) is updated and committed to api-client repository
+
 ## Running Locally
 
 ### Docker
@@ -11,10 +24,18 @@ https://github.com/users/aaronsisler/projects/9/views/1
 Start the Docker containers
 
 ```bash
+dockerlocalup
+```
+
+```bash
 docker compose -f ./docker-compose.local.yml up -d
 ```
 
 Stop the Docker containers
+
+```bash
+dockerlocaldown
+```
 
 ```bash
 docker compose -f ./docker-compose.local.yml down

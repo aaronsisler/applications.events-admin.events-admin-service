@@ -192,7 +192,7 @@ class EventSpec extends Specification {
         and: "the event's client id is blank"
             Event newEvent = Event.builder()
                     .clientId("")
-                    .name("Create Mock Event Name")
+                    .name(EventTestConstants.CREATE_EVENT.getName())
                     .build()
 
         when: "a request is made to create an event for a client"
@@ -216,7 +216,7 @@ class EventSpec extends Specification {
         and: "the event's client id does not match the URL client id"
             Event newEvent = Event.builder()
                     .clientId("not-the-url-client-id")
-                    .name("Create Mock Event Name")
+                    .name(EventTestConstants.CREATE_EVENT.getName())
                     .build()
 
         when: "a request is made to create an event for a client"

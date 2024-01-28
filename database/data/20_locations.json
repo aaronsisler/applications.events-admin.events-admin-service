@@ -4,13 +4,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-location-mock-location-client-id"
+            "S": "get-location-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-get-location-mock-location-id"
+            "S": "LOCATION-get-location-location-id"
           },
           "name": {
-            "S": "Get Mock Location Name"
+            "S": "Get Location - Location Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -25,13 +25,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-locations-mock-client-id"
+            "S": "get-all-locations-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-get-all-locations-mock-location-1-id"
+            "S": "LOCATION-get-all-locations-location-1-location-id"
           },
           "name": {
-            "S": "Get All Mock Location Name 1"
+            "S": "Get All Locations - Location 1 Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -46,13 +46,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-locations-mock-client-id"
+            "S": "get-all-locations-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-get-all-locations-mock-location-2-id"
+            "S": "LOCATION-get-all-locations-location-2-location-id"
           },
           "name": {
-            "S": "Get All Mock Location Name 2"
+            "S": "Get All Locations - Location 2 Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -67,13 +67,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "delete-location-mock-client-id"
+            "S": "delete-location-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-delete-location-mock-location-id"
+            "S": "LOCATION-delete-location-location-id"
           },
           "name": {
-            "S": "Delete Mock Location Name"
+            "S": "Delete Location - Location Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -88,13 +88,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "update-location-mock-client-id"
+            "S": "update-location-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-update-location-mock-location-id"
+            "S": "LOCATION-update-location-location-id"
           },
           "name": {
-            "S": "Update Mock Location Name"
+            "S": "Update Location - Location Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
