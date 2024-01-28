@@ -77,8 +77,8 @@
           },
           "organizerIds": {
             "SS": [
-              "get-scheduled-event-reoccurring-organizer-1-id",
-              "get-scheduled-event-reoccurring-organizer-2-id"
+              "get-scheduled-event-reoccurring-standard-organizer-1-id",
+              "get-scheduled-event-reoccurring-standard-organizer-2-id"
             ]
           },
           "name": {

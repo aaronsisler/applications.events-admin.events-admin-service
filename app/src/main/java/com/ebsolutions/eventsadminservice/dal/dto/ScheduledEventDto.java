@@ -30,6 +30,7 @@ public class ScheduledEventDto extends DatabaseDto {
     private String scheduledEventInterval;
     private String scheduledEventDay;
     private String description;
+    private String category;
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate scheduledEventDate;

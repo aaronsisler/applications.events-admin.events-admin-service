@@ -26,9 +26,9 @@ public class ScheduledEventController {
     private ScheduledEventDao scheduledEventDao;
 
     @Get(value = "/{scheduledEventId}", produces = MediaType.APPLICATION_JSON)
-    public HttpResponse<?> get(@NotBlank @PathVariable String clientId, @NotBlank @PathVariable String scheduledEventId) {
+    public HttpResponse<?> get(@NotBlank @PathVariable String eventScheduleId, @NotBlank @PathVariable String scheduledEventId) {
         try {
-            ScheduledEvent scheduledEvent = scheduledEventDao.read(clientId, scheduledEventId);
+            ScheduledEvent scheduledEvent = scheduledEventDao.read(eventScheduleId, scheduledEventId);
 
             return scheduledEvent != null ? ok(scheduledEvent) : noContent();
         } catch (DataProcessingException dbe) {
@@ -37,9 +37,9 @@ public class ScheduledEventController {
     }
 
     @Get(produces = MediaType.APPLICATION_JSON)
-    public HttpResponse<?> getAll(@NotBlank @PathVariable String clientId) {
+    public HttpResponse<?> getAll(@NotBlank @PathVariable String eventScheduleId) {
         try {
-            List<ScheduledEvent> scheduledEvents = scheduledEventDao.readAll(clientId);
+            List<ScheduledEvent> scheduledEvents = scheduledEventDao.readAll(eventScheduleId);
 
             return !scheduledEvents.isEmpty() ? ok(scheduledEvents) : noContent();
         } catch (DataProcessingException dbe) {
@@ -48,9 +48,9 @@ public class ScheduledEventController {
     }
 
     @Post(produces = MediaType.APPLICATION_JSON)
-    public HttpResponse<?> post(@NotBlank @PathVariable String clientId, @Valid @Body ScheduledEvent scheduledEvent) {
+    public HttpResponse<?> post(@NotBlank @PathVariable String eventScheduleId, @Valid @Body ScheduledEvent scheduledEvent) {
         try {
-            if (!RequestValidator.isScheduledEventValid(AllowableRequestMethod.POST, clientId, scheduledEvent)) {
+            if (!RequestValidator.isScheduledEventValid(AllowableRequestMethod.POST, eventScheduleId, scheduledEvent)) {
                 return badRequest();
             }
 
@@ -61,9 +61,9 @@ public class ScheduledEventController {
     }
 
     @Put(produces = MediaType.APPLICATION_JSON)
-    public HttpResponse<?> put(@NotBlank @PathVariable String clientId, @Valid @Body ScheduledEvent scheduledEvent) {
+    public HttpResponse<?> put(@NotBlank @PathVariable String eventScheduleId, @Valid @Body ScheduledEvent scheduledEvent) {
         try {
-            if (!RequestValidator.isScheduledEventValid(AllowableRequestMethod.PUT, clientId, scheduledEvent)) {
+            if (!RequestValidator.isScheduledEventValid(AllowableRequestMethod.PUT, eventScheduleId, scheduledEvent)) {
                 return badRequest();
             }
 
@@ -75,9 +75,9 @@ public class ScheduledEventController {
 
 
     @Delete(value = "/{scheduledEventId}")
-    public HttpResponse<?> delete(@NotBlank @PathVariable String clientId, @NotBlank @PathVariable String scheduledEventId) {
+    public HttpResponse<?> delete(@NotBlank @PathVariable String eventScheduleId, @NotBlank @PathVariable String scheduledEventId) {
         try {
-            scheduledEventDao.delete(clientId, scheduledEventId);
+            scheduledEventDao.delete(eventScheduleId, scheduledEventId);
 
             return noContent();
         } catch (DataProcessingException dbe) {
