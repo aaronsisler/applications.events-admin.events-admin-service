@@ -11,9 +11,10 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
+import spock.lang.Specification
 
 @MicronautTest
-class ScheduledEventGetAllSpec {
+class ScheduledEventGetAllSpec extends Specification {
     @Inject
     private HttpClient httpClient
 

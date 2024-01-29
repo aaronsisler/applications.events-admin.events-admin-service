@@ -90,6 +90,12 @@
           "scheduledEventDay": {
             "S": "TUE"
           },
+          "startTime": {
+            "S": "13:45:42"
+          },
+          "endTime": {
+            "S": "20:30:25"
+          },
           "name": {
             "S": "Get All Scheduled Events - Scheduled Event 2 Name"
           },
@@ -137,6 +143,12 @@
           },
           "scheduledEventInterval": {
             "S": "WEEKDAYS"
+          },
+          "startTime": {
+            "S": "13:45:42"
+          },
+          "endTime": {
+            "S": "20:30:25"
           },
           "name": {
             "S": "Get All Scheduled Events - Scheduled Event 3 Name"
