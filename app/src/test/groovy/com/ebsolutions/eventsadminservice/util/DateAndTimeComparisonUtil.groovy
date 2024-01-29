@@ -19,10 +19,26 @@ class DateAndTimeComparisonUtil {
     }
 
     static boolean areDatesEqual(LocalDate expectedDate, LocalDate testResult) {
+        if (expectedDate == null && testResult == null) {
+            return true;
+        }
+
+        if (expectedDate == null || testResult == null) {
+            return false;
+        }
+
         return expectedDate.until(testResult, ChronoUnit.DAYS) == 0
     }
 
     static boolean areTimesEqual(LocalTime expectedTime, LocalTime testResult) {
+        if (expectedTime == null && testResult == null) {
+            return true;
+        }
+
+        if (expectedTime == null || testResult == null) {
+            return false;
+        }
+
         return expectedTime.until(testResult, ChronoUnit.SECONDS) == 0
     }
 }

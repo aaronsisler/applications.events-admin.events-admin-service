@@ -48,12 +48,12 @@ class ScheduledEventCreateSpec {
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
         and: "the scheduled event's event schedule id is blank"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
             newScheduledEvent.setEventScheduleId("")
 
         when: "a request is made to create a scheduled event for an event schedule"
@@ -70,12 +70,12 @@ class ScheduledEventCreateSpec {
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
         and: "the scheduled event's event schedule id is blank"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
             newScheduledEvent.setEventScheduleId("")
 
         when: "a request is made to create a scheduled event for an event schedule"
@@ -114,12 +114,12 @@ class ScheduledEventCreateSpec {
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
         and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
             newScheduledEvent.setEventScheduleId("not-the-url-event schedule-id")
 
         when: "a request is made to create a scheduled event for an event schedule"
@@ -136,12 +136,12 @@ class ScheduledEventCreateSpec {
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
         and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
             newScheduledEvent.setEventScheduleId("not-the-url-event schedule-id")
 
         when: "a request is made to create a scheduled event for an event schedule"

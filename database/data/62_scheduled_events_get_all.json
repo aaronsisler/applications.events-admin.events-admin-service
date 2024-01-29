@@ -105,6 +105,9 @@
           "category": {
             "S": "Get All Scheduled Events - Scheduled Event 2 Category"
           },
+          "cost": {
+            "N": "450"
+          },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
           },
@@ -158,6 +161,9 @@
           },
           "category": {
             "S": "Get All Scheduled Events - Scheduled Event 3 Category"
+          },
+          "cost": {
+            "N": "350"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"

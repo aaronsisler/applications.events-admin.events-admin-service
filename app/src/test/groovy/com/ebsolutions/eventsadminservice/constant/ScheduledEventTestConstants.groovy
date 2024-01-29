@@ -99,7 +99,7 @@ class ScheduledEventTestConstants {
             .scheduledEventType(ScheduledEventType.SINGLE)
             .name("Get All Scheduled Events - Scheduled Event 1 Name")
             .description("Get All Scheduled Events - Scheduled Event 1 Description")
-            .category("Get All Scheduled Events Single - Scheduled Event 1 Category")
+            .category("Get All Scheduled Events - Scheduled Event 1 Category")
             .startTime(startTime)
             .endTime(endTime)
             .scheduledEventDate(scheduledEventDate)
