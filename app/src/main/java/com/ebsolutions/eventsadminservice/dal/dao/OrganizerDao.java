@@ -126,7 +126,6 @@ public class OrganizerDao {
     public Organizer update(Organizer organizer) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            assert organizer.getClientId() != null;
             assert organizer.getOrganizerId() != null;
 
             OrganizerDto organizerDto = OrganizerDto.builder()

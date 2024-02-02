@@ -4,13 +4,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-organizer-mock-organizer-client-id"
+            "S": "get-organizer-client-id"
           },
           "sortKey": {
-            "S": "ORGANIZER-get-organizer-mock-organizer-id"
+            "S": "ORGANIZER-get-organizer-organizer-id"
           },
           "name": {
-            "S": "Get Mock Organizer Name"
+            "S": "Get Organizer - Organizer Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -25,13 +25,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-organizers-mock-client-id"
+            "S": "get-all-organizers-client-id"
           },
           "sortKey": {
-            "S": "ORGANIZER-get-all-organizers-mock-organizer-1-id"
+            "S": "ORGANIZER-get-all-organizers-organizer-1-organizer-id"
           },
           "name": {
-            "S": "Get All Mock Organizer Name 1"
+            "S": "Get All Organizers - Organizer Name 1"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -46,13 +46,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-organizers-mock-client-id"
+            "S": "get-all-organizers-client-id"
           },
           "sortKey": {
-            "S": "ORGANIZER-get-all-organizers-mock-organizer-2-id"
+            "S": "ORGANIZER-get-all-organizers-organizer-2-organizer-id"
           },
           "name": {
-            "S": "Get All Mock Organizer Name 2"
+            "S": "Get All Organizers - Organizer Name 2"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -67,13 +67,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "delete-organizer-mock-client-id"
+            "S": "delete-organizer-client-id"
           },
           "sortKey": {
-            "S": "ORGANIZER-delete-organizer-mock-organizer-id"
+            "S": "ORGANIZER-delete-organizer-organizer-id"
           },
           "name": {
-            "S": "Delete Mock Organizer Name"
+            "S": "Delete Organizer - Organizer Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -88,13 +88,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "update-organizer-mock-client-id"
+            "S": "update-organizer-client-id"
           },
           "sortKey": {
-            "S": "ORGANIZER-update-organizer-mock-organizer-id"
+            "S": "ORGANIZER-update-organizer-organizer-id"
           },
           "name": {
-            "S": "Update Mock Organizer Name"
+            "S": "Update Organizer - Organizer Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"

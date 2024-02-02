@@ -165,7 +165,7 @@ class LocationSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, finalResponse.code())
     }
 
-    def "Create a location: URL Client id exists: Create fails given location client id is blank"() {
+    def "Create a location: URL Client id exists: Create fails given location's client id is blank"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -189,7 +189,7 @@ class LocationSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Create a location: URL Client id exists: Create fails given location client id and URL client id do not match"() {
+    def "Create a location: URL Client id exists: Create fails given location's client id and URL client id do not match"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -259,7 +259,7 @@ class LocationSpec extends Specification {
 
     }
 
-    def "Update a location: URL Client id exists: Update fails given location client id is blank"() {
+    def "Update a location: URL Client id exists: Update fails given location's client id is blank"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -288,7 +288,7 @@ class LocationSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a location: URL Client id exists: Update fails given location client id and URL client id do not match"() {
+    def "Update a location: URL Client id exists: Update fails given location's client id and URL client id do not match"() {
         given: "the client id is in the url"
             String locationsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)

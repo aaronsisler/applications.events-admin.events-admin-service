@@ -180,7 +180,7 @@ class EventSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, finalResponse.code())
     }
 
-    def "Create an event: URL Client id exists: Create fails given event client id is blank"() {
+    def "Create an event: URL Client id exists: Create fails given event's client id is blank"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -204,7 +204,7 @@ class EventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Create an event: URL Client id exists: Create fails given event client id and URL client id do not match"() {
+    def "Create an event: URL Client id exists: Create fails given event's client id and URL client id do not match"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -289,7 +289,7 @@ class EventSpec extends Specification {
 
     }
 
-    def "Update an event: URL Client id exists: Update fails given event client id is blank"() {
+    def "Update an event: URL Client id exists: Update fails given event's client id is blank"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
@@ -318,7 +318,7 @@ class EventSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update an event: URL Client id exists: Update fails given event client id and URL client id do not match"() {
+    def "Update an event: URL Client id exists: Update fails given event's client id and URL client id do not match"() {
         given: "the client id is in the url"
             String eventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
