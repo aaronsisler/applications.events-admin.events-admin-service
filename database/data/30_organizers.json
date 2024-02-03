@@ -31,7 +31,7 @@
             "S": "ORGANIZER-get-all-organizers-organizer-1-organizer-id"
           },
           "name": {
-            "S": "Get All Organizers - Organizer Name 1"
+            "S": "Get All Organizers - Organizer 1 Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -52,7 +52,7 @@
             "S": "ORGANIZER-get-all-organizers-organizer-2-organizer-id"
           },
           "name": {
-            "S": "Get All Organizers - Organizer Name 2"
+            "S": "Get All Organizers - Organizer 2 Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"

@@ -99,7 +99,7 @@ public class ClientDao {
             ddbTable.updateItem(clientDto);
 
             return Client.builder()
-                    .clientId(clientDto.getPartitionKey())
+                    .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
                     .name(clientDto.getName())
                     .createdOn(clientDto.getCreatedOn())
                     .lastUpdatedOn(clientDto.getLastUpdatedOn())
