@@ -110,7 +110,7 @@ class ClientSpec extends Specification {
 
     }
 
-    @Ignore("Disabled until I can isolate the database to empty of clients during this test")
+    @Ignore("Disabled until the database can be empty of clients during this test")
     def "Get all clients: No clients exist"() {
         given: "the client id is in the url"
             String clientsUrl = new StringBuffer()

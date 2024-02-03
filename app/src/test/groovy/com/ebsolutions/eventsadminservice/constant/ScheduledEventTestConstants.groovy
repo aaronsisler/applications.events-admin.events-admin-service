@@ -27,9 +27,9 @@ class ScheduledEventTestConstants {
                     "get-scheduled-event-single-organizer-1-id",
                     "get-scheduled-event-single-organizer-2-id"
             ))
-            .name("Get Scheduled Event Single - Scheduled Event Name")
-            .description("Get Scheduled Event Single - Scheduled Event Description")
-            .category("Get Scheduled Event Single - Scheduled Event Category")
+            .name("Get Scheduled Event - Single - Scheduled Event Name")
+            .description("Get Scheduled Event - Single - Scheduled Event Description")
+            .category("Get Scheduled Event - Single - Scheduled Event Category")
             .scheduledEventType(ScheduledEventType.SINGLE)
             .scheduledEventDate(scheduledEventDate)
             .startTime(startTime)
@@ -49,9 +49,9 @@ class ScheduledEventTestConstants {
                     "get-scheduled-event-reoccurring-standard-organizer-1-id",
                     "get-scheduled-event-reoccurring-standard-organizer-2-id"
             ))
-            .name("Get Scheduled Event Reoccurring Standard - Scheduled Event Name")
-            .description("Get Scheduled Event Reoccurring Standard - Scheduled Event Description")
-            .category("Get Scheduled Event Reoccurring Standard - Scheduled Event Category")
+            .name("Get Scheduled Event - Reoccurring Standard - Scheduled Event Name")
+            .description("Get Scheduled Event - Reoccurring Standard - Scheduled Event Description")
+            .category("Get Scheduled Event - Reoccurring Standard - Scheduled Event Category")
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
             .startTime(startTime)
@@ -71,9 +71,9 @@ class ScheduledEventTestConstants {
                     "get-scheduled-event-reoccurring-weekly-organizer-1-id",
                     "get-scheduled-event-reoccurring-weekly-organizer-2-id"
             ))
-            .name("Get Scheduled Event Reoccurring Weekly - Scheduled Event Name")
-            .description("Get Scheduled Event Reoccurring Weekly - Scheduled Event Description")
-            .category("Get Scheduled Event Reoccurring Weekly - Scheduled Event Category")
+            .name("Get Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
+            .description("Get Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
+            .category("Get Scheduled Event - Reoccurring Weekly - Scheduled Event Category")
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
             .scheduledEventDay(ScheduledEventDay.TUE)
@@ -168,17 +168,17 @@ class ScheduledEventTestConstants {
             .build()
 
     public static ScheduledEvent CREATE_SCHEDULED_EVENT_SINGLE = ScheduledEvent.builder()
-            .eventScheduleId("create-scheduled-event-scheduled-event-single-event-schedule-id")
+            .eventScheduleId("create-scheduled-event-single-event-schedule-id")
             .clientId("create-scheduled-event-single-client-id")
             .eventId("create-scheduled-event-single-event-id")
-            .locationId("create-scheduled-event-scheduled-event-single-location-id")
+            .locationId("create-scheduled-event-single-location-id")
             .organizerIds(List.of(
-                    "create-scheduled-event-scheduled-event-single-organizer-1-id",
-                    "create-scheduled-event-scheduled-event-single-organizer-2-id"
+                    "create-scheduled-event-single-organizer-1-id",
+                    "create-scheduled-event-single-organizer-2-id"
             ))
-            .name("Create Scheduled Event - Scheduled Event Single - Scheduled Event Name")
-            .description("Create Scheduled Event - Scheduled Event Single - Scheduled Event Description")
-            .category("Create Scheduled Event - Scheduled Event Single - Scheduled Event Category")
+            .name("Create Scheduled Event - Single - Scheduled Event Name")
+            .description("Create Scheduled Event - Single - Scheduled Event Description")
+            .category("Create Scheduled Event - Single - Scheduled Event Category")
             .startTime(startTime)
             .endTime(endTime)
             .scheduledEventType(ScheduledEventType.SINGLE)
@@ -189,19 +189,19 @@ class ScheduledEventTestConstants {
             .build()
 
     public static ScheduledEvent CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD = ScheduledEvent.builder()
-            .eventScheduleId("create-scheduled-event-scheduled-event-reoccurring-standard-event-schedule-id")
+            .eventScheduleId("create-scheduled-event-reoccurring-standard-event-schedule-id")
             .clientId("create-scheduled-event-reoccurring-standard-client-id")
             .eventId("create-scheduled-event-reoccurring-standard-event-id")
-            .locationId("create-scheduled-event-scheduled-event-reoccurring-standard-location-id")
+            .locationId("create-scheduled-event-reoccurring-standard-location-id")
             .organizerIds(List.of(
-                    "create-scheduled-event-scheduled-event-reoccurring-standard-organizer-1-id",
-                    "create-scheduled-event-scheduled-event-reoccurring-standard-organizer-2-id"
+                    "create-scheduled-event-reoccurring-standard-organizer-1-id",
+                    "create-scheduled-event-reoccurring-standard-organizer-2-id"
             ))
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
-            .name("Create Scheduled Event - Scheduled Event Reoccurring Standard - Scheduled Event Name")
-            .description("Create Scheduled Event - Scheduled Event Reoccurring Standard - Scheduled Event Description")
-            .category("Create Scheduled Event - Scheduled Event Reoccurring Standard - Scheduled Event Category")
+            .name("Create Scheduled Event - Reoccurring Standard - Scheduled Event Name")
+            .description("Create Scheduled Event - Reoccurring Standard - Scheduled Event Description")
+            .category("Create Scheduled Event - Reoccurring Standard - Scheduled Event Category")
             .startTime(startTime)
             .endTime(endTime)
             .cost(3999)
@@ -210,20 +210,20 @@ class ScheduledEventTestConstants {
             .build()
 
     public static ScheduledEvent CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY = ScheduledEvent.builder()
-            .eventScheduleId("create-scheduled-event-scheduled-event-reoccurring-weekly-event-schedule-id")
+            .eventScheduleId("create-scheduled-event-reoccurring-weekly-event-schedule-id")
             .clientId("create-scheduled-event-reoccurring-weekly-client-id")
             .eventId("create-scheduled-event-reoccurring-weekly-event-id")
-            .locationId("create-scheduled-event-scheduled-event-reoccurring-weekly-location-id")
+            .locationId("create-scheduled-event-reoccurring-weekly-location-id")
             .organizerIds(List.of(
-                    "create-scheduled-event-scheduled-event-reoccurring-weekly-organizer-1-id",
-                    "create-scheduled-event-scheduled-event-reoccurring-weekly-organizer-2-id"
+                    "create-scheduled-event-reoccurring-weekly-organizer-1-id",
+                    "create-scheduled-event-reoccurring-weekly-organizer-2-id"
             ))
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
             .scheduledEventDay(ScheduledEventDay.TUE)
-            .name("Create Scheduled Event - Scheduled Event Reoccurring Weekly - Scheduled Event Name")
-            .description("Create Scheduled Event - Scheduled Event Reoccurring Weekly - Scheduled Event Description")
-            .category("Create Scheduled Event - Scheduled Event Reoccurring Weekly - Scheduled Event Category")
+            .name("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
+            .description("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
+            .category("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Category")
             .startTime(startTime)
             .endTime(endTime)
             .cost(3999)
@@ -250,9 +250,9 @@ class ScheduledEventTestConstants {
             .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
             .scheduledEventType(ScheduledEventType.SINGLE)
             .scheduledEventDate(scheduledEventDate)
-            .name("Update Scheduled Event Single - Scheduled Event Name")
-            .description("Update Scheduled Event Single - Scheduled Event Description")
-            .category("Update Scheduled Event Single - Scheduled Event Category")
+            .name("Update Scheduled Event - Single - Scheduled Event Name")
+            .description("Update Scheduled Event - Single - Scheduled Event Description")
+            .category("Update Scheduled Event - Single - Scheduled Event Category")
             .startTime(startTime)
             .endTime(endTime)
             .cost(3999)
@@ -267,9 +267,9 @@ class ScheduledEventTestConstants {
             .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
-            .name("Update Scheduled Event Reoccurring Standard - Scheduled Event Name")
-            .description("Update Scheduled Event Reoccurring Standard - Scheduled Event Description")
-            .category("Update Scheduled Event Reoccurring Standard - Scheduled Event Category")
+            .name("Update Scheduled Event - Reoccurring Standard - Scheduled Event Name")
+            .description("Update Scheduled Event - Reoccurring Standard - Scheduled Event Description")
+            .category("Update Scheduled Event - Reoccurring Standard - Scheduled Event Category")
             .startTime(startTime)
             .endTime(endTime)
             .cost(3999)
@@ -285,9 +285,9 @@ class ScheduledEventTestConstants {
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
             .scheduledEventDay(ScheduledEventDay.TUE)
-            .name("Update Scheduled Event Reoccurring Weekly - Scheduled Event Name")
-            .description("Update Scheduled Event Reoccurring Weekly - Scheduled Event Description")
-            .category("Update Scheduled Event Reoccurring Weekly - Scheduled Event Category")
+            .name("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
+            .description("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
+            .category("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Category")
             .startTime(startTime)
             .endTime(endTime)
             .cost(3999)

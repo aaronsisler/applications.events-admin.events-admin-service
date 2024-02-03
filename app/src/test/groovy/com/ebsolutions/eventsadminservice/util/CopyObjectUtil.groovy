@@ -1,5 +1,6 @@
 package com.ebsolutions.eventsadminservice.util
 
+
 import com.ebsolutions.eventsadminservice.model.*
 
 class CopyObjectUtil {
@@ -62,9 +63,20 @@ class CopyObjectUtil {
         return ScheduledEvent.builder()
                 .eventScheduleId(scheduledEvent.getEventScheduleId())
                 .scheduledEventId(scheduledEvent.getScheduledEventId())
+                .clientId(scheduledEvent.getClientId())
+                .eventId(scheduledEvent.getEventId())
                 .locationId(scheduledEvent.getLocationId())
                 .organizerIds(scheduledEvent.getOrganizerIds())
                 .name(scheduledEvent.getName())
+                .scheduledEventType(scheduledEvent.getScheduledEventType())
+                .scheduledEventDate(scheduledEvent.getScheduledEventDate())
+                .scheduledEventDay(scheduledEvent.getScheduledEventDay())
+                .scheduledEventInterval(scheduledEvent.getScheduledEventInterval())
+                .description(scheduledEvent.getDescription())
+                .category(scheduledEvent.getCategory())
+                .startTime(scheduledEvent.getStartTime())
+                .endTime(scheduledEvent.getEndTime())
+                .cost(scheduledEvent.getCost())
                 .createdOn(scheduledEvent.getCreatedOn())
                 .lastUpdatedOn(scheduledEvent.getLastUpdatedOn())
                 .build()

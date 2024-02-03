@@ -367,23 +367,7 @@ class ScheduledEventCreateSpec extends Specification {
                     .toString()
 
         and: "the scheduled event is valid"
-            ScheduledEvent newScheduledEvent = ScheduledEvent.builder()
-                    .eventScheduleId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventScheduleId())
-                    .clientId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getClientId())
-                    .eventId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventId())
-                    .locationId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getLocationId())
-                    .organizerIds(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerIds())
-                    .scheduledEventType(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventType())
-                    .scheduledEventDate(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventDate())
-                    .scheduledEventDay(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventDay())
-                    .scheduledEventInterval(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventInterval())
-                    .name(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getName())
-                    .description(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getDescription())
-                    .category(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getCategory())
-                    .startTime(ScheduledEventTestConstants.startTime)
-                    .endTime(ScheduledEventTestConstants.endTime)
-                    .cost(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getCost())
-                    .build()
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE)
 
         when: "a request is made to create a scheduled event for an event schedule"
             HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
@@ -457,23 +441,7 @@ class ScheduledEventCreateSpec extends Specification {
                     .toString()
 
         and: "the scheduled event is valid"
-            ScheduledEvent newScheduledEvent = ScheduledEvent.builder()
-                    .eventScheduleId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventScheduleId())
-                    .clientId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getClientId())
-                    .eventId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventId())
-                    .locationId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getLocationId())
-                    .organizerIds(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getOrganizerIds())
-                    .scheduledEventType(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventType())
-                    .scheduledEventDate(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventDate())
-                    .scheduledEventDay(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventDay())
-                    .scheduledEventInterval(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventInterval())
-                    .name(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getName())
-                    .description(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getDescription())
-                    .category(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getCategory())
-                    .startTime(ScheduledEventTestConstants.startTime)
-                    .endTime(ScheduledEventTestConstants.endTime)
-                    .cost(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getCost())
-                    .build()
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
 
         when: "a request is made to create a scheduled event for an event schedule"
             HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
@@ -547,23 +515,7 @@ class ScheduledEventCreateSpec extends Specification {
                     .toString()
 
         and: "the scheduled event is valid"
-            ScheduledEvent newScheduledEvent = ScheduledEvent.builder()
-                    .eventScheduleId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId())
-                    .clientId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId())
-                    .eventId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId())
-                    .locationId(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId())
-                    .organizerIds(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds())
-                    .scheduledEventType(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType())
-                    .scheduledEventDate(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDate())
-                    .scheduledEventDay(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDay())
-                    .scheduledEventInterval(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventInterval())
-                    .name(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName())
-                    .description(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription())
-                    .category(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory())
-                    .startTime(ScheduledEventTestConstants.startTime)
-                    .endTime(ScheduledEventTestConstants.endTime)
-                    .cost(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCost())
-                    .build()
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
 
         when: "a request is made to create a scheduled event for an event schedule"
             HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
