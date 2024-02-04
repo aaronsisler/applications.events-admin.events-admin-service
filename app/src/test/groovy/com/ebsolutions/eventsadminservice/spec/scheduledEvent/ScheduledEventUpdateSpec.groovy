@@ -1,9 +1,7 @@
 package com.ebsolutions.eventsadminservice.spec.scheduledEvent
 
-import com.ebsolutions.eventsadminservice.constant.EventTestConstants
 import com.ebsolutions.eventsadminservice.constant.ScheduledEventTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
-import com.ebsolutions.eventsadminservice.model.Event
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent
 import com.ebsolutions.eventsadminservice.model.ScheduledEventDay
 import com.ebsolutions.eventsadminservice.model.ScheduledEventInterval
@@ -35,23 +33,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
-
-            // TODO
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
 
         and: "the scheduled event's event schedule id is blank"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setEventScheduleId("")
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -68,23 +58,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
-
-            // TODO
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
 
         and: "the scheduled event's event schedule id is blank"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setEventScheduleId("")
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -101,23 +83,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
-
-            // TODO
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
 
         and: "the scheduled event's event schedule id is blank"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setEventScheduleId("")
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -134,23 +108,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
-
-            // TODO
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
 
         and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setEventScheduleId("not-the-url-event schedule-id")
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -167,23 +133,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
-
-            // TODO
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
 
         and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setEventScheduleId("not-the-url-event schedule-id")
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -196,27 +154,19 @@ class ScheduledEventUpdateSpec extends Specification {
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
-
-            // TODO
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
 
         and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setEventScheduleId("not-the-url-event schedule-id")
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -225,12 +175,81 @@ class ScheduledEventUpdateSpec extends Specification {
     }
 
     def "Update a scheduled event: URL Event Schedule id exists: Update Single Scheduled Event: Update fails given scheduled event's start time is after end time"() {
+        given: "the event schedule id is in the url"
+            String scheduledEventsUrl = new StringBuffer()
+                    .append(TestConstants.eventsAdminServiceUrl)
+                    .append("/event-schedules/")
+                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getEventScheduleId())
+                    .append("/scheduled-events/")
+                    .toString()
+
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
+
+        and: "the scheduled event's start time is after end time"
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            newScheduledEvent.setStartTime(ScheduledEventTestConstants.startTimeBeforeEndTime)
+            newScheduledEvent.setEndTime(ScheduledEventTestConstants.endTimeAfterStartTime)
+
+        when: "a request is made to update a scheduled event for an event schedule"
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
+            httpClient.toBlocking().exchange(httpRequest)
+
+        then: "the correct status code is returned"
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
     def "Update a scheduled event: URL Event Schedule id exists: Update Reoccurring Standard Scheduled Event: Update fails given scheduled event's start time is after end time"() {
+        given: "the event schedule id is in the url"
+            String scheduledEventsUrl = new StringBuffer()
+                    .append(TestConstants.eventsAdminServiceUrl)
+                    .append("/event-schedules/")
+                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getEventScheduleId())
+                    .append("/scheduled-events/")
+                    .toString()
+
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
+
+        and: "the scheduled event's start time is after end time"
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            newScheduledEvent.setStartTime(ScheduledEventTestConstants.startTimeBeforeEndTime)
+            newScheduledEvent.setEndTime(ScheduledEventTestConstants.endTimeAfterStartTime)
+
+        when: "a request is made to update a scheduled event for an event schedule"
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
+            httpClient.toBlocking().exchange(httpRequest)
+
+        then: "the correct status code is returned"
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
     def "Update a scheduled event: URL Event Schedule id exists: Update Reoccurring Weekly Scheduled Event: Update fails given scheduled event's start time is after end time"() {
+        given: "the event schedule id is in the url"
+            String scheduledEventsUrl = new StringBuffer()
+                    .append(TestConstants.eventsAdminServiceUrl)
+                    .append("/event-schedules/")
+                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getEventScheduleId())
+                    .append("/scheduled-events/")
+                    .toString()
+
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
+
+        and: "the scheduled event's start time is after end time"
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            newScheduledEvent.setStartTime(ScheduledEventTestConstants.startTimeBeforeEndTime)
+            newScheduledEvent.setEndTime(ScheduledEventTestConstants.endTimeAfterStartTime)
+
+        when: "a request is made to update a scheduled event for an event schedule"
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
+            httpClient.toBlocking().exchange(httpRequest)
+
+        then: "the correct status code is returned"
+            HttpClientResponseException ex = thrown()
+            assert ex.status == HttpStatus.BAD_REQUEST
     }
 
     def "Update a scheduled event: URL Event Schedule id exists: Update Single Scheduled Event: Update fails given scheduled event's scheduled event date is null"() {
@@ -242,23 +261,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
-
-            // TODO
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
 
         and: "the scheduled event's scheduled event date is null"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setScheduledEventDate(null)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -275,23 +286,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
 
-            // TODO
-
-        and: "the scheduled event's scheduled event date is null"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
-            newScheduledEvent.setScheduledEventDate(null)
+        and: "the scheduled event's scheduled event interval is null"
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            newScheduledEvent.setScheduledEventInterval(null)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -299,33 +302,25 @@ class ScheduledEventUpdateSpec extends Specification {
             assert ex.status == HttpStatus.BAD_REQUEST
     }
 
-    def "Update a scheduled event: URL Event Schedule id exists: Update Reoccurring Scheduled Event: Update fails given scheduled event day is not null and scheduled event interval is daily"() {
+    def "Update a scheduled event: URL Event Schedule id exists: Update Reoccurring Weekly Scheduled Event: Update fails given scheduled event day is not null and scheduled event interval is daily"() {
         given: "the event schedule id is in the url"
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
 
-            // TODO
-
-        and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
+        and: "the scheduled event's scheduled event day is not null and scheduled event interval is daily"
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.DAILY)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -342,24 +337,16 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
 
-            // TODO
-
-        and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
+        and: "the scheduled event's scheduled event day is not null and scheduled event interval is weekdays"
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -376,23 +363,16 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
 
-            // TODO
-        and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
+        and: "the scheduled event's scheduled event day is not null and scheduled event interval is weekends"
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.WEEKENDS)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -405,27 +385,20 @@ class ScheduledEventUpdateSpec extends Specification {
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
-        and: "an event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<Event> initResponse = httpClient.toBlocking()
-                    .exchange(eventsUrl.concat(EventTestConstants.UPDATE_EVENT.getEventId()), Event)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
 
-            // TODO
-        and: "the scheduled event's event schedule id does not match the URL event schedule id"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
+        and: "the scheduled event's scheduled event day is null and scheduled event interval is weekly"
+            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
             newScheduledEvent.setScheduledEventDay(null)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.WEEKLY)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, newScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest)
 
         then: "the correct status code is returned"
@@ -442,21 +415,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-
-            // TODO
         and: "a scheduled event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<ScheduledEvent> initResponse = httpClient.toBlocking()
-                    .exchange(scheduledEventsUrl.concat(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getScheduledEventId()), ScheduledEvent)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getCreatedOn(), initResponse.body().getCreatedOn()))
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
 
         and: "the scheduled event's created on date is empty"
-            ScheduledEvent updatedEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
-            updatedEvent.createdOn(null)
+            ScheduledEvent updatedScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            updatedScheduledEvent.createdOn(null)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.PUT(URI.create(scheduledEventsUrl), updatedEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(URI.create(scheduledEventsUrl), updatedScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest, ScheduledEvent)
 
         then: "the correct status code is returned"
@@ -473,21 +440,15 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
         and: "a scheduled event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<ScheduledEvent> initResponse = httpClient.toBlocking()
-                    .exchange(scheduledEventsUrl.concat(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getScheduledEventId()), ScheduledEvent)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
 
         and: "the scheduled event's created on date is after the current date and time"
-            ScheduledEvent updatedEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
-            updatedEvent.setCreatedOn(LocalDateTime.now().plusMonths(1))
+            ScheduledEvent updatedScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            updatedScheduledEvent.setCreatedOn(LocalDateTime.now().plusMonths(1))
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.PUT(URI.create(scheduledEventsUrl), updatedEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(URI.create(scheduledEventsUrl), updatedScheduledEvent)
             httpClient.toBlocking().exchange(httpRequest, ScheduledEvent)
 
         then: "the correct status code is returned"
@@ -504,18 +465,21 @@ class ScheduledEventUpdateSpec extends Specification {
                     .append("/scheduled-events/")
                     .toString()
 
-            // TODO
         and: "a scheduled event exists in the database"
-            // Verify data seeded from Database init scripts correctly
-            HttpResponse<ScheduledEvent> initResponse = httpClient.toBlocking()
-                    .exchange(scheduledEventsUrl.concat(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getScheduledEventId()), ScheduledEvent)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getCreatedOn(), initResponse.body().getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_SINGLE)
 
+        and: "a valid update is made to the scheduled event"
+            ScheduledEvent updatedScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            updatedScheduledEvent.getOrganizerIds().remove(1)
+            updatedScheduledEvent.getOrganizerIds().add(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerThreeId)
+            updatedScheduledEvent.setLocationId(ScheduledEventTestConstants.updateScheduledEventUpdatedLocationId)
+            updatedScheduledEvent.setName(ScheduledEventTestConstants.updateScheduledEventUpdatedName)
+            updatedScheduledEvent.setDescription(ScheduledEventTestConstants.updateScheduledEventUpdatedDescription)
+            updatedScheduledEvent.setCategory(ScheduledEventTestConstants.updateScheduledEventUpdatedCategory)
+            updatedScheduledEvent.setCreatedOn(TestConstants.updateCreatedOn)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, updatedEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, updatedScheduledEvent)
             HttpResponse<ScheduledEvent> response = httpClient.toBlocking()
                     .exchange(httpRequest, ScheduledEvent)
 
@@ -525,55 +489,15 @@ class ScheduledEventUpdateSpec extends Specification {
         and: "the updated scheduled event is returned in the response"
             ScheduledEvent scheduledEvent = response.body()
 
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId(), scheduledEvent.getEventScheduleId())
-            Assertions.assertNotNull(scheduledEvent.getScheduledEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId(), scheduledEvent.getClientId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId(), scheduledEvent.getEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId(), scheduledEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(0), scheduledEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(1), scheduledEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName(), scheduledEvent.getName())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription(), scheduledEvent.getDescription())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory(), scheduledEvent.getCategory())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), scheduledEvent.getScheduledEventType())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventInterval(), scheduledEvent.getScheduledEventInterval())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDay(), scheduledEvent.getScheduledEventDay())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCost(), scheduledEvent.getCost())
-            // Date and time comparisons
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDate(), scheduledEvent.getScheduledEventDate()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getStartTime(), scheduledEvent.getStartTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEndTime(), scheduledEvent.getEndTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getLastUpdatedOn()))
+            correctResponseIsReturned(updatedScheduledEvent, scheduledEvent)
 
         and: "the scheduled event is correct in the database"
             HttpResponse<ScheduledEvent> checkingDatabaseResponse = httpClient.toBlocking()
                     .exchange(scheduledEventsUrl.concat(scheduledEvent.getScheduledEventId()), ScheduledEvent)
 
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
-
-            ScheduledEvent databaseEvent = checkingDatabaseResponse.body()
-
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId(), databaseEvent.getEventScheduleId())
-            Assertions.assertEquals(scheduledEvent.getScheduledEventId(), databaseEvent.getScheduledEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId(), databaseEvent.getClientId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId(), databaseEvent.getEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId(), databaseEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(0), databaseEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(1), databaseEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName(), databaseEvent.getName())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription(), databaseEvent.getDescription())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory(), databaseEvent.getCategory())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), databaseEvent.getScheduledEventType())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventInterval(), databaseEvent.getScheduledEventInterval())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDay(), databaseEvent.getScheduledEventDay())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCost(), databaseEvent.getCost())
-            // Date and time comparisons
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDate(), databaseEvent.getScheduledEventDate()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getStartTime(), databaseEvent.getStartTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEndTime(), databaseEvent.getEndTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getLastUpdatedOn()))
+            ScheduledEvent databaseScheduledEvent = checkingDatabaseResponse.body()
+            correctResponseIsReturned(updatedScheduledEvent, databaseScheduledEvent)
     }
 
     def "Update a scheduled event: URL Event Schedule id exists: Update Reoccurring Standard Scheduled Event: Update scheduled event is successful"() {
@@ -581,22 +505,32 @@ class ScheduledEventUpdateSpec extends Specification {
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
-        and: "the scheduled event is valid"
-            ScheduledEvent newEvent = ScheduledEvent.builder()
-                    .eventScheduleId(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
-                    .name(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING.getName())
-                    .startTime(ScheduledEventTestConstants.startTime)
-                    .endTime(ScheduledEventTestConstants.endTime)
-                    .build()
+        and: "a scheduled event exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
+
+        and: "a valid update is made to the scheduled event"
+            ScheduledEvent updatedScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            updatedScheduledEvent.getOrganizerIds().remove(1)
+            updatedScheduledEvent.getOrganizerIds().add(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerThreeId)
+            updatedScheduledEvent.setEventId(ScheduledEventTestConstants.updateScheduledEventUpdatedEventId)
+            updatedScheduledEvent.setClientId(ScheduledEventTestConstants.updateScheduledEventUpdatedClientId)
+            updatedScheduledEvent.setLocationId(ScheduledEventTestConstants.updateScheduledEventUpdatedLocationId)
+            updatedScheduledEvent.setName(ScheduledEventTestConstants.updateScheduledEventUpdatedName)
+            updatedScheduledEvent.setDescription(ScheduledEventTestConstants.updateScheduledEventUpdatedDescription)
+            updatedScheduledEvent.setCategory(ScheduledEventTestConstants.updateScheduledEventUpdatedCategory)
+            updatedScheduledEvent.setStartTime(ScheduledEventTestConstants.updateScheduledEventStartTime)
+            updatedScheduledEvent.setEndTime(ScheduledEventTestConstants.updateScheduledEventEndTime)
+            updatedScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.WEEKENDS)
+            updatedScheduledEvent.setCreatedOn(TestConstants.updateCreatedOn)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newEvent)
-            HttpResponse<ScheduledEvent> response = httpClient.toBlocking()
-                    .exchange(httpRequest, ScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, updatedScheduledEvent)
+            HttpResponse<ScheduledEvent> response = httpClient.toBlocking().exchange(httpRequest, ScheduledEvent)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
@@ -604,26 +538,7 @@ class ScheduledEventUpdateSpec extends Specification {
         and: "the updated scheduled event is returned in the response"
             ScheduledEvent scheduledEvent = response.body()
 
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId(), scheduledEvent.getEventScheduleId())
-            Assertions.assertNotNull(scheduledEvent.getScheduledEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId(), scheduledEvent.getClientId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId(), scheduledEvent.getEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId(), scheduledEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(0), scheduledEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(1), scheduledEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName(), scheduledEvent.getName())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription(), scheduledEvent.getDescription())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory(), scheduledEvent.getCategory())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), scheduledEvent.getScheduledEventType())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventInterval(), scheduledEvent.getScheduledEventInterval())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDay(), scheduledEvent.getScheduledEventDay())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCost(), scheduledEvent.getCost())
-            // Date and time comparisons
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDate(), scheduledEvent.getScheduledEventDate()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getStartTime(), scheduledEvent.getStartTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEndTime(), scheduledEvent.getEndTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getLastUpdatedOn()))
+            correctResponseIsReturned(updatedScheduledEvent, scheduledEvent)
 
         and: "the scheduled event is correct in the database"
             HttpResponse<ScheduledEvent> checkingDatabaseResponse = httpClient.toBlocking()
@@ -631,28 +546,9 @@ class ScheduledEventUpdateSpec extends Specification {
 
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
 
-            ScheduledEvent databaseEvent = checkingDatabaseResponse.body()
+            ScheduledEvent databaseScheduledEvent = checkingDatabaseResponse.body()
 
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId(), databaseEvent.getEventScheduleId())
-            Assertions.assertEquals(scheduledEvent.getScheduledEventId(), databaseEvent.getScheduledEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId(), databaseEvent.getClientId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId(), databaseEvent.getEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId(), databaseEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(0), databaseEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(1), databaseEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName(), databaseEvent.getName())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription(), databaseEvent.getDescription())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory(), databaseEvent.getCategory())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), databaseEvent.getScheduledEventType())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventInterval(), databaseEvent.getScheduledEventInterval())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDay(), databaseEvent.getScheduledEventDay())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCost(), databaseEvent.getCost())
-            // Date and time comparisons
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDate(), databaseEvent.getScheduledEventDate()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getStartTime(), databaseEvent.getStartTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEndTime(), databaseEvent.getEndTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getLastUpdatedOn()))
+            correctResponseIsReturned(updatedScheduledEvent, databaseScheduledEvent)
     }
 
     def "Update a scheduled event: URL Event Schedule id exists: Update Reoccurring Weekly Scheduled Event: Update scheduled event is successful"() {
@@ -660,49 +556,34 @@ class ScheduledEventUpdateSpec extends Specification {
             String scheduledEventsUrl = new StringBuffer()
                     .append(TestConstants.eventsAdminServiceUrl)
                     .append("/event-schedules/")
-                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
+                    .append(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId())
                     .append("/scheduled-events/")
                     .toString()
 
-        and: "the scheduled event is valid"
-            ScheduledEvent newEvent = ScheduledEvent.builder()
-                    .eventScheduleId(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING.getEventScheduleId())
-                    .name(ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING.getName())
-                    .startTime(ScheduledEventTestConstants.startTime)
-                    .endTime(ScheduledEventTestConstants.endTime)
-                    .build()
+        and: "a scheduled event exists in the database"
+            HttpResponse<ScheduledEvent> initResponse = checkDatabaseSeeding(scheduledEventsUrl, ScheduledEventTestConstants.UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY)
+
+        and: "a valid update is made to the scheduled event"
+            ScheduledEvent updatedScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
+            updatedScheduledEvent.getOrganizerIds().remove(1)
+            updatedScheduledEvent.getOrganizerIds().add(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerThreeId)
+            updatedScheduledEvent.setLocationId(ScheduledEventTestConstants.updateScheduledEventUpdatedLocationId)
+            updatedScheduledEvent.setName(ScheduledEventTestConstants.updateScheduledEventUpdatedName)
+            updatedScheduledEvent.setDescription(ScheduledEventTestConstants.updateScheduledEventUpdatedDescription)
+            updatedScheduledEvent.setCategory(ScheduledEventTestConstants.updateScheduledEventUpdatedCategory)
+            updatedScheduledEvent.setScheduledEventDay(ScheduledEventDay.FRI)
+            updatedScheduledEvent.setCreatedOn(TestConstants.updateCreatedOn)
 
         when: "a request is made to update a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newEvent)
-            HttpResponse<ScheduledEvent> response = httpClient.toBlocking()
-                    .exchange(httpRequest, ScheduledEvent)
+            HttpRequest httpRequest = HttpRequest.PUT(scheduledEventsUrl, updatedScheduledEvent)
+            HttpResponse<ScheduledEvent> response = httpClient.toBlocking().exchange(httpRequest, ScheduledEvent)
 
         then: "the correct status code is returned"
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
 
         and: "the updated scheduled event is returned in the response"
             ScheduledEvent scheduledEvent = response.body()
-
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId(), scheduledEvent.getEventScheduleId())
-            Assertions.assertNotNull(scheduledEvent.getScheduledEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId(), scheduledEvent.getClientId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId(), scheduledEvent.getEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId(), scheduledEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(0), scheduledEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(1), scheduledEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName(), scheduledEvent.getName())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription(), scheduledEvent.getDescription())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory(), scheduledEvent.getCategory())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), scheduledEvent.getScheduledEventType())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventInterval(), scheduledEvent.getScheduledEventInterval())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDay(), scheduledEvent.getScheduledEventDay())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCost(), scheduledEvent.getCost())
-            // Date and time comparisons
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDate(), scheduledEvent.getScheduledEventDate()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getStartTime(), scheduledEvent.getStartTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEndTime(), scheduledEvent.getEndTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getLastUpdatedOn()))
+            correctResponseIsReturned(updatedScheduledEvent, scheduledEvent)
 
         and: "the scheduled event is correct in the database"
             HttpResponse<ScheduledEvent> checkingDatabaseResponse = httpClient.toBlocking()
@@ -710,27 +591,43 @@ class ScheduledEventUpdateSpec extends Specification {
 
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
 
-            ScheduledEvent databaseEvent = checkingDatabaseResponse.body()
-
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId(), databaseEvent.getEventScheduleId())
-            Assertions.assertEquals(scheduledEvent.getScheduledEventId(), databaseEvent.getScheduledEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId(), databaseEvent.getClientId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId(), databaseEvent.getEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId(), databaseEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(0), databaseEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(1), databaseEvent.getOrganizerIds().get(1))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName(), databaseEvent.getName())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription(), databaseEvent.getDescription())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory(), databaseEvent.getCategory())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), databaseEvent.getScheduledEventType())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventInterval(), databaseEvent.getScheduledEventInterval())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDay(), databaseEvent.getScheduledEventDay())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCost(), databaseEvent.getCost())
-            // Date and time comparisons
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventDate(), databaseEvent.getScheduledEventDate()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getStartTime(), databaseEvent.getStartTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEndTime(), databaseEvent.getEndTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getLastUpdatedOn()))
+            ScheduledEvent databaseScheduledEvent = checkingDatabaseResponse.body()
+            correctResponseIsReturned(updatedScheduledEvent, databaseScheduledEvent)
     }
+
+
+    private HttpResponse<ScheduledEvent> checkDatabaseSeeding(String scheduledEventsUrl, ScheduledEvent scheduledEvent) {
+        // Verify data seeded from Database init scripts correctly
+        HttpResponse<ScheduledEvent> initResponse = httpClient.toBlocking()
+                .exchange(scheduledEventsUrl.concat(scheduledEvent.getScheduledEventId()), ScheduledEvent)
+        Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
+        Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(scheduledEvent.getCreatedOn(), initResponse.body().getCreatedOn()))
+        Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(scheduledEvent.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
+
+        return initResponse
+    }
+
+    private void correctResponseIsReturned(ScheduledEvent expectedScheduledEvent, ScheduledEvent scheduledEvent) {
+        Assertions.assertEquals(expectedScheduledEvent.getEventScheduleId(), scheduledEvent.getEventScheduleId())
+        Assertions.assertEquals(expectedScheduledEvent.getScheduledEventId(), scheduledEvent.getScheduledEventId())
+        Assertions.assertEquals(expectedScheduledEvent.getClientId(), scheduledEvent.getClientId())
+        Assertions.assertEquals(expectedScheduledEvent.getEventId(), scheduledEvent.getEventId())
+        Assertions.assertEquals(expectedScheduledEvent.getLocationId(), scheduledEvent.getLocationId())
+        Assertions.assertEquals(expectedScheduledEvent.getOrganizerIds().get(0), scheduledEvent.getOrganizerIds().get(0))
+        Assertions.assertEquals(expectedScheduledEvent.getOrganizerIds().get(1), scheduledEvent.getOrganizerIds().get(1))
+        Assertions.assertEquals(expectedScheduledEvent.getName(), scheduledEvent.getName())
+        Assertions.assertEquals(expectedScheduledEvent.getDescription(), scheduledEvent.getDescription())
+        Assertions.assertEquals(expectedScheduledEvent.getCategory(), scheduledEvent.getCategory())
+        Assertions.assertEquals(expectedScheduledEvent.getScheduledEventType(), scheduledEvent.getScheduledEventType())
+        Assertions.assertEquals(expectedScheduledEvent.getScheduledEventInterval(), scheduledEvent.getScheduledEventInterval())
+        Assertions.assertEquals(expectedScheduledEvent.getScheduledEventDay(), scheduledEvent.getScheduledEventDay())
+        Assertions.assertEquals(expectedScheduledEvent.getCost(), scheduledEvent.getCost())
+        // Date and time comparisons
+        Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(expectedScheduledEvent.getScheduledEventDate(), scheduledEvent.getScheduledEventDate()))
+        Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(expectedScheduledEvent.getStartTime(), scheduledEvent.getStartTime()))
+        Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(expectedScheduledEvent.getEndTime(), scheduledEvent.getEndTime()))
+        Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, scheduledEvent.getCreatedOn()))
+        Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getLastUpdatedOn()))
+    }
+
 }

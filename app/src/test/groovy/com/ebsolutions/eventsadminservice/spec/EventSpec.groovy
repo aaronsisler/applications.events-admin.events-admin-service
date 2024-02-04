@@ -423,7 +423,7 @@ class EventSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getCreatedOn(), initResponse.body().getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(EventTestConstants.UPDATE_EVENT.getLastUpdatedOn(), initResponse.body().getLastUpdatedOn()))
 
-        and: "a valid update is made to event"
+        and: "a valid update is made to the event"
             Event updatedEvent = CopyObjectUtil.event(initResponse.body())
             updatedEvent.getOrganizerIds().remove(1)
             updatedEvent.getOrganizerIds().add(EventTestConstants.updateEventUpdatedOrganizerThreeId)

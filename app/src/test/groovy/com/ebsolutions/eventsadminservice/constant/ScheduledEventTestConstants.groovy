@@ -13,8 +13,12 @@ import java.time.LocalTime
  * Leading Dashes on event ids are to help with the DB Setup
  */
 class ScheduledEventTestConstants {
+    // The startTime and endTime should be logically correct
     public static LocalTime startTime = LocalTime.of(13, 45, 42)
     public static LocalTime endTime = LocalTime.of(20, 30, 25)
+    // The startTimeBeforeEndTime and startTimeBeforeEndTimeAfterStartTime should be logically correct
+    public static LocalTime startTimeBeforeEndTime = LocalTime.of(20, 30, 25)
+    public static LocalTime endTimeAfterStartTime = LocalTime.of(13, 45, 42)
     public static LocalDate scheduledEventDate = LocalDate.of(2023, 11, 25)
 
     public static ScheduledEvent GET_SCHEDULED_EVENT_SINGLE = ScheduledEvent.builder()
@@ -234,6 +238,8 @@ class ScheduledEventTestConstants {
     public static String updateScheduledEventOrganizerOneId = "update-scheduled-event-organizer-1-id"
     public static String updateScheduledEventOrganizerTwoId = "update-scheduled-event-organizer-2-id"
     public static String updateScheduledEventUpdatedOrganizerThreeId = "update-scheduled-event-organizer-3-id"
+    public static String updateScheduledEventUpdatedEventId = "update-scheduled-event-updated-event-id"
+    public static String updateScheduledEventUpdatedClientId = "update-scheduled-event-updated-client-id"
     public static String updateScheduledEventUpdatedLocationId = "update-scheduled-event-updated-location-id"
     public static String updateScheduledEventUpdatedName = "Updated Scheduled Event Name"
     public static String updateScheduledEventUpdatedDescription = "Updated Scheduled Event Description"
@@ -246,6 +252,8 @@ class ScheduledEventTestConstants {
     public static ScheduledEvent UPDATE_SCHEDULED_EVENT_SINGLE = ScheduledEvent.builder()
             .eventScheduleId("update-scheduled-event-single-event-schedule-id")
             .scheduledEventId("-update-scheduled-event-single-scheduled-event-id")
+            .clientId("update-scheduled-event-single-client-id")
+            .eventId("update-scheduled-event-single-event-id")
             .locationId("update-scheduled-event-single-location-id")
             .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
             .scheduledEventType(ScheduledEventType.SINGLE)
@@ -263,6 +271,8 @@ class ScheduledEventTestConstants {
     public static ScheduledEvent UPDATE_SCHEDULED_EVENT_REOCCURRING_STANDARD = ScheduledEvent.builder()
             .eventScheduleId("update-scheduled-event-reoccurring-standard-event-schedule-id")
             .scheduledEventId("-update-scheduled-event-reoccurring-standard-scheduled-event-id")
+            .clientId("update-scheduled-event-reoccurring-standard-client-id")
+            .eventId("update-scheduled-event-reoccurring-standard-event-id")
             .locationId("update-scheduled-event-reoccurring-standard-location-id")
             .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
             .scheduledEventType(ScheduledEventType.REOCCURRING)
@@ -280,6 +290,8 @@ class ScheduledEventTestConstants {
     public static ScheduledEvent UPDATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY = ScheduledEvent.builder()
             .eventScheduleId("update-scheduled-event-reoccurring-weekly-event-schedule-id")
             .scheduledEventId("-update-scheduled-event-reoccurring-weekly-scheduled-event-id")
+            .clientId("update-scheduled-event-reoccurring-weekly-client-id")
+            .eventId("update-scheduled-event-reoccurring-weekly-event-id")
             .locationId("update-scheduled-event-reoccurring-weekly-location-id")
             .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
             .scheduledEventType(ScheduledEventType.REOCCURRING)

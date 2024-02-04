@@ -212,8 +212,8 @@ public class RequestValidator {
                 return false;
             }
 
-            return (scheduledEvent.getScheduledEventDay() == null
-                    || ScheduledEventInterval.WEEKLY.equals(scheduledEvent.getScheduledEventInterval()));
+            return !(scheduledEvent.getScheduledEventDay() == null
+                    && ScheduledEventInterval.WEEKLY.equals(scheduledEvent.getScheduledEventInterval()));
         }
 
         return true;

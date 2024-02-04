@@ -4,34 +4,34 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-scheduled-event-single-event-schedule-id"
+            "S": "update-scheduled-event-single-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-get-scheduled-event-single-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-update-scheduled-event-single-scheduled-event-id"
           },
           "clientId": {
-            "S": "get-scheduled-event-single-client-id"
+            "S": "update-scheduled-event-single-client-id"
           },
           "eventId": {
-            "S": "get-scheduled-event-single-event-id"
+            "S": "update-scheduled-event-single-event-id"
           },
           "locationId": {
-            "S": "get-scheduled-event-single-location-id"
+            "S": "update-scheduled-event-single-location-id"
           },
           "organizerIds": {
             "SS": [
-              "get-scheduled-event-single-organizer-1-id",
-              "get-scheduled-event-single-organizer-2-id"
+              "update-scheduled-event-single-organizer-1-id",
+              "update-scheduled-event-single-organizer-2-id"
             ]
           },
           "name": {
-            "S": "Get Scheduled Event - Single - Scheduled Event Name"
+            "S": "Update Scheduled Event - Single - Scheduled Event Name"
           },
           "description": {
-            "S": "Get Scheduled Event - Single - Scheduled Event Description"
+            "S": "Update Scheduled Event - Single - Scheduled Event Description"
           },
           "category": {
-            "S": "Get Scheduled Event - Single - Scheduled Event Category"
+            "S": "Update Scheduled Event - Single - Scheduled Event Category"
           },
           "scheduledEventType": {
             "S": "SINGLE"
@@ -46,7 +46,7 @@
             "S": "20:30:25"
           },
           "cost": {
-            "N": "550"
+            "N": "3999"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -61,34 +61,34 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-scheduled-event-reoccurring-standard-event-schedule-id"
+            "S": "update-scheduled-event-reoccurring-standard-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-get-scheduled-event-reoccurring-standard-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-update-scheduled-event-reoccurring-standard-scheduled-event-id"
           },
           "clientId": {
-            "S": "get-scheduled-event-reoccurring-standard-client-id"
+            "S": "update-scheduled-event-reoccurring-standard-client-id"
           },
           "eventId": {
-            "S": "get-scheduled-event-reoccurring-standard-event-id"
+            "S": "update-scheduled-event-reoccurring-standard-event-id"
           },
           "locationId": {
-            "S": "get-scheduled-event-reoccurring-standard-location-id"
+            "S": "update-scheduled-event-reoccurring-standard-location-id"
           },
           "organizerIds": {
             "SS": [
-              "get-scheduled-event-reoccurring-standard-organizer-1-id",
-              "get-scheduled-event-reoccurring-standard-organizer-2-id"
+              "update-scheduled-event-reoccurring-organizer-1-id",
+              "update-scheduled-event-reoccurring-organizer-2-id"
             ]
           },
           "name": {
-            "S": "Get Scheduled Event - Reoccurring Standard - Scheduled Event Name"
+            "S": "Update Scheduled Event - Reoccurring Standard - Scheduled Event Name"
           },
           "description": {
-            "S": "Get Scheduled Event - Reoccurring Standard - Scheduled Event Description"
+            "S": "Update Scheduled Event - Reoccurring Standard - Scheduled Event Description"
           },
           "category": {
-            "S": "Get Scheduled Event - Reoccurring Standard - Scheduled Event Category"
+            "S": "Update Scheduled Event Reoccurring Standard - Scheduled Event Category"
           },
           "scheduledEventType": {
             "S": "REOCCURRING"
@@ -103,7 +103,7 @@
             "S": "20:30:25"
           },
           "cost": {
-            "N": "350"
+            "N": "3999"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -118,34 +118,34 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-scheduled-event-reoccurring-weekly-event-schedule-id"
+            "S": "update-scheduled-event-reoccurring-weekly-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-get-scheduled-event-reoccurring-weekly-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-update-scheduled-event-reoccurring-weekly-scheduled-event-id"
           },
           "clientId": {
-            "S": "get-scheduled-event-reoccurring-weekly-client-id"
+            "S": "update-scheduled-event-reoccurring-weekly-client-id"
           },
           "eventId": {
-            "S": "get-scheduled-event-reoccurring-weekly-event-id"
+            "S": "update-scheduled-event-reoccurring-weekly-event-id"
           },
           "locationId": {
-            "S": "get-scheduled-event-reoccurring-weekly-location-id"
+            "S": "update-scheduled-event-reoccurring-weekly-location-id"
           },
           "organizerIds": {
             "SS": [
-              "get-scheduled-event-reoccurring-weekly-organizer-1-id",
-              "get-scheduled-event-reoccurring-weekly-organizer-2-id"
+              "update-scheduled-event-reoccurring-weekly-organizer-1-id",
+              "update-scheduled-event-reoccurring-weekly-organizer-2-id"
             ]
           },
           "name": {
-            "S": "Get Scheduled Event - Reoccurring Weekly - Scheduled Event Name"
+            "S": "Update Scheduled Event - Reoccurring Weekly - Scheduled Event Name"
           },
           "description": {
-            "S": "Get Scheduled Event - Reoccurring Weekly - Scheduled Event Description"
+            "S": "Update Scheduled Event - Reoccurring Weekly - Scheduled Event Description"
           },
           "category": {
-            "S": "Get Scheduled Event - Reoccurring Weekly - Scheduled Event Category"
+            "S": "Update Scheduled Event - Reoccurring Weekly - Scheduled Event Category"
           },
           "scheduledEventType": {
             "S": "REOCCURRING"
@@ -163,7 +163,7 @@
             "S": "20:30:25"
           },
           "cost": {
-            "N": "450"
+            "N": "3999"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
