@@ -11,8 +11,6 @@ components:
       required:
         - name
       properties:
-        clientId:
-          type: string
         name:
           type: string
         createdOn:

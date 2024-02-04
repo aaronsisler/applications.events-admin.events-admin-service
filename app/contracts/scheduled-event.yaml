@@ -3,9 +3,9 @@ info:
   title: Scheduled Events REST API
   version: "1.0"
 paths:
-  /clients/{clientId}/scheduled-events:
+  /event-schedules/{eventScheduleId}/scheduled-events:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "event-schedule.yaml#/components/parameters/EventScheduleId"
     get:
       responses:
         200:
@@ -34,9 +34,9 @@ paths:
                 $ref: "#/components/schemas/ScheduledEvent"
         '5XX':
           description: Server Error
-  /clients/{clientId}/scheduled-events/{scheduledEventId}:
+  /event-schedules/{eventScheduleId}/scheduled-events/{scheduledEventId}:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "event-schedule.yaml#/components/parameters/EventScheduleId"
       - $ref: "#/components/parameters/ScheduledEventId"
     get:
       responses:
@@ -66,8 +66,6 @@ components:
       enum:
         - DAILY
         - WEEKLY
-        - BIWEEKLY
-        - MONTHLY
         - WEEKDAYS
         - WEEKENDS
     ScheduledEventDay:
@@ -84,20 +82,37 @@ components:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
       required:
+        - eventScheduleId
+        - clientId
+        - eventId
         - scheduledEventType
         - startTime
         - endTime
       properties:
+        eventScheduleId:
+          type: string
         scheduledEventId:
+          type: string
+        clientId:
+          type: string
+        eventId:
           type: string
         locationId:
           type: string
-          description: Override the default event location id
         organizerIds:
           type: array
           items:
             type: string
-          description: Override the default event organizer id(s)
+        scheduledEventType:
+          $ref: "#/components/schemas/ScheduledEventType"
+        scheduledEventInterval:
+          $ref: "#/components/schemas/ScheduledEventInterval"
+        scheduledEventDay:
+          $ref: "#/components/schemas/ScheduledEventDay"
+        description:
+          type: string
+        category:
+          type: string
         startTime:
           type: string
           format: local-time
@@ -106,12 +121,6 @@ components:
           type: string
           format: local-time
           example: "13:02:34"
-        scheduledEventType:
-          $ref: "#/components/schemas/ScheduledEventType"
-        scheduledEventInterval:
-          $ref: "#/components/schemas/ScheduledEventInterval"
-        scheduledEventDay:
-          $ref: "#/components/schemas/ScheduledEventDay"
         scheduledEventDate:
           type: string
           format: local-date
@@ -122,7 +131,7 @@ components:
   parameters:
     ScheduledEventId:
       in: path
-      name: eventId
+      name: scheduledEventId
       required: true
       schema:
         type: string

@@ -1,9 +1,7 @@
 package com.ebsolutions.eventsadminservice.util
 
-import com.ebsolutions.eventsadminservice.model.Client
-import com.ebsolutions.eventsadminservice.model.Event
-import com.ebsolutions.eventsadminservice.model.Location
-import com.ebsolutions.eventsadminservice.model.Organizer
+
+import com.ebsolutions.eventsadminservice.model.*
 
 class CopyObjectUtil {
 
@@ -47,6 +45,40 @@ class CopyObjectUtil {
                 .category(event.getCategory())
                 .createdOn(event.getCreatedOn())
                 .lastUpdatedOn(event.getLastUpdatedOn())
+                .build()
+    }
+
+    static EventSchedule eventSchedule(EventSchedule eventSchedule) {
+        return EventSchedule.builder()
+                .clientId(eventSchedule.getClientId())
+                .eventScheduleId(eventSchedule.getEventScheduleId())
+                .name(eventSchedule.getName())
+                .description(eventSchedule.getDescription())
+                .createdOn(eventSchedule.getCreatedOn())
+                .lastUpdatedOn(eventSchedule.getLastUpdatedOn())
+                .build()
+    }
+
+    static ScheduledEvent scheduledEvent(ScheduledEvent scheduledEvent) {
+        return ScheduledEvent.builder()
+                .eventScheduleId(scheduledEvent.getEventScheduleId())
+                .scheduledEventId(scheduledEvent.getScheduledEventId())
+                .clientId(scheduledEvent.getClientId())
+                .eventId(scheduledEvent.getEventId())
+                .locationId(scheduledEvent.getLocationId())
+                .organizerIds(scheduledEvent.getOrganizerIds())
+                .name(scheduledEvent.getName())
+                .scheduledEventType(scheduledEvent.getScheduledEventType())
+                .scheduledEventDate(scheduledEvent.getScheduledEventDate())
+                .scheduledEventDay(scheduledEvent.getScheduledEventDay())
+                .scheduledEventInterval(scheduledEvent.getScheduledEventInterval())
+                .description(scheduledEvent.getDescription())
+                .category(scheduledEvent.getCategory())
+                .startTime(scheduledEvent.getStartTime())
+                .endTime(scheduledEvent.getEndTime())
+                .cost(scheduledEvent.getCost())
+                .createdOn(scheduledEvent.getCreatedOn())
+                .lastUpdatedOn(scheduledEvent.getLastUpdatedOn())
                 .build()
     }
 }

@@ -60,7 +60,11 @@ components:
     Organizer:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
+      required:
+        - clientId
       properties:
+        clientId:
+          type: string
         organizerId:
           type: string
   parameters:

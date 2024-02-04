@@ -10,6 +10,7 @@ import com.ebsolutions.eventsadminservice.util.MetricsStopWatch;
 import com.ebsolutions.eventsadminservice.util.UniqueIdGenerator;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -17,6 +18,10 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.keyEqualTo;
 
 @Slf4j
 @Prototype
@@ -30,18 +35,46 @@ public class ClientDao {
     public Client read(String clientId) throws DataProcessingException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.CLIENT);
+            Key key = KeyBuilder.build(SortKeyType.CLIENT.name(), SortKeyType.CLIENT, clientId);
 
             ClientDto clientDto = ddbTable.getItem(key);
 
             return clientDto == null
                     ? null
                     : Client.builder()
-                    .clientId(clientDto.getPartitionKey())
+                    .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
                     .name(clientDto.getName())
                     .createdOn(clientDto.getCreatedOn())
                     .lastUpdatedOn(clientDto.getLastUpdatedOn())
                     .build();
+        } catch (Exception e) {
+            log.error("ERROR::{}", this.getClass().getName(), e);
+            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+        } finally {
+            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
+        }
+    }
+
+    public List<Client> readAll() throws DataProcessingException {
+        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
+        try {
+            List<ClientDto> clientDtos = ddbTable
+                    .query(r -> r.queryConditional(
+                            keyEqualTo(s -> s.partitionValue(SortKeyType.CLIENT.name()).build()))
+                    )
+                    .items()
+                    .stream()
+                    .toList();
+
+            return clientDtos.stream()
+                    .map(clientDto ->
+                            Client.builder()
+                                    .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
+                                    .name(clientDto.getName())
+                                    .createdOn(clientDto.getCreatedOn())
+                                    .lastUpdatedOn(clientDto.getLastUpdatedOn())
+                                    .build()
+                    ).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
@@ -56,8 +89,8 @@ public class ClientDao {
             LocalDateTime now = LocalDateTime.now();
 
             ClientDto clientDto = ClientDto.builder()
-                    .partitionKey(UniqueIdGenerator.generate())
-                    .sortKey(SortKeyType.CLIENT.name())
+                    .partitionKey(SortKeyType.CLIENT.name())
+                    .sortKey(SortKeyType.CLIENT + UniqueIdGenerator.generate())
                     .name(client.getName())
                     .createdOn(now)
                     .lastUpdatedOn(now)
@@ -66,7 +99,7 @@ public class ClientDao {
             ddbTable.updateItem(clientDto);
 
             return Client.builder()
-                    .clientId(clientDto.getPartitionKey())
+                    .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
                     .name(clientDto.getName())
                     .createdOn(clientDto.getCreatedOn())
                     .lastUpdatedOn(clientDto.getLastUpdatedOn())
@@ -88,8 +121,8 @@ public class ClientDao {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             ClientDto clientDto = ClientDto.builder()
-                    .partitionKey(client.getClientId())
-                    .sortKey(SortKeyType.CLIENT.name())
+                    .partitionKey(SortKeyType.CLIENT.name())
+                    .sortKey(SortKeyType.CLIENT + client.getClientId())
                     .name(client.getName())
                     .createdOn(client.getCreatedOn())
                     .lastUpdatedOn(LocalDateTime.now())
@@ -98,7 +131,7 @@ public class ClientDao {
             ddbTable.putItem(clientDto);
 
             return Client.builder()
-                    .clientId(clientDto.getPartitionKey())
+                    .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
                     .name(clientDto.getName())
                     .createdOn(clientDto.getCreatedOn())
                     .lastUpdatedOn(clientDto.getLastUpdatedOn())
@@ -114,7 +147,7 @@ public class ClientDao {
     public void delete(String clientId) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.CLIENT);
+            Key key = KeyBuilder.build(SortKeyType.CLIENT.name(), SortKeyType.CLIENT, clientId);
 
             ddbTable.deleteItem(key);
         } catch (Exception e) {

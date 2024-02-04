@@ -60,7 +60,11 @@ components:
     Location:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
+      required:
+        - clientId
       properties:
+        clientId:
+          type: string
         locationId:
           type: string
   parameters:

@@ -4,13 +4,16 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-location-client-id"
+            "S": "get-event-schedule-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-get-location-location-id"
+            "S": "EVENT_SCHEDULE-get-event-schedule-event-schedule-id"
           },
           "name": {
-            "S": "Get Location - Location Name"
+            "S": "Get Event Schedule - Event Schedule Name"
+          },
+          "description": {
+            "S": "Get Event Schedule - Event Schedule Description"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -25,13 +28,16 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-locations-client-id"
+            "S": "get-all-event-schedules-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-get-all-locations-location-1-location-id"
+            "S": "EVENT_SCHEDULE-get-all-event-schedules-event-schedule-1-event-schedule-id"
           },
           "name": {
-            "S": "Get All Locations - Location 1 Name"
+            "S": "Get All Event Schedules - Event Schedule 1 Name"
+          },
+          "description": {
+            "S": "Get All Event Schedules - Event Schedule 1 Description"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -46,13 +52,16 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "get-all-locations-client-id"
+            "S": "get-all-event-schedules-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-get-all-locations-location-2-location-id"
+            "S": "EVENT_SCHEDULE-get-all-event-schedules-event-schedule-2-event-schedule-id"
           },
           "name": {
-            "S": "Get All Locations - Location 2 Name"
+            "S": "Get All Event Schedules - Event Schedule 2 Name"
+          },
+          "description": {
+            "S": "Get All Event Schedules - Event Schedule 2 Description"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -67,19 +76,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "delete-location-client-id"
+            "S": "delete-event-schedule-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-delete-location-location-id"
+            "S": "EVENT_SCHEDULE-delete-event-schedule-event-schedule-id"
           },
           "name": {
-            "S": "Delete Location - Location Name"
-          },
-          "createdOn": {
-            "S": "2023-07-04T01:02:34"
-          },
-          "lastUpdatedOn": {
-            "S": "2023-11-05T12:34:56"
+            "S": "Delete Event Schedule - Event Schedule Name"
           }
         }
       }
@@ -88,13 +91,16 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "update-location-client-id"
+            "S": "update-event-schedule-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-update-location-location-id"
+            "S": "EVENT_SCHEDULE-update-event-schedule-event-schedule-id"
           },
           "name": {
-            "S": "Update Location - Location Name"
+            "S": "Update Event Schedule - Event Schedule Name"
+          },
+          "description": {
+            "S": "Update Event Schedule - Event Schedule Description"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"

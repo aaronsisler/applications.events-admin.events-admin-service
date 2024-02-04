@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
-  title: Events REST API
+  title: Event Schedules REST API
   version: "1.0"
 paths:
-  /clients/{clientId}/events:
+  /clients/{clientId}/event-schedules:
     parameters:
       - $ref: "client.yaml#/components/parameters/ClientId"
     get:
@@ -15,7 +15,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Event"
+                  $ref: "#/components/schemas/EventSchedule"
         '5XX':
           description: Server error
     post:
@@ -24,20 +24,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Event"
+              $ref: "#/components/schemas/EventSchedule"
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: "#/components/schemas/EventSchedule"
         '5XX':
           description: Server Error
-  /clients/{clientId}/events/{eventId}:
+  /clients/{clientId}/event-schedule/{eventScheduleId}:
     parameters:
       - $ref: "client.yaml#/components/parameters/ClientId"
-      - $ref: "#/components/parameters/EventId"
+      - $ref: "#/components/parameters/EventScheduleId"
     get:
       responses:
         200:
@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: "#/components/schemas/EventSchedule"
         '5XX':
           description: Server Error
     delete:
@@ -56,7 +56,7 @@ paths:
           description: Server Error
 components:
   schemas:
-    Event:
+    EventSchedule:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
       required:
@@ -64,22 +64,14 @@ components:
       properties:
         clientId:
           type: string
-        eventId:
+        eventScheduleId:
           type: string
-        locationId:
-          type: string
-        organizerIds:
-          type: array
-          items:
-            type: string
         description:
           type: string
-        category:
-          type: string
   parameters:
-    EventId:
+    EventScheduleId:
       in: path
-      name: eventId
+      name: eventScheduleId
       required: true
       schema:
         type: string

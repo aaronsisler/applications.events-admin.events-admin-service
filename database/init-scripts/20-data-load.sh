@@ -11,9 +11,29 @@ aws dynamodb batch-write-item \
   --request-items file:///data/20_locations.json
 
 aws dynamodb batch-write-item \
- --endpoint-url=http://dynamo-db-local:8000 \
- --request-items file:///data/30_organizers.json
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/30_organizers.json
 
 aws dynamodb batch-write-item \
- --endpoint-url=http://dynamo-db-local:8000 \
- --request-items file:///data/40_events.json
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/40_events.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/50_event_schedules.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/61_scheduled_events_get.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/62_scheduled_events_get_all.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/63_scheduled_events_delete.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://dynamo-db-local:8000 \
+  --request-items file:///data/64_scheduled_events_update.json

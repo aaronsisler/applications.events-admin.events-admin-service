@@ -1,0 +1,178 @@
+{
+  "SERVICES_EVENTS_ADMIN_LOCAL": [
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "get-all-scheduled-events-event-schedule-id"
+          },
+          "sortKey": {
+            "S": "SCHEDULED_EVENT-get-all-scheduled-events-scheduled-event-1-scheduled-event-id"
+          },
+          "clientId": {
+            "S": "get-all-scheduled-events-scheduled-event-1-client-id"
+          },
+          "eventId": {
+            "S": "get-all-scheduled-events-scheduled-event-1-event-id"
+          },
+          "locationId": {
+            "S": "get-all-scheduled-events-scheduled-event-1-location-id"
+          },
+          "organizerIds": {
+            "SS": [
+              "get-all-scheduled-events-scheduled-event-1-organizer-1-id",
+              "get-all-scheduled-events-scheduled-event-1-organizer-2-id"
+            ]
+          },
+          "name": {
+            "S": "Get All Scheduled Events - Scheduled Event 1 Name"
+          },
+          "description": {
+            "S": "Get All Scheduled Events - Scheduled Event 1 Description"
+          },
+          "category": {
+            "S": "Get All Scheduled Events - Scheduled Event 1 Category"
+          },
+          "scheduledEventType": {
+            "S": "SINGLE"
+          },
+          "scheduledEventDate": {
+            "S": "2023-11-25"
+          },
+          "startTime": {
+            "S": "13:45:42"
+          },
+          "endTime": {
+            "S": "20:30:25"
+          },
+          "cost": {
+            "N": "550"
+          },
+          "createdOn": {
+            "S": "2023-07-04T01:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-05T12:34:56"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "get-all-scheduled-events-event-schedule-id"
+          },
+          "sortKey": {
+            "S": "SCHEDULED_EVENT-get-all-scheduled-events-scheduled-event-2-scheduled-event-id"
+          },
+          "clientId": {
+            "S": "get-all-scheduled-events-scheduled-event-2-client-id"
+          },
+          "eventId": {
+            "S": "get-all-scheduled-events-scheduled-event-2-event-id"
+          },
+          "locationId": {
+            "S": "get-all-scheduled-events-scheduled-event-2-location-id"
+          },
+          "organizerIds": {
+            "SS": [
+              "get-all-scheduled-events-scheduled-event-2-organizer-1-id",
+              "get-all-scheduled-events-scheduled-event-2-organizer-2-id"
+            ]
+          },
+          "scheduledEventType": {
+            "S": "REOCCURRING"
+          },
+          "scheduledEventInterval": {
+            "S": "WEEKLY"
+          },
+          "scheduledEventDay": {
+            "S": "TUE"
+          },
+          "startTime": {
+            "S": "13:45:42"
+          },
+          "endTime": {
+            "S": "20:30:25"
+          },
+          "name": {
+            "S": "Get All Scheduled Events - Scheduled Event 2 Name"
+          },
+          "description": {
+            "S": "Get All Scheduled Events - Scheduled Event 2 Description"
+          },
+          "category": {
+            "S": "Get All Scheduled Events - Scheduled Event 2 Category"
+          },
+          "cost": {
+            "N": "450"
+          },
+          "createdOn": {
+            "S": "2023-07-04T01:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-05T12:34:56"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "get-all-scheduled-events-event-schedule-id"
+          },
+          "sortKey": {
+            "S": "SCHEDULED_EVENT-get-all-scheduled-events-scheduled-event-3-scheduled-event-id"
+          },
+          "clientId": {
+            "S": "get-all-scheduled-events-scheduled-event-3-client-id"
+          },
+          "eventId": {
+            "S": "get-all-scheduled-events-scheduled-event-3-event-id"
+          },
+          "locationId": {
+            "S": "get-all-scheduled-events-scheduled-event-3-location-id"
+          },
+          "organizerIds": {
+            "SS": [
+              "get-all-scheduled-events-scheduled-event-3-organizer-1-id",
+              "get-all-scheduled-events-scheduled-event-3-organizer-2-id"
+            ]
+          },
+          "scheduledEventType": {
+            "S": "REOCCURRING"
+          },
+          "scheduledEventInterval": {
+            "S": "WEEKDAYS"
+          },
+          "startTime": {
+            "S": "13:45:42"
+          },
+          "endTime": {
+            "S": "20:30:25"
+          },
+          "name": {
+            "S": "Get All Scheduled Events - Scheduled Event 3 Name"
+          },
+          "description": {
+            "S": "Get All Scheduled Events - Scheduled Event 3 Description"
+          },
+          "category": {
+            "S": "Get All Scheduled Events - Scheduled Event 3 Category"
+          },
+          "cost": {
+            "N": "350"
+          },
+          "createdOn": {
+            "S": "2023-07-04T01:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2023-11-05T12:34:56"
+          }
+        }
+      }
+    }
+  ]
+}

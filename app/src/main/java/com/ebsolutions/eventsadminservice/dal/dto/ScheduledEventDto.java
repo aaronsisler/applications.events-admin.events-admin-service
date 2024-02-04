@@ -9,6 +9,8 @@ import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,9 +21,18 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventDto extends DatabaseDto {
+public class ScheduledEventDto extends DatabaseDto {
+    private String clientId;
+    private String eventId;
     private String locationId;
     private List<String> organizerIds;
+    private String scheduledEventType;
+    private String scheduledEventInterval;
+    private String scheduledEventDay;
     private String description;
     private String category;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private LocalDate scheduledEventDate;
+    private Integer cost;
 }

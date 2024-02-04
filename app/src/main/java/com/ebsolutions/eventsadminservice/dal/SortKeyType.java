@@ -4,5 +4,7 @@ public enum SortKeyType {
     CLIENT,
     LOCATION,
     ORGANIZER,
-    EVENT
+    EVENT,
+    EVENT_SCHEDULE,
+    SCHEDULED_EVENT
 }

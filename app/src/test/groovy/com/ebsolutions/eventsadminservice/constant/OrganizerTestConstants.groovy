@@ -1,26 +1,61 @@
 package com.ebsolutions.eventsadminservice.constant
 
+
+import com.ebsolutions.eventsadminservice.model.Organizer
+
+/**
+ * Holds all of the test values for Organizer
+ * Leading Dashes on organizer ids are to help with the DB Setup
+ */
 class OrganizerTestConstants {
-    // Leading Dashes on organizer ids are to help with the DB Setup
-    // Get Organizer
-    public static String getOrganizerClientId = "get-organizer-mock-organizer-client-id"
-    public static String getOrganizerId = "-get-organizer-mock-organizer-id"
+    public static Organizer GET_ORGANIZER = Organizer.builder()
+            .clientId("get-organizer-client-id")
+            .organizerId("-get-organizer-organizer-id")
+            .name("Get Organizer - Organizer Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
 
-    // Get All Organizers
-    public static String getAllOrganizersClientId = "get-all-organizers-mock-client-id"
-    // Get All Organizers - Organizer One
-    public static String getAllOrganizersIdOne = "-get-all-organizers-mock-organizer-1-id"
-    // Get All Organizers - Organizer Two
-    public static String getAllOrganizersIdTwo = "-get-all-organizers-mock-organizer-2-id"
+    public static String getAllOrganizersClientId = "get-all-organizers-client-id"
 
-    // Delete Organizer
-    public static String deleteOrganizerClientId = "delete-organizer-mock-client-id"
-    public static String deleteOrganizerId = "-delete-organizer-mock-organizer-id"
+    public static Organizer GET_ALL_ORGANIZERS_ORGANIZER_ONE = Organizer.builder()
+            .clientId(getAllOrganizersClientId)
+            .organizerId("-get-all-organizers-organizer-1-organizer-id")
+            .name("Get All Organizers - Organizer 1 Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
 
-    // Create Organizer
-    public static String createOrganizerClientId = "create-organizer-mock-client-id"
+    public static Organizer GET_ALL_ORGANIZERS_ORGANIZER_TWO = Organizer.builder()
+            .clientId(getAllOrganizersClientId)
+            .organizerId("-get-all-organizers-organizer-2-organizer-id")
+            .name("Get All Organizers - Organizer 2 Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
 
-    // Update Organizer
-    public static String updateOrganizerClientId = "update-organizer-mock-client-id"
-    public static String updateOrganizerId = "-update-organizer-mock-organizer-id"
+    public static Organizer DELETE_ORGANIZER = Organizer.builder()
+            .clientId("delete-organizer-client-id")
+            .organizerId("-delete-organizer-organizer-id")
+            .name("Delete Organizer - Organizer Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
+
+    public static Organizer CREATE_ORGANIZER = Organizer.builder()
+            .clientId("create-organizer-client-id")
+            .name("Create Organizer - Organizer Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
+
+    public static String updateOrganizerUpdatedName = "Updated Organizer Name"
+
+    public static Organizer UPDATE_ORGANIZER = Organizer.builder()
+            .clientId("update-organizer-client-id")
+            .organizerId("-update-organizer-organizer-id")
+            .name("Update Organizer - Organizer Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
 }

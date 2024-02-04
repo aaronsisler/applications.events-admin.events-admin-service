@@ -12,6 +12,8 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
+import java.util.List;
+
 import static io.micronaut.http.HttpResponse.*;
 
 @Slf4j
@@ -34,9 +36,23 @@ public class ClientController {
         }
     }
 
+    @Get(produces = MediaType.APPLICATION_JSON)
+    public HttpResponse<?> getAll() {
+        try {
+            List<Client> clients = clientDao.readAll();
+
+            return !clients.isEmpty() ? ok(clients) : noContent();
+        } catch (DataProcessingException dbe) {
+            return serverError(dbe);
+        }
+    }
+
     @Post()
     public HttpResponse<?> post(@Valid @Body Client client) {
         try {
+            if (!RequestValidator.isClientValid(AllowableRequestMethod.POST, client)) {
+                return badRequest();
+            }
             return ok(clientDao.create(client));
         } catch (DataProcessingException dbe) {
             return serverError(dbe);

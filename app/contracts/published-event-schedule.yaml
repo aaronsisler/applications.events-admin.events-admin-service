@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  title: Published Event Schedules REST API
+  version: "1.0"
+paths:
+  /clients/{clientId}/published-event-schedules:
+    parameters:
+      - $ref: "client.yaml#/components/parameters/ClientId"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublishedEventSchedule"
+        '5XX':
+          description: Server error
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PublishedEventSchedule"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedEventSchedule"
+        '5XX':
+          description: Server Error
+  /clients/{clientId}/published-event-schedules/{publishedEventScheduleId}:
+    parameters:
+      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "#/components/parameters/PublishedEventScheduleId"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedEventSchedule"
+        '5XX':
+          description: Server Error
+    delete:
+      responses:
+        204:
+          description: The resource was deleted successfully.
+        '5XX':
+          description: Server Error
+
+components:
+  schemas:
+    LocationBlackout:
+      type: object
+      required:
+        - locationId
+        - blackoutDate
+      properties:
+        locationId:
+          type: string
+        blackoutDate:
+          type: string
+          format: local-date
+          example: "2019-05-17"
+    EventBlackout:
+      type: object
+      required:
+        - eventId
+        - blackoutDate
+      properties:
+        eventId:
+          type: string
+        blackoutDate:
+          type: string
+          format: local-date
+          example: "2019-05-17"
+    PublishedEventSchedule:
+      allOf:
+        - $ref: "shared.yaml#/components/schemas/Base"
+      required:
+        - clientId
+        - eventScheduleYear
+        - eventScheduleMonth
+      properties:
+        clientId:
+          type: string
+        publishedEventScheduleId:
+          type: string
+        eventScheduleYear:
+          type: integer
+        eventScheduleMonth:
+          type: integer
+        fileLocation:
+          type: string
+        locationBlackouts:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocationBlackout"
+        eventBlackouts:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventBlackout"
+  parameters:
+    PublishedEventScheduleId:
+      in: path
+      name: publishedEventScheduleId
+      required: true
+      schema:
+        type: string
+

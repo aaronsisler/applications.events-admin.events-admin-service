@@ -1,26 +1,61 @@
 package com.ebsolutions.eventsadminservice.constant
 
+
+import com.ebsolutions.eventsadminservice.model.Location
+
+/**
+ * Holds all of the test values for Location
+ * Leading Dashes on location ids are to help with the DB Setup
+ */
 class LocationTestConstants {
-    // Leading Dashes on location ids are to help with the DB Setup
-    // Get Location
-    public static String getLocationClientId = "get-location-mock-location-client-id"
-    public static String getLocationId = "-get-location-mock-location-id"
+    public static Location GET_LOCATION = Location.builder()
+            .clientId("get-location-client-id")
+            .locationId("-get-location-location-id")
+            .name("Get Location - Location Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
 
-    // Get All Locations
-    public static String getAllLocationsClientId = "get-all-locations-mock-client-id"
-    // Get All Locations - Location One
-    public static String getAllLocationsIdOne = "-get-all-locations-mock-location-1-id"
-    // Get All Locations - Location Two
-    public static String getAllLocationsIdTwo = "-get-all-locations-mock-location-2-id"
+    public static String getAllLocationsClientId = "get-all-locations-client-id"
 
-    // Delete Location
-    public static String deleteLocationClientId = "delete-location-mock-client-id"
-    public static String deleteLocationId = "-delete-location-mock-location-id"
+    public static Location GET_ALL_LOCATIONS_LOCATION_ONE = Location.builder()
+            .clientId(getAllLocationsClientId)
+            .locationId("-get-all-locations-location-1-location-id")
+            .name("Get All Locations - Location 1 Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
 
-    // Create Location
-    public static String createLocationClientId = "create-location-mock-client-id"
+    public static Location GET_ALL_LOCATIONS_LOCATION_TWO = Location.builder()
+            .clientId(getAllLocationsClientId)
+            .locationId("-get-all-locations-location-2-location-id")
+            .name("Get All Locations - Location 2 Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
 
-    // Update Location
-    public static String updateLocationClientId = "update-location-mock-client-id"
-    public static String updateLocationId = "-update-location-mock-location-id"
+    public static Location DELETE_LOCATION = Location.builder()
+            .clientId("delete-location-client-id")
+            .locationId("-delete-location-location-id")
+            .name("Delete Location - Location Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
+
+    public static Location CREATE_LOCATION = Location.builder()
+            .clientId("create-location-client-id")
+            .name("Create Location - Location Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
+
+    public static String updateLocationUpdatedName = "Updated Location Name"
+
+    public static Location UPDATE_LOCATION = Location.builder()
+            .clientId("update-location-client-id")
+            .locationId("-update-location-location-id")
+            .name("Update Location - Location Name")
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
 }
