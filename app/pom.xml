@@ -234,6 +234,15 @@
                             <inputSpec>${pom.basedir}/contracts/scheduled-event.yaml</inputSpec>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>models-published-event-schedule</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/published-event-schedule.yaml</inputSpec>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
