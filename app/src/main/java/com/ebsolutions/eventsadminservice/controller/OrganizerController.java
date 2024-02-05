@@ -8,7 +8,6 @@ import com.ebsolutions.eventsadminservice.validator.RequestValidator;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
-import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +21,11 @@ import static io.micronaut.http.HttpResponse.*;
 @NoArgsConstructor
 @Controller("/clients/{clientId}/organizers")
 public class OrganizerController {
-    @Inject
     private OrganizerDao organizerDao;
+
+    public OrganizerController(OrganizerDao organizerDao) {
+        this.organizerDao = organizerDao;
+    }
 
     @Get(value = "/{organizerId}", produces = MediaType.APPLICATION_JSON)
     public HttpResponse<?> get(@NotBlank @PathVariable String clientId, @NotBlank @PathVariable String organizerId) {

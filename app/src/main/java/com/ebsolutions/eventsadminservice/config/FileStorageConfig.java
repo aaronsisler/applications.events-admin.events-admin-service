@@ -6,31 +6,25 @@ import io.micronaut.context.annotation.Requires;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.net.URI;
 
 @Slf4j
 @Factory
-public class AwsConfig {
+public class FileStorageConfig {
     private final String awsAccessKeyId = "access_key_id";
     private final String awsSecretAccessKey = "secret_access_key";
-    private final String endpoint = "http://localhost:8000";
+    private final String endpoint = "http://localhost:9090";
 
     @Prototype
     @Requires(env = {"local", "test"})
-    public DynamoDbEnhancedClient createLocal() {
-        log.info("Here creating the Local DDB Config");
+    public S3Client createLocal() {
+        log.info("Here creating the Local S3 Config");
         URI localEndpoint = URI.create(endpoint);
         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(awsAccessKeyId, awsSecretAccessKey);
         StaticCredentialsProvider staticCredentialsProvider = StaticCredentialsProvider.create(awsBasicCredentials);
 
-        DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
-                .endpointOverride(localEndpoint)
-                .credentialsProvider(staticCredentialsProvider)
-                .build();
-
-        return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
+        return S3Client.builder().endpointOverride(localEndpoint).credentialsProvider(staticCredentialsProvider).build();
     }
 }

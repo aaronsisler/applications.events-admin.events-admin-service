@@ -27,7 +27,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- AWS DynamoDB config and methods -->
+            <!-- AWS SDK library needed for Database and File Storage access -->
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
@@ -36,6 +36,7 @@
                 <scope>import</scope>
             </dependency>
             <!-- Version conflict -->
+            <!-- Where is this conflict? Need more context Aaron..... -->
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
@@ -96,11 +97,19 @@
             <artifactId>dynamodb-enhanced</artifactId>
         </dependency>
 
+        <!-- AWS S3 File storage -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+        </dependency>
+
+        <!-- Not sure where this needed -->
         <dependency>
             <groupId>io.micronaut.validation</groupId>
             <artifactId>micronaut-validation</artifactId>
         </dependency>
 
+        <!-- Not sure where this needed -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -112,7 +121,9 @@
             <artifactId>micronaut-test-spock</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- Handles Spock testing with Micronaut -->
+        <!-- Need to see why this exclusion is needed and can we have this at the top layer Dep Management -->
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
@@ -124,18 +135,21 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <!-- Handles Spock testing with Micronaut -->
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-inject-groovy</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- Handles JUnit methods like assertEquals, etc. -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- Handles HTTP Client that makes calls to mock server -->
         <dependency>
             <groupId>io.micronaut</groupId>

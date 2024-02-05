@@ -93,6 +93,8 @@ components:
           type: string
         publishedEventScheduleId:
           type: string
+        eventScheduleId:
+          type: string
         eventScheduleYear:
           type: integer
         eventScheduleMonth:
