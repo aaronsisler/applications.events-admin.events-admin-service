@@ -1,25 +1,50 @@
 package com.ebsolutions.eventsadminservice.service;
 
+import com.ebsolutions.eventsadminservice.dal.dao.LocationDao;
+import com.ebsolutions.eventsadminservice.dal.dao.OrganizerDao;
 import com.ebsolutions.eventsadminservice.dal.dao.PublishedEventScheduleDao;
+import com.ebsolutions.eventsadminservice.dal.dao.ScheduledEventDao;
+import com.ebsolutions.eventsadminservice.model.Location;
+import com.ebsolutions.eventsadminservice.model.Organizer;
 import com.ebsolutions.eventsadminservice.model.PublishedEventSchedule;
+import com.ebsolutions.eventsadminservice.model.ScheduledEvent;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 @Slf4j
 @Prototype
 public class PublishedEventScheduleOrchestrationService {
-    private PublishedEventScheduleDao publishedEventScheduleDao;
+    private final OrganizerDao organizerDao;
+    private final LocationDao locationDao;
+    private final ScheduledEventDao scheduledEventDao;
+    private final PublishedEventScheduleDao publishedEventScheduleDao;
 
-    public PublishedEventScheduleOrchestrationService(PublishedEventScheduleDao publishedEventScheduleDao) {
+    public PublishedEventScheduleOrchestrationService(LocationDao locationDao, OrganizerDao organizerDao, ScheduledEventDao scheduledEventDao, PublishedEventScheduleDao publishedEventScheduleDao) {
+        this.locationDao = locationDao;
+        this.organizerDao = organizerDao;
+        this.scheduledEventDao = scheduledEventDao;
         this.publishedEventScheduleDao = publishedEventScheduleDao;
     }
 
     public PublishedEventSchedule publishEventSchedule(PublishedEventSchedule publishedEventSchedule) {
         // Retrieve the scheduled events using the eventScheduleId
+        List<ScheduledEvent> scheduledEvents = scheduledEventDao.readAll(publishedEventSchedule.getEventScheduleId());
         // Get distinct list of location ids from Scheduled Events
+        List<String> locationIds = scheduledEvents.stream()
+                .map(ScheduledEvent::getLocationId)
+                .distinct()
+                .toList();
         // Get distinct list of organizer ids from Scheduled Events
-        // Get list of Locations for list of location ids
+        List<String> organizerIds = scheduledEvents.stream()
+                .map(ScheduledEvent::getLocationId)
+                .distinct()
+                .toList();
         // Get list of Organizers for list of organizer ids
+        List<Organizer> organizers = organizerDao.readAll(publishedEventSchedule.getClientId(), organizerIds);
+        // Get list of Locations for list of location ids
+        List<Location> locations = locationDao.readAll(publishedEventSchedule.getClientId(), locationIds);
         // Group the reoccurring Scheduled Events by type (Standard and Weekly)
         // Create the list of dates from 1st of month to the end of month for given year/month in request
         // Go through the list and think of a way to break it into a KVP such that when

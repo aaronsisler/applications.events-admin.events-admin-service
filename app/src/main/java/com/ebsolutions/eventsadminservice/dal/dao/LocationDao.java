@@ -15,6 +15,9 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.BatchGetResultPage;
+import software.amazon.awssdk.enhanced.dynamodb.model.BatchGetResultPageIterable;
+import software.amazon.awssdk.enhanced.dynamodb.model.ReadBatch;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -26,9 +29,11 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.so
 @Slf4j
 @Prototype
 public class LocationDao {
+    private final DynamoDbEnhancedClient enhancedClient;
     private final DynamoDbTable<LocationDto> ddbTable;
 
     public LocationDao(DynamoDbEnhancedClient enhancedClient) {
+        this.enhancedClient = enhancedClient;
         this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(LocationDto.class));
     }
 
@@ -67,6 +72,49 @@ public class LocationDao {
                     .items()
                     .stream()
                     .toList();
+
+            return locationDtos.stream()
+                    .map(locationDto ->
+                            Location.builder()
+                                    .clientId(locationDto.getPartitionKey())
+                                    .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
+                                    .name(locationDto.getName())
+                                    .createdOn(locationDto.getCreatedOn())
+                                    .lastUpdatedOn(locationDto.getLastUpdatedOn())
+                                    .build()
+                    ).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("ERROR::{}", this.getClass().getName(), e);
+            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+        } finally {
+            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
+        }
+    }
+
+    public List<Location> readAll(String clientId, List<String> locationIds) throws DataProcessingException {
+        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
+        try {
+            // TODO check if there are 100 or more locationIds
+            ReadBatch.Builder<LocationDto> locationBatchBuilder = ReadBatch.builder(LocationDto.class)
+                    .mappedTableResource(ddbTable);
+
+            locationIds.forEach(locationId ->
+                    locationBatchBuilder
+                            .addGetItem(b -> b.key(k -> k
+                                    .partitionValue(clientId)
+                                    .sortValue(locationId)))
+            );
+
+            ReadBatch organizerBatch = locationBatchBuilder.build();
+
+            BatchGetResultPageIterable resultPages = enhancedClient.batchGetItem(b -> b.readBatches(organizerBatch));
+            List<LocationDto> locationDtos = resultPages.resultsForTable(ddbTable).stream().toList();
+            List<String> unprocessedOrganizerIds =
+                    resultPages.stream().flatMap((BatchGetResultPage pageResult) ->
+                            pageResult.unprocessedKeysForTable(ddbTable).stream().map(Object::toString)
+                    ).toList();
+
+            log.info(unprocessedOrganizerIds.toString());
 
             return locationDtos.stream()
                     .map(locationDto ->
