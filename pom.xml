@@ -140,19 +140,22 @@
                                 @io.micronaut.serde.annotation.Serdeable
                             </additionalModelTypeAnnotations>
                         </configOptions>
+                        <!-- typeMappings links the contract (left side) to the right side -->
                         <typeMappings>
-                            <!-- This Pascal format is a standard per OpenAPI -->
+                            <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
                             <typeMapping>DateTime=LocalDateTime</typeMapping>
+                            <!-- Kebab format is the format for custom mappings  -->
                             <typeMapping>local-date=LocalDate</typeMapping>
-                            <!-- Custom Kebab format names for importMappings  -->
                             <typeMapping>local-time=LocalTime</typeMapping>
+                            <typeMapping>day-of-week=DayOfWeek</typeMapping>
                         </typeMappings>
+                        <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
                         <importMappings>
-                            <!-- This Pascal format is a standard per OpenAPI -->
+                            <!-- Left side in importMappings maps to the right side in typeMappings -->
                             <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
-                            <!-- Custom Kebab format names in typeMappings  -->
                             <importMapping>LocalDate=java.time.LocalDate</importMapping>
                             <importMapping>LocalTime=java.time.LocalTime</importMapping>
+                            <importMapping>DayOfWeek=java.time.DayOfWeek</importMapping>
                         </importMappings>
                     </configuration>
                 </plugin>

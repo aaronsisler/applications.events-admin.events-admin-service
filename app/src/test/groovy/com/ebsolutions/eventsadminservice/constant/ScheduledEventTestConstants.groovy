@@ -1,10 +1,10 @@
 package com.ebsolutions.eventsadminservice.constant
 
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent
-import com.ebsolutions.eventsadminservice.model.ScheduledEventDay
 import com.ebsolutions.eventsadminservice.model.ScheduledEventInterval
 import com.ebsolutions.eventsadminservice.model.ScheduledEventType
 
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -80,7 +80,8 @@ class ScheduledEventTestConstants {
             .category("Get Scheduled Event - Reoccurring Weekly - Scheduled Event Category")
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
-            .scheduledEventDay(ScheduledEventDay.TUE)
+//            .scheduledEventDay(ScheduledEventDay.TUE)
+            .scheduledEventDay(DayOfWeek.TUESDAY)
             .startTime(startTime)
             .endTime(endTime)
             .cost(450)
@@ -124,7 +125,8 @@ class ScheduledEventTestConstants {
             ))
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
-            .scheduledEventDay(ScheduledEventDay.TUE)
+//            .scheduledEventDay(ScheduledEventDay.TUE)
+            .scheduledEventDay(DayOfWeek.TUESDAY)
             .name("Get All Scheduled Events - Scheduled Event 2 Name")
             .description("Get All Scheduled Events - Scheduled Event 2 Description")
             .category("Get All Scheduled Events - Scheduled Event 2 Category")
@@ -224,7 +226,8 @@ class ScheduledEventTestConstants {
             ))
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
-            .scheduledEventDay(ScheduledEventDay.TUE)
+//            .scheduledEventDay(ScheduledEventDay.TUE)
+            .scheduledEventDay(DayOfWeek.TUESDAY)
             .name("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
             .description("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
             .category("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Category")
@@ -296,7 +299,8 @@ class ScheduledEventTestConstants {
             .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
-            .scheduledEventDay(ScheduledEventDay.TUE)
+//            .scheduledEventDay(ScheduledEventDay.TUE)
+            .scheduledEventDay(DayOfWeek.TUESDAY)
             .name("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
             .description("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
             .category("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Category")

@@ -68,16 +68,16 @@ components:
         - WEEKLY
         - WEEKDAYS
         - WEEKENDS
-    ScheduledEventDay:
-      type: string
-      enum:
-        - MON
-        - TUE
-        - WED
-        - THU
-        - FRI
-        - SAT
-        - SUN
+    #    ScheduledEventDay:
+    #      type: string
+    #      enum:
+    #        - MON
+    #        - TUE
+    #        - WED
+    #        - THU
+    #        - FRI
+    #        - SAT
+    #        - SUN
     ScheduledEvent:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
@@ -108,7 +108,9 @@ components:
         scheduledEventInterval:
           $ref: "#/components/schemas/ScheduledEventInterval"
         scheduledEventDay:
-          $ref: "#/components/schemas/ScheduledEventDay"
+          type: string
+          format: day-of-week
+        #          $ref: "#/components/schemas/ScheduledEventDay"
         description:
           type: string
         category:

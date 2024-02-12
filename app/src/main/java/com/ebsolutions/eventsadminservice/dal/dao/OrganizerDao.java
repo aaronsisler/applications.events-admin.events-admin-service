@@ -61,37 +61,7 @@ public class OrganizerDao {
         }
     }
 
-    public List<Organizer> readAll(String clientId) throws DataProcessingException {
-        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
-        try {
-            List<OrganizerDto> organizerDtos = ddbTable
-                    .query(r -> r.queryConditional(
-                            sortBeginsWith(s
-                                    -> s.partitionValue(clientId).sortValue(SortKeyType.ORGANIZER.name()).build()))
-                    )
-                    .items()
-                    .stream()
-                    .toList();
-
-            return organizerDtos.stream()
-                    .map(organizerDto ->
-                            Organizer.builder()
-                                    .clientId(organizerDto.getPartitionKey())
-                                    .organizerId(StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
-                                    .name(organizerDto.getName())
-                                    .createdOn(organizerDto.getCreatedOn())
-                                    .lastUpdatedOn(organizerDto.getLastUpdatedOn())
-                                    .build()
-                    ).collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error("ERROR::{}", this.getClass().getName(), e);
-            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
-        } finally {
-            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
-        }
-    }
-
-    public List<Organizer> readAll(String clientId, List<String> organizerIds) throws DataProcessingException {
+    public List<Organizer> read(String clientId, List<String> organizerIds) throws DataProcessingException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             // TODO check if there are 100 or more organizerIds
@@ -115,6 +85,36 @@ public class OrganizerDao {
                     ).toList();
 
             log.info(unprocessedOrganizerIds.toString());
+
+            return organizerDtos.stream()
+                    .map(organizerDto ->
+                            Organizer.builder()
+                                    .clientId(organizerDto.getPartitionKey())
+                                    .organizerId(StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
+                                    .name(organizerDto.getName())
+                                    .createdOn(organizerDto.getCreatedOn())
+                                    .lastUpdatedOn(organizerDto.getLastUpdatedOn())
+                                    .build()
+                    ).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("ERROR::{}", this.getClass().getName(), e);
+            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+        } finally {
+            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
+        }
+    }
+
+    public List<Organizer> readAll(String clientId) throws DataProcessingException {
+        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
+        try {
+            List<OrganizerDto> organizerDtos = ddbTable
+                    .query(r -> r.queryConditional(
+                            sortBeginsWith(s
+                                    -> s.partitionValue(clientId).sortValue(SortKeyType.ORGANIZER.name()).build()))
+                    )
+                    .items()
+                    .stream()
+                    .toList();
 
             return organizerDtos.stream()
                     .map(organizerDto ->

@@ -154,7 +154,7 @@
             "S": "WEEKLY"
           },
           "scheduledEventDay": {
-            "S": "TUE"
+            "S": "TUESDAY"
           },
           "startTime": {
             "S": "13:45:42"

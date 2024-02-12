@@ -3,7 +3,7 @@ aws configure set aws_secret_access_key "secret_access_key"
 aws configure set region "us-east-1"
 
 aws dynamodb create-table \
---endpoint-url=http://dynamo-db-local:8000 \
+--endpoint-url=http://database:8000 \
 --table-name SERVICES_EVENTS_ADMIN_LOCAL \
 --attribute-definitions \
   AttributeName=partitionKey,AttributeType=S  \

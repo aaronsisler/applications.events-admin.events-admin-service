@@ -61,37 +61,7 @@ public class LocationDao {
         }
     }
 
-    public List<Location> readAll(String clientId) throws DataProcessingException {
-        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
-        try {
-            List<LocationDto> locationDtos = ddbTable
-                    .query(r -> r.queryConditional(
-                            sortBeginsWith(s
-                                    -> s.partitionValue(clientId).sortValue(SortKeyType.LOCATION.name()).build()))
-                    )
-                    .items()
-                    .stream()
-                    .toList();
-
-            return locationDtos.stream()
-                    .map(locationDto ->
-                            Location.builder()
-                                    .clientId(locationDto.getPartitionKey())
-                                    .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
-                                    .name(locationDto.getName())
-                                    .createdOn(locationDto.getCreatedOn())
-                                    .lastUpdatedOn(locationDto.getLastUpdatedOn())
-                                    .build()
-                    ).collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error("ERROR::{}", this.getClass().getName(), e);
-            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
-        } finally {
-            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
-        }
-    }
-
-    public List<Location> readAll(String clientId, List<String> locationIds) throws DataProcessingException {
+    public List<Location> read(String clientId, List<String> locationIds) throws DataProcessingException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             // TODO check if there are 100 or more locationIds
@@ -115,6 +85,36 @@ public class LocationDao {
                     ).toList();
 
             log.info(unprocessedOrganizerIds.toString());
+
+            return locationDtos.stream()
+                    .map(locationDto ->
+                            Location.builder()
+                                    .clientId(locationDto.getPartitionKey())
+                                    .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
+                                    .name(locationDto.getName())
+                                    .createdOn(locationDto.getCreatedOn())
+                                    .lastUpdatedOn(locationDto.getLastUpdatedOn())
+                                    .build()
+                    ).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("ERROR::{}", this.getClass().getName(), e);
+            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+        } finally {
+            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
+        }
+    }
+
+    public List<Location> readAll(String clientId) throws DataProcessingException {
+        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
+        try {
+            List<LocationDto> locationDtos = ddbTable
+                    .query(r -> r.queryConditional(
+                            sortBeginsWith(s
+                                    -> s.partitionValue(clientId).sortValue(SortKeyType.LOCATION.name()).build()))
+                    )
+                    .items()
+                    .stream()
+                    .toList();
 
             return locationDtos.stream()
                     .map(locationDto ->
