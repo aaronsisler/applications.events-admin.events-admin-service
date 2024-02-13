@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class PublishedScheduledEventDto {
     //    @CsvBindByName(column = "Event Organizer Name")
     private String eventOrganizerName;
+    //    @CsvBindByName(column = "Event Venue Name")
+    private String eventVenueName;
     //    @CsvBindByName(column = "Event Start Date")
     private String eventStartDate;
     //    @CsvBindByName(column = "Event Start Time")
@@ -28,8 +30,6 @@ public class PublishedScheduledEventDto {
     private String eventName;
     //    @CsvBindByName(column = "Event Category")
     private String eventCategory;
-    //    @CsvBindByName(column = "Event Venue Name")
-    private String eventVenueName;
     //    @CsvBindByName(column = "Event Description")
     private String eventDescription;
 }

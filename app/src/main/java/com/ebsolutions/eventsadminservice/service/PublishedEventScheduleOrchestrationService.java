@@ -1,10 +1,11 @@
 package com.ebsolutions.eventsadminservice.service;
 
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.dao.LocationDao;
 import com.ebsolutions.eventsadminservice.dal.dao.OrganizerDao;
 import com.ebsolutions.eventsadminservice.dal.dao.PublishedEventScheduleDao;
 import com.ebsolutions.eventsadminservice.dal.dao.ScheduledEventDao;
-import com.ebsolutions.eventsadminservice.dal.dto.PublishedEventScheduleDto;
+import com.ebsolutions.eventsadminservice.dal.dto.PublishedScheduledEventDto;
 import com.ebsolutions.eventsadminservice.model.*;
 import com.ebsolutions.eventsadminservice.validator.StringValidator;
 import io.micronaut.context.annotation.Prototype;
@@ -67,7 +68,7 @@ public class PublishedEventScheduleOrchestrationService {
         spanOfDates
                 .forEach(localDate -> scheduledEvents
                         .forEach(scheduledEvent ->
-                                publishedScheduledEvents.add(this.publishedScheduledEventCondition(localDate, scheduledEvent))));
+                                publishedScheduledEvents.add(this.constructPublishedScheduledEvent(localDate, scheduledEvent))));
 
 
         publishedScheduledEvents.stream()
@@ -77,8 +78,11 @@ public class PublishedEventScheduleOrchestrationService {
         publishedScheduledEvents.stream()
                 .filter(publishedScheduledEvent -> StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getOrganizerId()))
                 .forEach(publishedScheduledEvent -> publishedScheduledEvent.setOrganizer(organizers.get(publishedScheduledEvent.getScheduledEvent().getOrganizerId())));
+
         // Create the CSV
-        List<PublishedEventScheduleDto> publishedEventScheduleDtos = new ArrayList<>();
+        List<PublishedScheduledEventDto> publishedEventScheduleDtos = publishedScheduledEvents.stream()
+                .map(this::constructPublishedScheduledEventDto).toList();
+
         // Push the CSV to File Storage
         // Add the CSV Location to the Published Event Schedule
         // Save the Published Event Schedule to database
@@ -91,7 +95,26 @@ public class PublishedEventScheduleOrchestrationService {
         return publishedEventScheduleDao.create(publishedEventSchedule);
     }
 
-    private PublishedScheduledEvent publishedScheduledEventCondition(LocalDate localDate, ScheduledEvent scheduledEvent) {
+    private PublishedScheduledEventDto constructPublishedScheduledEventDto(PublishedScheduledEvent publishedScheduledEvent) {
+        return PublishedScheduledEventDto.builder()
+                .eventOrganizerName(publishedScheduledEvent.getOrganizer() != null
+                        ? publishedScheduledEvent.getOrganizer().getName()
+                        : Constants.EMPTY_STRING)
+                .eventVenueName(publishedScheduledEvent.getLocation() != null
+                        ? publishedScheduledEvent.getLocation().getName()
+                        : Constants.EMPTY_STRING)
+                .eventStartDate(publishedScheduledEvent.getEventStartDate().toString())
+                .eventStartTime(publishedScheduledEvent.getEventStartTime().toString())
+                .eventLength(String.valueOf(publishedScheduledEvent.getEventLength()))
+                .eventEndDate(publishedScheduledEvent.getEventEndDate().toString())
+                .eventEndTime(publishedScheduledEvent.getEventEndTime().toString())
+                .eventName(publishedScheduledEvent.getEventName())
+                .eventCategory(publishedScheduledEvent.getEventCategory())
+                .eventDescription(publishedScheduledEvent.getEventDescription())
+                .build();
+    }
+
+    private PublishedScheduledEvent constructPublishedScheduledEvent(LocalDate localDate, ScheduledEvent scheduledEvent) {
         // This covers ScheduledEventType.SINGLE
         if (scheduledEvent.getScheduledEventDate() != null) {
             return PublishedScheduledEvent.builder()
