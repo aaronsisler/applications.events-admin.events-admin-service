@@ -4,15 +4,19 @@ import com.ebsolutions.eventsadminservice.dal.dao.LocationDao;
 import com.ebsolutions.eventsadminservice.dal.dao.OrganizerDao;
 import com.ebsolutions.eventsadminservice.dal.dao.PublishedEventScheduleDao;
 import com.ebsolutions.eventsadminservice.dal.dao.ScheduledEventDao;
-import com.ebsolutions.eventsadminservice.dal.dto.ScheduledEventBusDto;
+import com.ebsolutions.eventsadminservice.dal.dto.PublishedEventScheduleDto;
 import com.ebsolutions.eventsadminservice.model.*;
-import com.ebsolutions.eventsadminservice.validator.DateValidator;
+import com.ebsolutions.eventsadminservice.validator.StringValidator;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Prototype
@@ -21,9 +25,6 @@ public class PublishedEventScheduleOrchestrationService {
     private final LocationDao locationDao;
     private final ScheduledEventDao scheduledEventDao;
     private final PublishedEventScheduleDao publishedEventScheduleDao;
-    private final List<ScheduledEventBusDto> scheduledEventBusDtos = new ArrayList<>();
-    private final List<ScheduledEvent> reoccurringEventsStandard = new ArrayList<>();
-    private final List<ScheduledEvent> reoccurringEventsWeekly = new ArrayList<>();
 
     public PublishedEventScheduleOrchestrationService(LocationDao locationDao, OrganizerDao organizerDao, ScheduledEventDao scheduledEventDao, PublishedEventScheduleDao publishedEventScheduleDao) {
         this.locationDao = locationDao;
@@ -49,34 +50,35 @@ public class PublishedEventScheduleOrchestrationService {
                 .toList();
 
         // Get list of Organizers for list of organizer ids
-        List<Organizer> organizers = organizerDao.read(publishedEventSchedule.getClientId(), organizerIds);
+        Map<String, Organizer> organizers = organizerDao.read(publishedEventSchedule.getClientId(), organizerIds)
+                .stream().collect(Collectors.toMap(Organizer::getOrganizerId, Function.identity()));
 
         // Get list of Locations for list of location ids
-        List<Location> locations = locationDao.read(publishedEventSchedule.getClientId(), locationIds);
-
-//        Map<ScheduledEventDay, ScheduledEvent> dayScheduledEventMap = scheduledEvents.stream()
-//                .collect(Collectors.toMap(this::figureOutDay, Function.identity()));
-
-        // Filter out the ScheduledEventType.SINGLE then null check the schedule event interval
-//        Map<ScheduledEventInterval, List<ScheduledEvent>> scheduledEventIntervalListHashMap = scheduledEvents.stream()
-//                .filter(scheduledEvent -> ScheduledEventType.SINGLE.equals(scheduledEvent.getScheduledEventType()))
-//                .filter(scheduledEvent -> scheduledEvent.getScheduledEventInterval() != null)
-//                .collect(Collectors.groupingBy(ScheduledEvent::getScheduledEventInterval));
-
-        this.reoccurringEventsStandard.stream()
-                .filter(scheduledEvent -> List.of(ScheduledEventInterval.DAILY, ScheduledEventInterval.WEEKDAYS).contains(scheduledEvent.getScheduledEventInterval()));
+        Map<String, Location> locations = locationDao.read(publishedEventSchedule.getClientId(), locationIds)
+                .stream().collect(Collectors.toMap(Location::getLocationId, Function.identity()));
 
         // Create the list of dates from 1st of month to the end of month for given year/month in request
         LocalDate startOfMonth = LocalDate.of(publishedEventSchedule.getEventScheduleYear(), publishedEventSchedule.getEventScheduleMonth(), 1);
         LocalDate startOfNextMonth = startOfMonth.plusMonths(1);
         List<LocalDate> spanOfDates = startOfMonth.datesUntil(startOfNextMonth).toList();
 
-        // TODO Go through the list and think of a way to break it into a KVP such that when going through the scheduled events, we can create a "hash" that can be found in the KVP
-
         // Loop through the days and see which scheduledEvents should be placed
-        spanOfDates.forEach(this::figureItOut);
+        List<PublishedScheduledEvent> publishedScheduledEvents = new ArrayList<>();
+        spanOfDates
+                .forEach(localDate -> scheduledEvents
+                        .forEach(scheduledEvent ->
+                                publishedScheduledEvents.add(this.publishedScheduledEventCondition(localDate, scheduledEvent))));
 
+
+        publishedScheduledEvents.stream()
+                .filter(publishedScheduledEvent -> StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getLocationId()))
+                .forEach(publishedScheduledEvent -> publishedScheduledEvent.setLocation(locations.get(publishedScheduledEvent.getScheduledEvent().getLocationId())));
+
+        publishedScheduledEvents.stream()
+                .filter(publishedScheduledEvent -> StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getOrganizerId()))
+                .forEach(publishedScheduledEvent -> publishedScheduledEvent.setOrganizer(organizers.get(publishedScheduledEvent.getScheduledEvent().getOrganizerId())));
         // Create the CSV
+        List<PublishedEventScheduleDto> publishedEventScheduleDtos = new ArrayList<>();
         // Push the CSV to File Storage
         // Add the CSV Location to the Published Event Schedule
         // Save the Published Event Schedule to database
@@ -89,18 +91,36 @@ public class PublishedEventScheduleOrchestrationService {
         return publishedEventScheduleDao.create(publishedEventSchedule);
     }
 
-    private void figureItOut(LocalDate localDate) {
-        // Each date we need to see if it matches a weekday
-        if (DateValidator.isWeekday(localDate)) {
-            // If it is a weekday?
-        } else {
-            // Not a WeekDay
+    private PublishedScheduledEvent publishedScheduledEventCondition(LocalDate localDate, ScheduledEvent scheduledEvent) {
+        // This covers ScheduledEventType.SINGLE
+        if (scheduledEvent.getScheduledEventDate() != null) {
+            return PublishedScheduledEvent.builder()
+                    .scheduledEvent(scheduledEvent)
+                    .eventStartDate(scheduledEvent.getScheduledEventDate())
+                    .eventStartTime(scheduledEvent.getStartTime())
+                    .eventLength(ChronoUnit.MINUTES.between(scheduledEvent.getStartTime(), scheduledEvent.getEndTime()))
+                    .eventEndDate(scheduledEvent.getScheduledEventDate())
+                    .eventEndTime(scheduledEvent.getEndTime())
+                    .eventName(scheduledEvent.getName())
+                    .eventDescription(scheduledEvent.getDescription())
+                    .eventCategory(scheduledEvent.getCategory())
+                    .build();
         }
-        // Each date we need to see if it matches a weekend
-        // Each date we need to see if it matches a daily
-        // Each date we need to see if it matches a weekly value i.e. MON, TUE
-        this.scheduledEventBusDtos.add(
-                ScheduledEventBusDto.builder().build()
-        );
+
+        // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKLY
+        // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKENDS
+        // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKDAYS
+        // This should cover all remaining cases i.e. ScheduledEventType.REOCCURRING and ScheduledEventInterval.DAILY
+        return PublishedScheduledEvent.builder()
+                .scheduledEvent(scheduledEvent)
+                .eventStartDate(localDate)
+                .eventStartTime(scheduledEvent.getStartTime())
+                .eventLength(ChronoUnit.MINUTES.between(scheduledEvent.getStartTime(), scheduledEvent.getEndTime()))
+                .eventEndDate(localDate)
+                .eventEndTime(scheduledEvent.getEndTime())
+                .eventName(scheduledEvent.getName())
+                .eventDescription(scheduledEvent.getDescription())
+                .eventCategory(scheduledEvent.getCategory())
+                .build();
     }
 }

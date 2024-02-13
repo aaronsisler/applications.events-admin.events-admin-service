@@ -18,11 +18,8 @@
           "locationId": {
             "S": "get-all-scheduled-events-scheduled-event-1-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-all-scheduled-events-scheduled-event-1-organizer-1-id",
-              "get-all-scheduled-events-scheduled-event-1-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-all-scheduled-events-scheduled-event-1-organizer-id"
           },
           "name": {
             "S": "Get All Scheduled Events - Scheduled Event 1 Name"
@@ -75,11 +72,8 @@
           "locationId": {
             "S": "get-all-scheduled-events-scheduled-event-2-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-all-scheduled-events-scheduled-event-2-organizer-1-id",
-              "get-all-scheduled-events-scheduled-event-2-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-all-scheduled-events-scheduled-event-2-organizer-id"
           },
           "scheduledEventType": {
             "S": "REOCCURRING"
@@ -135,11 +129,8 @@
           "locationId": {
             "S": "get-all-scheduled-events-scheduled-event-3-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-all-scheduled-events-scheduled-event-3-organizer-1-id",
-              "get-all-scheduled-events-scheduled-event-3-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-all-scheduled-events-scheduled-event-3-organizer-id"
           },
           "scheduledEventType": {
             "S": "REOCCURRING"

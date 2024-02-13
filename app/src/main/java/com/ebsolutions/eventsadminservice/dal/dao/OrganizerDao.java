@@ -139,8 +139,6 @@ public class OrganizerDao {
         try {
             LocalDateTime now = LocalDateTime.now();
 
-            assert organizer.getClientId() != null;
-
             OrganizerDto organizerDto = OrganizerDto.builder()
                     .partitionKey(organizer.getClientId())
                     .sortKey(SortKeyType.ORGANIZER + UniqueIdGenerator.generate())

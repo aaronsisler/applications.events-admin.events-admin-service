@@ -79,12 +79,12 @@ public class LocationDao {
 
             BatchGetResultPageIterable resultPages = enhancedClient.batchGetItem(b -> b.readBatches(organizerBatch));
             List<LocationDto> locationDtos = resultPages.resultsForTable(ddbTable).stream().toList();
-            List<String> unprocessedOrganizerIds =
+            List<String> unprocessedLocationIds =
                     resultPages.stream().flatMap((BatchGetResultPage pageResult) ->
                             pageResult.unprocessedKeysForTable(ddbTable).stream().map(Object::toString)
                     ).toList();
 
-            log.info(unprocessedOrganizerIds.toString());
+            log.info(unprocessedLocationIds.toString());
 
             return locationDtos.stream()
                     .map(locationDto ->
@@ -139,8 +139,6 @@ public class LocationDao {
         try {
             LocalDateTime now = LocalDateTime.now();
 
-            assert location.getClientId() != null;
-
             LocationDto locationDto = LocationDto.builder()
                     .partitionKey(location.getClientId())
                     .sortKey(SortKeyType.LOCATION + UniqueIdGenerator.generate())
@@ -174,7 +172,6 @@ public class LocationDao {
     public Location update(Location location) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            assert location.getClientId() != null;
             assert location.getLocationId() != null;
 
             LocationDto locationDto = LocationDto.builder()

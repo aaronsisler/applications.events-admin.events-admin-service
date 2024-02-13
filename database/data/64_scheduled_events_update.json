@@ -18,11 +18,8 @@
           "locationId": {
             "S": "update-scheduled-event-single-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "update-scheduled-event-single-organizer-1-id",
-              "update-scheduled-event-single-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "update-scheduled-event-single-organizer-1-id"
           },
           "name": {
             "S": "Update Scheduled Event - Single - Scheduled Event Name"
@@ -76,10 +73,7 @@
             "S": "update-scheduled-event-reoccurring-standard-location-id"
           },
           "organizerIds": {
-            "SS": [
-              "update-scheduled-event-reoccurring-organizer-1-id",
-              "update-scheduled-event-reoccurring-organizer-2-id"
-            ]
+            "S": "update-scheduled-event-reoccurring-standard-organizer-1-id"
           },
           "name": {
             "S": "Update Scheduled Event - Reoccurring Standard - Scheduled Event Name"
@@ -133,10 +127,7 @@
             "S": "update-scheduled-event-reoccurring-weekly-location-id"
           },
           "organizerIds": {
-            "SS": [
-              "update-scheduled-event-reoccurring-weekly-organizer-1-id",
-              "update-scheduled-event-reoccurring-weekly-organizer-2-id"
-            ]
+            "S": "update-scheduled-event-reoccurring-weekly-organizer-1-id"
           },
           "name": {
             "S": "Update Scheduled Event - Reoccurring Weekly - Scheduled Event Name"
