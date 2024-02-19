@@ -79,19 +79,19 @@ public class PublishedEventScheduleOrchestrationService {
                 .filter(publishedScheduledEvent -> StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getOrganizerId()))
                 .forEach(publishedScheduledEvent -> publishedScheduledEvent.setOrganizer(organizers.get(publishedScheduledEvent.getScheduledEvent().getOrganizerId())));
 
-        // Create the CSV
+        // TODO Remove the scheduled events that fall on a location's blackout date
+        // TODO Remove the scheduled events that fall on a scheduled event's blackout date
+
+        // Create the data for the CSV
         List<PublishedScheduledEventDto> publishedEventScheduleDtos = publishedScheduledEvents.stream()
                 .map(this::constructPublishedScheduledEventDto).toList();
 
+        // Create the CSV
         // Push the CSV to File Storage
         // Add the CSV Location to the Published Event Schedule
         // Save the Published Event Schedule to database
         // Return saved Published Event Schedule to user
 
-        // Not sure when/where to do the below but don't forget
-        // Remove the scheduled events that fall on a location's blackout date
-        // Remove the scheduled events that fall on a scheduled event's blackout date
-        // Add in the Single Scheduled Events
         return publishedEventScheduleDao.create(publishedEventSchedule);
     }
 

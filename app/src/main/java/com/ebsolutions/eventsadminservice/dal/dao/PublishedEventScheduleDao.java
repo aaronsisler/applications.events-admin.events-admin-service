@@ -32,10 +32,10 @@ public class PublishedEventScheduleDao {
         this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(PublishedEventScheduleDto.class));
     }
 
-    public PublishedEventSchedule read(String clientId, String publisehdEventScheduleId) throws DataProcessingException {
+    public PublishedEventSchedule read(String clientId, String publishedEventScheduleId) throws DataProcessingException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.PUBLISHED_EVENT_SCHEDULE, publisehdEventScheduleId);
+            Key key = KeyBuilder.build(clientId, SortKeyType.PUBLISHED_EVENT_SCHEDULE, publishedEventScheduleId);
 
             PublishedEventScheduleDto publishedEventScheduleDto = ddbTable.getItem(key);
 
@@ -187,10 +187,10 @@ public class PublishedEventScheduleDao {
         }
     }
 
-    public void delete(String clientId, String publisehdEventScheduleId) {
+    public void delete(String clientId, String publishedEventScheduleId) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.PUBLISHED_EVENT_SCHEDULE, publisehdEventScheduleId);
+            Key key = KeyBuilder.build(clientId, SortKeyType.PUBLISHED_EVENT_SCHEDULE, publishedEventScheduleId);
 
             ddbTable.deleteItem(key);
         } catch (Exception e) {
