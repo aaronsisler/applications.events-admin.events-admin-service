@@ -6,11 +6,13 @@ import com.ebsolutions.eventsadminservice.dal.dao.OrganizerDao;
 import com.ebsolutions.eventsadminservice.dal.dao.PublishedEventScheduleDao;
 import com.ebsolutions.eventsadminservice.dal.dao.ScheduledEventDao;
 import com.ebsolutions.eventsadminservice.dal.dto.PublishedScheduledEventDto;
+import com.ebsolutions.eventsadminservice.dal.util.CsvFileGenerator;
 import com.ebsolutions.eventsadminservice.model.*;
 import com.ebsolutions.eventsadminservice.validator.StringValidator;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -22,19 +24,21 @@ import java.util.stream.Collectors;
 @Slf4j
 @Prototype
 public class PublishedEventScheduleOrchestrationService {
+    private final ScheduledEventDao scheduledEventDao;
     private final OrganizerDao organizerDao;
     private final LocationDao locationDao;
-    private final ScheduledEventDao scheduledEventDao;
+    private final CsvFileGenerator csvFileGenerator;
     private final PublishedEventScheduleDao publishedEventScheduleDao;
 
-    public PublishedEventScheduleOrchestrationService(LocationDao locationDao, OrganizerDao organizerDao, ScheduledEventDao scheduledEventDao, PublishedEventScheduleDao publishedEventScheduleDao) {
+    public PublishedEventScheduleOrchestrationService(ScheduledEventDao scheduledEventDao, LocationDao locationDao, OrganizerDao organizerDao, CsvFileGenerator csvFileGenerator, PublishedEventScheduleDao publishedEventScheduleDao) {
+        this.scheduledEventDao = scheduledEventDao;
         this.locationDao = locationDao;
         this.organizerDao = organizerDao;
-        this.scheduledEventDao = scheduledEventDao;
+        this.csvFileGenerator = csvFileGenerator;
         this.publishedEventScheduleDao = publishedEventScheduleDao;
     }
 
-    public PublishedEventSchedule publishEventSchedule(PublishedEventSchedule publishedEventSchedule) {
+    public PublishedEventSchedule publishEventSchedule(PublishedEventSchedule publishedEventSchedule) throws IOException {
         // Retrieve the scheduled events using the eventScheduleId
         List<ScheduledEvent> scheduledEvents = scheduledEventDao.readAll(publishedEventSchedule.getEventScheduleId());
 
@@ -86,7 +90,8 @@ public class PublishedEventScheduleOrchestrationService {
         List<PublishedScheduledEventDto> publishedEventScheduleDtos = publishedScheduledEvents.stream()
                 .map(this::constructPublishedScheduledEventDto).toList();
 
-        // Create the CSV
+        // Create the CSV Bytes
+        this.csvFileGenerator.create(publishedEventScheduleDtos);
         // Push the CSV to File Storage
         // Add the CSV Location to the Published Event Schedule
         // Save the Published Event Schedule to database

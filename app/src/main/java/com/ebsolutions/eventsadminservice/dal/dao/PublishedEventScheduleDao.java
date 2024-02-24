@@ -18,10 +18,6 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
 
 @Slf4j
 @Prototype
@@ -54,42 +50,6 @@ public class PublishedEventScheduleDao {
                     .createdOn(publishedEventScheduleDto.getCreatedOn())
                     .lastUpdatedOn(publishedEventScheduleDto.getLastUpdatedOn())
                     .build();
-        } catch (Exception e) {
-            log.error("ERROR::{}", this.getClass().getName(), e);
-            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
-        } finally {
-            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
-        }
-    }
-
-    public List<PublishedEventSchedule> readAll(String clientId) throws DataProcessingException {
-        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
-        try {
-            List<PublishedEventScheduleDto> publishedEventScheduleDtos = ddbTable
-                    .query(r -> r.queryConditional(
-                            sortBeginsWith(s
-                                    -> s.partitionValue(clientId).sortValue(SortKeyType.PUBLISHED_EVENT_SCHEDULE.name()).build()))
-                    )
-                    .items()
-                    .stream()
-                    .toList();
-
-            return publishedEventScheduleDtos.stream()
-                    .map(publishedEventScheduleDto ->
-                            PublishedEventSchedule.builder()
-                                    .clientId(publishedEventScheduleDto.getPartitionKey())
-                                    .publishedEventScheduleId(StringUtils.remove(publishedEventScheduleDto.getSortKey(), SortKeyType.PUBLISHED_EVENT_SCHEDULE.name()))
-                                    .eventScheduleId(publishedEventScheduleDto.getEventScheduleId())
-                                    .name(publishedEventScheduleDto.getName())
-                                    .eventScheduleYear(publishedEventScheduleDto.getEventScheduleYear())
-                                    .eventScheduleMonth(publishedEventScheduleDto.getEventScheduleMonth())
-                                    .fileLocation(publishedEventScheduleDto.getFileLocation())
-                                    .locationBlackouts(publishedEventScheduleDto.getLocationBlackouts())
-                                    .eventBlackouts(publishedEventScheduleDto.getEventBlackouts())
-                                    .createdOn(publishedEventScheduleDto.getCreatedOn())
-                                    .lastUpdatedOn(publishedEventScheduleDto.getLastUpdatedOn())
-                                    .build()
-                    ).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
@@ -137,67 +97,6 @@ public class PublishedEventScheduleDao {
             throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
         } finally {
             metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "create"));
-        }
-    }
-
-    /**
-     * This will replace the entire database object with the input event
-     *
-     * @param publishedEventSchedule the object to replace the current database object
-     */
-    public PublishedEventSchedule update(PublishedEventSchedule publishedEventSchedule) {
-        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
-        try {
-            assert publishedEventSchedule.getPublishedEventScheduleId() != null;
-
-            PublishedEventScheduleDto publishedEventScheduleDto = PublishedEventScheduleDto.builder()
-                    .partitionKey(publishedEventSchedule.getClientId())
-                    .sortKey(SortKeyType.PUBLISHED_EVENT_SCHEDULE + publishedEventSchedule.getPublishedEventScheduleId())
-                    .eventScheduleId(publishedEventSchedule.getEventScheduleId())
-                    .name(publishedEventSchedule.getName())
-                    .eventScheduleYear(publishedEventSchedule.getEventScheduleYear())
-                    .eventScheduleMonth(publishedEventSchedule.getEventScheduleMonth())
-                    .fileLocation(publishedEventSchedule.getFileLocation())
-                    .locationBlackouts(publishedEventSchedule.getLocationBlackouts())
-                    .eventBlackouts(publishedEventSchedule.getEventBlackouts())
-                    .createdOn(publishedEventSchedule.getCreatedOn())
-                    .lastUpdatedOn(LocalDateTime.now())
-                    .build();
-
-            ddbTable.putItem(publishedEventScheduleDto);
-
-            return PublishedEventSchedule.builder()
-                    .clientId(publishedEventScheduleDto.getPartitionKey())
-                    .publishedEventScheduleId(StringUtils.remove(publishedEventScheduleDto.getSortKey(), SortKeyType.PUBLISHED_EVENT_SCHEDULE.name()))
-                    .eventScheduleId(publishedEventScheduleDto.getEventScheduleId())
-                    .name(publishedEventScheduleDto.getName())
-                    .eventScheduleYear(publishedEventScheduleDto.getEventScheduleYear())
-                    .eventScheduleMonth(publishedEventScheduleDto.getEventScheduleMonth())
-                    .fileLocation(publishedEventScheduleDto.getFileLocation())
-                    .locationBlackouts(publishedEventScheduleDto.getLocationBlackouts())
-                    .eventBlackouts(publishedEventScheduleDto.getEventBlackouts())
-                    .createdOn(publishedEventScheduleDto.getCreatedOn())
-                    .lastUpdatedOn(publishedEventScheduleDto.getLastUpdatedOn())
-                    .build();
-        } catch (Exception e) {
-            log.error("ERROR::{}", this.getClass().getName(), e);
-            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
-        } finally {
-            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "update"));
-        }
-    }
-
-    public void delete(String clientId, String publishedEventScheduleId) {
-        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
-        try {
-            Key key = KeyBuilder.build(clientId, SortKeyType.PUBLISHED_EVENT_SCHEDULE, publishedEventScheduleId);
-
-            ddbTable.deleteItem(key);
-        } catch (Exception e) {
-            log.error("ERROR::{}", this.getClass().getName(), e);
-            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
-        } finally {
-            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "delete"));
         }
     }
 }

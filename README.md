@@ -16,6 +16,7 @@ https://github.com/users/aaronsisler/projects/9/views/1
     * Test(s) created/updated
     * Data set(s) created/updated
 * API collection (Bruno) is updated and committed to api-client repository
+* Update the [change log](./CHANGELOG.md)
 
 ## Application Workflow
 
@@ -42,11 +43,18 @@ https://github.com/users/aaronsisler/projects/9/views/1
    the [published event schedule controller](./app/src/main/java/com/ebsolutions/eventsadminservice/controller/PublishedEventScheduleController.java).
    This takes in a previously created event schedule id, along with year, month, and any event or location blackout
    dates.
-8. This hits Orc Service but then what?
-9. Seems to be in memory CSV
-9. https://www.csvreader.com/java_csv.php
-10. Notes
-10. https://stackoverflow.com/questions/57361111/can-we-write-csv-file-to-s3-without-creating-a-file-on-local-in-spring-boot
+8. The published event schedule controller then calls
+   the [PublishedEventScheduleOrchestrationService](app/src/main/java/com/ebsolutions/eventsadminservice/service/PublishedEventScheduleOrchestrationService.java)
+   which does the following:
+    - Gets all of the scheduled events for the given event schedule
+    - Gets all of the locations for the list of scheduled events
+    - Gets all of the organizers for the list of scheduled events
+    - Creates a list of dates from the first of the month to the last day of the month from the given year and month
+      supplied in the published event schedule.
+    - For each day of the month
+        -         // Loop through the days and see which scheduledEvents should be placed
+
+9. When we get to the CSV: https://github.com/osiegmar/FastCSV
 
 ## Running Locally
 
