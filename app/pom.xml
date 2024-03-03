@@ -22,6 +22,7 @@
         <io.micronaut.version>4.1.9</io.micronaut.version>
         <io.micronaut.serde.version>2.2.5</io.micronaut.serde.version>
         <aws.sdk.version>2.21.15</aws.sdk.version>
+        <version.fastcsv>3.0.0</version.fastcsv>
 
     </properties>
 
@@ -118,6 +119,13 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
+        </dependency>
+
+        <!-- Added for generation of the CSV -->
+        <dependency>
+            <groupId>de.siegmar</groupId>
+            <artifactId>fastcsv</artifactId>
+            <version>${version.fastcsv}</version>
         </dependency>
 
         <!-- Handles Spock testing with Micronaut -->

@@ -8,6 +8,7 @@ import com.ebsolutions.eventsadminservice.dal.dao.ScheduledEventDao;
 import com.ebsolutions.eventsadminservice.dal.dto.PublishedScheduledEventDto;
 import com.ebsolutions.eventsadminservice.dal.util.CsvFileGenerator;
 import com.ebsolutions.eventsadminservice.model.*;
+import com.ebsolutions.eventsadminservice.validator.DateValidator;
 import com.ebsolutions.eventsadminservice.validator.StringValidator;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
@@ -72,8 +73,10 @@ public class PublishedEventScheduleOrchestrationService {
         spanOfDates
                 .forEach(localDate -> scheduledEvents
                         .forEach(scheduledEvent ->
-                                publishedScheduledEvents.add(this.constructPublishedScheduledEvent(localDate, scheduledEvent))));
+                                publishedScheduledEvents.addAll(this.populatePublishedScheduledEvents(localDate, scheduledEvent))));
 
+        // TODO Remove the scheduled events that fall on a location's blackout date
+        // TODO Remove the scheduled events that fall on a scheduled event's blackout date
 
         publishedScheduledEvents.stream()
                 .filter(publishedScheduledEvent -> StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getLocationId()))
@@ -83,21 +86,71 @@ public class PublishedEventScheduleOrchestrationService {
                 .filter(publishedScheduledEvent -> StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getOrganizerId()))
                 .forEach(publishedScheduledEvent -> publishedScheduledEvent.setOrganizer(organizers.get(publishedScheduledEvent.getScheduledEvent().getOrganizerId())));
 
-        // TODO Remove the scheduled events that fall on a location's blackout date
-        // TODO Remove the scheduled events that fall on a scheduled event's blackout date
-
-        // Create the data for the CSV
-        List<PublishedScheduledEventDto> publishedEventScheduleDtos = publishedScheduledEvents.stream()
-                .map(this::constructPublishedScheduledEventDto).toList();
-
         // Create the CSV Bytes
-        this.csvFileGenerator.create(publishedEventScheduleDtos);
+        this.csvFileGenerator.create(publishedScheduledEvents);
         // Push the CSV to File Storage
         // Add the CSV Location to the Published Event Schedule
         // Save the Published Event Schedule to database
         // Return saved Published Event Schedule to user
 
         return publishedEventScheduleDao.create(publishedEventSchedule);
+    }
+
+    private List<PublishedScheduledEvent> populatePublishedScheduledEvents(LocalDate localDate, ScheduledEvent scheduledEvent) {
+        List<PublishedScheduledEvent> returnedList = new ArrayList<>();
+
+        // This covers ScheduledEventType.SINGLE
+        if (ScheduledEventType.SINGLE.equals(scheduledEvent.getScheduledEventType())
+                && scheduledEvent.getScheduledEventDate() != null
+                && localDate.isEqual(scheduledEvent.getScheduledEventDate())) {
+            returnedList.add(this.publishedScheduledEventBuilder(localDate, scheduledEvent));
+
+            return returnedList;
+        }
+
+        // This covers ScheduledEventType.REOCCURRING
+        if (ScheduledEventType.REOCCURRING.equals(scheduledEvent.getScheduledEventType())) {
+            // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.DAILY
+            if (ScheduledEventInterval.DAILY.equals(scheduledEvent.getScheduledEventInterval())) {
+                returnedList.add(this.publishedScheduledEventBuilder(localDate, scheduledEvent));
+
+                return returnedList;
+            }
+
+            // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKLY
+            if (ScheduledEventInterval.WEEKLY.equals(scheduledEvent.getScheduledEventInterval())
+                    && DateValidator.areDayOfWeekEqual(localDate, scheduledEvent.getScheduledEventDay())) {
+                returnedList.add(this.publishedScheduledEventBuilder(localDate, scheduledEvent));
+            }
+
+            // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKDAYS
+            if (ScheduledEventInterval.WEEKDAYS.equals(scheduledEvent.getScheduledEventInterval())
+                    && DateValidator.isWeekday(localDate)) {
+                returnedList.add(this.publishedScheduledEventBuilder(localDate, scheduledEvent));
+            }
+
+            // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKENDS
+            if (ScheduledEventInterval.WEEKENDS.equals(scheduledEvent.getScheduledEventInterval())
+                    && DateValidator.isWeekend(localDate)) {
+                returnedList.add(this.publishedScheduledEventBuilder(localDate, scheduledEvent));
+            }
+        }
+
+        return returnedList;
+    }
+
+    private PublishedScheduledEvent publishedScheduledEventBuilder(LocalDate localDate, ScheduledEvent scheduledEvent) {
+        return PublishedScheduledEvent.builder()
+                .scheduledEvent(scheduledEvent)
+                .eventStartDate(localDate)
+                .eventStartTime(scheduledEvent.getStartTime())
+                .eventLength(ChronoUnit.MINUTES.between(scheduledEvent.getStartTime(), scheduledEvent.getEndTime()))
+                .eventEndDate(localDate)
+                .eventEndTime(scheduledEvent.getEndTime())
+                .eventName(scheduledEvent.getName())
+                .eventDescription(scheduledEvent.getDescription())
+                .eventCategory(scheduledEvent.getCategory())
+                .build();
     }
 
     private PublishedScheduledEventDto constructPublishedScheduledEventDto(PublishedScheduledEvent publishedScheduledEvent) {
@@ -116,39 +169,6 @@ public class PublishedEventScheduleOrchestrationService {
                 .eventName(publishedScheduledEvent.getEventName())
                 .eventCategory(publishedScheduledEvent.getEventCategory())
                 .eventDescription(publishedScheduledEvent.getEventDescription())
-                .build();
-    }
-
-    private PublishedScheduledEvent constructPublishedScheduledEvent(LocalDate localDate, ScheduledEvent scheduledEvent) {
-        // This covers ScheduledEventType.SINGLE
-        if (scheduledEvent.getScheduledEventDate() != null) {
-            return PublishedScheduledEvent.builder()
-                    .scheduledEvent(scheduledEvent)
-                    .eventStartDate(scheduledEvent.getScheduledEventDate())
-                    .eventStartTime(scheduledEvent.getStartTime())
-                    .eventLength(ChronoUnit.MINUTES.between(scheduledEvent.getStartTime(), scheduledEvent.getEndTime()))
-                    .eventEndDate(scheduledEvent.getScheduledEventDate())
-                    .eventEndTime(scheduledEvent.getEndTime())
-                    .eventName(scheduledEvent.getName())
-                    .eventDescription(scheduledEvent.getDescription())
-                    .eventCategory(scheduledEvent.getCategory())
-                    .build();
-        }
-
-        // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKLY
-        // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKENDS
-        // This covers ScheduledEventType.REOCCURRING and ScheduledEventInterval.WEEKDAYS
-        // This should cover all remaining cases i.e. ScheduledEventType.REOCCURRING and ScheduledEventInterval.DAILY
-        return PublishedScheduledEvent.builder()
-                .scheduledEvent(scheduledEvent)
-                .eventStartDate(localDate)
-                .eventStartTime(scheduledEvent.getStartTime())
-                .eventLength(ChronoUnit.MINUTES.between(scheduledEvent.getStartTime(), scheduledEvent.getEndTime()))
-                .eventEndDate(localDate)
-                .eventEndTime(scheduledEvent.getEndTime())
-                .eventName(scheduledEvent.getName())
-                .eventDescription(scheduledEvent.getDescription())
-                .eventCategory(scheduledEvent.getCategory())
                 .build();
     }
 }
