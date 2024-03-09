@@ -1,19 +1,16 @@
 package com.ebsolutions.eventsadminservice.service;
 
-import com.ebsolutions.eventsadminservice.config.Constants;
-import com.ebsolutions.eventsadminservice.dal.dao.LocationDao;
-import com.ebsolutions.eventsadminservice.dal.dao.OrganizerDao;
-import com.ebsolutions.eventsadminservice.dal.dao.PublishedEventScheduleDao;
-import com.ebsolutions.eventsadminservice.dal.dao.ScheduledEventDao;
-import com.ebsolutions.eventsadminservice.dal.dto.PublishedScheduledEventDto;
+import com.ebsolutions.eventsadminservice.dal.dao.*;
 import com.ebsolutions.eventsadminservice.dal.util.CsvFileGenerator;
 import com.ebsolutions.eventsadminservice.model.*;
 import com.ebsolutions.eventsadminservice.validator.DateValidator;
 import com.ebsolutions.eventsadminservice.validator.StringValidator;
 import io.micronaut.context.annotation.Prototype;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -24,20 +21,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Prototype
+@AllArgsConstructor
 public class PublishedEventScheduleOrchestrationService {
     private final ScheduledEventDao scheduledEventDao;
     private final OrganizerDao organizerDao;
     private final LocationDao locationDao;
     private final CsvFileGenerator csvFileGenerator;
     private final PublishedEventScheduleDao publishedEventScheduleDao;
-
-    public PublishedEventScheduleOrchestrationService(ScheduledEventDao scheduledEventDao, LocationDao locationDao, OrganizerDao organizerDao, CsvFileGenerator csvFileGenerator, PublishedEventScheduleDao publishedEventScheduleDao) {
-        this.scheduledEventDao = scheduledEventDao;
-        this.locationDao = locationDao;
-        this.organizerDao = organizerDao;
-        this.csvFileGenerator = csvFileGenerator;
-        this.publishedEventScheduleDao = publishedEventScheduleDao;
-    }
+    private final FileStorageDao fileStorageDao;
 
     public PublishedEventSchedule publishEventSchedule(PublishedEventSchedule publishedEventSchedule) throws IOException {
         // Retrieve the scheduled events using the eventScheduleId
@@ -87,12 +78,12 @@ public class PublishedEventScheduleOrchestrationService {
                 .forEach(publishedScheduledEvent -> publishedScheduledEvent.setOrganizer(organizers.get(publishedScheduledEvent.getScheduledEvent().getOrganizerId())));
 
         // Create the CSV Bytes
-        this.csvFileGenerator.create(publishedScheduledEvents);
+        ByteBuffer byteBuffer = this.csvFileGenerator.create(publishedScheduledEvents);
         // Push the CSV to File Storage
+        String fileLocation = this.fileStorageDao.create(publishedEventSchedule.getClientId(), byteBuffer);
         // Add the CSV Location to the Published Event Schedule
-        // Save the Published Event Schedule to database
-        // Return saved Published Event Schedule to user
-
+        publishedEventSchedule.setFileLocation(fileLocation);
+        // Save and return the Published Event Schedule to database
         return publishedEventScheduleDao.create(publishedEventSchedule);
     }
 
@@ -150,25 +141,6 @@ public class PublishedEventScheduleOrchestrationService {
                 .eventName(scheduledEvent.getName())
                 .eventDescription(scheduledEvent.getDescription())
                 .eventCategory(scheduledEvent.getCategory())
-                .build();
-    }
-
-    private PublishedScheduledEventDto constructPublishedScheduledEventDto(PublishedScheduledEvent publishedScheduledEvent) {
-        return PublishedScheduledEventDto.builder()
-                .eventOrganizerName(publishedScheduledEvent.getOrganizer() != null
-                        ? publishedScheduledEvent.getOrganizer().getName()
-                        : Constants.EMPTY_STRING)
-                .eventVenueName(publishedScheduledEvent.getLocation() != null
-                        ? publishedScheduledEvent.getLocation().getName()
-                        : Constants.EMPTY_STRING)
-                .eventStartDate(publishedScheduledEvent.getEventStartDate().toString())
-                .eventStartTime(publishedScheduledEvent.getEventStartTime().toString())
-                .eventLength(String.valueOf(publishedScheduledEvent.getEventLength()))
-                .eventEndDate(publishedScheduledEvent.getEventEndDate().toString())
-                .eventEndTime(publishedScheduledEvent.getEventEndTime().toString())
-                .eventName(publishedScheduledEvent.getEventName())
-                .eventCategory(publishedScheduledEvent.getEventCategory())
-                .eventDescription(publishedScheduledEvent.getEventDescription())
                 .build();
     }
 }

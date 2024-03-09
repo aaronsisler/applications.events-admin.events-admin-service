@@ -23,6 +23,7 @@
         <io.micronaut.serde.version>2.2.5</io.micronaut.serde.version>
         <aws.sdk.version>2.21.15</aws.sdk.version>
         <version.fastcsv>3.0.0</version.fastcsv>
+        <version.opencsv>5.9</version.opencsv>
 
     </properties>
 

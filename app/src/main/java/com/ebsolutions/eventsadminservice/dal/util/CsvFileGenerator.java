@@ -9,17 +9,16 @@ import de.siegmar.fastcsv.writer.CsvWriter;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.ByteBuffer;
 import java.text.MessageFormat;
 import java.util.List;
 
 @Slf4j
 @Prototype
 public class CsvFileGenerator {
-    public InputStream create(List<PublishedScheduledEvent> publishedScheduledEvents) throws IOException {
+    public ByteBuffer create(List<PublishedScheduledEvent> publishedScheduledEvents) throws IOException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             StringWriter stringWriter = new StringWriter();
@@ -30,7 +29,7 @@ public class CsvFileGenerator {
                             csvWriter.writeRecord(this.buildPublishedScheduledEventDtoStringList(publishedScheduledEvent))
                     );
 
-            return new ByteArrayInputStream(stringWriter.toString().getBytes());
+            return ByteBuffer.wrap(stringWriter.toString().getBytes());
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new CsvGenerationException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
