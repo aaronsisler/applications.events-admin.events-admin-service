@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConstants;
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.LocationDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
@@ -34,7 +34,7 @@ public class LocationDao {
 
     public LocationDao(DynamoDbEnhancedClient enhancedClient) {
         this.enhancedClient = enhancedClient;
-        this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(LocationDto.class));
+        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(LocationDto.class));
     }
 
     public Location read(String clientId, String locationId) throws DataProcessingException {
@@ -69,16 +69,16 @@ public class LocationDao {
                     .mappedTableResource(ddbTable);
 
             locationIds.forEach(locationId ->
-                    locationBatchBuilder
-                            .addGetItem(b -> b.key(k -> k
-                                    .partitionValue(clientId)
-                                    .sortValue(locationId)))
+                    locationBatchBuilder.addGetItem(b -> b.key(KeyBuilder.build(clientId, SortKeyType.LOCATION, locationId)))
             );
 
             ReadBatch organizerBatch = locationBatchBuilder.build();
 
             BatchGetResultPageIterable resultPages = enhancedClient.batchGetItem(b -> b.readBatches(organizerBatch));
             List<LocationDto> locationDtos = resultPages.resultsForTable(ddbTable).stream().toList();
+
+            log.info(locationDtos.toString());
+
             List<String> unprocessedLocationIds =
                     resultPages.stream().flatMap((BatchGetResultPage pageResult) ->
                             pageResult.unprocessedKeysForTable(ddbTable).stream().map(Object::toString)

@@ -1,7 +1,5 @@
 package com.ebsolutions.eventsadminservice.dal.dto;
 
-import com.ebsolutions.eventsadminservice.model.EventBlackout;
-import com.ebsolutions.eventsadminservice.model.LocationBlackout;
 import io.micronaut.serde.annotation.Serdeable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -26,6 +22,6 @@ public class PublishedEventScheduleDto extends DatabaseDto {
     private Integer eventScheduleYear;
     private Integer eventScheduleMonth;
     private String fileLocation;
-    private List<LocationBlackout> locationBlackouts;
-    private List<EventBlackout> eventBlackouts;
+//    private List<LocationBlackout> locationBlackouts;
+//    private List<EventBlackout> eventBlackouts;
 }

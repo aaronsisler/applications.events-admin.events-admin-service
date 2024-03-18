@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConstants;
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.EventScheduleDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
@@ -29,7 +29,7 @@ public class EventScheduleDao {
     private final DynamoDbTable<EventScheduleDto> ddbTable;
 
     public EventScheduleDao(DynamoDbEnhancedClient enhancedClient) {
-        this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(EventScheduleDto.class));
+        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(EventScheduleDto.class));
     }
 
     public EventSchedule read(String clientId, String eventScheduleId) throws DataProcessingException {

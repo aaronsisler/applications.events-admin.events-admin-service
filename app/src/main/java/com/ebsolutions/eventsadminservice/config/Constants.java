@@ -7,6 +7,9 @@ import java.util.List;
 public class Constants {
     public static final String EMPTY_STRING = StringUtils.EMPTY;
     public static final String FILE_STORAGE_LOCATION = "event-admin-service-file-storage";
+    public static final String DATABASE_TABLE_NAME = "SERVICES_EVENTS_ADMIN_LOCAL";
+    //        public static String DATABASE_TABLE_NAME = "SERVICES_EVENTS_ADMIN_BETA";
+
     public static final List<String> CSV_COLUMN_HEADERS =
             List.of(
                     "Event Organizer Name",

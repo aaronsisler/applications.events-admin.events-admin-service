@@ -49,6 +49,18 @@ public class OrganizerController {
         }
     }
 
+    @Get(value = "/organizerIds/{organizerIds}", produces = MediaType.APPLICATION_JSON)
+    public HttpResponse<?> getByIds(@NotBlank @PathVariable String clientId, @Valid @PathVariable List<String> organizerIds) {
+        try {
+            System.out.println(organizerIds);
+            List<Organizer> organizers = organizerDao.read(clientId, organizerIds);
+
+            return !organizers.isEmpty() ? ok(organizers) : noContent();
+        } catch (DataProcessingException dbe) {
+            return serverError(dbe);
+        }
+    }
+
     @Post(produces = MediaType.APPLICATION_JSON)
     public HttpResponse<?> post(@NotBlank @PathVariable String clientId, @Valid @Body Organizer organizer) {
         try {

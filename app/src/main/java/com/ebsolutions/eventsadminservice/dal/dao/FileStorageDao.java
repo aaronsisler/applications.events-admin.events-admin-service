@@ -1,7 +1,7 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
 import com.ebsolutions.eventsadminservice.config.Constants;
-import com.ebsolutions.eventsadminservice.exception.DataProcessingException;
+import com.ebsolutions.eventsadminservice.exception.FileProcessingException;
 import com.ebsolutions.eventsadminservice.util.MetricsStopWatch;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class FileStorageDao {
             return objectKey;
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
-            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+            throw new FileProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
         } finally {
             metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "create"));
         }

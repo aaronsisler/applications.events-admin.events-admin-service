@@ -6,10 +6,8 @@ import com.ebsolutions.eventsadminservice.model.*;
 import com.ebsolutions.eventsadminservice.validator.DateValidator;
 import com.ebsolutions.eventsadminservice.validator.StringValidator;
 import io.micronaut.context.annotation.Prototype;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Prototype
-@AllArgsConstructor
 public class PublishedEventScheduleOrchestrationService {
     private final ScheduledEventDao scheduledEventDao;
     private final OrganizerDao organizerDao;
@@ -30,7 +27,16 @@ public class PublishedEventScheduleOrchestrationService {
     private final PublishedEventScheduleDao publishedEventScheduleDao;
     private final FileStorageDao fileStorageDao;
 
-    public PublishedEventSchedule publishEventSchedule(PublishedEventSchedule publishedEventSchedule) throws IOException {
+    public PublishedEventScheduleOrchestrationService(ScheduledEventDao scheduledEventDao, OrganizerDao organizerDao, LocationDao locationDao, CsvFileGenerator csvFileGenerator, PublishedEventScheduleDao publishedEventScheduleDao, FileStorageDao fileStorageDao) {
+        this.scheduledEventDao = scheduledEventDao;
+        this.organizerDao = organizerDao;
+        this.locationDao = locationDao;
+        this.csvFileGenerator = csvFileGenerator;
+        this.publishedEventScheduleDao = publishedEventScheduleDao;
+        this.fileStorageDao = fileStorageDao;
+    }
+
+    public PublishedEventSchedule publishEventSchedule(PublishedEventSchedule publishedEventSchedule) {
         // Retrieve the scheduled events using the eventScheduleId
         List<ScheduledEvent> scheduledEvents = scheduledEventDao.readAll(publishedEventSchedule.getEventScheduleId());
 
@@ -42,7 +48,7 @@ public class PublishedEventScheduleOrchestrationService {
 
         // Get distinct list of organizer ids from Scheduled Events
         List<String> organizerIds = scheduledEvents.stream()
-                .map(ScheduledEvent::getLocationId)
+                .map(ScheduledEvent::getOrganizerId)
                 .distinct()
                 .toList();
 
@@ -70,16 +76,16 @@ public class PublishedEventScheduleOrchestrationService {
         // TODO Remove the scheduled events that fall on a scheduled event's blackout date
 
         publishedScheduledEvents.stream()
-                .filter(publishedScheduledEvent -> StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getLocationId()))
+                .filter(publishedScheduledEvent -> !StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getLocationId())).toList()
                 .forEach(publishedScheduledEvent -> publishedScheduledEvent.setLocation(locations.get(publishedScheduledEvent.getScheduledEvent().getLocationId())));
 
         publishedScheduledEvents.stream()
-                .filter(publishedScheduledEvent -> StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getOrganizerId()))
+                .filter(publishedScheduledEvent -> !StringValidator.isBlank(publishedScheduledEvent.getScheduledEvent().getOrganizerId()))
                 .forEach(publishedScheduledEvent -> publishedScheduledEvent.setOrganizer(organizers.get(publishedScheduledEvent.getScheduledEvent().getOrganizerId())));
 
-        // Create the CSV Bytes
+        // Create the CSV bytes
         ByteBuffer byteBuffer = this.csvFileGenerator.create(publishedScheduledEvents);
-        // Push the CSV to File Storage
+        // Push the CSV bytes to File Storage
         String fileLocation = this.fileStorageDao.create(publishedEventSchedule.getClientId(), byteBuffer);
         // Add the CSV Location to the Published Event Schedule
         publishedEventSchedule.setFileLocation(fileLocation);

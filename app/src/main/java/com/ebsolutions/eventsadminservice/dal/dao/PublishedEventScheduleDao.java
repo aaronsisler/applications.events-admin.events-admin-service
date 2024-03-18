@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConstants;
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.PublishedEventScheduleDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
@@ -25,7 +25,7 @@ public class PublishedEventScheduleDao {
     private final DynamoDbTable<PublishedEventScheduleDto> ddbTable;
 
     public PublishedEventScheduleDao(DynamoDbEnhancedClient enhancedClient) {
-        this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(PublishedEventScheduleDto.class));
+        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(PublishedEventScheduleDto.class));
     }
 
     public PublishedEventSchedule read(String clientId, String publishedEventScheduleId) throws DataProcessingException {
@@ -45,8 +45,8 @@ public class PublishedEventScheduleDao {
                     .eventScheduleYear(publishedEventScheduleDto.getEventScheduleYear())
                     .eventScheduleMonth(publishedEventScheduleDto.getEventScheduleMonth())
                     .fileLocation(publishedEventScheduleDto.getFileLocation())
-                    .locationBlackouts(publishedEventScheduleDto.getLocationBlackouts())
-                    .eventBlackouts(publishedEventScheduleDto.getEventBlackouts())
+//                    .locationBlackouts(publishedEventScheduleDto.getLocationBlackouts())
+//                    .eventBlackouts(publishedEventScheduleDto.getEventBlackouts())
                     .createdOn(publishedEventScheduleDto.getCreatedOn())
                     .lastUpdatedOn(publishedEventScheduleDto.getLastUpdatedOn())
                     .build();
@@ -71,8 +71,8 @@ public class PublishedEventScheduleDao {
                     .eventScheduleYear(publishedEventSchedule.getEventScheduleYear())
                     .eventScheduleMonth(publishedEventSchedule.getEventScheduleMonth())
                     .fileLocation(publishedEventSchedule.getFileLocation())
-                    .locationBlackouts(publishedEventSchedule.getLocationBlackouts())
-                    .eventBlackouts(publishedEventSchedule.getEventBlackouts())
+//                    .locationBlackouts(publishedEventSchedule.getLocationBlackouts())
+//                    .eventBlackouts(publishedEventSchedule.getEventBlackouts())
                     .createdOn(now)
                     .lastUpdatedOn(now)
                     .build();
@@ -87,8 +87,8 @@ public class PublishedEventScheduleDao {
                     .eventScheduleYear(publishedEventScheduleDto.getEventScheduleYear())
                     .eventScheduleMonth(publishedEventScheduleDto.getEventScheduleMonth())
                     .fileLocation(publishedEventScheduleDto.getFileLocation())
-                    .locationBlackouts(publishedEventScheduleDto.getLocationBlackouts())
-                    .eventBlackouts(publishedEventScheduleDto.getEventBlackouts())
+//                    .locationBlackouts(publishedEventScheduleDto.getLocationBlackouts())
+//                    .eventBlackouts(publishedEventScheduleDto.getEventBlackouts())
                     .createdOn(publishedEventScheduleDto.getCreatedOn())
                     .lastUpdatedOn(publishedEventScheduleDto.getLastUpdatedOn())
                     .build();

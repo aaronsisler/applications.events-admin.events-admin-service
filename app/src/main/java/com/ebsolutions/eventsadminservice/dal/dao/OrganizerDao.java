@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConstants;
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.OrganizerDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
@@ -34,7 +34,7 @@ public class OrganizerDao {
 
     public OrganizerDao(DynamoDbEnhancedClient enhancedClient) {
         this.enhancedClient = enhancedClient;
-        this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(OrganizerDto.class));
+        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(OrganizerDto.class));
     }
 
     public Organizer read(String clientId, String organizerId) throws DataProcessingException {
@@ -69,16 +69,13 @@ public class OrganizerDao {
                     .mappedTableResource(ddbTable);
 
             organizerIds.forEach(organizerId ->
-                    organizerBatchBuilder
-                            .addGetItem(b -> b.key(k -> k
-                                    .partitionValue(clientId)
-                                    .sortValue(organizerId)))
-            );
+                    organizerBatchBuilder.addGetItem(b -> b.key(KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId))));
 
             ReadBatch organizerBatch = organizerBatchBuilder.build();
 
             BatchGetResultPageIterable resultPages = enhancedClient.batchGetItem(b -> b.readBatches(organizerBatch));
             List<OrganizerDto> organizerDtos = resultPages.resultsForTable(ddbTable).stream().toList();
+
             List<String> unprocessedOrganizerIds =
                     resultPages.stream().flatMap((BatchGetResultPage pageResult) ->
                             pageResult.unprocessedKeysForTable(ddbTable).stream().map(Object::toString)

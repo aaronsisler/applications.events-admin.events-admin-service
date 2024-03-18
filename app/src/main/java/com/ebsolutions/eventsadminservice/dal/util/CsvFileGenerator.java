@@ -9,7 +9,6 @@ import de.siegmar.fastcsv.writer.CsvWriter;
 import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.text.MessageFormat;
@@ -18,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Prototype
 public class CsvFileGenerator {
-    public ByteBuffer create(List<PublishedScheduledEvent> publishedScheduledEvents) throws IOException {
+    public ByteBuffer create(List<PublishedScheduledEvent> publishedScheduledEvents) throws CsvGenerationException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             StringWriter stringWriter = new StringWriter();
