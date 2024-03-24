@@ -93,3 +93,26 @@ Place the below in the Environment Variables
 ```bash
 MICRONAUT_ENVIRONMENTS=local
 ```
+
+### Example collapsible section
+
+<details>
+  <summary>Click me to expand</summary>
+
+### Heading
+
+1. Foo
+2. Bar
+
+* Baz
+* Qux
+
+### Some Javascript
+
+  ```js
+  function logSomething(something) {
+    console.log('Something', something);
+  }
+  ```
+
+</details>

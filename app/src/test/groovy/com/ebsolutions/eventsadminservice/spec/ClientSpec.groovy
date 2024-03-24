@@ -327,6 +327,5 @@ class ClientSpec extends Specification {
             Assertions.assertEquals(ClientTestConstants.updateClientUpdatedName, databaseClient.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseClient.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseClient.getLastUpdatedOn()))
-
     }
 }
