@@ -1,68 +1,141 @@
 package com.ebsolutions.eventsadminservice.constant
 
+import com.ebsolutions.eventsadminservice.model.*
 
-import com.ebsolutions.eventsadminservice.model.EventSchedule
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalTime
 
 /**
  * Holds all of the test values for Published Event Schedule
  * Leading Dashes on event ids are to help with the DB Setup
  */
 class PublishedEventScheduleTestConstants {
-    public static EventSchedule GET_EVENT_SCHEDULE = EventSchedule.builder()
-            .clientId("get-event-schedule-client-id")
-            .eventScheduleId("-get-event-schedule-event-schedule-id")
-            .name("Get Event Schedule - Event Schedule Name")
-            .description("Get Event Schedule - Event Schedule Description")
+    // The START_TIME and END_TIME should be logically correct
+    public static LocalTime START_TIME = LocalTime.of(13, 45, 42)
+    public static LocalTime END_TIME = LocalTime.of(20, 30, 25)
+
+    public static int EVENT_SCHEDULE_YEAR = 2024
+    public static int EVENT_SCHEDULE_MONTH = 2
+
+    public static String CLIENT_ID = "-create-published-event-schedule-client-client-id"
+    public static String LOCATION_ID = "-create-published-event-schedule-location-location-id"
+    public static String ORGANIZER_ID = "-create-published-event-schedule-organizer-organizer-id"
+    public static String EVENT_ID = "-create-published-event-schedule-event-event-id"
+    public static String EVENT_SCHEDULE_ID = "-create-published-event-schedule-event-schedule-event-schedule-id"
+
+    // Keep this as February 29th, 2024 to make sure leap year testing is conducted
+    public static LocalDate scheduledEventDateSingle = LocalDate.of(EVENT_SCHEDULE_YEAR, EVENT_SCHEDULE_MONTH, 29)
+
+    public static Client CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT = Client.builder()
+            .clientId(CLIENT_ID)
+            .name("Create Published Event Schedule - Client - Client Name")
             .createdOn(TestConstants.createdOn)
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
             .build()
 
-    public static String getAllEventSchedulesClientId = "get-all-event-schedules-client-id"
-
-    public static EventSchedule GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_ONE = EventSchedule.builder()
-            .clientId(getAllEventSchedulesClientId)
-            .eventScheduleId("-get-all-event-schedules-event-schedule-1-event-schedule-id")
-            .name("Get All Event Schedules - Event Schedule 1 Name")
-            .description("Get All Event Schedules - Event Schedule 1 Description")
+    public static Location CREATE_PUBLISHED_EVENT_SCHEDULE_LOCATION = Location.builder()
+            .clientId(CLIENT_ID)
+            .locationId(LOCATION_ID)
+            .name("Create Published Event Schedule - Location - Location Name")
             .createdOn(TestConstants.createdOn)
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
             .build()
 
-    public static EventSchedule GET_ALL_EVENT_SCHEDULES_EVENT_SCHEDULE_TWO = EventSchedule.builder()
-            .clientId(getAllEventSchedulesClientId)
-            .eventScheduleId("-get-all-event-schedules-event-schedule-2-event-schedule-id")
-            .name("Get All Event Schedules - Event Schedule 2 Name")
-            .description("Get All Event Schedules - Event Schedule 2 Description")
+    public static Organizer CREATE_PUBLISHED_EVENT_SCHEDULE_ORGANIZER = Organizer.builder()
+            .clientId(CLIENT_ID)
+            .organizerId(ORGANIZER_ID)
+            .name("Create Published Event Schedule - Organizer - Organizer Name")
             .createdOn(TestConstants.createdOn)
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
             .build()
 
-    public static EventSchedule DELETE_EVENT_SCHEDULE = EventSchedule.builder()
-            .clientId("delete-event-schedule-client-id")
-            .eventScheduleId("-delete-event-schedule-event-schedule-id")
-            .name("Delete Event Schedule - Event Schedule Name")
-            .description("Delete Event Schedule - Event Schedule Description")
+    public static Event CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT = Event.builder()
+            .clientId(CLIENT_ID)
+            .eventId(EVENT_ID)
+            .organizerId(ORGANIZER_ID)
+            .locationId(LOCATION_ID)
+            .name("Create Published Event Schedule - Event - Event Name")
+            .description("Create Published Event Schedule - Event - Event Description")
+            .category("Create Published Event Schedule - Event - Event Category")
             .createdOn(TestConstants.createdOn)
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
             .build()
 
-    public static EventSchedule CREATE_EVENT_SCHEDULE = EventSchedule.builder()
-            .clientId("create-event-schedule-client-id")
-            .name("Create Event Schedule - Event Schedule Name")
-            .description("Create Event Schedule - Event Schedule Description")
+    public static EventSchedule CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE = EventSchedule.builder()
+            .clientId(CLIENT_ID)
+            .eventScheduleId(EVENT_SCHEDULE_ID)
+            .name("Create Published Event Schedule - Event Schedule - Event Schedule Name")
+            .description("Create Published Event Schedule - Event Schedule - Event Schedule Description")
             .createdOn(TestConstants.createdOn)
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
             .build()
 
-    public static String updateEventScheduleUpdatedName = "Updated Event Schedule Name"
-    public static String updateEventScheduleUpdatedDescription = "Updated Event Schedule Description"
-
-    public static EventSchedule UPDATE_EVENT_SCHEDULE = EventSchedule.builder()
-            .clientId("update-event-schedule-client-id")
-            .eventScheduleId("-update-event-schedule-event-schedule-id")
-            .name("Update Event Schedule - Event Schedule Name")
-            .description("Update Event Schedule - Event Schedule Description")
+    public static ScheduledEvent CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE = ScheduledEvent.builder()
+            .eventScheduleId(EVENT_SCHEDULE_ID)
+            .scheduledEventId("-create-published-event-schedule-event-schedule-event-schedule-id")
+            .clientId(CLIENT_ID)
+            .eventId(EVENT_ID)
+            .locationId(LOCATION_ID)
+            .organizerId(ORGANIZER_ID)
+            .name("Create Published Event Schedule - Scheduled Event - Single - Scheduled Event Name")
+            .description("Create Published Event Schedule - Scheduled Event - Single - Scheduled Event Description")
+            .category("Create Published Event Schedule - Scheduled Event - Single - Scheduled Event Category")
+            .scheduledEventType(ScheduledEventType.SINGLE)
+            .scheduledEventDate(scheduledEventDateSingle)
+            .startTime(START_TIME)
+            .endTime(END_TIME)
+            .cost(550)
             .createdOn(TestConstants.createdOn)
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
+
+    public static ScheduledEvent CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD = ScheduledEvent.builder()
+            .eventScheduleId(EVENT_SCHEDULE_ID)
+            .scheduledEventId("-get-scheduled-event-reoccurring-standard-scheduled-event-id")
+            .clientId(CLIENT_ID)
+            .eventId(EVENT_ID)
+            .locationId(LOCATION_ID)
+            .organizerId(ORGANIZER_ID)
+            .name("Create Published Event Schedule - Scheduled Event - Reoccurring Daily - Scheduled Event Name")
+            .description("Create Published Event Schedule - Scheduled Event - Reoccurring Daily - Scheduled Event Description")
+            .category("Create Published Event Schedule - Scheduled Event - Reoccurring Daily - Scheduled Event Category")
+            .scheduledEventType(ScheduledEventType.REOCCURRING)
+            .scheduledEventInterval(ScheduledEventInterval.DAILY)
+            .startTime(START_TIME)
+            .endTime(END_TIME)
+            .cost(350)
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
+
+    public static ScheduledEvent CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY = ScheduledEvent.builder()
+            .eventScheduleId(EVENT_SCHEDULE_ID)
+            .scheduledEventId("-get-scheduled-event-reoccurring-weekly-scheduled-event-id")
+            .clientId(CLIENT_ID)
+            .eventId(EVENT_ID)
+            .locationId(LOCATION_ID)
+            .organizerId(ORGANIZER_ID)
+            .name("Create Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
+            .description("Create Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
+            .category("Create Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Category")
+            .scheduledEventType(ScheduledEventType.REOCCURRING)
+            .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
+            .scheduledEventDay(DayOfWeek.WEDNESDAY)
+            .startTime(START_TIME)
+            .endTime(END_TIME)
+            .cost(450)
+            .createdOn(TestConstants.createdOn)
+            .lastUpdatedOn(TestConstants.lastUpdatedOn)
+            .build()
+
+    public static PublishedEventSchedule CREATE_PUBLISHED_EVENT_SCHEDULE = PublishedEventSchedule.builder()
+            .clientId(CLIENT_ID)
+            .eventScheduleId(EVENT_SCHEDULE_ID)
+            .eventScheduleYear(EVENT_SCHEDULE_YEAR)
+            .eventScheduleMonth(EVENT_SCHEDULE_MONTH)
+            .name(String.format("Published Event Schedule for {} {}", EVENT_SCHEDULE_YEAR, EVENT_SCHEDULE_MONTH))
+            .locationBlackouts(null)
+            .eventBlackouts(null)
             .build()
 }

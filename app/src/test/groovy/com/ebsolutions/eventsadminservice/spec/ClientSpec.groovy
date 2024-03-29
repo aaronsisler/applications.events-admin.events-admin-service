@@ -93,7 +93,7 @@ class ClientSpec extends Specification {
             println allClients
             List<Client> getAllClients = List.copyOf(allClients).stream()
                     .filter(client -> client.getClientId().contains("-get-all-clients"))
-            println getAllClients
+                    .toList()
 
             Client firstClient = getAllClients.get(0)
             Client secondClient = getAllClients.get(1)

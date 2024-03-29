@@ -1,7 +1,10 @@
 package com.ebsolutions.eventsadminservice.spec.publishedEventSchedule
 
+
+import com.ebsolutions.eventsadminservice.constant.PublishedEventScheduleTestConstants
 import com.ebsolutions.eventsadminservice.constant.ScheduledEventTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
+import com.ebsolutions.eventsadminservice.model.Client
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent
 import com.ebsolutions.eventsadminservice.util.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.util.DateAndTimeComparisonUtil
@@ -94,6 +97,16 @@ class PublishedEventScheduleCreateSpec extends Specification {
 
     def "Create a published event schedule: URL Client id exists: Create Published Event Schedule: Create published event schedule is successful"() {
         given: "a client exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            String clientsUrl = new StringBuffer()
+                    .append(TestConstants.eventsAdminServiceUrl)
+                    .append("/clients/")
+                    .append(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId())
+                    .toString()
+
+            HttpResponse<Client> initResponse = httpClient.toBlocking()
+                    .exchange(clientsUrl, Client)
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
 
         and: "a location for the client exists in the database"
 
@@ -103,7 +116,11 @@ class PublishedEventScheduleCreateSpec extends Specification {
 
         and: "an event schedule for the client exists in the database"
 
-        and: "a scheduled event for the event schedule with no changes to the location and organizer exists in the database"
+        and: "a single scheduled event for the event schedule with no changes to the location and organizer exists in the database"
+
+        and: "a daily reoccurring scheduled event for the event schedule with no changes to the location and organizer exists in the database"
+
+        and: "a weekly reoccurring scheduled event for the event schedule with no changes to the location and organizer exists in the database"
 
         and: "a valid published event schedule for February 2024 with no event blackouts or location blackouts is ready to be published"
 
