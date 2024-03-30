@@ -1,11 +1,9 @@
 package com.ebsolutions.eventsadminservice.spec.publishedEventSchedule
 
-
 import com.ebsolutions.eventsadminservice.constant.PublishedEventScheduleTestConstants
 import com.ebsolutions.eventsadminservice.constant.ScheduledEventTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
-import com.ebsolutions.eventsadminservice.model.Client
-import com.ebsolutions.eventsadminservice.model.ScheduledEvent
+import com.ebsolutions.eventsadminservice.model.*
 import com.ebsolutions.eventsadminservice.util.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.util.DateAndTimeComparisonUtil
 import io.micronaut.http.HttpRequest
@@ -98,21 +96,66 @@ class PublishedEventScheduleCreateSpec extends Specification {
     def "Create a published event schedule: URL Client id exists: Create Published Event Schedule: Create published event schedule is successful"() {
         given: "a client exists in the database"
             // Verify data seeded from Database init scripts correctly
-            String clientsUrl = new StringBuffer()
-                    .append(TestConstants.eventsAdminServiceUrl)
-                    .append("/clients/")
-                    .append(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId())
-                    .toString()
+            String clientsUrl = getParentUrl(
+                    "clients",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId()
+            )
 
-            HttpResponse<Client> initResponse = httpClient.toBlocking()
+            HttpResponse<Client> clientResponse = httpClient.toBlocking()
                     .exchange(clientsUrl, Client)
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, initResponse.code())
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, clientResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(), clientResponse.body().getClientId())
 
         and: "a location for the client exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            String locationsUrl = getChildUrl(
+                    "clients",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(),
+                    "locations",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_LOCATION.getLocationId()
+            )
+
+            HttpResponse<Location> locationResponse = httpClient.toBlocking()
+                    .exchange(locationsUrl, Location)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, locationResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(), locationResponse.body().getClientId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_LOCATION.getLocationId(), locationResponse.body().getLocationId())
 
         and: "a organizer for the client exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            String organizersUrl = getChildUrl(
+                    "clients",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(),
+                    "organizers",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_ORGANIZER.getOrganizerId()
+            )
+
+            HttpResponse<Organizer> organizerResponse = httpClient.toBlocking()
+                    .exchange(organizersUrl, Organizer)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, organizerResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(), organizerResponse.body().getClientId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_ORGANIZER.getOrganizerId(), organizerResponse.body().getOrganizerId())
 
         and: "an event for the client with location and organizer exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            String eventsUrl = getChildUrl(
+                    "clients",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(),
+                    "events",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT.getEventId()
+            )
+
+            HttpResponse<Event> eventResponse = httpClient.toBlocking()
+                    .exchange(eventsUrl, Event)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, eventResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT.getEventId(), eventResponse.body().getEventId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(), eventResponse.body().getClientId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_LOCATION.getLocationId(), eventResponse.body().getLocationId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_ORGANIZER.getOrganizerId(), eventResponse.body().getOrganizerId())
 
         and: "an event schedule for the client exists in the database"
 
@@ -135,5 +178,23 @@ class PublishedEventScheduleCreateSpec extends Specification {
         and: "the file was processed with the correct days (29 since Feb 2024 is a leap year)"
 
         and: "the file has the correct content"
+    }
+
+    def getParentUrl(String basePath, String baseId) {
+        return new StringBuffer()
+                .append(TestConstants.eventsAdminServiceUrl)
+                .append("/${basePath}/")
+                .append(baseId)
+                .toString()
+    }
+
+    def getChildUrl(String parentPath, String parentId, String childPath, String childId) {
+        return new StringBuffer()
+                .append(TestConstants.eventsAdminServiceUrl)
+                .append("/${parentPath}/")
+                .append(parentId)
+                .append("/${childPath}/")
+                .append(childId)
+                .toString()
     }
 }
