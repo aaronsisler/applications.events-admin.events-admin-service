@@ -6,6 +6,7 @@ import com.ebsolutions.eventsadminservice.constant.TestConstants
 import com.ebsolutions.eventsadminservice.model.*
 import com.ebsolutions.eventsadminservice.util.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.util.DateAndTimeComparisonUtil
+import com.ebsolutions.eventsadminservice.util.FileStorageUtil
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.client.HttpClient
@@ -18,6 +19,8 @@ import spock.lang.Specification
 class PublishedEventScheduleCreateSpec extends Specification {
     @Inject
     private HttpClient httpClient
+    @Inject
+    private FileStorageUtil fileStorageUtil
 
     def "GWT Holders"() {
 
@@ -190,7 +193,6 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventId(), scheduledEventSingleResponse.body().getScheduledEventId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventType(), scheduledEventSingleResponse.body().getScheduledEventType())
 
-
         and: "a daily reoccurring scheduled event for the event schedule with no changes to the location and organizer exists in the database"
             // Verify data seeded from Database init scripts correctly
             String scheduledEventStandardUrl = getChildUrl(
@@ -207,7 +209,6 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventScheduleId(), scheduledEventStandardResponse.body().getEventScheduleId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventId(), scheduledEventStandardResponse.body().getScheduledEventId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventType(), scheduledEventStandardResponse.body().getScheduledEventType())
-
 
         and: "a weekly reoccurring scheduled event for the event schedule with no changes to the location and organizer exists in the database"
             // Verify data seeded from Database init scripts correctly
@@ -226,14 +227,49 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventId(), scheduledEventWeeklyResponse.body().getScheduledEventId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), scheduledEventWeeklyResponse.body().getScheduledEventType())
 
-
         and: "a valid published event schedule for February 2024 with no event blackouts or location blackouts is ready to be published"
+            PublishedEventSchedule publishedEventSchedule = PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE
 
         when: "the published event schedule is published"
+            String publishedEventScheduleUrl = postChildUrl(
+                    "clients",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(),
+                    "published-event-schedules"
+            )
 
-        then: "the file is published to file storage at a specific file location"
+            HttpRequest httpRequest = HttpRequest.POST(publishedEventScheduleUrl, publishedEventSchedule)
+
+            HttpResponse<PublishedEventSchedule> publishedEventScheduleHttpResponse = httpClient.toBlocking()
+                    .exchange(httpRequest, PublishedEventSchedule)
+
+        then: "the correct response is returned"
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, publishedEventScheduleHttpResponse.code())
+
+        and: "the correct published event schedule is returned"
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(), publishedEventScheduleHttpResponse.body().getClientId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(), publishedEventScheduleHttpResponse.body().getEventScheduleId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_YEAR, publishedEventScheduleHttpResponse.body().getEventScheduleYear())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_MONTH, publishedEventScheduleHttpResponse.body().getEventScheduleMonth())
+
+        and: "the file is published to file storage at a specific file location"
+            println("Test")
+            println(publishedEventScheduleHttpResponse.body().getFileLocation())
+            println("From Util")
+            String thing = fileStorageUtil.getFile(publishedEventScheduleHttpResponse.body().getFileLocation())
+            println thing
 
         and: "published event schedule is saved to the database with the correct file location"
+            String getPublishedEventScheduleUrl = publishedEventScheduleUrl.concat(publishedEventScheduleHttpResponse.body().getPublishedEventScheduleId())
+
+            HttpResponse<PublishedEventSchedule> checkingDatabaseResponse = httpClient.toBlocking()
+                    .exchange(getPublishedEventScheduleUrl, PublishedEventSchedule)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(), publishedEventScheduleHttpResponse.body().getEventScheduleId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_YEAR, publishedEventScheduleHttpResponse.body().getEventScheduleYear())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_MONTH, publishedEventScheduleHttpResponse.body().getEventScheduleMonth())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(checkingDatabaseResponse.body().getCreatedOn()))
+            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(checkingDatabaseResponse.body().getLastUpdatedOn()))
 
         and: "the file is the correct format"
 
@@ -257,6 +293,15 @@ class PublishedEventScheduleCreateSpec extends Specification {
                 .append(parentId)
                 .append("/${childPath}/")
                 .append(childId)
+                .toString()
+    }
+
+    def postChildUrl(String parentPath, String parentId, String childPath) {
+        return new StringBuffer()
+                .append(TestConstants.eventsAdminServiceUrl)
+                .append("/${parentPath}/")
+                .append(parentId)
+                .append("/${childPath}/")
                 .toString()
     }
 }

@@ -77,14 +77,12 @@ public class LocationDao {
             BatchGetResultPageIterable resultPages = enhancedClient.batchGetItem(b -> b.readBatches(organizerBatch));
             List<LocationDto> locationDtos = resultPages.resultsForTable(ddbTable).stream().toList();
 
-            log.info(locationDtos.toString());
-
             List<String> unprocessedLocationIds =
                     resultPages.stream().flatMap((BatchGetResultPage pageResult) ->
                             pageResult.unprocessedKeysForTable(ddbTable).stream().map(Object::toString)
                     ).toList();
 
-            log.info(unprocessedLocationIds.toString());
+            log.info("Unprocessed Location Ids: {}", unprocessedLocationIds);
 
             return locationDtos.stream()
                     .map(locationDto ->

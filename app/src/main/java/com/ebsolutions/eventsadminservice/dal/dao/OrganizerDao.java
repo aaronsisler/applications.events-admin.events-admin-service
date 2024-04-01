@@ -81,7 +81,7 @@ public class OrganizerDao {
                             pageResult.unprocessedKeysForTable(ddbTable).stream().map(Object::toString)
                     ).toList();
 
-            log.info(unprocessedOrganizerIds.toString());
+            log.info("Unprocessed Organizer Ids: {}", unprocessedOrganizerIds);
 
             return organizerDtos.stream()
                     .map(organizerDto ->
