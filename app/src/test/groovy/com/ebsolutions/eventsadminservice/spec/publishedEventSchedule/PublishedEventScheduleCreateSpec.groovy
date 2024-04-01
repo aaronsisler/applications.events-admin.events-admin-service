@@ -158,12 +158,74 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_ORGANIZER.getOrganizerId(), eventResponse.body().getOrganizerId())
 
         and: "an event schedule for the client exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            String eventSchedulesUrl = getChildUrl(
+                    "clients",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(),
+                    "event-schedules",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId()
+            )
+
+            HttpResponse<EventSchedule> eventScheduleResponse = httpClient.toBlocking()
+                    .exchange(eventSchedulesUrl, EventSchedule)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, eventScheduleResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(), eventScheduleResponse.body().getEventScheduleId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(), eventScheduleResponse.body().getClientId())
 
         and: "a single scheduled event for the event schedule with no changes to the location and organizer exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            String scheduledEventSingleUrl = getChildUrl(
+                    "event-schedules",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(),
+                    "scheduled-events",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventId()
+            )
+
+            HttpResponse<ScheduledEvent> scheduledEventSingleResponse = httpClient.toBlocking()
+                    .exchange(scheduledEventSingleUrl, ScheduledEvent)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, scheduledEventSingleResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getEventScheduleId(), scheduledEventSingleResponse.body().getEventScheduleId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventId(), scheduledEventSingleResponse.body().getScheduledEventId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventType(), scheduledEventSingleResponse.body().getScheduledEventType())
+
 
         and: "a daily reoccurring scheduled event for the event schedule with no changes to the location and organizer exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            String scheduledEventStandardUrl = getChildUrl(
+                    "event-schedules",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(),
+                    "scheduled-events",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventId()
+            )
+
+            HttpResponse<ScheduledEvent> scheduledEventStandardResponse = httpClient.toBlocking()
+                    .exchange(scheduledEventStandardUrl, ScheduledEvent)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, scheduledEventSingleResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventScheduleId(), scheduledEventStandardResponse.body().getEventScheduleId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventId(), scheduledEventStandardResponse.body().getScheduledEventId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getScheduledEventType(), scheduledEventStandardResponse.body().getScheduledEventType())
+
 
         and: "a weekly reoccurring scheduled event for the event schedule with no changes to the location and organizer exists in the database"
+            // Verify data seeded from Database init scripts correctly
+            String scheduledEventWeeklyUrl = getChildUrl(
+                    "event-schedules",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(),
+                    "scheduled-events",
+                    PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventId()
+            )
+
+            HttpResponse<ScheduledEvent> scheduledEventWeeklyResponse = httpClient.toBlocking()
+                    .exchange(scheduledEventWeeklyUrl, ScheduledEvent)
+
+            Assertions.assertEquals(HttpURLConnection.HTTP_OK, scheduledEventSingleResponse.code())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventScheduleId(), scheduledEventWeeklyResponse.body().getEventScheduleId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventId(), scheduledEventWeeklyResponse.body().getScheduledEventId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), scheduledEventWeeklyResponse.body().getScheduledEventType())
+
 
         and: "a valid published event schedule for February 2024 with no event blackouts or location blackouts is ready to be published"
 

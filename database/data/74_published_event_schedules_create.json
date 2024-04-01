@@ -127,7 +127,7 @@
             "S": "-create-published-event-schedule-event-schedule-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-get-scheduled-event-single-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-create-published-event-schedule-scheduled-event-single-scheduled-event-id"
           },
           "clientId": {
             "S": "-create-published-event-schedule-client-client-id"
@@ -181,7 +181,7 @@
             "S": "-create-published-event-schedule-event-schedule-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-get-scheduled-event-reoccurring-standard-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-create-published-event-schedule-scheduled-event-reoccurring-standard-scheduled-event-id"
           },
           "clientId": {
             "S": "-create-published-event-schedule-client-client-id"
@@ -235,7 +235,7 @@
             "S": "-create-published-event-schedule-event-schedule-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-get-scheduled-event-reoccurring-weekly-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-create-published-event-schedule-scheduled-event-reoccurring-weekly-scheduled-event-id"
           },
           "clientId": {
             "S": "-create-published-event-schedule-client-client-id"

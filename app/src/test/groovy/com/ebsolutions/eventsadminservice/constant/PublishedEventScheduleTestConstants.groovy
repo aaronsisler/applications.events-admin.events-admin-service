@@ -73,7 +73,7 @@ class PublishedEventScheduleTestConstants {
 
     public static ScheduledEvent CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE = ScheduledEvent.builder()
             .eventScheduleId(EVENT_SCHEDULE_ID)
-            .scheduledEventId("-create-published-event-schedule-event-schedule-event-schedule-id")
+            .scheduledEventId("-create-published-event-schedule-scheduled-event-single-scheduled-event-id")
             .clientId(CLIENT_ID)
             .eventId(EVENT_ID)
             .locationId(LOCATION_ID)
@@ -92,7 +92,7 @@ class PublishedEventScheduleTestConstants {
 
     public static ScheduledEvent CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD = ScheduledEvent.builder()
             .eventScheduleId(EVENT_SCHEDULE_ID)
-            .scheduledEventId("-get-scheduled-event-reoccurring-standard-scheduled-event-id")
+            .scheduledEventId("-create-published-event-schedule-scheduled-event-reoccurring-standard-scheduled-event-id")
             .clientId(CLIENT_ID)
             .eventId(EVENT_ID)
             .locationId(LOCATION_ID)
@@ -111,7 +111,7 @@ class PublishedEventScheduleTestConstants {
 
     public static ScheduledEvent CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY = ScheduledEvent.builder()
             .eventScheduleId(EVENT_SCHEDULE_ID)
-            .scheduledEventId("-get-scheduled-event-reoccurring-weekly-scheduled-event-id")
+            .scheduledEventId("-create-published-event-schedule-scheduled-event-reoccurring-weekly-scheduled-event-id")
             .clientId(CLIENT_ID)
             .eventId(EVENT_ID)
             .locationId(LOCATION_ID)
