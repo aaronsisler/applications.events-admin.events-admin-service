@@ -1,5 +1,6 @@
 package com.ebsolutions.eventsadminservice.spec.publishedEventSchedule
 
+
 import com.ebsolutions.eventsadminservice.constant.PublishedEventScheduleTestConstants
 import com.ebsolutions.eventsadminservice.constant.ScheduledEventTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
@@ -192,6 +193,8 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getEventScheduleId(), scheduledEventSingleResponse.body().getEventScheduleId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventId(), scheduledEventSingleResponse.body().getScheduledEventId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventType(), scheduledEventSingleResponse.body().getScheduledEventType())
+            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventDate(), scheduledEventSingleResponse.body().getScheduledEventDate()))
+
 
         and: "a daily reoccurring scheduled event for the event schedule with no changes to the location and organizer exists in the database"
             // Verify data seeded from Database init scripts correctly
@@ -252,11 +255,10 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_MONTH, publishedEventScheduleHttpResponse.body().getEventScheduleMonth())
 
         and: "the file is published to file storage at a specific file location"
-            println("Test")
-            println(publishedEventScheduleHttpResponse.body().getFileLocation())
-            println("From Util")
-            String thing = fileStorageUtil.getFile(publishedEventScheduleHttpResponse.body().getFileLocation())
-            println thing
+            List<String> fileContents = fileStorageUtil.getFileContents(publishedEventScheduleHttpResponse.body().getFileLocation())
+            // Greater than 1 means at least the headers and one row of data is there
+            Assertions.assertTrue(fileContents.size() > 1)
+            fileContents.forEach { println(it) }
 
         and: "published event schedule is saved to the database with the correct file location"
             String getPublishedEventScheduleUrl = publishedEventScheduleUrl.concat(publishedEventScheduleHttpResponse.body().getPublishedEventScheduleId())

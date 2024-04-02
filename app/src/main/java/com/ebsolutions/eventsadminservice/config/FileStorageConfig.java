@@ -20,7 +20,6 @@ public class FileStorageConfig {
     @Prototype
     @Requires(env = {"local", "test"})
     public S3Client localClientInstantiation() {
-        log.info("Here creating the Local S3 Config");
         URI localEndpoint = URI.create(endpoint);
         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(awsAccessKeyId, awsSecretAccessKey);
         StaticCredentialsProvider staticCredentialsProvider = StaticCredentialsProvider.create(awsBasicCredentials);

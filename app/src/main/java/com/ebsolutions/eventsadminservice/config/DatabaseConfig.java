@@ -21,7 +21,6 @@ public class DatabaseConfig {
     @Prototype
     @Requires(env = {"local", "test"})
     public DynamoDbEnhancedClient localClientInstantiation() {
-        log.info("Here creating the Local DDB Config");
         URI localEndpoint = URI.create(endpoint);
         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(awsAccessKeyId, awsSecretAccessKey);
         StaticCredentialsProvider staticCredentialsProvider = StaticCredentialsProvider.create(awsBasicCredentials);
