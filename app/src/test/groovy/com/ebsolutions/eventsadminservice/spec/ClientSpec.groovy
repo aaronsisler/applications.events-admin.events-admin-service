@@ -90,7 +90,6 @@ class ClientSpec extends Specification {
 
         and: "the correct clients are returned"
             List<Client> allClients = response.body()
-            println allClients
             List<Client> getAllClients = List.copyOf(allClients).stream()
                     .filter(client -> client.getClientId().contains("-get-all-clients"))
                     .toList()

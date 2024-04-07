@@ -1,13 +1,13 @@
 package com.ebsolutions.eventsadminservice.spec.publishedEventSchedule
 
-
+import com.ebsolutions.eventsadminservice.config.Constants
 import com.ebsolutions.eventsadminservice.constant.PublishedEventScheduleTestConstants
-import com.ebsolutions.eventsadminservice.constant.ScheduledEventTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
 import com.ebsolutions.eventsadminservice.model.*
-import com.ebsolutions.eventsadminservice.util.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.util.DateAndTimeComparisonUtil
 import com.ebsolutions.eventsadminservice.util.FileStorageUtil
+import de.siegmar.fastcsv.reader.CsvReader
+import de.siegmar.fastcsv.reader.CsvRecord
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.client.HttpClient
@@ -16,86 +16,14 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
+import java.time.LocalDate
+
 @MicronautTest
 class PublishedEventScheduleCreateSpec extends Specification {
     @Inject
     private HttpClient httpClient
     @Inject
     private FileStorageUtil fileStorageUtil
-
-    def "GWT Holders"() {
-
-
-        given: "the event schedule id is in the url"
-            String scheduledEventsUrl = new StringBuffer()
-                    .append(TestConstants.eventsAdminServiceUrl)
-                    .append("/clients/")
-                    .append(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventScheduleId())
-                    .append("/published-event-schedules/")
-                    .toString()
-
-        and: "the scheduled event is valid"
-            ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE)
-
-        when: "a request is made to create a scheduled event for an event schedule"
-            HttpRequest httpRequest = HttpRequest.POST(scheduledEventsUrl, newScheduledEvent)
-            HttpResponse<ScheduledEvent> response = httpClient.toBlocking()
-                    .exchange(httpRequest, ScheduledEvent)
-
-        then: "the correct status code is returned"
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code())
-
-        and: "the correct scheduled event is returned"
-            ScheduledEvent scheduledEvent = response.body()
-
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventScheduleId(), scheduledEvent.getEventScheduleId())
-            Assertions.assertNotNull(scheduledEvent.getScheduledEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getClientId(), scheduledEvent.getClientId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventId(), scheduledEvent.getEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getLocationId(), scheduledEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerId(), scheduledEvent.getOrganizerId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getName(), scheduledEvent.getName())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getDescription(), scheduledEvent.getDescription())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getCategory(), scheduledEvent.getCategory())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventType(), scheduledEvent.getScheduledEventType())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventInterval(), scheduledEvent.getScheduledEventInterval())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventDay(), scheduledEvent.getScheduledEventDay())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getCost(), scheduledEvent.getCost())
-            // Date and time comparisons
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventDate(), scheduledEvent.getScheduledEventDate()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getStartTime(), scheduledEvent.getStartTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEndTime(), scheduledEvent.getEndTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(scheduledEvent.getLastUpdatedOn()))
-
-        and: "the new scheduled event is correct in the database"
-            HttpResponse<ScheduledEvent> checkingDatabaseResponse = httpClient.toBlocking()
-                    .exchange(scheduledEventsUrl.concat(scheduledEvent.getScheduledEventId()), ScheduledEvent)
-
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
-
-            ScheduledEvent databaseEvent = checkingDatabaseResponse.body()
-
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventScheduleId(), databaseEvent.getEventScheduleId())
-            Assertions.assertEquals(scheduledEvent.getScheduledEventId(), databaseEvent.getScheduledEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getClientId(), databaseEvent.getClientId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventId(), databaseEvent.getEventId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getLocationId(), databaseEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerId(), databaseEvent.getOrganizerId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getName(), databaseEvent.getName())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getDescription(), databaseEvent.getDescription())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getCategory(), databaseEvent.getCategory())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventType(), databaseEvent.getScheduledEventType())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventInterval(), databaseEvent.getScheduledEventInterval())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventDay(), databaseEvent.getScheduledEventDay())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getCost(), databaseEvent.getCost())
-            // Date and time comparisons
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areDatesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getScheduledEventDate(), databaseEvent.getScheduledEventDate()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getStartTime(), databaseEvent.getStartTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.areTimesEqual(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEndTime(), databaseEvent.getEndTime()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getCreatedOn()))
-            Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseEvent.getLastUpdatedOn()))
-    }
 
     def "Create a published event schedule: URL Client id exists: Create Published Event Schedule: Create published event schedule is successful"() {
         given: "a client exists in the database"
@@ -258,7 +186,6 @@ class PublishedEventScheduleCreateSpec extends Specification {
             List<String> fileContents = fileStorageUtil.getFileContents(publishedEventScheduleHttpResponse.body().getFileLocation())
             // Greater than 1 means at least the headers and one row of data is there
             Assertions.assertTrue(fileContents.size() > 1)
-            fileContents.forEach { println(it) }
 
         and: "published event schedule is saved to the database with the correct file location"
             String getPublishedEventScheduleUrl = publishedEventScheduleUrl.concat(publishedEventScheduleHttpResponse.body().getPublishedEventScheduleId())
@@ -274,10 +201,81 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(checkingDatabaseResponse.body().getLastUpdatedOn()))
 
         and: "the file is the correct format"
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(publishedEventScheduleHttpResponse.body().getFileLocation()))) {
+                csv.forEach(it -> Assertions.assertEquals(Constants.CSV_COLUMN_HEADERS.size(), it.fieldCount))
+            }
 
-        and: "the file was processed with the correct days (29 since Feb 2024 is a leap year)"
+        and: "the file has the correct content for the single event including the fact Feb 2024 is a leap year"
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(publishedEventScheduleHttpResponse.body().getFileLocation()))) {
+                checkForSingleEventContent(csv)
+            }
 
-        and: "the file has the correct content"
+        and: "the file has the correct content for the daily reoccurring event including the fact Feb 2024 is a leap year"
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(publishedEventScheduleHttpResponse.body().getFileLocation()))) {
+                checksForDailyReoccurringEventContent(csv)
+            }
+
+        and: "the file has the correct content for the weekly reoccurring event including the fact Feb 2024 is a leap year"
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(publishedEventScheduleHttpResponse.body().getFileLocation()))) {
+                checkForWeeklyReoccurringEventContent(csv)
+            }
+    }
+
+    def checksForDailyReoccurringEventContent(CsvReader<CsvRecord> csv) {
+        int eventNameIndex = Constants.CSV_COLUMN_HEADERS.indexOf(Constants.CsvColumnHeaderNames.EVENT_NAME.label)
+        int eventStartDateColumnIndex = Constants.CSV_COLUMN_HEADERS.indexOf(Constants.CsvColumnHeaderNames.EVENT_START_DATE.label)
+        List<Integer> expectedDaysOfTheMonth = 1..29
+
+        List<CsvRecord> csvRecords = csv.findAll {
+            it.getField(eventNameIndex) == PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getName()
+        } as List<CsvRecord>
+
+        Assertions.assertEquals(csvRecords.size(), expectedDaysOfTheMonth.size(), "Correct number of records not found between CSV line items and dates in Year and Month")
+
+        csvRecords.forEach {
+            Assertions.assertTrue(expectedDaysOfTheMonth.contains(LocalDate.parse(it.getField(eventStartDateColumnIndex)).getDayOfMonth()),
+                    "Correct days not found for compared to the year (2024) and month (February) i.e. 1 through 29")
+        }
+    }
+
+    def checkForWeeklyReoccurringEventContent(CsvReader<CsvRecord> csv) {
+        int eventNameIndex = Constants.CSV_COLUMN_HEADERS.indexOf(Constants.CsvColumnHeaderNames.EVENT_NAME.label)
+        int eventStartDateColumnIndex = Constants.CSV_COLUMN_HEADERS.indexOf(Constants.CsvColumnHeaderNames.EVENT_START_DATE.label)
+        List<CsvRecord> csvRecords = csv.findAll {
+            it.getField(eventNameIndex) == PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName()
+        } as List<CsvRecord>
+
+        List<LocalDate> expectedReoccurringWeeklyDates = List.of(
+                LocalDate.of(2024, 2, 7),
+                LocalDate.of(2024, 2, 14),
+                LocalDate.of(2024, 2, 21),
+                LocalDate.of(2024, 2, 28),
+        )
+
+        Assertions.assertEquals(csvRecords.size(), expectedReoccurringWeeklyDates.size(), "Correct number of records not found between CSV line items and dates in Year and Month")
+
+        csvRecords.forEach {
+            Assertions.assertTrue(expectedReoccurringWeeklyDates.contains(LocalDate.parse(it.getField(eventStartDateColumnIndex))),
+                    "Correct dates not found for day of the week (Wednesday) compared to the year (2024) and month (February)")
+        }
+    }
+
+    def checkForSingleEventContent(CsvReader<CsvRecord> csv) {
+        int eventNameIndex = Constants.CSV_COLUMN_HEADERS.indexOf(Constants.CsvColumnHeaderNames.EVENT_NAME.label)
+
+        CsvRecord foundObject = csv.find {
+            it.getField(eventNameIndex) == PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getName()
+        } as CsvRecord
+
+        Assertions.assertTrue(foundObject != null, "There is no record within the CSV that correlates with the correct single scheduled event's name")
+        int eventStartDateColumnIndex = Constants.CSV_COLUMN_HEADERS.indexOf(Constants.CsvColumnHeaderNames.EVENT_START_DATE.label)
+        LocalDate objectEventStartDate = LocalDate.parse(foundObject.getField(eventStartDateColumnIndex))
+
+        Assertions.assertTrue(
+                DateAndTimeComparisonUtil.areDatesEqual(
+                        objectEventStartDate,
+                        PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_SINGLE.getScheduledEventDate()),
+                "The record that matches the single scheduled event's name does not have the correct date.")
     }
 
     def getParentUrl(String basePath, String baseId) {

@@ -17,11 +17,25 @@ class FileStorageUtil {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(Constants.FILE_STORAGE_LOCATION)
                 .key(filePath)
-                .build()
-        println(filePath)
+                .build() as GetObjectRequest
+
         ResponseInputStream<GetObjectResponse> s3objectResponse = s3Client
                 .getObject(getObjectRequest)
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(s3objectResponse))
+
         return reader.lines().collect(Collectors.toList())
+    }
+
+    BufferedReader getFileReader(String filePath) {
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(Constants.FILE_STORAGE_LOCATION)
+                .key(filePath)
+                .build() as GetObjectRequest
+
+        ResponseInputStream<GetObjectResponse> s3objectResponse = s3Client
+                .getObject(getObjectRequest)
+
+        return new BufferedReader(new InputStreamReader(s3objectResponse))
     }
 }
