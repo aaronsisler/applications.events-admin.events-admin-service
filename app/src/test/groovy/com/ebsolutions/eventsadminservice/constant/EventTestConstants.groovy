@@ -11,7 +11,7 @@ class EventTestConstants {
             .clientId("get-event-client-id")
             .eventId("-get-event-event-id")
             .locationId("get-event-location-id")
-            .organizerIds(List.of("get-event-organizer-1-id", "get-event-organizer-2-id"))
+            .organizerId("get-event-organizer-id")
             .name("Get Event - Event Name")
             .description("Get Event - Event Description")
             .category("Get Event - Event Category")
@@ -20,14 +20,13 @@ class EventTestConstants {
             .build()
 
     public static String getAllEventsClientId = "get-all-events-client-id"
-    public static String getAllEventsOrganizerOneId = "get-all-events-organizer-1-id"
-    public static String getAllEventsOrganizerTwoId = "get-all-events-organizer-2-id"
+    public static String getAllEventsOrganizerId = "get-all-events-organizer-id"
 
     public static Event GET_ALL_EVENTS_EVENT_ONE = Event.builder()
             .clientId(getAllEventsClientId)
             .eventId("-get-all-events-event-1-event-id")
             .locationId("get-all-events-event-1-location-id")
-            .organizerIds(List.of(getAllEventsOrganizerOneId, getAllEventsOrganizerTwoId))
+            .organizerId(getAllEventsOrganizerId)
             .name("Get All Events - Event 1 Name")
             .description("Get All Events - Event 1 Description")
             .category("Get All Events - Event 1 Category")
@@ -39,7 +38,7 @@ class EventTestConstants {
             .clientId(getAllEventsClientId)
             .eventId("-get-all-events-event-2-event-id")
             .locationId("get-all-events-event-2-location-id")
-            .organizerIds(List.of(getAllEventsOrganizerOneId, getAllEventsOrganizerTwoId))
+            .organizerId(getAllEventsOrganizerId)
             .name("Get All Events - Event 2 Name")
             .description("Get All Events - Event 2 Description")
             .category("Get All Events - Event 2 Category")
@@ -51,7 +50,7 @@ class EventTestConstants {
             .clientId("delete-event-client-id")
             .eventId("-delete-event-event-id")
             .locationId("delete-event-location-id")
-            .organizerIds(List.of("delete-event-organizer-1-id", "delete-event-organizer-2-id"))
+            .organizerId("delete-event-organizer-id")
             .name("Delete Event - Event Name")
             .description("Delete Event - Event Description")
             .category("Delete Event - Event Category")
@@ -62,7 +61,7 @@ class EventTestConstants {
     public static Event CREATE_EVENT = Event.builder()
             .clientId("create-event-client-id")
             .locationId("create-event-location-id")
-            .organizerIds(List.of("create-event-organizer-1-id", "create-event-organizer-2-id"))
+            .organizerId("create-event-organizer-id")
             .name("Create Event - Event Name")
             .description("Create Event - Event Description")
             .category("Create Event - Event Category")
@@ -70,9 +69,8 @@ class EventTestConstants {
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
             .build()
 
-    public static String updateEventOrganizerOneId = "update-event-organizer-1-id"
-    public static String updateEventOrganizerTwoId = "update-event-organizer-2-id"
-    public static String updateEventUpdatedOrganizerThreeId = "update-event-organizer-3-id"
+    public static String updateEventOrganizerId = "update-event-organizer-id"
+    public static String updateEventUpdateOrganizerId = "update-event-updated-organizer-id"
     public static String updateEventUpdatedLocationId = "update-event-updated-location-id"
     public static String updateEventUpdatedCategory = "Updated Event Category"
     public static String updateEventUpdatedName = "Updated Event Name"
@@ -82,7 +80,7 @@ class EventTestConstants {
             .clientId("update-event-client-id")
             .eventId("-update-event-event-id")
             .locationId("update-event-location-id")
-            .organizerIds(List.of(updateEventOrganizerOneId, updateEventOrganizerTwoId))
+            .organizerId(updateEventOrganizerId)
             .name("Update Event - Event Name")
             .description("Update Event - Event Description")
             .category("Update Event - Event Category")

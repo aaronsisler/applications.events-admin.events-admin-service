@@ -90,10 +90,9 @@ class ClientSpec extends Specification {
 
         and: "the correct clients are returned"
             List<Client> allClients = response.body()
-            println allClients
             List<Client> getAllClients = List.copyOf(allClients).stream()
                     .filter(client -> client.getClientId().contains("-get-all-clients"))
-            println getAllClients
+                    .toList()
 
             Client firstClient = getAllClients.get(0)
             Client secondClient = getAllClients.get(1)
@@ -327,6 +326,5 @@ class ClientSpec extends Specification {
             Assertions.assertEquals(ClientTestConstants.updateClientUpdatedName, databaseClient.getName())
             Assertions.assertTrue(DateAndTimeComparisonUtil.areDateAndTimeEqual(TestConstants.updateCreatedOn, databaseClient.getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(databaseClient.getLastUpdatedOn()))
-
     }
 }

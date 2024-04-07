@@ -1,14 +1,14 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConstants;
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.ScheduledEventDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent;
-import com.ebsolutions.eventsadminservice.model.ScheduledEventDay;
 import com.ebsolutions.eventsadminservice.model.ScheduledEventInterval;
 import com.ebsolutions.eventsadminservice.model.ScheduledEventType;
+import com.ebsolutions.eventsadminservice.util.DayOfWeekConverter;
 import com.ebsolutions.eventsadminservice.util.MetricsStopWatch;
 import com.ebsolutions.eventsadminservice.util.UniqueIdGenerator;
 import io.micronaut.context.annotation.Prototype;
@@ -32,7 +32,7 @@ public class ScheduledEventDao {
     private final DynamoDbTable<ScheduledEventDto> ddbTable;
 
     public ScheduledEventDao(DynamoDbEnhancedClient enhancedClient) {
-        this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(ScheduledEventDto.class));
+        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(ScheduledEventDto.class));
     }
 
     public ScheduledEvent read(String eventScheduleId, String scheduledEventId) throws DataProcessingException {
@@ -50,7 +50,7 @@ public class ScheduledEventDao {
                     .clientId(scheduledEventDto.getClientId())
                     .eventId(scheduledEventDto.getEventId())
                     .locationId(scheduledEventDto.getLocationId())
-                    .organizerIds(scheduledEventDto.getOrganizerIds())
+                    .organizerId(scheduledEventDto.getOrganizerId())
                     .name(scheduledEventDto.getName())
                     .description(scheduledEventDto.getDescription())
                     .category(scheduledEventDto.getCategory())
@@ -58,7 +58,7 @@ public class ScheduledEventDao {
                     .endTime(scheduledEventDto.getEndTime())
                     .scheduledEventType(ScheduledEventType.fromValue(scheduledEventDto.getScheduledEventType()))
                     .scheduledEventInterval(scheduledEventDto.getScheduledEventInterval() != null ? ScheduledEventInterval.fromValue(scheduledEventDto.getScheduledEventInterval()) : null)
-                    .scheduledEventDay(scheduledEventDto.getScheduledEventDay() != null ? ScheduledEventDay.fromValue(scheduledEventDto.getScheduledEventDay()) : null)
+                    .scheduledEventDay(DayOfWeekConverter.convert(scheduledEventDto.getScheduledEventDay()))
                     .scheduledEventDate(scheduledEventDto.getScheduledEventDate())
                     .cost(scheduledEventDto.getCost())
                     .createdOn(scheduledEventDto.getCreatedOn())
@@ -92,7 +92,7 @@ public class ScheduledEventDao {
                                     .clientId(scheduledEventDto.getClientId())
                                     .eventId(scheduledEventDto.getEventId())
                                     .locationId(scheduledEventDto.getLocationId())
-                                    .organizerIds(scheduledEventDto.getOrganizerIds())
+                                    .organizerId(scheduledEventDto.getOrganizerId())
                                     .name(scheduledEventDto.getName())
                                     .description(scheduledEventDto.getDescription())
                                     .category(scheduledEventDto.getCategory())
@@ -100,7 +100,7 @@ public class ScheduledEventDao {
                                     .endTime(scheduledEventDto.getEndTime())
                                     .scheduledEventType(ScheduledEventType.fromValue(scheduledEventDto.getScheduledEventType()))
                                     .scheduledEventInterval(scheduledEventDto.getScheduledEventInterval() != null ? ScheduledEventInterval.fromValue(scheduledEventDto.getScheduledEventInterval()) : null)
-                                    .scheduledEventDay(scheduledEventDto.getScheduledEventDay() != null ? ScheduledEventDay.fromValue(scheduledEventDto.getScheduledEventDay()) : null)
+                                    .scheduledEventDay(DayOfWeekConverter.convert(scheduledEventDto.getScheduledEventDay()))
                                     .scheduledEventDate(scheduledEventDto.getScheduledEventDate())
                                     .cost(scheduledEventDto.getCost())
                                     .createdOn(scheduledEventDto.getCreatedOn())
@@ -126,7 +126,7 @@ public class ScheduledEventDao {
                     .clientId(scheduledEvent.getClientId())
                     .eventId(scheduledEvent.getEventId())
                     .locationId(scheduledEvent.getLocationId())
-                    .organizerIds(scheduledEvent.getOrganizerIds())
+                    .organizerId(scheduledEvent.getOrganizerId())
                     .name(scheduledEvent.getName())
                     .description(scheduledEvent.getDescription())
                     .category(scheduledEvent.getCategory())
@@ -134,7 +134,7 @@ public class ScheduledEventDao {
                     .endTime(scheduledEvent.getEndTime())
                     .scheduledEventType(scheduledEvent.getScheduledEventType().getValue())
                     .scheduledEventInterval(scheduledEvent.getScheduledEventInterval() != null ? scheduledEvent.getScheduledEventInterval().getValue() : null)
-                    .scheduledEventDay(scheduledEvent.getScheduledEventDay() != null ? scheduledEvent.getScheduledEventDay().getValue() : null)
+                    .scheduledEventDay(scheduledEvent.getScheduledEventDay() != null ? scheduledEvent.getScheduledEventDay().name() : null)
                     .scheduledEventDate(scheduledEvent.getScheduledEventDate())
                     .cost(scheduledEvent.getCost())
                     .createdOn(now)
@@ -149,7 +149,7 @@ public class ScheduledEventDao {
                     .clientId(scheduledEventDto.getClientId())
                     .eventId(scheduledEventDto.getEventId())
                     .locationId(scheduledEventDto.getLocationId())
-                    .organizerIds(scheduledEventDto.getOrganizerIds())
+                    .organizerId(scheduledEventDto.getOrganizerId())
                     .name(scheduledEventDto.getName())
                     .description(scheduledEventDto.getDescription())
                     .category(scheduledEventDto.getCategory())
@@ -157,7 +157,7 @@ public class ScheduledEventDao {
                     .endTime(scheduledEventDto.getEndTime())
                     .scheduledEventType(ScheduledEventType.fromValue(scheduledEventDto.getScheduledEventType()))
                     .scheduledEventInterval(scheduledEventDto.getScheduledEventInterval() != null ? ScheduledEventInterval.fromValue(scheduledEventDto.getScheduledEventInterval()) : null)
-                    .scheduledEventDay(scheduledEventDto.getScheduledEventDay() != null ? ScheduledEventDay.fromValue(scheduledEventDto.getScheduledEventDay()) : null)
+                    .scheduledEventDay(DayOfWeekConverter.convert(scheduledEventDto.getScheduledEventDay()))
                     .scheduledEventDate(scheduledEventDto.getScheduledEventDate())
                     .cost(scheduledEventDto.getCost())
                     .createdOn(scheduledEventDto.getCreatedOn())
@@ -187,7 +187,7 @@ public class ScheduledEventDao {
                     .clientId(scheduledEvent.getClientId())
                     .eventId(scheduledEvent.getEventId())
                     .locationId(scheduledEvent.getLocationId())
-                    .organizerIds(scheduledEvent.getOrganizerIds())
+                    .organizerId(scheduledEvent.getOrganizerId())
                     .name(scheduledEvent.getName())
                     .description(scheduledEvent.getDescription())
                     .category(scheduledEvent.getCategory())
@@ -195,7 +195,7 @@ public class ScheduledEventDao {
                     .endTime(scheduledEvent.getEndTime())
                     .scheduledEventType(scheduledEvent.getScheduledEventType().getValue())
                     .scheduledEventInterval(scheduledEvent.getScheduledEventInterval() != null ? scheduledEvent.getScheduledEventInterval().getValue() : null)
-                    .scheduledEventDay(scheduledEvent.getScheduledEventDay() != null ? scheduledEvent.getScheduledEventDay().getValue() : null)
+                    .scheduledEventDay(scheduledEvent.getScheduledEventDay() != null ? scheduledEvent.getScheduledEventDay().name() : null)
                     .scheduledEventDate(scheduledEvent.getScheduledEventDate())
                     .cost(scheduledEvent.getCost())
                     .createdOn(scheduledEvent.getCreatedOn())
@@ -210,7 +210,7 @@ public class ScheduledEventDao {
                     .clientId(scheduledEventDto.getClientId())
                     .eventId(scheduledEventDto.getEventId())
                     .locationId(scheduledEventDto.getLocationId())
-                    .organizerIds(scheduledEventDto.getOrganizerIds())
+                    .organizerId(scheduledEventDto.getOrganizerId())
                     .name(scheduledEventDto.getName())
                     .description(scheduledEventDto.getDescription())
                     .category(scheduledEventDto.getCategory())
@@ -218,7 +218,7 @@ public class ScheduledEventDao {
                     .endTime(scheduledEventDto.getEndTime())
                     .scheduledEventType(ScheduledEventType.fromValue(scheduledEventDto.getScheduledEventType()))
                     .scheduledEventInterval(scheduledEventDto.getScheduledEventInterval() != null ? ScheduledEventInterval.fromValue(scheduledEventDto.getScheduledEventInterval()) : null)
-                    .scheduledEventDay(scheduledEventDto.getScheduledEventDay() != null ? ScheduledEventDay.fromValue(scheduledEventDto.getScheduledEventDay()) : null)
+                    .scheduledEventDay(DayOfWeekConverter.convert(scheduledEventDto.getScheduledEventDay()))
                     .scheduledEventDate(scheduledEventDto.getScheduledEventDate())
                     .cost(scheduledEventDto.getCost())
                     .createdOn(scheduledEventDto.getCreatedOn())

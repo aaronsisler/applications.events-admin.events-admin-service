@@ -1,10 +1,8 @@
 package com.ebsolutions.eventsadminservice.spec.scheduledEvent
 
-
 import com.ebsolutions.eventsadminservice.constant.ScheduledEventTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent
-import com.ebsolutions.eventsadminservice.model.ScheduledEventDay
 import com.ebsolutions.eventsadminservice.model.ScheduledEventInterval
 import com.ebsolutions.eventsadminservice.util.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.util.DateAndTimeComparisonUtil
@@ -17,6 +15,8 @@ import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
+
+import java.time.DayOfWeek
 
 @MicronautTest
 class ScheduledEventCreateSpec extends Specification {
@@ -276,7 +276,7 @@ class ScheduledEventCreateSpec extends Specification {
 
         and: "the scheduled event's scheduled event day is not null and scheduled event interval is daily"
             ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
-            newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
+            newScheduledEvent.setScheduledEventDay(DayOfWeek.MONDAY)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.DAILY)
 
         when: "a request is made to create a scheduled event for an event schedule"
@@ -299,7 +299,7 @@ class ScheduledEventCreateSpec extends Specification {
 
         and: "the scheduled event's scheduled event day is not null and scheduled event interval is weekdays"
             ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
-            newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
+            newScheduledEvent.setScheduledEventDay(DayOfWeek.MONDAY)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
 
         when: "a request is made to create a scheduled event for an event schedule"
@@ -322,7 +322,7 @@ class ScheduledEventCreateSpec extends Specification {
 
         and: "the scheduled event's scheduled event day is not null and scheduled event interval is weekends"
             ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD)
-            newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
+            newScheduledEvent.setScheduledEventDay(DayOfWeek.MONDAY)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.WEEKENDS)
 
         when: "a request is made to create a scheduled event for an event schedule"
@@ -385,8 +385,7 @@ class ScheduledEventCreateSpec extends Specification {
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getClientId(), scheduledEvent.getClientId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventId(), scheduledEvent.getEventId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getLocationId(), scheduledEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerIds().get(0), scheduledEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerIds().get(1), scheduledEvent.getOrganizerIds().get(1))
+            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerId(), scheduledEvent.getOrganizerId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getName(), scheduledEvent.getName())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getDescription(), scheduledEvent.getDescription())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getCategory(), scheduledEvent.getCategory())
@@ -414,8 +413,7 @@ class ScheduledEventCreateSpec extends Specification {
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getClientId(), databaseEvent.getClientId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getEventId(), databaseEvent.getEventId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getLocationId(), databaseEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerIds().get(0), databaseEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerIds().get(1), databaseEvent.getOrganizerIds().get(1))
+            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getOrganizerId(), databaseEvent.getOrganizerId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getName(), databaseEvent.getName())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getDescription(), databaseEvent.getDescription())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_SINGLE.getCategory(), databaseEvent.getCategory())
@@ -459,8 +457,7 @@ class ScheduledEventCreateSpec extends Specification {
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getClientId(), scheduledEvent.getClientId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventId(), scheduledEvent.getEventId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getLocationId(), scheduledEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getOrganizerIds().get(0), scheduledEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getOrganizerIds().get(1), scheduledEvent.getOrganizerIds().get(1))
+            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getOrganizerId(), scheduledEvent.getOrganizerId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getName(), scheduledEvent.getName())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getDescription(), scheduledEvent.getDescription())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getCategory(), scheduledEvent.getCategory())
@@ -488,8 +485,7 @@ class ScheduledEventCreateSpec extends Specification {
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getClientId(), databaseEvent.getClientId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getEventId(), databaseEvent.getEventId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getLocationId(), databaseEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getOrganizerIds().get(0), databaseEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getOrganizerIds().get(1), databaseEvent.getOrganizerIds().get(1))
+            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getOrganizerId(), databaseEvent.getOrganizerId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getName(), databaseEvent.getName())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getDescription(), databaseEvent.getDescription())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_STANDARD.getCategory(), databaseEvent.getCategory())
@@ -533,8 +529,7 @@ class ScheduledEventCreateSpec extends Specification {
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId(), scheduledEvent.getClientId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId(), scheduledEvent.getEventId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId(), scheduledEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(0), scheduledEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(1), scheduledEvent.getOrganizerIds().get(1))
+            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerId(), scheduledEvent.getOrganizerId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName(), scheduledEvent.getName())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription(), scheduledEvent.getDescription())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory(), scheduledEvent.getCategory())
@@ -562,8 +557,7 @@ class ScheduledEventCreateSpec extends Specification {
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getClientId(), databaseEvent.getClientId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getEventId(), databaseEvent.getEventId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getLocationId(), databaseEvent.getLocationId())
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(0), databaseEvent.getOrganizerIds().get(0))
-            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerIds().get(1), databaseEvent.getOrganizerIds().get(1))
+            Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getOrganizerId(), databaseEvent.getOrganizerId())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getName(), databaseEvent.getName())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getDescription(), databaseEvent.getDescription())
             Assertions.assertEquals(ScheduledEventTestConstants.CREATE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getCategory(), databaseEvent.getCategory())

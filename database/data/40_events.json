@@ -12,11 +12,8 @@
           "locationId": {
             "S": "get-event-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-event-organizer-1-id",
-              "get-event-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-event-organizer-id"
           },
           "name": {
             "S": "Get Event - Event Name"
@@ -48,11 +45,8 @@
           "locationId": {
             "S": "get-all-events-event-1-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-all-events-organizer-1-id",
-              "get-all-events-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-all-events-organizer-id"
           },
           "name": {
             "S": "Get All Events - Event 1 Name"
@@ -84,11 +78,8 @@
           "locationId": {
             "S": "get-all-events-event-2-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-all-events-organizer-1-id",
-              "get-all-events-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-all-events-organizer-id"
           },
           "name": {
             "S": "Get All Events - Event 2 Name"
@@ -135,11 +126,8 @@
           "locationId": {
             "S": "update-event-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "update-event-organizer-1-id",
-              "update-event-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "update-event-organizer-id"
           },
           "name": {
             "S": "Update Event - Event Name"

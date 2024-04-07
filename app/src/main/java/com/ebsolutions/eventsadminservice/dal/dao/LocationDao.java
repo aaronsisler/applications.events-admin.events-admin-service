@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConstants;
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.LocationDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
@@ -15,6 +15,9 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.BatchGetResultPage;
+import software.amazon.awssdk.enhanced.dynamodb.model.BatchGetResultPageIterable;
+import software.amazon.awssdk.enhanced.dynamodb.model.ReadBatch;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -26,10 +29,12 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.so
 @Slf4j
 @Prototype
 public class LocationDao {
+    private final DynamoDbEnhancedClient enhancedClient;
     private final DynamoDbTable<LocationDto> ddbTable;
 
     public LocationDao(DynamoDbEnhancedClient enhancedClient) {
-        this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(LocationDto.class));
+        this.enhancedClient = enhancedClient;
+        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(LocationDto.class));
     }
 
     public Location read(String clientId, String locationId) throws DataProcessingException {
@@ -48,6 +53,47 @@ public class LocationDao {
                     .createdOn(locationDto.getCreatedOn())
                     .lastUpdatedOn(locationDto.getLastUpdatedOn())
                     .build();
+        } catch (Exception e) {
+            log.error("ERROR::{}", this.getClass().getName(), e);
+            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+        } finally {
+            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
+        }
+    }
+
+    public List<Location> read(String clientId, List<String> locationIds) throws DataProcessingException {
+        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
+        try {
+            // TODO check if there are 100 or more locationIds
+            ReadBatch.Builder<LocationDto> locationBatchBuilder = ReadBatch.builder(LocationDto.class)
+                    .mappedTableResource(ddbTable);
+
+            locationIds.forEach(locationId ->
+                    locationBatchBuilder.addGetItem(b -> b.key(KeyBuilder.build(clientId, SortKeyType.LOCATION, locationId)))
+            );
+
+            ReadBatch organizerBatch = locationBatchBuilder.build();
+
+            BatchGetResultPageIterable resultPages = enhancedClient.batchGetItem(b -> b.readBatches(organizerBatch));
+            List<LocationDto> locationDtos = resultPages.resultsForTable(ddbTable).stream().toList();
+
+            List<String> unprocessedLocationIds =
+                    resultPages.stream().flatMap((BatchGetResultPage pageResult) ->
+                            pageResult.unprocessedKeysForTable(ddbTable).stream().map(Object::toString)
+                    ).toList();
+
+            log.info("Unprocessed Location Ids: {}", unprocessedLocationIds);
+
+            return locationDtos.stream()
+                    .map(locationDto ->
+                            Location.builder()
+                                    .clientId(locationDto.getPartitionKey())
+                                    .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
+                                    .name(locationDto.getName())
+                                    .createdOn(locationDto.getCreatedOn())
+                                    .lastUpdatedOn(locationDto.getLastUpdatedOn())
+                                    .build()
+                    ).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
@@ -91,8 +137,6 @@ public class LocationDao {
         try {
             LocalDateTime now = LocalDateTime.now();
 
-            assert location.getClientId() != null;
-
             LocationDto locationDto = LocationDto.builder()
                     .partitionKey(location.getClientId())
                     .sortKey(SortKeyType.LOCATION + UniqueIdGenerator.generate())
@@ -126,7 +170,6 @@ public class LocationDao {
     public Location update(Location location) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
-            assert location.getClientId() != null;
             assert location.getLocationId() != null;
 
             LocationDto locationDto = LocationDto.builder()

@@ -68,10 +68,8 @@ components:
           type: string
         locationId:
           type: string
-        organizerIds:
-          type: array
-          items:
-            type: string
+        organizerId:
+          type: string
         description:
           type: string
         category:

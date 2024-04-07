@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConstants;
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.EventDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
@@ -29,7 +29,7 @@ public class EventDao {
     private final DynamoDbTable<EventDto> ddbTable;
 
     public EventDao(DynamoDbEnhancedClient enhancedClient) {
-        this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(EventDto.class));
+        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(EventDto.class));
     }
 
     public Event read(String clientId, String eventId) throws DataProcessingException {
@@ -45,7 +45,7 @@ public class EventDao {
                     .clientId(eventDto.getPartitionKey())
                     .eventId(StringUtils.remove(eventDto.getSortKey(), SortKeyType.EVENT.name()))
                     .locationId(eventDto.getLocationId())
-                    .organizerIds(eventDto.getOrganizerIds())
+                    .organizerId(eventDto.getOrganizerId())
                     .name(eventDto.getName())
                     .description(eventDto.getDescription())
                     .category(eventDto.getCategory())
@@ -78,7 +78,7 @@ public class EventDao {
                                     .clientId(eventDto.getPartitionKey())
                                     .eventId(StringUtils.remove(eventDto.getSortKey(), SortKeyType.EVENT.name()))
                                     .locationId(eventDto.getLocationId())
-                                    .organizerIds(eventDto.getOrganizerIds())
+                                    .organizerId(eventDto.getOrganizerId())
                                     .name(eventDto.getName())
                                     .description(eventDto.getDescription())
                                     .category(eventDto.getCategory())
@@ -105,7 +105,7 @@ public class EventDao {
                     .partitionKey(event.getClientId())
                     .sortKey(SortKeyType.EVENT + UniqueIdGenerator.generate())
                     .locationId(event.getLocationId())
-                    .organizerIds(event.getOrganizerIds())
+                    .organizerId(event.getOrganizerId())
                     .name(event.getName())
                     .description(event.getDescription())
                     .category(event.getCategory())
@@ -119,7 +119,7 @@ public class EventDao {
                     .clientId(eventDto.getPartitionKey())
                     .eventId(StringUtils.remove(eventDto.getSortKey(), SortKeyType.EVENT.name()))
                     .locationId(eventDto.getLocationId())
-                    .organizerIds(eventDto.getOrganizerIds())
+                    .organizerId(eventDto.getOrganizerId())
                     .name(eventDto.getName())
                     .description(eventDto.getDescription())
                     .category(eventDto.getCategory())
@@ -149,7 +149,7 @@ public class EventDao {
                     .partitionKey(event.getClientId())
                     .sortKey(SortKeyType.EVENT + event.getEventId())
                     .locationId(event.getLocationId())
-                    .organizerIds(event.getOrganizerIds())
+                    .organizerId(event.getOrganizerId())
                     .name(event.getName())
                     .description(event.getDescription())
                     .category(event.getCategory())
@@ -163,7 +163,7 @@ public class EventDao {
                     .clientId(eventDto.getPartitionKey())
                     .eventId(StringUtils.remove(eventDto.getSortKey(), SortKeyType.EVENT.name()))
                     .locationId(eventDto.getLocationId())
-                    .organizerIds(eventDto.getOrganizerIds())
+                    .organizerId(eventDto.getOrganizerId())
                     .name(eventDto.getName())
                     .description(eventDto.getDescription())
                     .category(eventDto.getCategory())

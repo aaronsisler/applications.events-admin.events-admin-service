@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConstants;
+import com.ebsolutions.eventsadminservice.config.Constants;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.OrganizerDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
@@ -15,6 +15,9 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.BatchGetResultPage;
+import software.amazon.awssdk.enhanced.dynamodb.model.BatchGetResultPageIterable;
+import software.amazon.awssdk.enhanced.dynamodb.model.ReadBatch;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -26,10 +29,12 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.so
 @Slf4j
 @Prototype
 public class OrganizerDao {
+    private final DynamoDbEnhancedClient enhancedClient;
     private final DynamoDbTable<OrganizerDto> ddbTable;
 
     public OrganizerDao(DynamoDbEnhancedClient enhancedClient) {
-        this.ddbTable = enhancedClient.table(DatabaseConstants.DATABASE_TABLE_NAME, TableSchema.fromBean(OrganizerDto.class));
+        this.enhancedClient = enhancedClient;
+        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(OrganizerDto.class));
     }
 
     public Organizer read(String clientId, String organizerId) throws DataProcessingException {
@@ -48,6 +53,46 @@ public class OrganizerDao {
                     .createdOn(organizerDto.getCreatedOn())
                     .lastUpdatedOn(organizerDto.getLastUpdatedOn())
                     .build();
+        } catch (Exception e) {
+            log.error("ERROR::{}", this.getClass().getName(), e);
+            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+        } finally {
+            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
+        }
+    }
+
+    public List<Organizer> read(String clientId, List<String> organizerIds) throws DataProcessingException {
+        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
+        try {
+            // TODO check if there are 100 or more organizerIds
+            ReadBatch.Builder<OrganizerDto> organizerBatchBuilder = ReadBatch.builder(OrganizerDto.class)
+                    .mappedTableResource(ddbTable);
+
+            organizerIds.forEach(organizerId ->
+                    organizerBatchBuilder.addGetItem(b -> b.key(KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId))));
+
+            ReadBatch organizerBatch = organizerBatchBuilder.build();
+
+            BatchGetResultPageIterable resultPages = enhancedClient.batchGetItem(b -> b.readBatches(organizerBatch));
+            List<OrganizerDto> organizerDtos = resultPages.resultsForTable(ddbTable).stream().toList();
+
+            List<String> unprocessedOrganizerIds =
+                    resultPages.stream().flatMap((BatchGetResultPage pageResult) ->
+                            pageResult.unprocessedKeysForTable(ddbTable).stream().map(Object::toString)
+                    ).toList();
+
+            log.info("Unprocessed Organizer Ids: {}", unprocessedOrganizerIds);
+
+            return organizerDtos.stream()
+                    .map(organizerDto ->
+                            Organizer.builder()
+                                    .clientId(organizerDto.getPartitionKey())
+                                    .organizerId(StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
+                                    .name(organizerDto.getName())
+                                    .createdOn(organizerDto.getCreatedOn())
+                                    .lastUpdatedOn(organizerDto.getLastUpdatedOn())
+                                    .build()
+                    ).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
@@ -90,8 +135,6 @@ public class OrganizerDao {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {
             LocalDateTime now = LocalDateTime.now();
-
-            assert organizer.getClientId() != null;
 
             OrganizerDto organizerDto = OrganizerDto.builder()
                     .partitionKey(organizer.getClientId())

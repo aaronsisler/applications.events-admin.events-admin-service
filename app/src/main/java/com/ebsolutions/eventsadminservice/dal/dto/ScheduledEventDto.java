@@ -11,7 +11,6 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -25,7 +24,7 @@ public class ScheduledEventDto extends DatabaseDto {
     private String clientId;
     private String eventId;
     private String locationId;
-    private List<String> organizerIds;
+    private String organizerId;
     private String scheduledEventType;
     private String scheduledEventInterval;
     private String scheduledEventDay;

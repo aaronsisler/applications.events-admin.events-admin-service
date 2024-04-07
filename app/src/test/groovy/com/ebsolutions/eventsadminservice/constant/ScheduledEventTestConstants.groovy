@@ -1,10 +1,10 @@
 package com.ebsolutions.eventsadminservice.constant
 
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent
-import com.ebsolutions.eventsadminservice.model.ScheduledEventDay
 import com.ebsolutions.eventsadminservice.model.ScheduledEventInterval
 import com.ebsolutions.eventsadminservice.model.ScheduledEventType
 
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -27,10 +27,7 @@ class ScheduledEventTestConstants {
             .clientId("get-scheduled-event-single-client-id")
             .eventId("get-scheduled-event-single-event-id")
             .locationId("get-scheduled-event-single-location-id")
-            .organizerIds(List.of(
-                    "get-scheduled-event-single-organizer-1-id",
-                    "get-scheduled-event-single-organizer-2-id"
-            ))
+            .organizerId("get-scheduled-event-single-organizer-id")
             .name("Get Scheduled Event - Single - Scheduled Event Name")
             .description("Get Scheduled Event - Single - Scheduled Event Description")
             .category("Get Scheduled Event - Single - Scheduled Event Category")
@@ -49,10 +46,7 @@ class ScheduledEventTestConstants {
             .clientId("get-scheduled-event-reoccurring-standard-client-id")
             .eventId("get-scheduled-event-reoccurring-standard-event-id")
             .locationId("get-scheduled-event-reoccurring-standard-location-id")
-            .organizerIds(List.of(
-                    "get-scheduled-event-reoccurring-standard-organizer-1-id",
-                    "get-scheduled-event-reoccurring-standard-organizer-2-id"
-            ))
+            .organizerId("get-scheduled-event-reoccurring-standard-organizer-id")
             .name("Get Scheduled Event - Reoccurring Standard - Scheduled Event Name")
             .description("Get Scheduled Event - Reoccurring Standard - Scheduled Event Description")
             .category("Get Scheduled Event - Reoccurring Standard - Scheduled Event Category")
@@ -71,16 +65,13 @@ class ScheduledEventTestConstants {
             .clientId("get-scheduled-event-reoccurring-weekly-client-id")
             .eventId("get-scheduled-event-reoccurring-weekly-event-id")
             .locationId("get-scheduled-event-reoccurring-weekly-location-id")
-            .organizerIds(List.of(
-                    "get-scheduled-event-reoccurring-weekly-organizer-1-id",
-                    "get-scheduled-event-reoccurring-weekly-organizer-2-id"
-            ))
+            .organizerId("get-scheduled-event-reoccurring-weekly-organizer-id")
             .name("Get Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
             .description("Get Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
             .category("Get Scheduled Event - Reoccurring Weekly - Scheduled Event Category")
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
-            .scheduledEventDay(ScheduledEventDay.TUE)
+            .scheduledEventDay(DayOfWeek.TUESDAY)
             .startTime(startTime)
             .endTime(endTime)
             .cost(450)
@@ -96,10 +87,7 @@ class ScheduledEventTestConstants {
             .clientId("get-all-scheduled-events-scheduled-event-1-client-id")
             .eventId("get-all-scheduled-events-scheduled-event-1-event-id")
             .locationId("get-all-scheduled-events-scheduled-event-1-location-id")
-            .organizerIds(List.of(
-                    "get-all-scheduled-events-scheduled-event-1-organizer-1-id",
-                    "get-all-scheduled-events-scheduled-event-1-organizer-2-id"
-            ))
+            .organizerId("get-all-scheduled-events-scheduled-event-1-organizer-id")
             .scheduledEventType(ScheduledEventType.SINGLE)
             .name("Get All Scheduled Events - Scheduled Event 1 Name")
             .description("Get All Scheduled Events - Scheduled Event 1 Description")
@@ -118,13 +106,10 @@ class ScheduledEventTestConstants {
             .clientId("get-all-scheduled-events-scheduled-event-2-client-id")
             .eventId("get-all-scheduled-events-scheduled-event-2-event-id")
             .locationId("get-all-scheduled-events-scheduled-event-2-location-id")
-            .organizerIds(List.of(
-                    "get-all-scheduled-events-scheduled-event-2-organizer-1-id",
-                    "get-all-scheduled-events-scheduled-event-2-organizer-2-id"
-            ))
+            .organizerId("get-all-scheduled-events-scheduled-event-2-organizer-id")
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
-            .scheduledEventDay(ScheduledEventDay.TUE)
+            .scheduledEventDay(DayOfWeek.TUESDAY)
             .name("Get All Scheduled Events - Scheduled Event 2 Name")
             .description("Get All Scheduled Events - Scheduled Event 2 Description")
             .category("Get All Scheduled Events - Scheduled Event 2 Category")
@@ -141,10 +126,7 @@ class ScheduledEventTestConstants {
             .clientId("get-all-scheduled-events-scheduled-event-3-client-id")
             .eventId("get-all-scheduled-events-scheduled-event-3-event-id")
             .locationId("get-all-scheduled-events-scheduled-event-3-location-id")
-            .organizerIds(List.of(
-                    "get-all-scheduled-events-scheduled-event-3-organizer-1-id",
-                    "get-all-scheduled-events-scheduled-event-3-organizer-2-id"
-            ))
+            .organizerId("get-all-scheduled-events-scheduled-event-3-organizer-id")
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
             .name("Get All Scheduled Events - Scheduled Event 3 Name")
@@ -176,10 +158,7 @@ class ScheduledEventTestConstants {
             .clientId("create-scheduled-event-single-client-id")
             .eventId("create-scheduled-event-single-event-id")
             .locationId("create-scheduled-event-single-location-id")
-            .organizerIds(List.of(
-                    "create-scheduled-event-single-organizer-1-id",
-                    "create-scheduled-event-single-organizer-2-id"
-            ))
+            .organizerId("create-scheduled-event-single-organizer-id")
             .name("Create Scheduled Event - Single - Scheduled Event Name")
             .description("Create Scheduled Event - Single - Scheduled Event Description")
             .category("Create Scheduled Event - Single - Scheduled Event Category")
@@ -197,10 +176,7 @@ class ScheduledEventTestConstants {
             .clientId("create-scheduled-event-reoccurring-standard-client-id")
             .eventId("create-scheduled-event-reoccurring-standard-event-id")
             .locationId("create-scheduled-event-reoccurring-standard-location-id")
-            .organizerIds(List.of(
-                    "create-scheduled-event-reoccurring-standard-organizer-1-id",
-                    "create-scheduled-event-reoccurring-standard-organizer-2-id"
-            ))
+            .organizerId("create-scheduled-event-reoccurring-standard-organizer-id")
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
             .name("Create Scheduled Event - Reoccurring Standard - Scheduled Event Name")
@@ -218,13 +194,10 @@ class ScheduledEventTestConstants {
             .clientId("create-scheduled-event-reoccurring-weekly-client-id")
             .eventId("create-scheduled-event-reoccurring-weekly-event-id")
             .locationId("create-scheduled-event-reoccurring-weekly-location-id")
-            .organizerIds(List.of(
-                    "create-scheduled-event-reoccurring-weekly-organizer-1-id",
-                    "create-scheduled-event-reoccurring-weekly-organizer-2-id"
-            ))
+            .organizerId("create-scheduled-event-reoccurring-weekly-organizer-id")
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
-            .scheduledEventDay(ScheduledEventDay.TUE)
+            .scheduledEventDay(DayOfWeek.TUESDAY)
             .name("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
             .description("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
             .category("Create Scheduled Event - Reoccurring Weekly - Scheduled Event Category")
@@ -235,9 +208,8 @@ class ScheduledEventTestConstants {
             .lastUpdatedOn(TestConstants.lastUpdatedOn)
             .build()
 
-    public static String updateScheduledEventOrganizerOneId = "update-scheduled-event-organizer-1-id"
-    public static String updateScheduledEventOrganizerTwoId = "update-scheduled-event-organizer-2-id"
-    public static String updateScheduledEventUpdatedOrganizerThreeId = "update-scheduled-event-organizer-3-id"
+    public static String updateScheduledEventOrganizerId = "update-scheduled-event-organizer-id"
+    public static String updateScheduledEventUpdatedOrganizerId = "update-scheduled-updated-event-organizer-id"
     public static String updateScheduledEventUpdatedEventId = "update-scheduled-event-updated-event-id"
     public static String updateScheduledEventUpdatedClientId = "update-scheduled-event-updated-client-id"
     public static String updateScheduledEventUpdatedLocationId = "update-scheduled-event-updated-location-id"
@@ -255,7 +227,7 @@ class ScheduledEventTestConstants {
             .clientId("update-scheduled-event-single-client-id")
             .eventId("update-scheduled-event-single-event-id")
             .locationId("update-scheduled-event-single-location-id")
-            .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
+            .organizerId(updateScheduledEventOrganizerId)
             .scheduledEventType(ScheduledEventType.SINGLE)
             .scheduledEventDate(scheduledEventDate)
             .name("Update Scheduled Event - Single - Scheduled Event Name")
@@ -274,7 +246,7 @@ class ScheduledEventTestConstants {
             .clientId("update-scheduled-event-reoccurring-standard-client-id")
             .eventId("update-scheduled-event-reoccurring-standard-event-id")
             .locationId("update-scheduled-event-reoccurring-standard-location-id")
-            .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
+            .organizerId(updateScheduledEventOrganizerId)
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
             .name("Update Scheduled Event - Reoccurring Standard - Scheduled Event Name")
@@ -293,10 +265,10 @@ class ScheduledEventTestConstants {
             .clientId("update-scheduled-event-reoccurring-weekly-client-id")
             .eventId("update-scheduled-event-reoccurring-weekly-event-id")
             .locationId("update-scheduled-event-reoccurring-weekly-location-id")
-            .organizerIds(List.of(updateScheduledEventOrganizerOneId, updateScheduledEventOrganizerTwoId))
+            .organizerId(updateScheduledEventOrganizerId)
             .scheduledEventType(ScheduledEventType.REOCCURRING)
             .scheduledEventInterval(ScheduledEventInterval.WEEKLY)
-            .scheduledEventDay(ScheduledEventDay.TUE)
+            .scheduledEventDay(DayOfWeek.TUESDAY)
             .name("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Name")
             .description("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Description")
             .category("Update Scheduled Event - Reoccurring Weekly - Scheduled Event Category")

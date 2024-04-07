@@ -22,12 +22,14 @@
         <io.micronaut.version>4.1.9</io.micronaut.version>
         <io.micronaut.serde.version>2.2.5</io.micronaut.serde.version>
         <aws.sdk.version>2.21.15</aws.sdk.version>
+        <version.fastcsv>3.0.0</version.fastcsv>
+        <version.opencsv>5.9</version.opencsv>
 
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- AWS DynamoDB config and methods -->
+            <!-- AWS SDK library needed for Database and File Storage access -->
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
@@ -36,10 +38,16 @@
                 <scope>import</scope>
             </dependency>
             <!-- Version conflict -->
+            <!-- Where is this conflict? Need more context Aaron..... -->
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>1.15</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -96,14 +104,29 @@
             <artifactId>dynamodb-enhanced</artifactId>
         </dependency>
 
+        <!-- AWS S3 File storage -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+        </dependency>
+
+        <!-- Not sure where this needed -->
         <dependency>
             <groupId>io.micronaut.validation</groupId>
             <artifactId>micronaut-validation</artifactId>
         </dependency>
 
+        <!-- Not sure where this needed -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
+        </dependency>
+
+        <!-- Added for generation of the CSV -->
+        <dependency>
+            <groupId>de.siegmar</groupId>
+            <artifactId>fastcsv</artifactId>
+            <version>${version.fastcsv}</version>
         </dependency>
 
         <!-- Handles Spock testing with Micronaut -->
@@ -112,7 +135,9 @@
             <artifactId>micronaut-test-spock</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- Handles Spock testing with Micronaut -->
+        <!-- Need to see why this exclusion is needed and can we have this at the top layer Dep Management -->
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
@@ -124,18 +149,21 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <!-- Handles Spock testing with Micronaut -->
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-inject-groovy</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- Handles JUnit methods like assertEquals, etc. -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- Handles HTTP Client that makes calls to mock server -->
         <dependency>
             <groupId>io.micronaut</groupId>
@@ -232,6 +260,15 @@
                         </goals>
                         <configuration>
                             <inputSpec>${pom.basedir}/contracts/scheduled-event.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>models-published-event-schedule</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/published-event-schedule.yaml</inputSpec>
                         </configuration>
                     </execution>
                 </executions>

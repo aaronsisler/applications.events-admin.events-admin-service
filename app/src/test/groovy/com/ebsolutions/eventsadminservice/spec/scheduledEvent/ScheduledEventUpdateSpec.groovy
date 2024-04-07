@@ -3,7 +3,6 @@ package com.ebsolutions.eventsadminservice.spec.scheduledEvent
 import com.ebsolutions.eventsadminservice.constant.ScheduledEventTestConstants
 import com.ebsolutions.eventsadminservice.constant.TestConstants
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent
-import com.ebsolutions.eventsadminservice.model.ScheduledEventDay
 import com.ebsolutions.eventsadminservice.model.ScheduledEventInterval
 import com.ebsolutions.eventsadminservice.util.CopyObjectUtil
 import com.ebsolutions.eventsadminservice.util.DateAndTimeComparisonUtil
@@ -17,6 +16,7 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import spock.lang.Specification
 
+import java.time.DayOfWeek
 import java.time.LocalDateTime
 
 @MicronautTest
@@ -316,7 +316,7 @@ class ScheduledEventUpdateSpec extends Specification {
 
         and: "the scheduled event's scheduled event day is not null and scheduled event interval is daily"
             ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
-            newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
+            newScheduledEvent.setScheduledEventDay(DayOfWeek.MONDAY)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.DAILY)
 
         when: "a request is made to update a scheduled event for an event schedule"
@@ -342,7 +342,7 @@ class ScheduledEventUpdateSpec extends Specification {
 
         and: "the scheduled event's scheduled event day is not null and scheduled event interval is weekdays"
             ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
-            newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
+            newScheduledEvent.setScheduledEventDay(DayOfWeek.MONDAY)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.WEEKDAYS)
 
         when: "a request is made to update a scheduled event for an event schedule"
@@ -368,7 +368,7 @@ class ScheduledEventUpdateSpec extends Specification {
 
         and: "the scheduled event's scheduled event day is not null and scheduled event interval is weekends"
             ScheduledEvent newScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
-            newScheduledEvent.setScheduledEventDay(ScheduledEventDay.MON)
+            newScheduledEvent.setScheduledEventDay(DayOfWeek.MONDAY)
             newScheduledEvent.setScheduledEventInterval(ScheduledEventInterval.WEEKENDS)
 
         when: "a request is made to update a scheduled event for an event schedule"
@@ -470,8 +470,7 @@ class ScheduledEventUpdateSpec extends Specification {
 
         and: "a valid update is made to the scheduled event"
             ScheduledEvent updatedScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
-            updatedScheduledEvent.getOrganizerIds().remove(1)
-            updatedScheduledEvent.getOrganizerIds().add(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerThreeId)
+            updatedScheduledEvent.setOrganizerId(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerId)
             updatedScheduledEvent.setLocationId(ScheduledEventTestConstants.updateScheduledEventUpdatedLocationId)
             updatedScheduledEvent.setName(ScheduledEventTestConstants.updateScheduledEventUpdatedName)
             updatedScheduledEvent.setDescription(ScheduledEventTestConstants.updateScheduledEventUpdatedDescription)
@@ -515,8 +514,7 @@ class ScheduledEventUpdateSpec extends Specification {
 
         and: "a valid update is made to the scheduled event"
             ScheduledEvent updatedScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
-            updatedScheduledEvent.getOrganizerIds().remove(1)
-            updatedScheduledEvent.getOrganizerIds().add(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerThreeId)
+            updatedScheduledEvent.setOrganizerId(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerId)
             updatedScheduledEvent.setEventId(ScheduledEventTestConstants.updateScheduledEventUpdatedEventId)
             updatedScheduledEvent.setClientId(ScheduledEventTestConstants.updateScheduledEventUpdatedClientId)
             updatedScheduledEvent.setLocationId(ScheduledEventTestConstants.updateScheduledEventUpdatedLocationId)
@@ -565,13 +563,12 @@ class ScheduledEventUpdateSpec extends Specification {
 
         and: "a valid update is made to the scheduled event"
             ScheduledEvent updatedScheduledEvent = CopyObjectUtil.scheduledEvent(initResponse.body())
-            updatedScheduledEvent.getOrganizerIds().remove(1)
-            updatedScheduledEvent.getOrganizerIds().add(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerThreeId)
+            updatedScheduledEvent.setOrganizerId(ScheduledEventTestConstants.updateScheduledEventUpdatedOrganizerId)
             updatedScheduledEvent.setLocationId(ScheduledEventTestConstants.updateScheduledEventUpdatedLocationId)
             updatedScheduledEvent.setName(ScheduledEventTestConstants.updateScheduledEventUpdatedName)
             updatedScheduledEvent.setDescription(ScheduledEventTestConstants.updateScheduledEventUpdatedDescription)
             updatedScheduledEvent.setCategory(ScheduledEventTestConstants.updateScheduledEventUpdatedCategory)
-            updatedScheduledEvent.setScheduledEventDay(ScheduledEventDay.FRI)
+            updatedScheduledEvent.setScheduledEventDay(DayOfWeek.FRIDAY)
             updatedScheduledEvent.setCreatedOn(TestConstants.updateCreatedOn)
 
         when: "a request is made to update a scheduled event for an event schedule"
@@ -613,8 +610,7 @@ class ScheduledEventUpdateSpec extends Specification {
         Assertions.assertEquals(expectedScheduledEvent.getClientId(), scheduledEvent.getClientId())
         Assertions.assertEquals(expectedScheduledEvent.getEventId(), scheduledEvent.getEventId())
         Assertions.assertEquals(expectedScheduledEvent.getLocationId(), scheduledEvent.getLocationId())
-        Assertions.assertEquals(expectedScheduledEvent.getOrganizerIds().get(0), scheduledEvent.getOrganizerIds().get(0))
-        Assertions.assertEquals(expectedScheduledEvent.getOrganizerIds().get(1), scheduledEvent.getOrganizerIds().get(1))
+        Assertions.assertEquals(expectedScheduledEvent.getOrganizerId(), scheduledEvent.getOrganizerId())
         Assertions.assertEquals(expectedScheduledEvent.getName(), scheduledEvent.getName())
         Assertions.assertEquals(expectedScheduledEvent.getDescription(), scheduledEvent.getDescription())
         Assertions.assertEquals(expectedScheduledEvent.getCategory(), scheduledEvent.getCategory())

@@ -13,8 +13,8 @@ public class RequestValidator {
         }
 
         return switch (allowableRequestMethod) {
-            case PUT -> RequestValidator.isClientUpdateValid(client);
             case POST, GET, DELETE -> true;
+            case PUT -> RequestValidator.isClientUpdateValid(client);
         };
     }
 
@@ -37,8 +37,8 @@ public class RequestValidator {
         }
 
         return switch (allowableRequestMethod) {
-            case PUT -> RequestValidator.isLocationUpdateValid(location);
             case POST, GET, DELETE -> true;
+            case PUT -> RequestValidator.isLocationUpdateValid(location);
         };
     }
 
@@ -61,8 +61,8 @@ public class RequestValidator {
         }
 
         return switch (allowableRequestMethod) {
-            case PUT -> RequestValidator.isOrganizerUpdateValid(organizer);
             case GET, DELETE, POST -> true;
+            case PUT -> RequestValidator.isOrganizerUpdateValid(organizer);
         };
     }
 
@@ -85,8 +85,8 @@ public class RequestValidator {
         }
 
         return switch (allowableRequestMethod) {
-            case PUT -> RequestValidator.isEventUpdateValid(event);
             case GET, DELETE, POST -> true;
+            case PUT -> RequestValidator.isEventUpdateValid(event);
         };
     }
 
@@ -109,8 +109,8 @@ public class RequestValidator {
         }
 
         return switch (allowableRequestMethod) {
-            case PUT -> RequestValidator.isEventScheduleUpdateValid(eventSchedule);
             case GET, DELETE, POST -> true;
+            case PUT -> RequestValidator.isEventScheduleUpdateValid(eventSchedule);
         };
     }
 
@@ -121,8 +121,33 @@ public class RequestValidator {
         }
 
         return switch (allowableRequestMethod) {
-            case PUT -> RequestValidator.isScheduledEventUpdateValid(scheduledEvent);
             case GET, DELETE, POST -> true;
+            case PUT -> RequestValidator.isScheduledEventUpdateValid(scheduledEvent);
+        };
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    // TODO Add in logic for other fields not determined yet
+    public static boolean isPublishedEventScheduleValid(AllowableRequestMethod allowableRequestMethod, String clientId, PublishedEventSchedule publishedEventSchedule) {
+        if (StringValidator.isBlank(clientId)) {
+            return false;
+        }
+
+        if (publishedEventSchedule == null) {
+            return false;
+        }
+
+        if (StringValidator.isBlank(publishedEventSchedule.getClientId())) {
+            return false;
+        }
+
+        if (!clientId.equals(publishedEventSchedule.getClientId())) {
+            return false;
+        }
+
+        return switch (allowableRequestMethod) {
+            case GET, DELETE, POST -> true;
+            case PUT -> RequestValidator.isPublishedEventScheduleUpdateValid(publishedEventSchedule);
         };
     }
 
@@ -168,6 +193,14 @@ public class RequestValidator {
         }
 
         return DateValidator.isBeforeNow(eventSchedule.getCreatedOn());
+    }
+
+    private static boolean isPublishedEventScheduleUpdateValid(PublishedEventSchedule publishedEventSchedule) {
+        if (publishedEventSchedule.getCreatedOn() == null) {
+            return false;
+        }
+
+        return DateValidator.isBeforeNow(publishedEventSchedule.getCreatedOn());
     }
 
     private static boolean isScheduledEventValid(String eventScheduleId, ScheduledEvent scheduledEvent) {

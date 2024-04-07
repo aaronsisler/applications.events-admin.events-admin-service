@@ -18,11 +18,8 @@
           "locationId": {
             "S": "get-scheduled-event-single-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-scheduled-event-single-organizer-1-id",
-              "get-scheduled-event-single-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-scheduled-event-single-organizer-id"
           },
           "name": {
             "S": "Get Scheduled Event - Single - Scheduled Event Name"
@@ -75,11 +72,8 @@
           "locationId": {
             "S": "get-scheduled-event-reoccurring-standard-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-scheduled-event-reoccurring-standard-organizer-1-id",
-              "get-scheduled-event-reoccurring-standard-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-scheduled-event-reoccurring-standard-organizer-id"
           },
           "name": {
             "S": "Get Scheduled Event - Reoccurring Standard - Scheduled Event Name"
@@ -132,11 +126,8 @@
           "locationId": {
             "S": "get-scheduled-event-reoccurring-weekly-location-id"
           },
-          "organizerIds": {
-            "SS": [
-              "get-scheduled-event-reoccurring-weekly-organizer-1-id",
-              "get-scheduled-event-reoccurring-weekly-organizer-2-id"
-            ]
+          "organizerId": {
+            "S": "get-scheduled-event-reoccurring-weekly-organizer-id"
           },
           "name": {
             "S": "Get Scheduled Event - Reoccurring Weekly - Scheduled Event Name"
@@ -154,7 +145,7 @@
             "S": "WEEKLY"
           },
           "scheduledEventDay": {
-            "S": "TUE"
+            "S": "TUESDAY"
           },
           "startTime": {
             "S": "13:45:42"

@@ -17,9 +17,11 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventDto extends DatabaseDto {
-    private String locationId;
-    private String organizerId;
-    private String description;
-    private String category;
+public class PublishedEventScheduleDto extends DatabaseDto {
+    private String eventScheduleId;
+    private Integer eventScheduleYear;
+    private Integer eventScheduleMonth;
+    private String fileLocation;
+//    private List<LocationBlackout> locationBlackouts;
+//    private List<EventBlackout> eventBlackouts;
 }
