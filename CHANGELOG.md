@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.7.0]
+
+### Added
+
+- Scheduled Events GET, POST, PUT, DELETE
+- Event Schedules GET, POST, PUT, DELETE
+- Published Event Schedules GET, POST
+
 ## [0.6.0] Events APIs
 
 ### Added
