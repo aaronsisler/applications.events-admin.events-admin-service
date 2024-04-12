@@ -40,4 +40,8 @@ aws dynamodb batch-write-item \
 
 aws dynamodb batch-write-item \
   --endpoint-url=http://database:8000 \
+  --request-items file:///data/71_published_event_schedules_get.json
+
+aws dynamodb batch-write-item \
+  --endpoint-url=http://database:8000 \
   --request-items file:///data/74_published_event_schedules_create.json

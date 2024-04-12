@@ -7,10 +7,10 @@
             "S": "CLIENT"
           },
           "sortKey": {
-            "S": "CLIENT-create-published-event-schedule-client-client-id"
+            "S": "CLIENT-published-event-schedule-client-client-id"
           },
           "name": {
-            "S": "Create Published Event Schedule - Client - Client Name"
+            "S": "Published Event Schedule - Client - Client Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -25,13 +25,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "-create-published-event-schedule-client-client-id"
+            "S": "-published-event-schedule-client-client-id"
           },
           "sortKey": {
-            "S": "LOCATION-create-published-event-schedule-location-location-id"
+            "S": "LOCATION-published-event-schedule-location-location-id"
           },
           "name": {
-            "S": "Create Published Event Schedule - Location - Location Name"
+            "S": "Published Event Schedule - Location - Location Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -46,13 +46,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "-create-published-event-schedule-client-client-id"
+            "S": "-published-event-schedule-client-client-id"
           },
           "sortKey": {
-            "S": "ORGANIZER-create-published-event-schedule-organizer-organizer-id"
+            "S": "ORGANIZER-published-event-schedule-organizer-organizer-id"
           },
           "name": {
-            "S": "Create Published Event Schedule - Organizer - Organizer Name"
+            "S": "Published Event Schedule - Organizer - Organizer Name"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -67,25 +67,25 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "-create-published-event-schedule-client-client-id"
+            "S": "-published-event-schedule-client-client-id"
           },
           "sortKey": {
-            "S": "EVENT-create-published-event-schedule-event-event-id"
+            "S": "EVENT-published-event-schedule-event-event-id"
           },
           "locationId": {
-            "S": "-create-published-event-schedule-location-location-id"
+            "S": "-published-event-schedule-location-location-id"
           },
           "organizerId": {
-            "S": "-create-published-event-schedule-organizer-organizer-id"
+            "S": "-published-event-schedule-organizer-organizer-id"
           },
           "name": {
-            "S": "Create Published Event Schedule - Event - Event Name"
+            "S": "Published Event Schedule - Event - Event Name"
           },
           "description": {
-            "S": "Create Published Event Schedule - Event - Event Description"
+            "S": "Published Event Schedule - Event - Event Description"
           },
           "category": {
-            "S": "Create Published Event Schedule - Event - Event Category"
+            "S": "Published Event Schedule - Event - Event Category"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -100,16 +100,16 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "-create-published-event-schedule-client-client-id"
+            "S": "-published-event-schedule-client-client-id"
           },
           "sortKey": {
-            "S": "EVENT_SCHEDULE-create-published-event-schedule-event-schedule-event-schedule-id"
+            "S": "EVENT_SCHEDULE-published-event-schedule-event-schedule-event-schedule-id"
           },
           "name": {
-            "S": "Create Published Event Schedule - Event Schedule - Event Schedule Name"
+            "S": "Published Event Schedule - Event Schedule - Event Schedule Name"
           },
           "description": {
-            "S": "Create Published Event Schedule - Event Schedule - Event Schedule Description"
+            "S": "Published Event Schedule - Event Schedule - Event Schedule Description"
           },
           "createdOn": {
             "S": "2023-07-04T01:02:34"
@@ -124,31 +124,31 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "-create-published-event-schedule-event-schedule-event-schedule-id"
+            "S": "-published-event-schedule-event-schedule-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-create-published-event-schedule-scheduled-event-single-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-published-event-schedule-scheduled-event-single-scheduled-event-id"
           },
           "clientId": {
-            "S": "-create-published-event-schedule-client-client-id"
+            "S": "-published-event-schedule-client-client-id"
           },
           "eventId": {
-            "S": "-create-published-event-schedule-event-event-id"
+            "S": "-published-event-schedule-event-event-id"
           },
           "locationId": {
-            "S": "-create-published-event-schedule-location-location-id"
+            "S": "-published-event-schedule-location-location-id"
           },
           "organizerId": {
-            "S": "-create-published-event-schedule-organizer-organizer-id"
+            "S": "-published-event-schedule-organizer-organizer-id"
           },
           "name": {
-            "S": "Create Published Event Schedule - Scheduled Event - Single - Scheduled Event Name"
+            "S": "Published Event Schedule - Scheduled Event - Single - Scheduled Event Name"
           },
           "description": {
-            "S": "Create Published Event Schedule - Scheduled Event - Single - Scheduled Event Description"
+            "S": "Published Event Schedule - Scheduled Event - Single - Scheduled Event Description"
           },
           "category": {
-            "S": "Create Published Event Schedule - Scheduled Event - Single - Scheduled Event Category"
+            "S": "Published Event Schedule - Scheduled Event - Single - Scheduled Event Category"
           },
           "scheduledEventType": {
             "S": "SINGLE"
@@ -178,31 +178,31 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "-create-published-event-schedule-event-schedule-event-schedule-id"
+            "S": "-published-event-schedule-event-schedule-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-create-published-event-schedule-scheduled-event-reoccurring-standard-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-published-event-schedule-scheduled-event-reoccurring-standard-scheduled-event-id"
           },
           "clientId": {
-            "S": "-create-published-event-schedule-client-client-id"
+            "S": "-published-event-schedule-client-client-id"
           },
           "eventId": {
-            "S": "-create-published-event-schedule-event-event-id"
+            "S": "-published-event-schedule-event-event-id"
           },
           "locationId": {
-            "S": "-create-published-event-schedule-location-location-id"
+            "S": "-published-event-schedule-location-location-id"
           },
           "organizerId": {
-            "S": "-create-published-event-schedule-organizer-organizer-id"
+            "S": "-published-event-schedule-organizer-organizer-id"
           },
           "name": {
-            "S": "Create Published Event Schedule - Scheduled Event - Reoccurring Standard - Scheduled Event Name"
+            "S": "Published Event Schedule - Scheduled Event - Reoccurring Standard - Scheduled Event Name"
           },
           "description": {
-            "S": "Create Published Event Schedule - Scheduled Event - Reoccurring Standard - Scheduled Event Description"
+            "S": "Published Event Schedule - Scheduled Event - Reoccurring Standard - Scheduled Event Description"
           },
           "category": {
-            "S": "Create Published Event Schedule - Scheduled Event - Reoccurring Standard - Scheduled Event Category"
+            "S": "Published Event Schedule - Scheduled Event - Reoccurring Standard - Scheduled Event Category"
           },
           "scheduledEventType": {
             "S": "REOCCURRING"
@@ -232,31 +232,31 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "-create-published-event-schedule-event-schedule-event-schedule-id"
+            "S": "-published-event-schedule-event-schedule-event-schedule-id"
           },
           "sortKey": {
-            "S": "SCHEDULED_EVENT-create-published-event-schedule-scheduled-event-reoccurring-weekly-scheduled-event-id"
+            "S": "SCHEDULED_EVENT-published-event-schedule-scheduled-event-reoccurring-weekly-scheduled-event-id"
           },
           "clientId": {
-            "S": "-create-published-event-schedule-client-client-id"
+            "S": "-published-event-schedule-client-client-id"
           },
           "eventId": {
-            "S": "-create-published-event-schedule-event-event-id"
+            "S": "-published-event-schedule-event-event-id"
           },
           "locationId": {
-            "S": "-create-published-event-schedule-location-location-id"
+            "S": "-published-event-schedule-location-location-id"
           },
           "organizerId": {
-            "S": "-create-published-event-schedule-organizer-organizer-id"
+            "S": "-published-event-schedule-organizer-organizer-id"
           },
           "name": {
-            "S": "Create Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Name"
+            "S": "Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Name"
           },
           "description": {
-            "S": "Create Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Description"
+            "S": "Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Description"
           },
           "category": {
-            "S": "Create Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Category"
+            "S": "Published Event Schedule - Scheduled Event - Reoccurring Weekly - Scheduled Event Category"
           },
           "scheduledEventType": {
             "S": "REOCCURRING"

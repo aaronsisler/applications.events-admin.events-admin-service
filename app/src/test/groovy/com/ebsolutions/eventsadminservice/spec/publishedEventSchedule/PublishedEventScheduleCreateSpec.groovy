@@ -194,29 +194,29 @@ class PublishedEventScheduleCreateSpec extends Specification {
                     .exchange(getPublishedEventScheduleUrl, PublishedEventSchedule)
 
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, checkingDatabaseResponse.code())
-            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(), publishedEventScheduleHttpResponse.body().getEventScheduleId())
-            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_YEAR, publishedEventScheduleHttpResponse.body().getEventScheduleYear())
-            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_MONTH, publishedEventScheduleHttpResponse.body().getEventScheduleMonth())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(), checkingDatabaseResponse.body().getEventScheduleId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_YEAR, checkingDatabaseResponse.body().getEventScheduleYear())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_MONTH, checkingDatabaseResponse.body().getEventScheduleMonth())
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(checkingDatabaseResponse.body().getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(checkingDatabaseResponse.body().getLastUpdatedOn()))
 
         and: "the file is the correct format"
-            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(publishedEventScheduleHttpResponse.body().getFileLocation()))) {
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(checkingDatabaseResponse.body().getFileLocation()))) {
                 csv.forEach(it -> Assertions.assertEquals(Constants.CSV_COLUMN_HEADERS.size(), it.fieldCount))
             }
 
         and: "the file has the correct content for the single event including the fact Feb 2024 is a leap year"
-            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(publishedEventScheduleHttpResponse.body().getFileLocation()))) {
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(checkingDatabaseResponse.body().getFileLocation()))) {
                 checkForSingleEventContent(csv)
             }
 
         and: "the file has the correct content for the daily reoccurring event including the fact Feb 2024 is a leap year"
-            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(publishedEventScheduleHttpResponse.body().getFileLocation()))) {
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(checkingDatabaseResponse.body().getFileLocation()))) {
                 checksForDailyReoccurringEventContent(csv)
             }
 
         and: "the file has the correct content for the weekly reoccurring event including the fact Feb 2024 is a leap year"
-            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(publishedEventScheduleHttpResponse.body().getFileLocation()))) {
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(checkingDatabaseResponse.body().getFileLocation()))) {
                 checkForWeeklyReoccurringEventContent(csv)
             }
     }
