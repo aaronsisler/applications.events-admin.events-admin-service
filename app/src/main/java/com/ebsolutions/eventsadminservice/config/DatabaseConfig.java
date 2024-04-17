@@ -14,22 +14,38 @@ import java.net.URI;
 @Slf4j
 @Factory
 public class DatabaseConfig {
-    private final String awsAccessKeyId = "access_key_id";
-    private final String awsSecretAccessKey = "secret_access_key";
-    private final String endpoint = "http://localhost:8000";
+    private final String awsAccessKeyId = "accessKeyId";
+    private final String awsSecretAccessKey = "secretAccessKey";
+    private final String endpointLocal = "http://localhost:8000";
+    private final String endpointDocker = "http://host.docker.internal:8000";
 
     @Prototype
     @Requires(env = {"local", "test"})
     public DynamoDbEnhancedClient localClientInstantiation() {
-        URI localEndpoint = URI.create(endpoint);
-        AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(awsAccessKeyId, awsSecretAccessKey);
-        StaticCredentialsProvider staticCredentialsProvider = StaticCredentialsProvider.create(awsBasicCredentials);
-
+        StaticCredentialsProvider staticCredentialsProvider = staticCredentialsProvider();
+        URI localEndpoint = URI.create(endpointLocal);
         DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
                 .endpointOverride(localEndpoint)
                 .credentialsProvider(staticCredentialsProvider)
                 .build();
 
         return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
+    }
+
+    @Prototype
+    @Requires(env = {"dev"})
+    public DynamoDbEnhancedClient dockerClientInstantiation() {
+        StaticCredentialsProvider staticCredentialsProvider = staticCredentialsProvider();
+        URI localEndpoint = URI.create(endpointDocker);
+        DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
+                .endpointOverride(localEndpoint)
+                .credentialsProvider(staticCredentialsProvider)
+                .build();
+
+        return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
+    }
+
+    private StaticCredentialsProvider staticCredentialsProvider() {
+        return StaticCredentialsProvider.create(AwsBasicCredentials.create(awsAccessKeyId, awsSecretAccessKey));
     }
 }
