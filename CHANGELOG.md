@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.8.0]
+
+### Added
+
+- Added in the configs per environment to allow for Docker and possibly AWS deployment to work
+
 ## [0.7.0]
 
 ### Added

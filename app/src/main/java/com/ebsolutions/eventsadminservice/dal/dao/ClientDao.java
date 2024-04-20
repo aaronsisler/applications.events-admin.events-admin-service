@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.dal.dao;
 
-import com.ebsolutions.eventsadminservice.config.Constants;
+import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.dal.SortKeyType;
 import com.ebsolutions.eventsadminservice.dal.dto.ClientDto;
 import com.ebsolutions.eventsadminservice.dal.util.KeyBuilder;
@@ -28,8 +28,8 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.ke
 public class ClientDao {
     private final DynamoDbTable<ClientDto> ddbTable;
 
-    public ClientDao(DynamoDbEnhancedClient enhancedClient) {
-        this.ddbTable = enhancedClient.table(Constants.DATABASE_TABLE_NAME, TableSchema.fromBean(ClientDto.class));
+    public ClientDao(DynamoDbEnhancedClient enhancedClient, DatabaseConfig databaseConfig) {
+        this.ddbTable = enhancedClient.table(databaseConfig.getDatabaseTable(), TableSchema.fromBean(ClientDto.class));
     }
 
     public Client read(String clientId) throws DataProcessingException {

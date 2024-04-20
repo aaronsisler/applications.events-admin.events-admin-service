@@ -19,8 +19,8 @@
     </modules>
 
     <properties>
-        <jdk.version>17</jdk.version>
-        <lombok.version>1.18.28</lombok.version>
+        <version.jdk>17</version.jdk>
+        <version.lombok>1.18.28</version.lombok>
     </properties>
 
     <dependencyManagement>
@@ -164,8 +164,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.11.0</version>
                     <configuration>
-                        <source>${jdk.version}</source>
-                        <target>${jdk.version}</target>
+                        <source>${version.jdk}</source>
+                        <target>${version.jdk}</target>
                     </configuration>
                 </plugin>
             </plugins>
