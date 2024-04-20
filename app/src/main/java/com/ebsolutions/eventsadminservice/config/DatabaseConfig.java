@@ -3,6 +3,8 @@ package com.ebsolutions.eventsadminservice.config;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.Value;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -16,30 +18,18 @@ import java.net.URI;
 public class DatabaseConfig {
     private final String awsAccessKeyId = "accessKeyId";
     private final String awsSecretAccessKey = "secretAccessKey";
-    private final String endpointLocal = "http://localhost:8000";
-    private final String endpointDocker = "http://host.docker.internal:8000";
+    @Getter
+    @Value("${database.table_name:`Database table name not found in environment`}")
+    public String databaseTable;
+    @Value("${database.endpoint:`Database endpoint not found in environment`}")
+    protected String endpoint;
 
     @Prototype
-    @Requires(env = {"local", "test"})
+    @Requires(env = {"local", "test", "dev"})
     public DynamoDbEnhancedClient localClientInstantiation() {
-        StaticCredentialsProvider staticCredentialsProvider = staticCredentialsProvider();
-        URI localEndpoint = URI.create(endpointLocal);
         DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
-                .endpointOverride(localEndpoint)
-                .credentialsProvider(staticCredentialsProvider)
-                .build();
-
-        return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
-    }
-
-    @Prototype
-    @Requires(env = {"dev"})
-    public DynamoDbEnhancedClient dockerClientInstantiation() {
-        StaticCredentialsProvider staticCredentialsProvider = staticCredentialsProvider();
-        URI localEndpoint = URI.create(endpointDocker);
-        DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
-                .endpointOverride(localEndpoint)
-                .credentialsProvider(staticCredentialsProvider)
+                .endpointOverride(URI.create(endpoint))
+                .credentialsProvider(staticCredentialsProvider())
                 .build();
 
         return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
