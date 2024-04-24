@@ -292,13 +292,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>io.micronaut.maven</groupId>
-                <artifactId>micronaut-maven-plugin</artifactId>
-                <configuration>
-                    <configFile>aot-${packaging}.properties</configFile>
-                </configuration>
-            </plugin>
             <!-- The gmavenplus-plugin is used to compile Groovy code in the tests-->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
@@ -355,6 +348,15 @@
                             </exclusions>
                         </path>
                     </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <!-- Maven plugin to execute and package Micronaut applications -->
+            <!-- https://micronaut-projects.github.io/micronaut-maven-plugin/latest/ -->
+            <plugin>
+                <groupId>io.micronaut.maven</groupId>
+                <artifactId>micronaut-maven-plugin</artifactId>
+                <configuration>
+                    <configFile>aot-${packaging}.properties</configFile>
                 </configuration>
             </plugin>
         </plugins>

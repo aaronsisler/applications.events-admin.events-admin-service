@@ -35,8 +35,10 @@ jobs:
       - name: Publish image to Amazon ECR
         id: publish-image
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}|
           ECR_REPOSITORY: services.events-admin-service
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "IMAGE_TAG=$(docker images -q $ECR_REPOSITORY)" >> $GITHUB_ENV
+          docker tag $IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY
