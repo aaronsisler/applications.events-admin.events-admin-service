@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "IMAGE_TAG=$(docker images -q $ECR_REPOSITORY)" >> $GITHUB_ENV
           echo $IMAGE_TAG
-          docker inages
+          docker images
           docker tag $IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY
-          docker inages
+          docker images
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
