@@ -8,12 +8,12 @@
 - Contract created/updated
 - Dependencies added to pom(s) are commented with what their usage is for
 - DAL layer is created/updated and follows naming conventions
-    - DAL
-    - DTO
+  - DAL
+  - DTO
 - Controller is created/updated and follows naming conventions
 - Integration tests added/updated
-    - Test(s) created/updated
-    - Data set(s) created/updated
+  - Test(s) created/updated
+  - Data set(s) created/updated
 - API collection (Bruno) is updated and committed to api-client repository
 - Bump the version of the app in the pom
 - Update the [change log](./CHANGELOG.md)
@@ -163,6 +163,8 @@ dokcer images
 
 ```bash
 docker tag identifier_from_docker_images 654918520080.dkr.ecr.us-east-1.amazonaws.com/services.events-admin-service
+docker tag 2c65d71c3137 654918520080.dkr.ecr.us-east-1.amazonaws.com/services.events-admin-service
+docker tag 6aafecc82c31 654918520080.dkr.ecr.us-east-1.amazonaws.com/services.events-admin-service
 ```
 
 #### Publish after tagging

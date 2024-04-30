@@ -30,7 +30,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Application and Package Docker
-        run: mvn package -Dpackaging=docker
+        run: mvn clean package -Dpackaging=docker
 
       - name: Get Docker Image Name
         id: set-docker-image-tag
@@ -45,7 +45,6 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: services.events-admin-service
-          IMAGE_NAME: events-admin-service
         run: |
           echo "Image Tag!"
           echo $IMAGE_TAG
