@@ -7,6 +7,7 @@ import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import software.amazon.awssdk.services.s3.model.GetObjectResponse
 
+import java.text.MessageFormat
 import java.util.stream.Collectors
 
 class FileStorageUtil {
@@ -37,5 +38,9 @@ class FileStorageUtil {
                 .getObject(getObjectRequest)
 
         return new BufferedReader(new InputStreamReader(s3objectResponse))
+    }
+
+    static String buildFileLocation(String filePath, String filename) {
+        return MessageFormat.format("{0}/{1}.csv", filePath, filename)
     }
 }

@@ -44,7 +44,7 @@ class PublishedEventScheduledGetSpec extends Specification {
 
             Assertions.assertEquals(PublishedEventScheduleTestConstants.GET_PUBLISHED_EVENT_SCHEDULE.getClientId(), publishedEventSchedule.getClientId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.GET_PUBLISHED_EVENT_SCHEDULE.getPublishedEventScheduleId(), publishedEventSchedule.getPublishedEventScheduleId())
-            Assertions.assertEquals(PublishedEventScheduleTestConstants.GET_PUBLISHED_EVENT_SCHEDULE.getFileLocation(), publishedEventSchedule.getFileLocation())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.GET_PUBLISHED_EVENT_SCHEDULE.getFilename(), publishedEventSchedule.getFilename())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.GET_PUBLISHED_EVENT_SCHEDULE.getEventScheduleId(), publishedEventSchedule.getEventScheduleId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.GET_PUBLISHED_EVENT_SCHEDULE.getName(), publishedEventSchedule.getName())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_YEAR, publishedEventSchedule.getEventScheduleYear())

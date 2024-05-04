@@ -1,12 +1,9 @@
-version: "3.3"
-
 services:
   events-admin-service:
     depends_on:
       - database
       - file-storage
     image: events-admin-service:latest
-    #    image: event-admin-service:latest
     environment:
       MICRONAUT_ENVIRONMENTS: local
     ports:

@@ -7,11 +7,12 @@ import io.micronaut.context.annotation.Prototype;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.text.MessageFormat;
-import java.time.LocalDateTime;
 
 @Slf4j
 @Prototype
@@ -23,20 +24,34 @@ public class FileStorageDao {
         this.s3Client = s3Client;
     }
 
-    public String create(String clientId, ByteBuffer inputByteBuffer) {
+    public void create(String fileLocation, ByteBuffer inputByteBuffer) {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
-
-        String objectKey = MessageFormat.format("{0}/{1}.csv", clientId, LocalDateTime.now().toString());
 
         try {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(Constants.FILE_STORAGE_LOCATION)
-                    .key(objectKey)
+                    .key(fileLocation)
                     .build();
 
             s3Client.putObject(putObjectRequest, RequestBody.fromByteBuffer(inputByteBuffer));
+        } catch (Exception e) {
+            log.error("ERROR::{}", this.getClass().getName(), e);
+            throw new FileProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
+        } finally {
+            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "create"));
+        }
+    }
 
-            return objectKey;
+    public URL read(String fileLocation) {
+        MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
+
+        try {
+            GetUrlRequest request = GetUrlRequest.builder()
+                    .bucket(Constants.FILE_STORAGE_LOCATION)
+                    .key(fileLocation)
+                    .build();
+
+            return s3Client.utilities().getUrl(request);
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new FileProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);

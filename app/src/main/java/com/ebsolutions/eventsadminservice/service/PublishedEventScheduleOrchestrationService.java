@@ -2,6 +2,7 @@ package com.ebsolutions.eventsadminservice.service;
 
 import com.ebsolutions.eventsadminservice.dal.dao.*;
 import com.ebsolutions.eventsadminservice.dal.util.CsvFileGenerator;
+import com.ebsolutions.eventsadminservice.dal.util.FileLocationUtil;
 import com.ebsolutions.eventsadminservice.model.*;
 import com.ebsolutions.eventsadminservice.validator.DateValidator;
 import com.ebsolutions.eventsadminservice.validator.StringValidator;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.nio.ByteBuffer;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,9 +88,11 @@ public class PublishedEventScheduleOrchestrationService {
         // Create the CSV bytes
         ByteBuffer byteBuffer = this.csvFileGenerator.create(publishedScheduledEvents);
         // Push the CSV bytes to File Storage
-        String fileLocation = this.fileStorageDao.create(publishedEventSchedule.getClientId(), byteBuffer);
+        String filename = LocalDateTime.now().toString();
+        String fileLocation = FileLocationUtil.build(publishedEventSchedule.getClientId(), filename, "csv");
+        this.fileStorageDao.create(fileLocation, byteBuffer);
         // Add the CSV Location to the Published Event Schedule
-        publishedEventSchedule.setFileLocation(fileLocation);
+        publishedEventSchedule.setFilename(filename);
         // Save and return the Published Event Schedule to database
         return publishedEventScheduleDao.create(publishedEventSchedule);
     }

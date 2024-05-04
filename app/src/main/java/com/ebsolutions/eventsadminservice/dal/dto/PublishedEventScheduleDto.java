@@ -21,7 +21,7 @@ public class PublishedEventScheduleDto extends DatabaseDto {
     private String eventScheduleId;
     private Integer eventScheduleYear;
     private Integer eventScheduleMonth;
-    private String fileLocation;
+    private String filename;
 //    private List<LocationBlackout> locationBlackouts;
 //    private List<EventBlackout> eventBlackouts;
 }
