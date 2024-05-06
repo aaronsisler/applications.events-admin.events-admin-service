@@ -1,0 +1,27 @@
+openapi: 3.0.0
+info:
+  title: Events REST API
+  version: "1.0"
+paths:
+  /clients/{clientId}/files/{filename}:
+    parameters:
+      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "#/components/parameters/Filename"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '5XX':
+          description: Server Error
+components:
+  parameters:
+    Filename:
+      in: path
+      name: filename
+      required: true
+      schema:
+        type: string

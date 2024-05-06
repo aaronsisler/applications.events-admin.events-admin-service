@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.9.0]
+
+### Added
+
+- Adding in the File Controller and shifting things so we can pull the S3 CSV out from local storage
+
 ## [0.8.0]
 
 ### Added

@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Prototype
-public class CsvFileGenerator {
+public class CsvGenerator {
     public ByteBuffer create(List<PublishedScheduledEvent> publishedScheduledEvents) throws CsvGenerationException {
         MetricsStopWatch metricsStopWatch = new MetricsStopWatch();
         try {

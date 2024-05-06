@@ -1,7 +1,7 @@
 package com.ebsolutions.eventsadminservice.service;
 
 import com.ebsolutions.eventsadminservice.dal.dao.*;
-import com.ebsolutions.eventsadminservice.dal.util.CsvFileGenerator;
+import com.ebsolutions.eventsadminservice.dal.util.CsvGenerator;
 import com.ebsolutions.eventsadminservice.dal.util.FileLocationUtil;
 import com.ebsolutions.eventsadminservice.model.*;
 import com.ebsolutions.eventsadminservice.validator.DateValidator;
@@ -25,17 +25,17 @@ public class PublishedEventScheduleOrchestrationService {
     private final ScheduledEventDao scheduledEventDao;
     private final OrganizerDao organizerDao;
     private final LocationDao locationDao;
-    private final CsvFileGenerator csvFileGenerator;
+    private final CsvGenerator csvGenerator;
     private final PublishedEventScheduleDao publishedEventScheduleDao;
-    private final FileStorageDao fileStorageDao;
+    private final FileDao fileDao;
 
-    public PublishedEventScheduleOrchestrationService(ScheduledEventDao scheduledEventDao, OrganizerDao organizerDao, LocationDao locationDao, CsvFileGenerator csvFileGenerator, PublishedEventScheduleDao publishedEventScheduleDao, FileStorageDao fileStorageDao) {
+    public PublishedEventScheduleOrchestrationService(ScheduledEventDao scheduledEventDao, OrganizerDao organizerDao, LocationDao locationDao, CsvGenerator csvGenerator, PublishedEventScheduleDao publishedEventScheduleDao, FileDao fileDao) {
         this.scheduledEventDao = scheduledEventDao;
         this.organizerDao = organizerDao;
         this.locationDao = locationDao;
-        this.csvFileGenerator = csvFileGenerator;
+        this.csvGenerator = csvGenerator;
         this.publishedEventScheduleDao = publishedEventScheduleDao;
-        this.fileStorageDao = fileStorageDao;
+        this.fileDao = fileDao;
     }
 
     public PublishedEventSchedule publishEventSchedule(PublishedEventSchedule publishedEventSchedule) {
@@ -86,11 +86,11 @@ public class PublishedEventScheduleOrchestrationService {
                 .forEach(publishedScheduledEvent -> publishedScheduledEvent.setOrganizer(organizers.get(publishedScheduledEvent.getScheduledEvent().getOrganizerId())));
 
         // Create the CSV bytes
-        ByteBuffer byteBuffer = this.csvFileGenerator.create(publishedScheduledEvents);
+        ByteBuffer byteBuffer = this.csvGenerator.create(publishedScheduledEvents);
         // Push the CSV bytes to File Storage
         String filename = LocalDateTime.now().toString();
         String fileLocation = FileLocationUtil.build(publishedEventSchedule.getClientId(), filename, "csv");
-        this.fileStorageDao.create(fileLocation, byteBuffer);
+        this.fileDao.create(fileLocation, byteBuffer);
         // Add the CSV Location to the Published Event Schedule
         publishedEventSchedule.setFilename(filename);
         // Save and return the Published Event Schedule to database

@@ -16,11 +16,11 @@ import java.text.MessageFormat;
 
 @Slf4j
 @Prototype
-public class FileStorageDao {
+public class FileDao {
 
     private final S3Client s3Client;
 
-    public FileStorageDao(S3Client s3Client) {
+    public FileDao(S3Client s3Client) {
         this.s3Client = s3Client;
     }
 

@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.controller;
 
-import com.ebsolutions.eventsadminservice.dal.dao.FileStorageDao;
+import com.ebsolutions.eventsadminservice.dal.dao.FileDao;
 import com.ebsolutions.eventsadminservice.dal.util.FileLocationUtil;
 import com.ebsolutions.eventsadminservice.exception.DataProcessingException;
 import io.micronaut.http.HttpResponse;
@@ -17,11 +17,11 @@ import static io.micronaut.http.HttpResponse.*;
 
 @Slf4j
 @Controller("/clients/{clientId}/files")
-public class FileStorageController {
-    private final FileStorageDao fileStorageDao;
+public class FileController {
+    private final FileDao fileDao;
 
-    public FileStorageController(FileStorageDao fileStorageDao) {
-        this.fileStorageDao = fileStorageDao;
+    public FileController(FileDao fileDao) {
+        this.fileDao = fileDao;
     }
 
     @Get(value = "/{filename}", produces = MediaType.APPLICATION_JSON)
@@ -29,7 +29,7 @@ public class FileStorageController {
         try {
             String fileLocation = FileLocationUtil.build(clientId, filename, "csv");
 
-            URL url = fileStorageDao.read(fileLocation);
+            URL url = fileDao.read(fileLocation);
 
             return url != null ? ok(url) : noContent();
         } catch (DataProcessingException dbe) {
