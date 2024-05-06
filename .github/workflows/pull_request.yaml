@@ -17,5 +17,6 @@ jobs:
           java-version: "17"
           distribution: "corretto"
           cache: "maven"
-      - name: Build and Package Docker
-        run: mvn package -Dpackaging=docker
+
+      - name: Build Application
+        run: mvn clean package

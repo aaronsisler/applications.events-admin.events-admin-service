@@ -81,7 +81,7 @@ components:
           type: integer
         eventScheduleMonth:
           type: integer
-        fileLocation:
+        filename:
           type: string
         locationBlackouts:
           type: array

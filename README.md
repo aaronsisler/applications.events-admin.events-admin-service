@@ -5,18 +5,18 @@
 <details>
   <summary>This is what is needed to close out a feature branch and created/merge a PR.</summary>
 
-* Contract created/updated
-* Dependencies added to pom(s) are commented with what their usage is for
-* DAL layer is created/updated and follows naming conventions
-    * DAL
-    * DTO
-* Controller is created/updated and follows naming conventions
-* Integration tests added/updated
-    * Test(s) created/updated
-    * Data set(s) created/updated
-* API collection (Bruno) is updated and committed to api-client repository
-* Bump the version of the app in the pom
-* Update the [change log](./CHANGELOG.md)
+- Contract created/updated
+- Dependencies added to pom(s) are commented with what their usage is for
+- DAL layer is created/updated and follows naming conventions
+  - DAL
+  - DTO
+- Controller is created/updated and follows naming conventions
+- Integration tests added/updated
+  - Test(s) created/updated
+  - Data set(s) created/updated
+- API collection (Bruno) is updated and committed to api-client repository
+- Bump the version of the app in the pom
+- Update the [change log](./CHANGELOG.md)
 
 </details>
 
@@ -51,7 +51,6 @@ docker compose -f ./docker-compose.local.yml down
 
 <details>
   <summary>Running application in a container locally</summary>
-
 
 This is how to create a new build of the Application and package it into a Docker container
 
@@ -99,7 +98,6 @@ awslocalddb dynamodb scan --table-name SERVICES_EVENTS_ADMIN_LOCAL
 
 <br />
 
-
 <details>
 <summary>S3</summary>
 
@@ -125,7 +123,54 @@ awslocals3 s3 ls event-admin-service-file-storage
 List out the content of a file in a bucket
 
 ```bash
-awslocals3 s3 cp s3://event-admin-service-file-storage/4f2d25cc-cb66-4e29-ac36-c20ce83fb28a/2024-04-16T20:13:19.074960.csv - 
+awslocals3 s3 cp s3://event-admin-service-file-storage/4f2d25cc-cb66-4e29-ac36-c20ce83fb28a/2024-04-16T20:13:19.074960.csv -
+```
+
+</details>
+
+<br />
+
+<details>
+<summary>ECR</summary>
+
+#### Registry
+
+654918520080.dkr.ecr.us-east-1.amazonaws.com
+
+#### Repository
+
+services.events-admin-service
+
+#### Logging in
+
+```bash
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 654918520080.dkr.ecr.us-east-1.amazonaws.com
+```
+
+#### List Repositories
+
+```bash
+aws ecr describe-repositories
+```
+
+#### Tag a version to publish
+
+Run the below command to list the images and their identifiers
+
+```bash
+dokcer images
+```
+
+```bash
+docker tag identifier_from_docker_images 654918520080.dkr.ecr.us-east-1.amazonaws.com/services.events-admin-service
+docker tag 2c65d71c3137 654918520080.dkr.ecr.us-east-1.amazonaws.com/services.events-admin-service
+docker tag 6aafecc82c31 654918520080.dkr.ecr.us-east-1.amazonaws.com/services.events-admin-service
+```
+
+#### Publish after tagging
+
+```bash
+docker push 654918520080.dkr.ecr.us-east-1.amazonaws.com/services.events-admin-service
 ```
 
 </details>

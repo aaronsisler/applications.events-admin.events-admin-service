@@ -159,7 +159,14 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_SCHEDULED_EVENT_REOCCURRING_WEEKLY.getScheduledEventType(), scheduledEventWeeklyResponse.body().getScheduledEventType())
 
         and: "a valid published event schedule for February 2024 with no event blackouts or location blackouts is ready to be published"
-            PublishedEventSchedule publishedEventSchedule = PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE
+            PublishedEventSchedule newPublishedEventSchedule = PublishedEventSchedule.builder()
+                    .clientId(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE.getClientId())
+                    .eventScheduleId(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE.getEventScheduleId())
+                    .eventScheduleYear(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE.getEventScheduleYear())
+                    .eventScheduleMonth(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE.getEventScheduleMonth())
+                    .name(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE.getName())
+                    .build()
+
 
         when: "the published event schedule is published"
             String publishedEventScheduleUrl = postChildUrl(
@@ -168,7 +175,7 @@ class PublishedEventScheduleCreateSpec extends Specification {
                     "published-event-schedules"
             )
 
-            HttpRequest httpRequest = HttpRequest.POST(publishedEventScheduleUrl, publishedEventSchedule)
+            HttpRequest httpRequest = HttpRequest.POST(publishedEventScheduleUrl, newPublishedEventSchedule)
 
             HttpResponse<PublishedEventSchedule> publishedEventScheduleHttpResponse = httpClient.toBlocking()
                     .exchange(httpRequest, PublishedEventSchedule)
@@ -177,18 +184,20 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(HttpURLConnection.HTTP_OK, publishedEventScheduleHttpResponse.code())
 
         and: "the correct published event schedule is returned"
-            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(), publishedEventScheduleHttpResponse.body().getClientId())
-            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(), publishedEventScheduleHttpResponse.body().getEventScheduleId())
-            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_YEAR, publishedEventScheduleHttpResponse.body().getEventScheduleYear())
-            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_MONTH, publishedEventScheduleHttpResponse.body().getEventScheduleMonth())
+            PublishedEventSchedule publishedEventSchedule = publishedEventScheduleHttpResponse.body()
+
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_CLIENT.getClientId(), publishedEventSchedule.getClientId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(), publishedEventSchedule.getEventScheduleId())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_YEAR, publishedEventSchedule.getEventScheduleYear())
+            Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_MONTH, publishedEventSchedule.getEventScheduleMonth())
 
         and: "the file is published to file storage at a specific file location"
-            List<String> fileContents = fileStorageUtil.getFileContents(publishedEventScheduleHttpResponse.body().getFileLocation())
+            List<String> fileContents = fileStorageUtil.getFileContents(FileStorageUtil.buildFileLocation(publishedEventSchedule.getClientId(), publishedEventSchedule.getFilename()))
             // Greater than 1 means at least the headers and one row of data is there
             Assertions.assertTrue(fileContents.size() > 1)
 
         and: "published event schedule is saved to the database with the correct file location"
-            String getPublishedEventScheduleUrl = publishedEventScheduleUrl.concat(publishedEventScheduleHttpResponse.body().getPublishedEventScheduleId())
+            String getPublishedEventScheduleUrl = publishedEventScheduleUrl.concat(publishedEventSchedule.getPublishedEventScheduleId())
 
             HttpResponse<PublishedEventSchedule> checkingDatabaseResponse = httpClient.toBlocking()
                     .exchange(getPublishedEventScheduleUrl, PublishedEventSchedule)
@@ -197,26 +206,28 @@ class PublishedEventScheduleCreateSpec extends Specification {
             Assertions.assertEquals(PublishedEventScheduleTestConstants.CREATE_PUBLISHED_EVENT_SCHEDULE_EVENT_SCHEDULE.getEventScheduleId(), checkingDatabaseResponse.body().getEventScheduleId())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_YEAR, checkingDatabaseResponse.body().getEventScheduleYear())
             Assertions.assertEquals(PublishedEventScheduleTestConstants.EVENT_SCHEDULE_MONTH, checkingDatabaseResponse.body().getEventScheduleMonth())
+            Assertions.assertEquals(publishedEventSchedule.getFilename(), checkingDatabaseResponse.body().getFilename())
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(checkingDatabaseResponse.body().getCreatedOn()))
             Assertions.assertTrue(DateAndTimeComparisonUtil.isDateAndTimeNow(checkingDatabaseResponse.body().getLastUpdatedOn()))
 
         and: "the file is the correct format"
-            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(checkingDatabaseResponse.body().getFileLocation()))) {
+            String fileLocationFromDatabase = FileStorageUtil.buildFileLocation(checkingDatabaseResponse.body().getClientId(), checkingDatabaseResponse.body().getFilename())
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(fileLocationFromDatabase))) {
                 csv.forEach(it -> Assertions.assertEquals(Constants.CSV_COLUMN_HEADERS.size(), it.fieldCount))
             }
 
         and: "the file has the correct content for the single event including the fact Feb 2024 is a leap year"
-            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(checkingDatabaseResponse.body().getFileLocation()))) {
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(fileLocationFromDatabase))) {
                 checkForSingleEventContent(csv)
             }
 
         and: "the file has the correct content for the daily reoccurring event including the fact Feb 2024 is a leap year"
-            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(checkingDatabaseResponse.body().getFileLocation()))) {
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(fileLocationFromDatabase))) {
                 checksForDailyReoccurringEventContent(csv)
             }
 
         and: "the file has the correct content for the weekly reoccurring event including the fact Feb 2024 is a leap year"
-            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(checkingDatabaseResponse.body().getFileLocation()))) {
+            try (CsvReader<CsvRecord> csv = CsvReader.builder().ofCsvRecord(fileStorageUtil.getFileReader(fileLocationFromDatabase))) {
                 checkForWeeklyReoccurringEventContent(csv)
             }
     }
