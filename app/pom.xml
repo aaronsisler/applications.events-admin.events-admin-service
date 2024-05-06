@@ -54,12 +54,7 @@
                 <artifactId>commons-collections</artifactId>
                 <version>${version.commons.collections}</version>
             </dependency>
-            <!-- Added for generation of the CSV -->
-            <dependency>
-                <groupId>de.siegmar</groupId>
-                <artifactId>fastcsv</artifactId>
-                <version>${version.fastcsv}</version>
-            </dependency>
+
             <!-- Needed for Application logging annotations to work -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -71,12 +66,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Needed for Application.yml parsing-->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+        <!-- START: Micronaut Dependencies -->
 
         <!-- Needed for Application to start-->
         <dependency>
@@ -88,6 +78,39 @@
         <dependency>
             <groupId>io.micronaut.serde</groupId>
             <artifactId>micronaut-serde-jackson</artifactId>
+        </dependency>
+
+        <!-- Not sure where this needed -->
+        <dependency>
+            <groupId>io.micronaut.validation</groupId>
+            <artifactId>micronaut-validation</artifactId>
+        </dependency>
+
+        <!-- END: Micronaut Dependencies -->
+
+        <!-- START: AWS Dependencies -->
+
+        <!-- AWS DynamoDB config and methods -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>dynamodb-enhanced</artifactId>
+        </dependency>
+
+        <!-- AWS S3 File storage -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+        </dependency>
+
+        <!-- END: AWS Dependencies -->
+
+        <!-- START: Third Party Dependencies -->
+
+        <!-- Needed for Application.yml parsing-->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Needed for Application logging to work -->
@@ -115,24 +138,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- AWS DynamoDB config and methods -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>dynamodb-enhanced</artifactId>
-        </dependency>
-
-        <!-- AWS S3 File storage -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>s3</artifactId>
-        </dependency>
-
-        <!-- Not sure where this needed -->
-        <dependency>
-            <groupId>io.micronaut.validation</groupId>
-            <artifactId>micronaut-validation</artifactId>
-        </dependency>
-
         <!-- Not sure where this needed -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -143,8 +148,12 @@
         <dependency>
             <groupId>de.siegmar</groupId>
             <artifactId>fastcsv</artifactId>
+            <version>${version.fastcsv}</version>
         </dependency>
 
+        <!-- END: Third Party Dependencies -->
+
+        <!-- START: Testing Dependencies -->
         <!-- Handles Spock testing with Micronaut -->
         <dependency>
             <groupId>io.micronaut.test</groupId>
@@ -186,6 +195,8 @@
             <artifactId>micronaut-http-client</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- END: Testing Dependencies -->
     </dependencies>
 
     <build>
