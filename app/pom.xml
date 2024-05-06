@@ -30,6 +30,8 @@
         <version.commons.collections>3.2.2</version.commons.collections>
         <version.jackson.datatype.jsr310>2.15.2</version.jackson.datatype.jsr310>
 
+        <!-- Testing Version -->
+        <version.cucumber>7.17.0</version.cucumber>
     </properties>
 
     <dependencyManagement>
@@ -154,6 +156,7 @@
         <!-- END: Third Party Dependencies -->
 
         <!-- START: Testing Dependencies -->
+
         <!-- Handles Spock testing with Micronaut -->
         <dependency>
             <groupId>io.micronaut.test</groupId>
