@@ -1,6 +1,8 @@
-micronaut:
-  application:
-    name: eventsAdminService
-  server:
-    port: 8080
-    context-path: "/"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  info:
+    env:
+      enabled: true

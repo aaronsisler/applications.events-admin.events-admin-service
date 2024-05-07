@@ -19,8 +19,8 @@
 
         <!-- Micronaut Parent Pom Versions -->
         <!-- These formats come from the parent micronaut project/pom -->
-        <version.micronaut>${micronaut.version}</version.micronaut>
-        <version.micronaut.serialization>${micronaut.serialization.version}</version.micronaut.serialization>
+        <!--        <version.micronaut>${micronaut.version}</version.micronaut>-->
+        <!--        <version.micronaut.serialization>${micronaut.serialization.version}</version.micronaut.serialization>-->
 
         <!-- Versions -->
         <version.aws.sdk>2.21.15</version.aws.sdk>
@@ -68,136 +68,46 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- START: Micronaut Dependencies -->
+        <!-- START: Spring Dependencies -->
 
-        <!-- Needed for Application to start-->
         <dependency>
-            <groupId>io.micronaut</groupId>
-            <artifactId>micronaut-http-server-netty</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <!-- Needed for Application to start-->
         <dependency>
-            <groupId>io.micronaut.serde</groupId>
-            <artifactId>micronaut-serde-jackson</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- Not sure where this needed -->
-        <dependency>
-            <groupId>io.micronaut.validation</groupId>
-            <artifactId>micronaut-validation</artifactId>
-        </dependency>
-
-        <!-- END: Micronaut Dependencies -->
+        <!-- END: Spring Dependencies -->
 
         <!-- START: AWS Dependencies -->
-
-        <!-- AWS DynamoDB config and methods -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>dynamodb-enhanced</artifactId>
-        </dependency>
-
-        <!-- AWS S3 File storage -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>s3</artifactId>
-        </dependency>
 
         <!-- END: AWS Dependencies -->
 
         <!-- START: Third Party Dependencies -->
 
-        <!-- Needed for Application.yml parsing-->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- Needed for Application logging to work -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-        </dependency>
-
-        <!-- Needed for Application logging to work -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-        </dependency>
-
-        <!-- Needed for Application logging annotations to work -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j2-impl</artifactId>
-        </dependency>
-
-        <!-- Needed for Application logging annotations to work -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
 
-        <!-- Not sure where this needed -->
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-        </dependency>
-
-        <!-- Added for generation of the CSV -->
-        <dependency>
-            <groupId>de.siegmar</groupId>
-            <artifactId>fastcsv</artifactId>
-            <version>${version.fastcsv}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
         <!-- END: Third Party Dependencies -->
 
         <!-- START: Testing Dependencies -->
-
-        <!-- Handles Spock testing with Micronaut -->
-        <dependency>
-            <groupId>io.micronaut.test</groupId>
-            <artifactId>micronaut-test-spock</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Handles Spock testing with Micronaut -->
-        <!-- Need to see why this exclusion is needed and can we have this at the top layer Dep Management -->
-        <dependency>
-            <groupId>org.spockframework</groupId>
-            <artifactId>spock-core</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.groovy</groupId>
-                    <artifactId>groovy-all</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Handles Spock testing with Micronaut -->
-        <dependency>
-            <groupId>io.micronaut</groupId>
-            <artifactId>micronaut-inject-groovy</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Handles JUnit methods like assertEquals, etc. -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Handles HTTP Client that makes calls to mock server -->
-        <dependency>
-            <groupId>io.micronaut</groupId>
-            <artifactId>micronaut-http-client</artifactId>
-            <scope>test</scope>
-        </dependency>
 
         <!-- END: Testing Dependencies -->
     </dependencies>
@@ -224,151 +134,16 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Generates Java classes from OpenAPI contracts -->
             <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>models-shared</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>models-client</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/client.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>models-location</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/location.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>models-organizer</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/organizer.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>models-event</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/event.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>models-event-schedule</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/event-schedule.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>models-scheduled-event</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/scheduled-event.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>models-published-event-schedule</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/published-event-schedule.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- The gmavenplus-plugin is used to compile Groovy code in the tests-->
-            <plugin>
-                <groupId>org.codehaus.gmavenplus</groupId>
-                <artifactId>gmavenplus-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>compile</goal>
-                            <goal>compileTests</goal>
+                            <goal>build-info</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- This handles injection of the annotated classes -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-inject-java</artifactId>
-                            <version>${version.micronaut}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-graal</artifactId>
-                            <version>${version.micronaut}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut</groupId>
-                            <artifactId>micronaut-http-validation</artifactId>
-                            <version>${version.micronaut}</version>
-                        </path>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${version.lombok}</version>
-                        </path>
-                        <path>
-                            <groupId>com.fasterxml.jackson.datatype</groupId>
-                            <artifactId>jackson-datatype-jsr310</artifactId>
-                            <version>${version.jackson.datatype.jsr310}</version>
-                        </path>
-                        <path>
-                            <groupId>io.micronaut.serde</groupId>
-                            <artifactId>micronaut-serde-processor</artifactId>
-                            <version>${version.micronaut.serialization}</version>
-                            <exclusions>
-                                <exclusion>
-                                    <groupId>io.micronaut</groupId>
-                                    <artifactId>micronaut-inject</artifactId>
-                                </exclusion>
-                            </exclusions>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <!-- Maven plugin to execute and package Micronaut applications -->
-            <!-- https://micronaut-projects.github.io/micronaut-maven-plugin/latest/ -->
-            <plugin>
-                <groupId>io.micronaut.maven</groupId>
-                <artifactId>micronaut-maven-plugin</artifactId>
-                <configuration>
-                    <configFile>aot-${packaging}.properties</configFile>
-                </configuration>
             </plugin>
         </plugins>
     </build>

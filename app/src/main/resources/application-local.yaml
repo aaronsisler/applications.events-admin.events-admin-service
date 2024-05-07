@@ -1,5 +1,0 @@
-database:
-  endpoint: http://localhost:8000
-  table_name: SERVICES_EVENTS_ADMIN_LOCAL
-file_location:
-  endpoint: http://localhost:9090

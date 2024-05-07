@@ -1,6 +1,0 @@
-database:
-  endpoint: http://host.docker.internal:8000
-  table_name: SERVICES_EVENTS_ADMIN_LOCAL
-file_location:
-  endpoint: http://host.docker.internal:9090
-

@@ -1,9 +1,11 @@
 package com.ebsolutions.eventsadminservice;
 
-import io.micronaut.runtime.Micronaut;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class EventsAdminServiceApplication {
     public static void main(String[] args) {
-        Micronaut.run(EventsAdminServiceApplication.class, args);
+        SpringApplication.run(EventsAdminServiceApplication.class, args);
     }
 }
