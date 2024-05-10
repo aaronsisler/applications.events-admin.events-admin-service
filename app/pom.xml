@@ -18,10 +18,18 @@
         <!-- Versions: Dependencies -->
 
         <!-- Versions: Testing -->
+        <version.io.cucumber.cucumber-bom>7.17.0</version.io.cucumber.cucumber-bom>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${version.io.cucumber.cucumber-bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -63,15 +71,28 @@
 
         <!-- START: Third Party Dependencies -->
 
+        <!-- Used for annotations within project -->
+        <!-- Version: I can't tell... -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!-- END: Third Party Dependencies -->
 
         <!-- START: Testing Dependencies -->
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- END: Testing Dependencies -->
     </dependencies>

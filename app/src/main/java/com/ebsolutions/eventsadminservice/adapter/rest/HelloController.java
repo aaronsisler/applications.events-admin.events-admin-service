@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Slf4j
 @RestController
 @RequestMapping("/hello")
-public class HealthController {
+public class HelloController {
     @GetMapping
     public ResponseEntity<?> index() {
-        return ResponseEntity.ok("Service is alive and the time is " + LocalDateTime.now());
+        return ResponseEntity.ok("Hello! The current time is " + LocalDateTime.now());
     }
 }
