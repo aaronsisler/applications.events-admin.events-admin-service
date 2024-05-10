@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.10.0]
+
+### Changed
+
+- Switching from Micronaut to Spring framework given the delays in dev process.
+
 ## [0.9.0]
 
 ### Added
