@@ -15,10 +15,15 @@
         <packaging>jar</packaging>
         <exec.mainClass>com.ebsolutions.eventsadminservice.EventsAdminServiceApplication</exec.mainClass>
 
+        <!-- Versions: Plugins-->
+        <!--        <version.plugin.maven-failsafe-plugin>3.2.5</version.plugin.maven-failsafe-plugin>-->
+        <!--        <version.plugin.maven-failsafe-plugin>2.21.0</version.plugin.maven-failsafe-plugin>-->
+
         <!-- Versions: Dependencies -->
 
         <!-- Versions: Testing -->
         <version.io.cucumber.cucumber-bom>7.17.0</version.io.cucumber.cucumber-bom>
+        <version.org.junit.junit-bom>5.10.2</version.org.junit.junit-bom>
     </properties>
 
     <dependencyManagement>
@@ -27,6 +32,13 @@
                 <groupId>io.cucumber</groupId>
                 <artifactId>cucumber-bom</artifactId>
                 <version>${version.io.cucumber.cucumber-bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${version.org.junit.junit-bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -82,18 +94,6 @@
 
         <!-- START: Testing Dependencies -->
 
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- END: Testing Dependencies -->
     </dependencies>
 
@@ -104,21 +104,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>dependency-convergence</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <DependencyConvergence/>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <!-- Gives the actuator/info API build information -->
             <!-- Version: Spring Parent -->
@@ -132,6 +117,12 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- This allows all tests to complete, finish tear down, and then report failures -->
+            <!-- Version: Explicit -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

@@ -25,6 +25,9 @@
         <version.org.apache.maven.plugins.maven-enforcer-plugin>
             3.4.1
         </version.org.apache.maven.plugins.maven-enforcer-plugin>
+        <version.org.apache.maven.plugins.maven-surefire-plugin>
+            3.2.5
+        </version.org.apache.maven.plugins.maven-surefire-plugin>
 
         <!-- Versions: Dependencies -->
     </properties>
@@ -46,6 +49,28 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>${version.org.apache.maven.plugins.maven-enforcer-plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>dependency-convergence</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <DependencyConvergence/>
+                                </rules>
+                                <fail>true</fail>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- This allows all tests to complete, finish tear down, and then report failures -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${version.org.apache.maven.plugins.maven-surefire-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
