@@ -11,7 +11,7 @@
 
     <groupId>com.ebsolutions.eventsadminservice</groupId>
     <artifactId>events-admin-service-parent</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -19,12 +19,16 @@
     </modules>
 
     <properties>
-        <version.jdk>17</version.jdk>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Versions: Plugins -->
-        <version.org.apache.maven.plugins.maven-enforcer-plugin>
-            3.4.1
-        </version.org.apache.maven.plugins.maven-enforcer-plugin>
+        <version.plugins.maven-enforcer-plugin>3.4.1</version.plugins.maven-enforcer-plugin>
+        <version.plugins.maven-surefire-plugin>3.2.5</version.plugins.maven-surefire-plugin>
+        <version.plugins.maven-failsafe-plugin>3.2.5</version.plugins.maven-failsafe-plugin>
 
         <!-- Versions: Dependencies -->
     </properties>
@@ -45,7 +49,36 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${version.org.apache.maven.plugins.maven-enforcer-plugin}</version>
+                    <version>${version.plugins.maven-enforcer-plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>dependency-convergence</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <DependencyConvergence/>
+                                </rules>
+                                <fail>true</fail>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- This allows all tests to complete, finish tear down, and then report failures -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${version.plugins.maven-surefire-plugin}</version>
+                </plugin>
+                <!-- Not sure yet -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${version.plugins.maven-failsafe-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

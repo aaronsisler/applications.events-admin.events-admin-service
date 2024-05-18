@@ -5,23 +5,44 @@
     <parent>
         <groupId>com.ebsolutions.eventsadminservice</groupId>
         <artifactId>events-admin-service-parent</artifactId>
-        <version>0.9.0</version>
+        <version>0.10.0</version>
     </parent>
 
     <artifactId>events-admin-service</artifactId>
+    <name>Events Admin Service</name>
     <packaging>${packaging}</packaging>
 
     <properties>
         <packaging>jar</packaging>
         <exec.mainClass>com.ebsolutions.eventsadminservice.EventsAdminServiceApplication</exec.mainClass>
 
+        <!-- Versions: Plugins-->
+        <!--        <version.plugin.maven-failsafe-plugin>3.2.5</version.plugin.maven-failsafe-plugin>-->
+        <!--        <version.plugin.maven-failsafe-plugin>2.21.0</version.plugin.maven-failsafe-plugin>-->
+
         <!-- Versions: Dependencies -->
 
         <!-- Versions: Testing -->
+        <version.io.cucumber.cucumber-bom>7.17.0</version.io.cucumber.cucumber-bom>
+        <version.org.junit.junit-bom>5.10.2</version.org.junit.junit-bom>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${version.org.junit.junit-bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${version.io.cucumber.cucumber-bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -63,15 +84,41 @@
 
         <!-- START: Third Party Dependencies -->
 
+        <!-- Used for annotations within project -->
+        <!-- Version: I can't tell... -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!-- END: Third Party Dependencies -->
 
         <!-- START: Testing Dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- END: Testing Dependencies -->
     </dependencies>
@@ -83,27 +130,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>dependency-convergence</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <DependencyConvergence/>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <!-- Gives the actuator/info API build information -->
             <!-- Version: Spring Parent -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -111,6 +151,28 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- This allows all unit tests to complete, finish tear down, and then report failures -->
+            <!-- Version: Explicit -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test*.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <!-- This allows all integration tests i.e. features to complete, finish tear down, and then report failures -->
+            <!-- Version: Explicit -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Features.java</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

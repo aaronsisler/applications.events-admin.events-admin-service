@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - main
+      - release/conversion-spring
 
 jobs:
   Pull-Request:
@@ -19,4 +20,4 @@ jobs:
           cache: "maven"
 
       - name: Build Application
-        run: mvn clean package
+        run: mvn clean install
