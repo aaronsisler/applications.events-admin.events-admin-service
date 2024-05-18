@@ -1,4 +1,4 @@
-package com.ebsolutions.eventsadminservice.system;
+package com.ebsolutions.eventsadminservice.tooling;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -35,8 +35,8 @@ public class InfoSteps {
     public void theInfoEndpointRepliesWithTheCorrectInformation() throws Exception {
         performedActions
                 .andExpect(jsonPath("$.build.group", is("com.ebsolutions.eventsadminservice")))
-                .andExpect(jsonPath("$.build.name", is("events-admin-service")))
                 .andExpect(jsonPath("$.build.artifact", is("events-admin-service")))
+                .andExpect(jsonPath("$.build.name", is("Events Admin Service")))
                 .andExpect(jsonPath("$.build.version", notNullValue()))
                 .andExpect(jsonPath("$.build.time", notNullValue()));
     }

@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>events-admin-service</artifactId>
+    <name>Events Admin Service</name>
     <packaging>${packaging}</packaging>
 
     <properties>
@@ -29,16 +30,16 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.cucumber</groupId>
-                <artifactId>cucumber-bom</artifactId>
-                <version>${version.io.cucumber.cucumber-bom}</version>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${version.org.junit.junit-bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
-                <version>${version.org.junit.junit-bom}</version>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${version.io.cucumber.cucumber-bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -151,7 +152,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- This allows all tests to complete, finish tear down, and then report failures -->
+            <!-- This allows all unit tests to complete, finish tear down, and then report failures -->
             <!-- Version: Explicit -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -162,13 +163,12 @@
                     </includes>
                 </configuration>
             </plugin>
-            <!-- Not sure yet -->
+            <!-- This allows all integration tests i.e. features to complete, finish tear down, and then report failures -->
             <!-- Version: Explicit -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
-                    <!--                    <testFailureIgnore>true</testFailureIgnore>-->
                     <includes>
                         <include>**/*Features.java</include>
                     </includes>
