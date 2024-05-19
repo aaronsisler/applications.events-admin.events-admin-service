@@ -29,6 +29,7 @@
         <version.plugins.maven-enforcer-plugin>3.4.1</version.plugins.maven-enforcer-plugin>
         <version.plugins.maven-surefire-plugin>3.2.5</version.plugins.maven-surefire-plugin>
         <version.plugins.maven-failsafe-plugin>3.2.5</version.plugins.maven-failsafe-plugin>
+        <version.plugins.openapi-generator-maven-plugin>7.5.0</version.plugins.openapi-generator-maven-plugin>
 
         <!-- Versions: Dependencies -->
     </properties>
@@ -39,6 +40,60 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>4.10.0</version>
+        </dependency>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.16</version>
+        </dependency>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>io.gsonfire</groupId>
+            <artifactId>gson-fire</artifactId>
+            <version>1.8.5</version>
+        </dependency>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>org.threeten</groupId>
+            <artifactId>threetenbp</artifactId>
+            <version>1.6.8</version>
+        </dependency>
+        <!-- openapi-generator-maven-plugin -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>jsr250-api</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -66,19 +121,66 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- This allows all tests to complete, finish tear down, and then report failures -->
+                <!-- This allows all unit tests to complete, finish tear down, and then report failures -->
                 <!-- Version: Explicit -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${version.plugins.maven-surefire-plugin}</version>
                 </plugin>
-                <!-- Not sure yet -->
+                <!-- This allows all integration tests i.e. features to complete, finish tear down, and then report failures -->
                 <!-- Version: Explicit -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${version.plugins.maven-failsafe-plugin}</version>
+                </plugin>
+
+                <!-- Generates Java classes from OpenAPI contracts -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>${version.plugins.openapi-generator-maven-plugin}</version>
+                    <configuration>
+                        <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
+                        <generatorName>java</generatorName>
+                        <skipValidateSpec>true</skipValidateSpec>
+                        <generateApiTests>false</generateApiTests>
+                        <generateModelTests>false</generateModelTests>
+                        <generateApis>false</generateApis>
+                        <generateSupportingFiles>true</generateSupportingFiles>
+                        <generateApiDocumentation>false</generateApiDocumentation>
+                        <configOptions>
+                            <additionalModelTypeAnnotations>
+                                @lombok.AllArgsConstructor
+                                @lombok.Data
+                                @lombok.experimental.SuperBuilder
+                                <!--                                @io.micronaut.serde.annotation.Serdeable-->
+                            </additionalModelTypeAnnotations>
+                        </configOptions>
+                        <!-- typeMappings links the contract (left side) to the right side -->
+                        <typeMappings>
+                            <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
+                            <typeMapping>DateTime=LocalDateTime</typeMapping>
+                            <!-- Kebab format is the format for custom mappings  -->
+                            <typeMapping>local-date=LocalDate</typeMapping>
+                            <typeMapping>local-time=LocalTime</typeMapping>
+                            <typeMapping>day-of-week=DayOfWeek</typeMapping>
+                        </typeMappings>
+                        <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
+                        <importMappings>
+                            <!-- Left side in importMappings maps to the right side in typeMappings -->
+                            <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
+                            <importMapping>LocalDate=java.time.LocalDate</importMapping>
+                            <importMapping>LocalTime=java.time.LocalTime</importMapping>
+                            <importMapping>DayOfWeek=java.time.DayOfWeek</importMapping>
+                        </importMappings>
+
+                    </configuration>
+                    <dependencies>
+
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>

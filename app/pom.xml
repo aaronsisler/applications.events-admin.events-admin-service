@@ -17,8 +17,6 @@
         <exec.mainClass>com.ebsolutions.eventsadminservice.EventsAdminServiceApplication</exec.mainClass>
 
         <!-- Versions: Plugins-->
-        <!--        <version.plugin.maven-failsafe-plugin>3.2.5</version.plugin.maven-failsafe-plugin>-->
-        <!--        <version.plugin.maven-failsafe-plugin>2.21.0</version.plugin.maven-failsafe-plugin>-->
 
         <!-- Versions: Dependencies -->
 
@@ -149,6 +147,31 @@
                         <goals>
                             <goal>build-info</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Generates Java classes from OpenAPI contracts -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>models-shared</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>models-client</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/client.yaml</inputSpec>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
