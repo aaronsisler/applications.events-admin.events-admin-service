@@ -149,14 +149,18 @@
                         <generateApiTests>false</generateApiTests>
                         <generateModelTests>false</generateModelTests>
                         <generateApis>false</generateApis>
-                        <generateSupportingFiles>true</generateSupportingFiles>
                         <generateApiDocumentation>false</generateApiDocumentation>
+                        <generateModelDocumentation>false</generateModelDocumentation>
+                        <generateSupportingFiles>true</generateSupportingFiles>
+                        <supportingFilesToGenerate>
+                            JSON.java
+                        </supportingFilesToGenerate>
                         <configOptions>
+                            <serializableModel>true</serializableModel>
                             <additionalModelTypeAnnotations>
                                 @lombok.AllArgsConstructor
                                 @lombok.Data
                                 @lombok.experimental.SuperBuilder
-                                <!--                                @io.micronaut.serde.annotation.Serdeable-->
                             </additionalModelTypeAnnotations>
                         </configOptions>
                         <!-- typeMappings links the contract (left side) to the right side -->
