@@ -19,6 +19,8 @@
         <!-- Versions: Plugins-->
 
         <!-- Versions: Dependencies -->
+        <version.software.amazon.awssdk.bom>2.25.55</version.software.amazon.awssdk.bom>
+        <verion.org.apache.commons.commons-lang3>3.14.0</verion.org.apache.commons.commons-lang3>
 
         <!-- Versions: Testing -->
         <version.io.cucumber.cucumber-bom>7.17.0</version.io.cucumber.cucumber-bom>
@@ -27,6 +29,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- AWS SDK library needed for Database and File Storage access -->
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${version.software.amazon.awssdk.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
@@ -85,6 +95,13 @@
 
         <!-- START: AWS Dependencies -->
 
+        <!-- AWS DynamoDB config and methods -->
+        <!-- Version: BOM -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>dynamodb-enhanced</artifactId>
+        </dependency>
+
         <!-- END: AWS Dependencies -->
 
         <!-- START: Third Party Dependencies -->
@@ -94,6 +111,15 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+
+        <!-- StringUtils util -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${verion.org.apache.commons.commons-lang3}</version>
         </dependency>
 
         <!-- END: Third Party Dependencies -->
