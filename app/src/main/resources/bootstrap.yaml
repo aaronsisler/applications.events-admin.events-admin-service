@@ -1,7 +1,0 @@
-spring:
-  config:
-    activate:
-      on-profile: local
-database:
-  table_name: SERVICES_EVENTS_ADMIN_SERVICE_LOCAL
-  endpoint: localhost:8000

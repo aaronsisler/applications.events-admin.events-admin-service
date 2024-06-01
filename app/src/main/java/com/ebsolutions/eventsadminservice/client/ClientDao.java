@@ -24,11 +24,13 @@ import java.util.List;
 @Repository
 public class ClientDao {
     private final DynamoDbTable<ClientDto> clientTable;
-    private final DynamoDbEnhancedClient enhancedClient;
+    private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
-    public ClientDao(DynamoDbEnhancedClient enhancedClient, DatabaseConfig databaseConfig) {
-        this.clientTable = enhancedClient.table(databaseConfig.getDatabaseTable(), TableSchema.fromBean(ClientDto.class));
-        this.enhancedClient = enhancedClient;
+    public ClientDao(DynamoDbEnhancedClient dynamoDbEnhancedClient, DatabaseConfig databaseConfig) {
+        System.out.println("Table Name");
+        System.out.println(databaseConfig.getTableName());
+        this.clientTable = dynamoDbEnhancedClient.table(databaseConfig.getTableName(), TableSchema.fromBean(ClientDto.class));
+        this.dynamoDbEnhancedClient = dynamoDbEnhancedClient;
     }
 
     public List<Client> create(List<Client> clients) {
@@ -55,7 +57,7 @@ public class ClientDao {
 
             WriteBatch writeBatch = writeBatchBuilder.build();
 
-            BatchWriteResult batchWriteResult = enhancedClient.batchWriteItem(b -> b.writeBatches(writeBatch));
+            BatchWriteResult batchWriteResult = dynamoDbEnhancedClient.batchWriteItem(b -> b.writeBatches(writeBatch));
 
 
             if (!batchWriteResult.unprocessedPutItemsForTable(clientTable).isEmpty()) {

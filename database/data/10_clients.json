@@ -1,5 +1,5 @@
 {
-  "SERVICES_EVENTS_ADMIN_LOCAL": [
+  "SERVICES_EVENTS_ADMIN_SERVICE_LOCAL": [
     {
       "PutRequest": {
         "Item": {

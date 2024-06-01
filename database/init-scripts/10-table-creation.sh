@@ -4,7 +4,7 @@ aws configure set region "us-east-1"
 
 aws dynamodb create-table \
 --endpoint-url=http://database:8000 \
---table-name SERVICES_EVENTS_ADMIN_LOCAL \
+--table-name SERVICES_EVENTS_ADMIN_SERVICE_LOCAL \
 --attribute-definitions \
   AttributeName=partitionKey,AttributeType=S  \
   AttributeName=sortKey,AttributeType=S \

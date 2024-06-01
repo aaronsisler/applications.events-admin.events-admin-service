@@ -17,18 +17,16 @@ import java.net.URI;
 @Slf4j
 @Configuration
 public class DatabaseConfig {
-    private final String awsAccessKeyId = "accessKeyId";
-    private final String awsSecretAccessKey = "secretAccessKey";
-
     @Getter
-    @Value("${database.table_name:`Database table name not found in environment`}")
-    public String databaseTable;
+    @Value("${database.tableName:`Database table name not found in environment`}")
+    public String tableName;
 
     @Value("${database.endpoint:`Database endpoint not found in environment`}")
     protected String endpoint;
 
     @Bean
-    @Profile("local")
+//    @Profile({"local", "default", "test"})
+    @Profile({"local"})
     public DynamoDbEnhancedClient localClientInstantiation() {
         DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
                 .endpointOverride(URI.create(endpoint))
@@ -38,7 +36,19 @@ public class DatabaseConfig {
         return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
     }
 
+    @Bean
+    public DynamoDbEnhancedClient clientInstantiation() {
+        DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
+                .build();
+        System.out.println("Not local");
+
+        return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
+    }
+
     private StaticCredentialsProvider staticCredentialsProvider() {
+        String awsAccessKeyId = "accessKeyId";
+        String awsSecretAccessKey = "secretAccessKey";
+
         return StaticCredentialsProvider.create(AwsBasicCredentials.create(awsAccessKeyId, awsSecretAccessKey));
     }
 }

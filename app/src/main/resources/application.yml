@@ -1,0 +1,16 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  info:
+    env:
+      enabled: true
+
+spring:
+  config:
+    activate:
+      on-profile: local
+database:
+  tableName: SERVICES_EVENTS_ADMIN_SERVICE_LOCAL
+  endpoint: http://localhost:8000
