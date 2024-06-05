@@ -32,8 +32,10 @@ public class CommonContext {
 
     @Bean
     public DynamoDbTable<Object> dynamoDbTable() {
+        // TODO Fix IDE yelling
         DynamoDbTable<Object> dynamoDbTable = Mockito.mock(DynamoDbTable.class);
         when(dynamoDbTable.tableName()).thenReturn("MOCK_TABLE_NAME");
+        // TODO Fix IDE yelling
         when(dynamoDbTable.tableSchema()).thenReturn(tableSchema());
         return dynamoDbTable;
     }
@@ -42,7 +44,6 @@ public class CommonContext {
     public DynamoDbEnhancedClient dynamoDbEnhancedClient() {
         System.out.println("Test client!");
         DynamoDbEnhancedClient dynamoDbEnhancedClient = Mockito.mock(DynamoDbEnhancedClient.class);
-        when(dynamoDbEnhancedClient.table(any(String.class), any())).thenReturn(dynamoDbTable());
         when(dynamoDbEnhancedClient.table(any(String.class), any())).thenReturn(dynamoDbTable());
 
         return dynamoDbEnhancedClient;
