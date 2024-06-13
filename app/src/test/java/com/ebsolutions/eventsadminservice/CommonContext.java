@@ -24,7 +24,9 @@ public class CommonContext {
     }
 
     @Bean
+    // TODO Fix IDE yelling
     public TableSchema tableSchema() {
+        // TODO Fix IDE yelling
         TableSchema tableSchema = Mockito.mock(TableSchema.class);
         when(tableSchema.tableMetadata()).thenReturn(tableMetadata());
         return tableSchema;

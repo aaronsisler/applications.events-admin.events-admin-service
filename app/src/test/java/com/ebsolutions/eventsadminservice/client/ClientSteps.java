@@ -1,6 +1,5 @@
 package com.ebsolutions.eventsadminservice.client;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.model.Client;
 import com.ebsolutions.eventsadminservice.utils.DateTimeComparisonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.model.BatchWriteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.BatchWriteResult;
 
@@ -35,13 +33,7 @@ public class ClientSteps {
     protected MockMvc mockMvc;
 
     @Autowired
-    protected DynamoDbTable<?> dynamoDbTable;
-
-    @Autowired
     protected DynamoDbEnhancedClient dynamoDbEnhancedClient;
-
-    @Autowired
-    protected DatabaseConfig databaseConfig;
 
     @Autowired
     protected BatchWriteResult batchWriteResult;
