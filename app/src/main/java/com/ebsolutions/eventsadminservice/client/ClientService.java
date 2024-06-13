@@ -16,4 +16,8 @@ public class ClientService {
     public List<Client> create(List<Client> clients) {
         return clientDao.create(clients);
     }
+
+    public List<Client> getAll() {
+        return clientDao.readAll();
+    }
 }

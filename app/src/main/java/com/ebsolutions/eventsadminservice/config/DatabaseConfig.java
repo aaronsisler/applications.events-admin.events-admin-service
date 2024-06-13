@@ -37,6 +37,7 @@ public class DatabaseConfig {
     }
 
     @Bean
+    @Profile("!local")
     public DynamoDbEnhancedClient clientInstantiation() {
         DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
                 .build();

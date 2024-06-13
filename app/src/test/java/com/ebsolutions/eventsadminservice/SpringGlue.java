@@ -1,4 +1,4 @@
-package com.ebsolutions.eventsadminservice.tooling;
+package com.ebsolutions.eventsadminservice;
 
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

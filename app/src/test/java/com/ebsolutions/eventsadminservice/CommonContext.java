@@ -1,4 +1,4 @@
-package com.ebsolutions.eventsadminservice.tooling;
+package com.ebsolutions.eventsadminservice;
 
 import com.ebsolutions.eventsadminservice.client.ClientController;
 import com.ebsolutions.eventsadminservice.client.ClientDao;

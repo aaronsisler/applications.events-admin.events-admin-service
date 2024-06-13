@@ -26,9 +26,9 @@ services:
        done
       '
 
-  file-storage:
-    image: adobe/s3mock:3.3.0
-    environment:
-      - initialBuckets=event-admin-service-file-storage
-    ports:
-      - 9090:9090
+#  file-storage:
+#    image: adobe/s3mock:3.3.0
+#    environment:
+#      - initialBuckets=event-admin-service-file-storage
+#    ports:
+#      - 9090:9090

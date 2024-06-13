@@ -23,7 +23,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.BatchWriteResult;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,7 +55,7 @@ public class ClientSteps {
     public void before() {
         System.out.println("Before All");
         // TODO Fix IDE yelling
-        when(dynamoDbEnhancedClient.batchWriteItem((Consumer<BatchWriteItemEnhancedRequest.Builder>) any())).thenReturn(batchWriteResult);
+        when(dynamoDbEnhancedClient.batchWriteItem(isA(BatchWriteItemEnhancedRequest.class))).thenReturn(batchWriteResult);
         when(batchWriteResult.unprocessedPutItemsForTable(any())).thenReturn(Collections.emptyList());
     }
 
@@ -108,8 +107,12 @@ public class ClientSteps {
 
     @And("the created clients were saved to the database")
     public void theCreatedClientsWereSavedToTheDatabase() {
-        ArgumentCaptor<Consumer<BatchWriteItemEnhancedRequest.Builder>> savedCaptor = ArgumentCaptor.forClass(Consumer.class);
+        ArgumentCaptor<BatchWriteItemEnhancedRequest> savedCaptor = ArgumentCaptor.forClass(BatchWriteItemEnhancedRequest.class);
         verify(dynamoDbEnhancedClient).batchWriteItem(savedCaptor.capture());
-        assertTrue(savedCaptor.getValue().contains("substring I want to find");
+        BatchWriteItemEnhancedRequest arg = savedCaptor.getValue();
+        arg.writeBatches().forEach(writeBatch ->
+                writeBatch.writeRequests().forEach(writeRequest ->
+                        System.out.println(writeRequest.putRequest().toString()))
+        );
     }
 }
