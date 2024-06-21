@@ -2,6 +2,7 @@ package com.ebsolutions.eventsadminservice;
 
 import com.ebsolutions.eventsadminservice.client.ClientController;
 import com.ebsolutions.eventsadminservice.client.ClientDao;
+import com.ebsolutions.eventsadminservice.client.ClientDto;
 import com.ebsolutions.eventsadminservice.client.ClientService;
 import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import org.mockito.Mockito;
@@ -9,7 +10,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.TableMetadata;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.BatchWriteResult;
 
@@ -19,34 +19,24 @@ import static org.mockito.Mockito.when;
 @TestConfiguration
 public class CommonContext {
     @Bean
-    public TableMetadata tableMetadata() {
-        return Mockito.mock(TableMetadata.class);
+    public TableSchema<ClientDto> tableSchema() {
+        return TableSchema.fromBean(ClientDto.class);
     }
 
     @Bean
-    // TODO Fix IDE yelling
-    public TableSchema tableSchema() {
+    public DynamoDbTable<ClientDto> dynamoDbTable() {
         // TODO Fix IDE yelling
-        TableSchema tableSchema = Mockito.mock(TableSchema.class);
-        when(tableSchema.tableMetadata()).thenReturn(tableMetadata());
-        return tableSchema;
-    }
-
-    @Bean
-    public DynamoDbTable<Object> dynamoDbTable() {
-        // TODO Fix IDE yelling
-        DynamoDbTable<Object> dynamoDbTable = Mockito.mock(DynamoDbTable.class);
+        DynamoDbTable<ClientDto> dynamoDbTable = Mockito.mock(DynamoDbTable.class);
         when(dynamoDbTable.tableName()).thenReturn("MOCK_TABLE_NAME");
-        // TODO Fix IDE yelling
         when(dynamoDbTable.tableSchema()).thenReturn(tableSchema());
         return dynamoDbTable;
     }
 
     @Bean
     public DynamoDbEnhancedClient dynamoDbEnhancedClient() {
-        System.out.println("Test client!");
         DynamoDbEnhancedClient dynamoDbEnhancedClient = Mockito.mock(DynamoDbEnhancedClient.class);
-        when(dynamoDbEnhancedClient.table(any(String.class), any())).thenReturn(dynamoDbTable());
+        // TODO Fix IDE yelling
+        when(dynamoDbEnhancedClient.table(any(String.class), any(TableSchema.class))).thenReturn(dynamoDbTable());
 
         return dynamoDbEnhancedClient;
     }
@@ -58,7 +48,6 @@ public class CommonContext {
 
     @Bean
     public DatabaseConfig databaseConfig() {
-        System.out.println("Test DatabaseConfig!");
         DatabaseConfig databaseConfig = Mockito.mock(DatabaseConfig.class);
         when(databaseConfig.getTableName()).thenReturn("TEST_DATABASE_TABLE_NAME");
         return databaseConfig;

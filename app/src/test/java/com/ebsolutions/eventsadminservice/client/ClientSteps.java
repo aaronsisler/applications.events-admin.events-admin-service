@@ -1,6 +1,7 @@
 package com.ebsolutions.eventsadminservice.client;
 
 import com.ebsolutions.eventsadminservice.model.Client;
+import com.ebsolutions.eventsadminservice.shared.SortKeyType;
 import com.ebsolutions.eventsadminservice.utils.DateTimeComparisonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -15,8 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.model.BatchWriteItemEnhancedRequest;
 import software.amazon.awssdk.enhanced.dynamodb.model.BatchWriteResult;
+import software.amazon.awssdk.services.dynamodb.model.WriteRequest;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -36,17 +39,20 @@ public class ClientSteps {
     protected DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
     @Autowired
+    protected DynamoDbTable<ClientDto> clientTable;
+
+    @Autowired
     protected BatchWriteResult batchWriteResult;
 
     protected ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
     private Client clientOne;
     private Client clientTwo;
     private ResultActions performedActions;
+    private LocalDateTime now;
+    private List<Client> clients;
 
     @Before
     public void before() {
-        System.out.println("Before All");
-        // TODO Fix IDE yelling
         when(dynamoDbEnhancedClient.batchWriteItem(isA(BatchWriteItemEnhancedRequest.class))).thenReturn(batchWriteResult);
         when(batchWriteResult.unprocessedPutItemsForTable(any())).thenReturn(Collections.emptyList());
     }
@@ -69,6 +75,8 @@ public class ClientSteps {
     public void theClientCreationEndpointIsCalled() throws Exception {
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(List.of(clientOne, clientTwo));
+        // Setting the test's time of now right before endpoint invocation
+        now = LocalDateTime.now();
         performedActions = mockMvc.perform(
                 post("/clients")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -84,10 +92,9 @@ public class ClientSteps {
     public void theEndpointRepliesWithTheCreatedClients() throws Exception {
         MvcResult mvcResult = performedActions.andReturn();
         String content = mvcResult.getResponse().getContentAsString();
-        List<Client> clients = mapper.readerForListOf(Client.class).readValue(content);
+        this.clients = mapper.readerForListOf(Client.class).readValue(content);
         assertEquals(2, clients.size());
 
-        LocalDateTime now = LocalDateTime.now();
         Client firstClientResponse = clients.get(0);
         assertEquals(clientOne.getName(), firstClientResponse.getName());
         assertTrue(DateTimeComparisonUtil.areDateTimesEqual(now, firstClientResponse.getCreatedOn()));
@@ -102,9 +109,17 @@ public class ClientSteps {
         ArgumentCaptor<BatchWriteItemEnhancedRequest> savedCaptor = ArgumentCaptor.forClass(BatchWriteItemEnhancedRequest.class);
         verify(dynamoDbEnhancedClient).batchWriteItem(savedCaptor.capture());
         BatchWriteItemEnhancedRequest arg = savedCaptor.getValue();
-        arg.writeBatches().forEach(writeBatch ->
-                writeBatch.writeRequests().forEach(writeRequest ->
-                        System.out.println(writeRequest.putRequest().toString()))
+        List<WriteRequest> writeRequests = arg.writeBatches().stream().flatMap(writeBatch -> writeBatch.writeRequests().stream()).toList();
+        assertEquals(2, writeRequests.size());
+
+        writeRequests.forEach(writeRequest ->
+                System.out.println(writeRequest.putRequest().item())
         );
+
+        assertEquals(SortKeyType.CLIENT.name(), writeRequests.get(0).putRequest().item().get("partitionKey").s());
+        assertEquals(SortKeyType.CLIENT + this.clients.get(0).getClientId(), writeRequests.get(0).putRequest().item().get("sortKey").s());
+        assertEquals(this.clients.get(0).getName(), writeRequests.get(0).putRequest().item().get("name").s());
+        assertTrue(DateTimeComparisonUtil.areDateTimesEqual(this.clients.get(0).getCreatedOn(), LocalDateTime.parse(writeRequests.get(0).putRequest().item().get("createdOn").s())));
+        assertTrue(DateTimeComparisonUtil.areDateTimesEqual(this.clients.get(0).getLastUpdatedOn(), LocalDateTime.parse(writeRequests.get(0).putRequest().item().get("lastUpdatedOn").s())));
     }
 }

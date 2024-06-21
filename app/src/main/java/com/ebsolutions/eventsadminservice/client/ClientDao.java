@@ -31,8 +31,6 @@ public class ClientDao {
     private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
     public ClientDao(DynamoDbEnhancedClient dynamoDbEnhancedClient, DatabaseConfig databaseConfig) {
-        System.out.println("Table Name");
-        System.out.println(databaseConfig.getTableName());
         this.clientTable = dynamoDbEnhancedClient.table(databaseConfig.getTableName(), TableSchema.fromBean(ClientDto.class));
         this.dynamoDbEnhancedClient = dynamoDbEnhancedClient;
     }
@@ -56,13 +54,8 @@ public class ClientDao {
 
             WriteBatch.Builder<ClientDto> writeBatchBuilder = WriteBatch.builder(ClientDto.class)
                     .mappedTableResource(clientTable);
-//            clientDtos.forEach(writeBatchBuilder::addPutItem);
 
-            clientDtos.forEach(clientDto -> {
-                System.out.println("Here for DTO loading");
-                System.out.println(clientDto.getName());
-                writeBatchBuilder.addPutItem(clientDto);
-            });
+            clientDtos.forEach(writeBatchBuilder::addPutItem);
 
             WriteBatch writeBatch = writeBatchBuilder.build();
 
@@ -78,19 +71,14 @@ public class ClientDao {
                         log.info(key.toString()));
             }
 
-            List<Client> savedClients = new ArrayList<>();
-
-            clientDtos.forEach(clientDto ->
-                    savedClients.add(
-                            Client.builder()
-                                    .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
-                                    .name(clientDto.getName())
-                                    .createdOn(clientDto.getCreatedOn())
-                                    .lastUpdatedOn(clientDto.getLastUpdatedOn())
-                                    .build()
-                    ));
-
-            return savedClients;
+            return clientDtos.stream().map(clientDto ->
+                    Client.builder()
+                            .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
+                            .name(clientDto.getName())
+                            .createdOn(clientDto.getCreatedOn())
+                            .lastUpdatedOn(clientDto.getLastUpdatedOn())
+                            .build()
+            ).collect(Collectors.toList());
 
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
