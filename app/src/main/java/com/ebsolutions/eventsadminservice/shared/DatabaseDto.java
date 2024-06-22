@@ -33,11 +33,4 @@ public abstract class DatabaseDto implements Serializable {
     private LocalDateTime createdOn;
 
     private LocalDateTime lastUpdatedOn;
-
-    /**
-     * Date that record is no longer to remain in database
-     * Must be in epoch seconds
-     * i.e. should not be considered for items past expiryTime
-     */
-    private long expiryTime;
 }

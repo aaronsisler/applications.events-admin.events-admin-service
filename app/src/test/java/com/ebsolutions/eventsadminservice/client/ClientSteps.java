@@ -1,7 +1,7 @@
 package com.ebsolutions.eventsadminservice.client;
 
 import com.ebsolutions.eventsadminservice.model.Client;
-import com.ebsolutions.eventsadminservice.shared.SortKeyType;
+import com.ebsolutions.eventsadminservice.testing.AssertionUtil;
 import com.ebsolutions.eventsadminservice.utils.DateTimeComparisonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -112,14 +112,8 @@ public class ClientSteps {
         List<WriteRequest> writeRequests = arg.writeBatches().stream().flatMap(writeBatch -> writeBatch.writeRequests().stream()).toList();
         assertEquals(2, writeRequests.size());
 
-        writeRequests.forEach(writeRequest ->
-                System.out.println(writeRequest.putRequest().item())
-        );
+        AssertionUtil.assertWrittenClient(this.clients.get(0), writeRequests.get(0));
+        AssertionUtil.assertWrittenClient(this.clients.get(1), writeRequests.get(1));
 
-        assertEquals(SortKeyType.CLIENT.name(), writeRequests.get(0).putRequest().item().get("partitionKey").s());
-        assertEquals(SortKeyType.CLIENT + this.clients.get(0).getClientId(), writeRequests.get(0).putRequest().item().get("sortKey").s());
-        assertEquals(this.clients.get(0).getName(), writeRequests.get(0).putRequest().item().get("name").s());
-        assertTrue(DateTimeComparisonUtil.areDateTimesEqual(this.clients.get(0).getCreatedOn(), LocalDateTime.parse(writeRequests.get(0).putRequest().item().get("createdOn").s())));
-        assertTrue(DateTimeComparisonUtil.areDateTimesEqual(this.clients.get(0).getLastUpdatedOn(), LocalDateTime.parse(writeRequests.get(0).putRequest().item().get("lastUpdatedOn").s())));
     }
 }

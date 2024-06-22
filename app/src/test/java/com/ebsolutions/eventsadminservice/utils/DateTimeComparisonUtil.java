@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.utils;
 
-import com.ebsolutions.eventsadminservice.TestConfigConstants;
+import com.ebsolutions.eventsadminservice.testing.TestConfigConstants;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
