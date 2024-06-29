@@ -1,6 +1,6 @@
 Feature: Application provides build information
 
-  @Disabled
+#  @Disabled
   Scenario: Receive build information when requested
     Given the application is up
     When the info endpoint is called
