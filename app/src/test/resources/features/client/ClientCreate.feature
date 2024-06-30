@@ -1,4 +1,4 @@
-Feature: Clients are able to be created, queried, updated, and deleted
+Feature: Clients are able to be created
 
   Scenario: Create multiple valid clients
     Given the application is up
