@@ -4,18 +4,6 @@ info:
   version: "1.0"
 paths:
   /clients:
-    get:
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Client"
-        '5XX':
-          description: Server error
     post:
       requestBody:
         required: true
@@ -34,25 +22,6 @@ paths:
                 $ref: "#/components/schemas/Client"
         '5XX':
           description: Server Error
-  /clients/{clientId}:
-    parameters:
-      - $ref: "#/components/parameters/ClientId"
-    get:
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Client"
-        '5XX':
-          description: Server Error
-    delete:
-      responses:
-        204:
-          description: The resource was deleted successfully.
-        '5XX':
-          description: Server Error
 
 components:
   schemas:
@@ -62,12 +31,3 @@ components:
       properties:
         clientId:
           type: string
-  parameters:
-    ClientId:
-      in: path
-      name: clientId
-      required: true
-      schema:
-        type: string
-
-

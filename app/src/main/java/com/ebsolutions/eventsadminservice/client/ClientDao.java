@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.keyEqualTo;
-
 @Slf4j
 @Repository
 public class ClientDao {
@@ -80,34 +78,6 @@ public class ClientDao {
                             .build()
             ).collect(Collectors.toList());
 
-        } catch (Exception e) {
-            log.error("ERROR::{}", this.getClass().getName(), e);
-            throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
-        } finally {
-            metricsStopWatch.logElapsedTime(MessageFormat.format("{0}::{1}", this.getClass().getName(), "create"));
-        }
-    }
-
-    public List<Client> readAll() {
-        MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
-        try {
-            List<ClientDto> clientDtos = clientTable
-                    .query(r -> r.queryConditional(
-                            keyEqualTo(s -> s.partitionValue(SortKeyType.CLIENT.name()).build()))
-                    )
-                    .items()
-                    .stream()
-                    .toList();
-
-            return clientDtos.stream()
-                    .map(clientDto ->
-                            Client.builder()
-                                    .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
-                                    .name(clientDto.getName())
-                                    .createdOn(clientDto.getCreatedOn())
-                                    .lastUpdatedOn(clientDto.getLastUpdatedOn())
-                                    .build()
-                    ).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("ERROR::{}", this.getClass().getName(), e);
             throw new DataProcessingException(MessageFormat.format("Error in {0}", this.getClass().getName()), e);
