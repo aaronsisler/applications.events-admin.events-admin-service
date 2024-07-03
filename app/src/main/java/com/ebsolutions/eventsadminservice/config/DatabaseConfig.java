@@ -25,23 +25,12 @@ public class DatabaseConfig {
     protected String endpoint;
 
     @Bean
-//    @Profile({"local", "default", "test"})
-    @Profile({"local"})
+    @Profile({"local", "default"})
     public DynamoDbEnhancedClient localClientInstantiation() {
         DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
                 .endpointOverride(URI.create(endpoint))
                 .credentialsProvider(staticCredentialsProvider())
                 .build();
-
-        return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
-    }
-
-    @Bean
-    @Profile("!local")
-    public DynamoDbEnhancedClient clientInstantiation() {
-        DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
-                .build();
-        System.out.println("Not local");
 
         return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
     }
