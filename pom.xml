@@ -11,7 +11,7 @@
 
     <groupId>com.ebsolutions.eventsadminservice</groupId>
     <artifactId>events-admin-service-parent</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -29,6 +29,7 @@
         <version.plugins.maven-enforcer-plugin>3.4.1</version.plugins.maven-enforcer-plugin>
         <version.plugins.maven-surefire-plugin>3.2.5</version.plugins.maven-surefire-plugin>
         <version.plugins.maven-failsafe-plugin>3.2.5</version.plugins.maven-failsafe-plugin>
+        <version.plugins.openapi-generator-maven-plugin>7.5.0</version.plugins.openapi-generator-maven-plugin>
 
         <!-- Versions: Dependencies -->
     </properties>
@@ -37,9 +38,6 @@
         <dependencies>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-    </dependencies>
 
     <build>
         <pluginManagement>
@@ -66,19 +64,69 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- This allows all tests to complete, finish tear down, and then report failures -->
+                <!-- This allows all unit tests to complete, finish tear down, and then report failures -->
                 <!-- Version: Explicit -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${version.plugins.maven-surefire-plugin}</version>
                 </plugin>
-                <!-- Not sure yet -->
+                <!-- This allows all integration tests i.e. features to complete, finish tear down, and then report failures -->
                 <!-- Version: Explicit -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${version.plugins.maven-failsafe-plugin}</version>
+                </plugin>
+
+                <!-- Generates Java classes from OpenAPI contracts -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>${version.plugins.openapi-generator-maven-plugin}</version>
+                    <configuration>
+                        <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
+                        <generatorName>java</generatorName>
+                        <skipValidateSpec>true</skipValidateSpec>
+                        <generateApiTests>false</generateApiTests>
+                        <generateModelTests>false</generateModelTests>
+                        <generateApis>false</generateApis>
+                        <generateApiDocumentation>false</generateApiDocumentation>
+                        <generateModelDocumentation>false</generateModelDocumentation>
+                        <generateSupportingFiles>true</generateSupportingFiles>
+                        <supportingFilesToGenerate>
+                            JSON.java
+                        </supportingFilesToGenerate>
+                        <configOptions>
+                            <serializableModel>true</serializableModel>
+                            <library>webclient</library>
+                            <serializationLibrary>jackson</serializationLibrary>
+                            <useJakartaEe>true</useJakartaEe>
+                            <additionalModelTypeAnnotations>
+                                @lombok.AllArgsConstructor
+                                @lombok.Data
+                                @lombok.experimental.SuperBuilder
+                            </additionalModelTypeAnnotations>
+                        </configOptions>
+                        <!-- typeMappings links the contract (left side) to the right side -->
+                        <typeMappings>
+                            <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
+                            <typeMapping>DateTime=LocalDateTime</typeMapping>
+                            <!-- Kebab format is the format for custom mappings  -->
+                            <typeMapping>local-date=LocalDate</typeMapping>
+                            <typeMapping>local-time=LocalTime</typeMapping>
+                            <typeMapping>day-of-week=DayOfWeek</typeMapping>
+                        </typeMappings>
+                        <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
+                        <importMappings>
+                            <!-- Left side in importMappings maps to the right side in typeMappings -->
+                            <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
+                            <importMapping>LocalDate=java.time.LocalDate</importMapping>
+                            <importMapping>LocalTime=java.time.LocalTime</importMapping>
+                            <importMapping>DayOfWeek=java.time.DayOfWeek</importMapping>
+                        </importMappings>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

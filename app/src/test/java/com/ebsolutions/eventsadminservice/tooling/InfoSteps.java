@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,8 +21,7 @@ public class InfoSteps {
 
     @When("the info endpoint is called")
     public void theInfoEndpointIsCalled() throws Exception {
-        performedActions = mvc.perform(get("/actuator/info"))
-                .andDo(print());
+        performedActions = mvc.perform(get("/actuator/info"));
     }
 
     @Then("the info endpoint replies with the correct status")

@@ -1,10 +1,4 @@
 services:
-  file-storage:
-    image: adobe/s3mock:3.3.0
-    environment:
-      - initialBuckets=event-admin-service-file-storage
-    ports:
-      - 9090:9090
   database:
     image: amazon/dynamodb-local:latest
     container_name: database
@@ -14,6 +8,7 @@ services:
     volumes:
       - "./docker/dynamodb:/home/dynamodblocal/data"
     working_dir: /home/dynamodblocal
+
   populate-data:
     image: amazon/aws-cli
     depends_on:
@@ -30,3 +25,10 @@ services:
          sh $$script_name
        done
       '
+
+#  file-storage:
+#    image: adobe/s3mock:3.3.0
+#    environment:
+#      - initialBuckets=event-admin-service-file-storage
+#    ports:
+#      - 9090:9090
