@@ -6,7 +6,7 @@
   <summary>This is what is needed to close out a feature branch and created/merge a PR.</summary>
 
 - Contract created/updated
-- Dependencies added to pom(s) are commented with what their usage is for
+- Dependencies added to pom(s) are commented with what their usage is
 - Layers are created/updated and follows naming conventions:
     - Controller
     - Service
