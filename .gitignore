@@ -13,3 +13,4 @@ target/
 
 # Docker Files
 docker/
+shared-local-instance.db
