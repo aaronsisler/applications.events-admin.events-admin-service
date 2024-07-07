@@ -36,6 +36,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>0.2.6</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -87,7 +92,8 @@
                     <version>${version.plugins.openapi-generator-maven-plugin}</version>
                     <configuration>
                         <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
-                        <generatorName>java</generatorName>
+                        <generatorName>spring</generatorName>
+                        <!--                        <generatorName>java</generatorName>-->
                         <skipValidateSpec>true</skipValidateSpec>
                         <generateApiTests>false</generateApiTests>
                         <generateModelTests>false</generateModelTests>
@@ -100,8 +106,8 @@
                         </supportingFilesToGenerate>
                         <configOptions>
                             <serializableModel>true</serializableModel>
-                            <library>webclient</library>
-                            <serializationLibrary>jackson</serializationLibrary>
+                            <!--                            <library>webclient</library>-->
+                            <!--                            <serializationLibrary>jackson</serializationLibrary>-->
                             <useJakartaEe>true</useJakartaEe>
                             <additionalModelTypeAnnotations>
                                 @lombok.AllArgsConstructor
