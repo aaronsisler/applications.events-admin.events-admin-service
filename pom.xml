@@ -32,6 +32,7 @@
         <version.plugins.openapi-generator-maven-plugin>7.5.0</version.plugins.openapi-generator-maven-plugin>
 
         <!-- Versions: Dependencies -->
+
     </properties>
 
     <dependencyManagement>
@@ -40,6 +41,11 @@
                 <groupId>org.openapitools</groupId>
                 <artifactId>jackson-databind-nullable</artifactId>
                 <version>0.2.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>2.6.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -93,24 +99,20 @@
                     <configuration>
                         <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
                         <generatorName>spring</generatorName>
-                        <!--                        <generatorName>java</generatorName>-->
-                        <skipValidateSpec>true</skipValidateSpec>
+                        <generateApis>false</generateApis>
                         <generateApiTests>false</generateApiTests>
                         <generateModelTests>false</generateModelTests>
-                        <generateApis>false</generateApis>
+                        <generateSupportingFiles>true</generateSupportingFiles>
                         <generateApiDocumentation>false</generateApiDocumentation>
                         <generateModelDocumentation>false</generateModelDocumentation>
-                        <generateSupportingFiles>true</generateSupportingFiles>
-                        <supportingFilesToGenerate>
-                            JSON.java
-                        </supportingFilesToGenerate>
                         <configOptions>
+                            <!--                            <useBeanValidation>true</useBeanValidation>-->
                             <serializableModel>true</serializableModel>
-                            <!--                            <library>webclient</library>-->
-                            <!--                            <serializationLibrary>jackson</serializationLibrary>-->
-                            <useJakartaEe>true</useJakartaEe>
+                            <library>spring-boot</library>
+                            <useSpringBoot3>true</useSpringBoot3>
+                            <useSwaggerUI>true</useSwaggerUI>
                             <additionalModelTypeAnnotations>
-                                @lombok.AllArgsConstructor
+                                <!--                                @lombok.AllArgsConstructor-->
                                 @lombok.Data
                                 @lombok.experimental.SuperBuilder
                             </additionalModelTypeAnnotations>

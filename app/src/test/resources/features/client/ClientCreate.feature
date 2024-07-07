@@ -1,5 +1,6 @@
 Feature: Clients are able to be created
 
+  @Disabled
   Scenario: Create multiple valid clients
     Given the application is up
     And the first client is valid

@@ -14,13 +14,13 @@
 
     <properties>
         <packaging>jar</packaging>
-        <exec.mainClass>com.ebsolutions.eventsadminservice.EventsAdminServiceApplication</exec.mainClass>
+        <start-class>com.ebsolutions.eventsadminservice.EventsAdminServiceApplication</start-class>
 
         <!-- Versions: Plugins-->
 
         <!-- Versions: Dependencies -->
         <version.software.amazon.awssdk.bom>2.25.55</version.software.amazon.awssdk.bom>
-        <verion.org.apache.commons.commons-lang3>3.14.0</verion.org.apache.commons.commons-lang3>
+        <verion.org.apache.commons.commons-lang3>3.13.0</verion.org.apache.commons.commons-lang3>
 
         <!-- Versions: Testing -->
         <version.io.cucumber.cucumber-bom>7.17.0</version.io.cucumber.cucumber-bom>
@@ -153,6 +153,16 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
         </dependency>
 
         <!-- END: Testing Dependencies -->
