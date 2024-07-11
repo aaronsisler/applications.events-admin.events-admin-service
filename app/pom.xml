@@ -19,8 +19,15 @@
         <!-- Versions: Plugins-->
 
         <!-- Versions: Dependencies -->
+        <version.org.projectlombok.lombok>1.18.34</version.org.projectlombok.lombok>
         <version.software.amazon.awssdk.bom>2.25.55</version.software.amazon.awssdk.bom>
-        <verion.org.apache.commons.commons-lang3>3.13.0</verion.org.apache.commons.commons-lang3>
+        <version.org.apache.commons.commons-lang3>3.13.0</version.org.apache.commons.commons-lang3>
+        <version.org.openapitools.jackson-databind-nullable>
+            0.2.6
+        </version.org.openapitools.jackson-databind-nullable>
+        <version.org.springdoc.springdoc-openapi-starter-webmvc-ui>
+            2.6.0
+        </version.org.springdoc.springdoc-openapi-starter-webmvc-ui>
 
         <!-- Versions: Testing -->
         <version.io.cucumber.cucumber-bom>7.17.0</version.io.cucumber.cucumber-bom>
@@ -30,6 +37,7 @@
     <dependencyManagement>
         <dependencies>
             <!-- AWS SDK library needed for Database and File Storage access -->
+            <!-- Version: Explicit -->
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
@@ -37,6 +45,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- Java testing framework -->
+            <!-- Version: Explicit -->
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
@@ -44,6 +54,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- BDD testing framework -->
+            <!-- Version: Explicit -->
             <dependency>
                 <groupId>io.cucumber</groupId>
                 <artifactId>cucumber-bom</artifactId>
@@ -57,7 +69,7 @@
     <dependencies>
         <!-- START: Spring Dependencies -->
 
-        <!-- TBD -->
+        <!-- Contains Spring Boot Starter and Tomcat web server -->
         <!-- Version: Spring Parent -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -77,14 +89,14 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- TBD -->
+        <!-- Allows for Log4j2 as the logging framework -->
         <!-- Version: Spring Parent -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
-        <!-- Used for the @Valid annotations -->
+        <!-- Used for validation annotations -->
         <!-- Version: Spring Parent -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -106,73 +118,80 @@
 
         <!-- START: Third Party Dependencies -->
 
-        <!-- Used for annotations within project -->
-        <!-- Version: I can't tell... -->
+        <!-- Used for Swagger UI and Open API annotations -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${version.org.springdoc.springdoc-openapi-starter-webmvc-ui}</version>
+        </dependency>
+
+        <!-- Used for POJO annotations within project -->
+        <!-- Version: Explicit -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${version.org.projectlombok.lombok}</version>
         </dependency>
 
-
-        <!-- StringUtils util -->
+        <!-- StringUtils util that checks for empty strings, etc. -->
         <!-- Version: Explicit -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${verion.org.apache.commons.commons-lang3}</version>
+            <version>${version.org.apache.commons.commons-lang3}</version>
+        </dependency>
+
+        <!-- Used for the validation annotations -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${version.org.openapitools.jackson-databind-nullable}</version>
         </dependency>
 
         <!-- END: Third Party Dependencies -->
 
         <!-- START: Testing Dependencies -->
+
+        <!-- Testing framework for Spring instantiation -->
+        <!-- Version: BOM -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <!-- Testing framework for Java testing -->
+        <!-- Version: BOM -->
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <!-- Testing framework for BDD and Java integration -->
+        <!-- Version: BOM -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <!-- Testing framework for BDD and Spring integration -->
+        <!-- Version: BOM -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <!-- Testing framework for BDD and Java integration -->
+        <!-- Version: BOM -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-        </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.springdoc</groupId>-->
-        <!--            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
-        <!--        </dependency>-->
-
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>jackson-databind-nullable</artifactId>
         </dependency>
 
         <!-- END: Testing Dependencies -->
