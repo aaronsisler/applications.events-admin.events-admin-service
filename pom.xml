@@ -11,7 +11,7 @@
 
     <groupId>com.ebsolutions.eventsadminservice</groupId>
     <artifactId>events-admin-service-parent</artifactId>
-    <version>0.11.0</version>
+    <version>0.12.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -32,6 +32,7 @@
         <version.plugins.openapi-generator-maven-plugin>7.5.0</version.plugins.openapi-generator-maven-plugin>
 
         <!-- Versions: Dependencies -->
+
     </properties>
 
     <dependencyManagement>
@@ -87,25 +88,13 @@
                     <version>${version.plugins.openapi-generator-maven-plugin}</version>
                     <configuration>
                         <modelPackage>com.ebsolutions.eventsadminservice.model</modelPackage>
-                        <generatorName>java</generatorName>
-                        <skipValidateSpec>true</skipValidateSpec>
-                        <generateApiTests>false</generateApiTests>
-                        <generateModelTests>false</generateModelTests>
+                        <generatorName>spring</generatorName>
                         <generateApis>false</generateApis>
-                        <generateApiDocumentation>false</generateApiDocumentation>
-                        <generateModelDocumentation>false</generateModelDocumentation>
-                        <generateSupportingFiles>true</generateSupportingFiles>
-                        <supportingFilesToGenerate>
-                            JSON.java
-                        </supportingFilesToGenerate>
+                        <generateSupportingFiles>false</generateSupportingFiles>
                         <configOptions>
                             <serializableModel>true</serializableModel>
-                            <library>webclient</library>
-                            <serializationLibrary>jackson</serializationLibrary>
-                            <useJakartaEe>true</useJakartaEe>
+                            <useSpringBoot3>true</useSpringBoot3>
                             <additionalModelTypeAnnotations>
-                                @lombok.AllArgsConstructor
-                                @lombok.Data
                                 @lombok.experimental.SuperBuilder
                             </additionalModelTypeAnnotations>
                         </configOptions>

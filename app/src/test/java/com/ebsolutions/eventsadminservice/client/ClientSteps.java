@@ -3,8 +3,12 @@ package com.ebsolutions.eventsadminservice.client;
 import com.ebsolutions.eventsadminservice.model.Client;
 import com.ebsolutions.eventsadminservice.testing.AssertionUtil;
 import com.ebsolutions.eventsadminservice.utils.DateTimeComparisonUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -25,8 +29,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,12 +47,15 @@ public class ClientSteps {
     @Autowired
     protected BatchWriteResult batchWriteResult;
 
-    protected ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
+    protected ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+    private ObjectWriter objectWriter = objectMapper.writer().withDefaultPrettyPrinter();
+
     private Client clientOne;
     private Client clientTwo;
     private ResultActions performedActions;
     private LocalDateTime now;
     private List<Client> clients;
+    private String requestJson;
 
     @Before
     public void before() {
@@ -71,10 +77,30 @@ public class ClientSteps {
                 .build();
     }
 
-    @When("the client creation endpoint is called")
-    public void theClientCreationEndpointIsCalled() throws Exception {
-        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(List.of(clientOne, clientTwo));
+    @And("the client is invalid")
+    public void theClientIsInvalid() throws JsonProcessingException {
+        clientOne = Client.builder()
+                .name("Create Client: Client Name 1")
+                .build();
+
+        String clientsJson = objectWriter.writeValueAsString(List.of(clientOne));
+        JsonNode jsonNode = objectMapper.readTree(clientsJson);
+        if (!jsonNode.isArray()) {
+            fail("List of clients is not an array");
+        }
+
+        ArrayNode arrayNode = (ArrayNode) jsonNode;
+        ObjectNode firstClient = (ObjectNode) arrayNode.get(0);
+        System.out.println(firstClient);
+        firstClient.remove("name");
+        System.out.println(firstClient);
+
+        requestJson = objectWriter.writeValueAsString(List.of(firstClient));
+    }
+
+    @When("the client creation endpoint is called with the clients")
+    public void theClientCreationEndpointIsCalledWithTheClients() throws Exception {
+        String requestJson = objectWriter.writeValueAsString(List.of(clientOne, clientTwo));
         // Setting the test's time of now right before endpoint invocation
         now = LocalDateTime.now();
         performedActions = mockMvc.perform(
@@ -83,16 +109,21 @@ public class ClientSteps {
                         .content(requestJson));
     }
 
-    @Then("the endpoint replies with the correct status")
-    public void theEndpointRepliesWithTheCorrectStatus() throws Exception {
-        performedActions.andExpect(status().isOk());
+    @When("the client creation endpoint is called with the invalid client")
+    public void theClientCreationEndpointIsCalledWithTheInvalidClient() throws Exception {
+        // Setting the test's time of now right before endpoint invocation
+        now = LocalDateTime.now();
+        performedActions = mockMvc.perform(
+                post("/clients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson));
     }
 
-    @And("the endpoint replies with the created clients")
-    public void theEndpointRepliesWithTheCreatedClients() throws Exception {
+    @And("the endpoint replies with the newly created clients")
+    public void theEndpointRepliesWithTheNewlyCreatedClients() throws Exception {
         MvcResult mvcResult = performedActions.andReturn();
         String content = mvcResult.getResponse().getContentAsString();
-        this.clients = mapper.readerForListOf(Client.class).readValue(content);
+        this.clients = objectMapper.readerForListOf(Client.class).readValue(content);
         assertEquals(2, clients.size());
 
         Client firstClientResponse = clients.get(0);
@@ -104,8 +135,8 @@ public class ClientSteps {
         assertTrue(DateTimeComparisonUtil.areDateTimesEqual(now, secondClientResponse.getCreatedOn()));
     }
 
-    @And("the created clients were saved to the database")
-    public void theCreatedClientsWereSavedToTheDatabase() {
+    @And("the newly created clients were saved to the database")
+    public void theNewlyCreatedClientsWereSavedToTheDatabase() {
         ArgumentCaptor<BatchWriteItemEnhancedRequest> savedCaptor = ArgumentCaptor.forClass(BatchWriteItemEnhancedRequest.class);
         verify(dynamoDbEnhancedClient).batchWriteItem(savedCaptor.capture());
         BatchWriteItemEnhancedRequest arg = savedCaptor.getValue();
@@ -115,5 +146,20 @@ public class ClientSteps {
         AssertionUtil.assertWrittenClient(this.clients.get(0), writeRequests.get(0));
         AssertionUtil.assertWrittenClient(this.clients.get(1), writeRequests.get(1));
 
+    }
+
+    @And("the client was not saved to the database")
+    public void theClientWasNotSavedToTheDatabase() {
+        verify(dynamoDbEnhancedClient, never()).batchWriteItem(any(BatchWriteItemEnhancedRequest.class));
+    }
+
+    @Then("the endpoint replies with the correct success status")
+    public void theEndpointRepliesWithTheCorrectSuccessStatus() throws Exception {
+        performedActions.andExpect(status().isOk());
+    }
+
+    @Then("the endpoint replies with a bad request status")
+    public void theEndpointRepliesWithABadRequestStatus() throws Exception {
+        performedActions.andExpect(status().isBadRequest());
     }
 }
