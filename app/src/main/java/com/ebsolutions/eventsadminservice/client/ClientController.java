@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
 @Validated
 @RestController
+@AllArgsConstructor
 @RequestMapping("clients")
 public class ClientController {
   private final ClientRepository clientRepository;
