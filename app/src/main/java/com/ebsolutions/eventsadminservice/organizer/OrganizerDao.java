@@ -34,7 +34,7 @@ public class OrganizerDao {
   private final DatabaseConfig databaseConfig;
 
   public Organizer read(String clientId, String organizerId) throws DataProcessingException {
-    MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
+    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
 
@@ -58,13 +58,13 @@ public class OrganizerDao {
       throw new DataProcessingException(
           MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
     } finally {
-      metricsStopWatch.logElapsedTime(
+      metricsStopwatch.logElapsedTime(
           MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
     }
   }
 
   public List<Organizer> readAll(String clientId) throws DataProcessingException {
-    MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
+    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<OrganizerDto> organizerDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
@@ -95,13 +95,13 @@ public class OrganizerDao {
       throw new DataProcessingException(
           MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
     } finally {
-      metricsStopWatch.logElapsedTime(
+      metricsStopwatch.logElapsedTime(
           MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
     }
   }
 
   public List<Organizer> create(List<Organizer> organizers) {
-    MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
+    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     List<OrganizerDto> organizerDtos = new ArrayList<>();
     LocalDateTime now = LocalDateTime.now();
 
@@ -156,8 +156,70 @@ public class OrganizerDao {
       throw new DataProcessingException(
           MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
     } finally {
-      metricsStopWatch.logElapsedTime(
+      metricsStopwatch.logElapsedTime(
           MessageFormat.format("{0}::{1}", this.getClass().getName(), "create"));
+    }
+  }
+
+  /**
+   * This will replace the entire database object with the input organizer
+   *
+   * @param organizer the object to replace the current database object
+   */
+  public Organizer update(Organizer organizer) {
+    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
+
+    try {
+      assert organizer.getOrganizerId() != null;
+
+      OrganizerDto organizerDto = OrganizerDto.builder()
+          .partitionKey(organizer.getClientId())
+          .sortKey(SortKeyType.ORGANIZER + organizer.getOrganizerId())
+          .name(organizer.getName())
+          .createdOn(organizer.getCreatedOn())
+          .lastUpdatedOn(LocalDateTime.now())
+          .build();
+
+      DynamoDbTable<OrganizerDto> organizerDtoDynamoDbTable =
+          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+              TableSchema.fromBean(OrganizerDto.class));
+
+      organizerDtoDynamoDbTable.putItem(organizerDto);
+
+      return Organizer.builder()
+          .clientId(organizerDto.getPartitionKey())
+          .organizerId(StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
+          .name(organizerDto.getName())
+          .createdOn(organizerDto.getCreatedOn())
+          .lastUpdatedOn(organizerDto.getLastUpdatedOn())
+          .build();
+    } catch (Exception e) {
+      log.error("ERROR::{}", this.getClass().getName(), e);
+      throw new DataProcessingException(
+          MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
+    } finally {
+      metricsStopwatch.logElapsedTime(
+          MessageFormat.format("{0}::{1}", this.getClass().getName(), "update"));
+    }
+  }
+
+  public void delete(String clientId, String organizerId) {
+    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
+    try {
+      Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
+
+      DynamoDbTable<OrganizerDto> organizerDtoDynamoDbTable =
+          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+              TableSchema.fromBean(OrganizerDto.class));
+
+      organizerDtoDynamoDbTable.deleteItem(key);
+    } catch (Exception e) {
+      log.error("ERROR::{}", this.getClass().getName(), e);
+      throw new DataProcessingException(
+          MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
+    } finally {
+      metricsStopwatch.logElapsedTime(
+          MessageFormat.format("{0}::{1}", this.getClass().getName(), "delete"));
     }
   }
 }

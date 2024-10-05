@@ -21,4 +21,12 @@ public class OrganizerRepository {
   public List<Organizer> readAll(String clientId) {
     return organizerDao.readAll(clientId);
   }
+
+  public Organizer update(Organizer organizer) {
+    return organizerDao.update(organizer);
+  }
+
+  public void delete(String clientId, String organizerId) {
+    organizerDao.delete(clientId, organizerId);
+  }
 }
