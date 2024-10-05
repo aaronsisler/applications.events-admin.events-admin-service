@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class EventsAdminServiceApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(EventsAdminServiceApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(EventsAdminServiceApplication.class, args);
+  }
 }
