@@ -31,3 +31,10 @@ components:
       properties:
         clientId:
           type: string
+  parameters:
+    ClientId:
+      in: path
+      name: clientId
+      required: true
+      schema:
+        type: string

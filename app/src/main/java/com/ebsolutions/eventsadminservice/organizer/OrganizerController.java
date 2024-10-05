@@ -1,6 +1,6 @@
-package com.ebsolutions.eventsadminservice.client;
+package com.ebsolutions.eventsadminservice.organizer;
 
-import com.ebsolutions.eventsadminservice.model.Client;
+import com.ebsolutions.eventsadminservice.model.Organizer;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,36 +19,38 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients")
-public class ClientController {
-  private final ClientRepository clientRepository;
+@RequestMapping("clients/{clientId}/organizers")
+public class OrganizerController {
+  private final OrganizerRepository organizerRepository;
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> post(@RequestBody List<@Valid Client> clients) {
+  public ResponseEntity<?> post(@RequestBody List<@Valid Organizer> organizers) {
     try {
-      return ResponseEntity.ok(clientRepository.create(clients));
+      return ResponseEntity.ok(organizerRepository.create(organizers));
     } catch (DataProcessingException dpe) {
       return ResponseEntity.internalServerError().body(dpe.getMessage());
     }
   }
 
-  @GetMapping(value = "/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId) {
+  @GetMapping(value = "/{organizerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId,
+                               @NotBlank @PathVariable String organizerId) {
     try {
-      Client client = clientRepository.read(clientId);
+      Organizer organizer = organizerRepository.read(clientId, organizerId);
 
-      return client != null ? ResponseEntity.ok(client) : ResponseEntity.noContent().build();
+      return organizer != null ? ResponseEntity.ok(organizer) : ResponseEntity.noContent().build();
     } catch (DataProcessingException dpe) {
       return ResponseEntity.internalServerError().body(dpe.getMessage());
     }
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> getAll() {
+  public ResponseEntity<?> getAll(@NotBlank @PathVariable String clientId) {
     try {
-      List<Client> clients = clientRepository.readAll();
+      List<Organizer> organizers = organizerRepository.readAll(clientId);
 
-      return !clients.isEmpty() ? ResponseEntity.ok(clients) : ResponseEntity.noContent().build();
+      return !organizers.isEmpty() ? ResponseEntity.ok(organizers) :
+          ResponseEntity.noContent().build();
     } catch (DataProcessingException dpe) {
       return ResponseEntity.internalServerError().body(dpe.getMessage());
     }
