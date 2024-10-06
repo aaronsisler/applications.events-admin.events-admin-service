@@ -1,4 +1,4 @@
-package com.ebsolutions.eventsadminservice.shared;
+package com.ebsolutions.eventsadminservice.shared.util;
 
 
 import lombok.extern.slf4j.Slf4j;

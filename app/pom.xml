@@ -23,6 +23,7 @@
         <commons-lang3.version>3.13.0</commons-lang3.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
+        <fastcsv.version>3.3.1</fastcsv.version>
 
         <!-- Versions: Testing -->
     </properties>
@@ -89,6 +90,13 @@
             <artifactId>dynamodb-enhanced</artifactId>
         </dependency>
 
+        <!-- AWS S3 File storage -->
+        <!-- Version: BOM -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+        </dependency>
+
         <!-- END: AWS Dependencies -->
 
         <!-- START: Third Party Dependencies -->
@@ -129,6 +137,14 @@
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+
+        <!-- Added for generation of the CSV -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>de.siegmar</groupId>
+            <artifactId>fastcsv</artifactId>
+            <version>${fastcsv.version}</version>
         </dependency>
 
         <!-- END: Third Party Dependencies -->

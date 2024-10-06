@@ -1,37 +1,27 @@
 package com.ebsolutions.eventsadminservice.config;
 
-
 import java.net.URI;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
-public class DatabaseConfig {
-  @Getter
-  @Value("${database.tableName:`Database table name not found in environment`}")
-  public String tableName;
-
-  @Value("${database.endpoint:`Database endpoint not found in environment`}")
+public class FileStorageConfig {
+  @Value("${fileLocation.endpoint:`File storage endpoint not found in environment`}")
   protected String endpoint;
 
   @Bean
   @Profile({"local"})
-  public DynamoDbEnhancedClient localClientInstantiation() {
-    DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
+  public S3Client localClientInstantiation() {
+    return S3Client.builder()
+        .forcePathStyle(true)
         .endpointOverride(URI.create(endpoint))
-        .region(Region.US_EAST_1)
         .credentialsProvider(staticCredentialsProvider())
         .build();
-
-    return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
   }
 
   private StaticCredentialsProvider staticCredentialsProvider() {

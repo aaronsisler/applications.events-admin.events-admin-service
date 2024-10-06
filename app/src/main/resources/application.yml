@@ -19,3 +19,5 @@ spring:
 database:
   tableName: SERVICES_EVENTS_ADMIN_SERVICE_LOCAL
   endpoint: http://localhost:4566
+fileLocation:
+  endpoint: http://localhost:9090

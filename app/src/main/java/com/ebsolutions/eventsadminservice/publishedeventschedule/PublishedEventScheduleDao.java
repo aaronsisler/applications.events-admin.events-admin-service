@@ -2,10 +2,10 @@ package com.ebsolutions.eventsadminservice.publishedeventschedule;
 
 import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.model.PublishedEventSchedule;
-import com.ebsolutions.eventsadminservice.shared.MetricsStopwatch;
 import com.ebsolutions.eventsadminservice.shared.SortKeyType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
+import com.ebsolutions.eventsadminservice.shared.util.MetricsStopwatch;
 import com.ebsolutions.eventsadminservice.shared.util.UniqueIdGenerator;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
