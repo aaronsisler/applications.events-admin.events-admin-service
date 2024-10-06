@@ -34,7 +34,7 @@ public class EventScheduleController {
     }
   }
 
-  @GetMapping(value = "/{locationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/{eventScheduleId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> get(@NotBlank @PathVariable String clientId,
                                @NotBlank @PathVariable String eventScheduleId) {
     try {
@@ -68,7 +68,7 @@ public class EventScheduleController {
     }
   }
 
-  @DeleteMapping(value = "/{locationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @DeleteMapping(value = "/{eventScheduleId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@NotBlank @PathVariable String clientId,
                                   @NotBlank @PathVariable String eventScheduleId) {
     try {
