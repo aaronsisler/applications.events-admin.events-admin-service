@@ -141,10 +141,10 @@ public class ScheduledEventDao {
 
   public List<ScheduledEvent> create(List<ScheduledEvent> scheduledEvents) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
-    try {
-      LocalDateTime now = LocalDateTime.now();
-      List<ScheduledEventDto> scheduledEventDtos = new ArrayList<>();
+    LocalDateTime now = LocalDateTime.now();
+    List<ScheduledEventDto> scheduledEventDtos = new ArrayList<>();
 
+    try {
       scheduledEvents.forEach(scheduledEvent ->
           scheduledEventDtos.add(
               ScheduledEventDto.builder()
