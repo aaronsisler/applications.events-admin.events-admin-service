@@ -70,11 +70,11 @@ public class EventDao {
   public List<Event> readAll(String clientId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      DynamoDbTable<EventDto> eventDtoDynamoDbTable =
+      DynamoDbTable<EventDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(EventDto.class));
 
-      List<EventDto> eventDtos = eventDtoDynamoDbTable
+      List<EventDto> eventDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
                   -> s.partitionValue(clientId).sortValue(SortKeyType.EVENT.name()).build()))
@@ -127,13 +127,14 @@ public class EventDao {
               .build())
       );
 
-      DynamoDbTable<EventDto> eventDtoDynamoDbTable =
+      DynamoDbTable<EventDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(EventDto.class));
 
-      WriteBatch.Builder<EventDto> writeBatchBuilder = WriteBatch.builder(
-              EventDto.class)
-          .mappedTableResource(eventDtoDynamoDbTable);
+      WriteBatch.Builder<EventDto> writeBatchBuilder =
+          WriteBatch
+              .builder(EventDto.class)
+              .mappedTableResource(dtoDynamoDbTable);
 
       eventDtos.forEach(writeBatchBuilder::addPutItem);
 
@@ -147,8 +148,8 @@ public class EventDao {
       BatchWriteResult batchWriteResult =
           dynamoDbEnhancedClient.batchWriteItem(batchWriteItemEnhancedRequest);
 
-      if (!batchWriteResult.unprocessedPutItemsForTable(eventDtoDynamoDbTable).isEmpty()) {
-        batchWriteResult.unprocessedPutItemsForTable(eventDtoDynamoDbTable).forEach(key ->
+      if (!batchWriteResult.unprocessedPutItemsForTable(dtoDynamoDbTable).isEmpty()) {
+        batchWriteResult.unprocessedPutItemsForTable(dtoDynamoDbTable).forEach(key ->
             log.info(key.toString()));
       }
 
@@ -198,11 +199,11 @@ public class EventDao {
           .lastUpdatedOn(LocalDateTime.now())
           .build();
 
-      DynamoDbTable<EventDto> eventDtoDynamoDbTable =
+      DynamoDbTable<EventDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(EventDto.class));
 
-      eventDtoDynamoDbTable.putItem(eventDto);
+      dtoDynamoDbTable.putItem(eventDto);
 
       return Event.builder()
           .clientId(eventDto.getPartitionKey())
@@ -230,11 +231,11 @@ public class EventDao {
     try {
       Key key = KeyBuilder.build(clientId, SortKeyType.EVENT, eventId);
 
-      DynamoDbTable<EventDto> eventDtoDynamoDbTable =
+      DynamoDbTable<EventDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(EventDto.class));
 
-      eventDtoDynamoDbTable.deleteItem(key);
+      dtoDynamoDbTable.deleteItem(key);
 
     } catch (Exception e) {
       log.error("ERROR::{}", this.getClass().getName(), e);
