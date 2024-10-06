@@ -38,11 +38,11 @@ public class OrganizerDao {
     try {
       Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
 
-      DynamoDbTable<OrganizerDto> clientDtoDynamoDbTable =
+      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(OrganizerDto.class));
 
-      OrganizerDto organizerDto = clientDtoDynamoDbTable.getItem(key);
+      OrganizerDto organizerDto = dtoDynamoDbTable.getItem(key);
 
       return organizerDto == null
           ? null
@@ -66,11 +66,11 @@ public class OrganizerDao {
   public List<Organizer> readAll(String clientId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      DynamoDbTable<OrganizerDto> organizerDtoDynamoDbTable =
+      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(OrganizerDto.class));
 
-      List<OrganizerDto> organizerDtos = organizerDtoDynamoDbTable
+      List<OrganizerDto> organizerDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
                   -> s.partitionValue(clientId).sortValue(SortKeyType.ORGANIZER.name()).build()))
@@ -116,12 +116,12 @@ public class OrganizerDao {
               .build())
       );
 
-      DynamoDbTable<OrganizerDto> organizerDtoDynamoDbTable =
+      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(OrganizerDto.class));
 
       WriteBatch.Builder<OrganizerDto> writeBatchBuilder = WriteBatch.builder(OrganizerDto.class)
-          .mappedTableResource(organizerDtoDynamoDbTable);
+          .mappedTableResource(dtoDynamoDbTable);
 
       organizerDtos.forEach(writeBatchBuilder::addPutItem);
 
@@ -135,8 +135,8 @@ public class OrganizerDao {
       BatchWriteResult batchWriteResult =
           dynamoDbEnhancedClient.batchWriteItem(batchWriteItemEnhancedRequest);
 
-      if (!batchWriteResult.unprocessedPutItemsForTable(organizerDtoDynamoDbTable).isEmpty()) {
-        batchWriteResult.unprocessedPutItemsForTable(organizerDtoDynamoDbTable).forEach(key ->
+      if (!batchWriteResult.unprocessedPutItemsForTable(dtoDynamoDbTable).isEmpty()) {
+        batchWriteResult.unprocessedPutItemsForTable(dtoDynamoDbTable).forEach(key ->
             log.info(key.toString()));
       }
 
@@ -180,11 +180,11 @@ public class OrganizerDao {
           .lastUpdatedOn(LocalDateTime.now())
           .build();
 
-      DynamoDbTable<OrganizerDto> organizerDtoDynamoDbTable =
+      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(OrganizerDto.class));
 
-      organizerDtoDynamoDbTable.putItem(organizerDto);
+      dtoDynamoDbTable.putItem(organizerDto);
 
       return Organizer.builder()
           .clientId(organizerDto.getPartitionKey())
@@ -208,11 +208,11 @@ public class OrganizerDao {
     try {
       Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
 
-      DynamoDbTable<OrganizerDto> organizerDtoDynamoDbTable =
+      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
               TableSchema.fromBean(OrganizerDto.class));
 
-      organizerDtoDynamoDbTable.deleteItem(key);
+      dtoDynamoDbTable.deleteItem(key);
     } catch (Exception e) {
       log.error("ERROR::{}", this.getClass().getName(), e);
       throw new DataProcessingException(
