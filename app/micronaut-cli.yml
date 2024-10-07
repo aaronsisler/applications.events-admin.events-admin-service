@@ -1,6 +1,0 @@
-applicationType: default
-defaultPackage: com.ebsolutions.eventsadminservice
-testFramework: spock
-sourceLanguage: java
-buildTool: maven
-features: [app-name, groovy-maven-plus-plugin, http-client, java, java-application, log4j2, lombok, maven, maven-enforcer-plugin, micronaut-aot, micronaut-http-validation, netty-server, openapi, properties, readme, serialization-jackson, shade, spock, swagger-ui]

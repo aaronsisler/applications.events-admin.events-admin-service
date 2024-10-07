@@ -60,7 +60,7 @@ components:
       type: string
       enum:
         - SINGLE
-        - REOCCURRING
+        - RECURRING
     ScheduledEventInterval:
       type: string
       enum:

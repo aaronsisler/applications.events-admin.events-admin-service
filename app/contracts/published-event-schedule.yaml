@@ -39,30 +39,30 @@ paths:
 
 components:
   schemas:
-    LocationBlackout:
-      type: object
-      required:
-        - locationId
-        - blackoutDate
-      properties:
-        locationId:
-          type: string
-        blackoutDate:
-          type: string
-          format: local-date
-          example: "2019-05-17"
-    EventBlackout:
-      type: object
-      required:
-        - eventId
-        - blackoutDate
-      properties:
-        eventId:
-          type: string
-        blackoutDate:
-          type: string
-          format: local-date
-          example: "2019-05-17"
+    #    LocationBlackout:
+    #      type: object
+    #      required:
+    #        - locationId
+    #        - blackoutDate
+    #      properties:
+    #        locationId:
+    #          type: string
+    #        blackoutDate:
+    #          type: string
+    #          format: local-date
+    #          example: "2019-05-17"
+    #    EventBlackout:
+    #      type: object
+    #      required:
+    #        - eventId
+    #        - blackoutDate
+    #      properties:
+    #        eventId:
+    #          type: string
+    #        blackoutDate:
+    #          type: string
+    #          format: local-date
+    #          example: "2019-05-17"
     PublishedEventSchedule:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
@@ -83,14 +83,14 @@ components:
           type: integer
         filename:
           type: string
-        locationBlackouts:
-          type: array
-          items:
-            $ref: "#/components/schemas/LocationBlackout"
-        eventBlackouts:
-          type: array
-          items:
-            $ref: "#/components/schemas/EventBlackout"
+  #        locationBlackouts:
+  #          type: array
+  #          items:
+  #            $ref: "#/components/schemas/LocationBlackout"
+  #        eventBlackouts:
+  #          type: array
+  #          items:
+  #            $ref: "#/components/schemas/EventBlackout"
   parameters:
     PublishedEventScheduleId:
       in: path

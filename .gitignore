@@ -10,3 +10,7 @@ target/
 
 # System files
 .DS_Store
+
+# Docker Files
+docker/
+shared-local-instance.db
