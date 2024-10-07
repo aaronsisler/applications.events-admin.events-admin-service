@@ -50,7 +50,7 @@ public class OrganizerDao {
           .organizerId(StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
           .name(organizerDto.getName())
           .createdOn(organizerDto.getCreatedOn())
-//          .lastUpdatedOn(organizerDto.getLastUpdatedOn())
+          .lastUpdatedOn(organizerDto.getLastUpdatedOn())
           .build();
     } catch (Exception e) {
       log.error("ERROR::{}", this.getClass().getName(), e);

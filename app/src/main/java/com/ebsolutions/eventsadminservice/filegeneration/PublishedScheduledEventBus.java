@@ -22,10 +22,6 @@ public class PublishedScheduledEventBus {
   private Organizer organizer;
   private LocalDate eventStartDate;
   private LocalTime eventStartTime;
-  /**
-   * Duration of event in minutes
-   */
-  private long eventLength;
   private LocalDate eventEndDate;
   private LocalTime eventEndTime;
   private String eventName;

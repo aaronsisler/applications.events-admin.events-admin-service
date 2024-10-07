@@ -10,8 +10,10 @@ import java.text.MessageFormat;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 @Slf4j
+@Service
 public class CsvGenerator {
   public ByteBuffer create(List<PublishedScheduledEventBus> publishedScheduledEvents)
       throws CsvGenerationException {
@@ -49,7 +51,6 @@ public class CsvGenerator {
             : StringUtils.EMPTY)
         .eventStartDate(publishedScheduledEvent.getEventStartDate().toString())
         .eventStartTime(publishedScheduledEvent.getEventStartTime().toString())
-        .eventLength(String.valueOf(publishedScheduledEvent.getEventLength()))
         .eventEndDate(publishedScheduledEvent.getEventEndDate().toString())
         .eventEndTime(publishedScheduledEvent.getEventEndTime().toString())
         .eventName(publishedScheduledEvent.getEventName())
@@ -61,7 +62,6 @@ public class CsvGenerator {
         publishedScheduledEventDto.getEventOrganizerName(),
         publishedScheduledEventDto.getEventStartDate(),
         publishedScheduledEventDto.getEventStartTime(),
-        publishedScheduledEventDto.getEventLength(),
         publishedScheduledEventDto.getEventEndDate(),
         publishedScheduledEventDto.getEventEndTime(),
         publishedScheduledEventDto.getEventName(),

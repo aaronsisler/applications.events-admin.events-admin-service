@@ -13,9 +13,9 @@ import com.ebsolutions.eventsadminservice.scheduledevent.ScheduledEventDao;
 import com.ebsolutions.eventsadminservice.shared.util.DateValidator;
 import com.ebsolutions.eventsadminservice.shared.util.FileLocationUtil;
 import java.nio.ByteBuffer;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,16 +24,18 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 @Slf4j
+@Service
 @AllArgsConstructor
 public class FileGenerationOrchestrationService {
-  private final ScheduledEventDao scheduledEventDao;
-  private final OrganizerDao organizerDao;
-  private final LocationDao locationDao;
   private final CsvGenerator csvGenerator;
-  private final PublishedEventScheduleDao publishedEventScheduleDao;
   private final FileDao fileDao;
+  private final LocationDao locationDao;
+  private final OrganizerDao organizerDao;
+  private final PublishedEventScheduleDao publishedEventScheduleDao;
+  private final ScheduledEventDao scheduledEventDao;
 
   public PublishedEventSchedule publishEventSchedule(
       PublishedEventSchedule publishedEventSchedule) {
@@ -53,15 +55,18 @@ public class FileGenerationOrchestrationService {
         .distinct()
         .toList();
 
-    // Get list of Organizers for list of organizer ids
+    // Get list of all Organizers for client id and then filter out Organizers not needed
     Map<String, Organizer>
-        organizers = organizerDao.read(publishedEventSchedule.getClientId(), organizerIds)
-        .stream().collect(Collectors.toMap(Organizer::getOrganizerId, Function.identity()));
+        organizers = organizerDao.readAll(publishedEventSchedule.getClientId())
+        .stream()
+        .filter(organizer -> organizerIds.contains(organizer.getOrganizerId()))
+        .collect(Collectors.toMap(Organizer::getOrganizerId, Function.identity()));
 
-    // Get list of Locations for list of location ids
-    Map<String, Location> locations =
-        locationDao.read(publishedEventSchedule.getClientId(), locationIds)
-            .stream().collect(Collectors.toMap(Location::getLocationId, Function.identity()));
+    // Get list of all Locations for client id and then filter out Locations not needed
+    Map<String, Location> locations = locationDao.readAll(publishedEventSchedule.getClientId())
+        .stream()
+        .filter(location -> locationIds.contains(location.getLocationId()))
+        .collect(Collectors.toMap(Location::getLocationId, Function.identity()));
 
     // Create the list of dates from 1st of month to the end of month for given year/month in request
     LocalDate startOfMonth = LocalDate.of(publishedEventSchedule.getEventScheduleYear(),
@@ -94,10 +99,11 @@ public class FileGenerationOrchestrationService {
 
     // Create the CSV bytes
     ByteBuffer byteBuffer = this.csvGenerator.create(publishedScheduledEvents);
-    // Push the CSV bytes to File Storage
-    String filename = LocalDateTime.now().toString();
+
+    // Format the CSV into bytes and push to File Storage
+    String filename = MessageFormat.format("{0}.csv", LocalDateTime.now().toString());
     String fileLocation =
-        FileLocationUtil.build(publishedEventSchedule.getClientId(), filename, "csv");
+        FileLocationUtil.build(publishedEventSchedule.getClientId(), filename);
     this.fileDao.create(fileLocation, byteBuffer);
     // Add the CSV Location to the Published Event Schedule
     publishedEventSchedule.setFilename(filename);
@@ -155,8 +161,6 @@ public class FileGenerationOrchestrationService {
         .scheduledEvent(scheduledEvent)
         .eventStartDate(localDate)
         .eventStartTime(scheduledEvent.getStartTime())
-        .eventLength(
-            ChronoUnit.MINUTES.between(scheduledEvent.getStartTime(), scheduledEvent.getEndTime()))
         .eventEndDate(localDate)
         .eventEndTime(scheduledEvent.getEndTime())
         .eventName(scheduledEvent.getName())

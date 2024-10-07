@@ -1,5 +1,6 @@
 package com.ebsolutions.eventsadminservice.publishedeventschedule;
 
+import com.ebsolutions.eventsadminservice.filegeneration.FileGenerationOrchestrationService;
 import com.ebsolutions.eventsadminservice.model.PublishedEventSchedule;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import jakarta.validation.Valid;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("clients/{clientId}/published-event-schedules")
 public class PublishedEventScheduleController {
   private final PublishedEventScheduleRepository publishedEventScheduleRepository;
+  private final FileGenerationOrchestrationService fileGenerationOrchestrationService;
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> post(@RequestBody @Valid PublishedEventSchedule publishedEventSchedule) {
     try {
-      return ResponseEntity.ok(publishedEventScheduleRepository.create(publishedEventSchedule));
+      return ResponseEntity.ok(
+          fileGenerationOrchestrationService.publishEventSchedule(publishedEventSchedule));
     } catch (DataProcessingException dpe) {
       return ResponseEntity.internalServerError().body(dpe.getMessage());
     }

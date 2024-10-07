@@ -1,6 +1,6 @@
 services:
-  database:
-    container_name: database
+  storage:
+    container_name: storage
     image: localstack/localstack:latest
     ports:
       - "4566:4566"

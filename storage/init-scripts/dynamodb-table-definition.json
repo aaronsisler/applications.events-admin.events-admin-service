@@ -1,5 +1,5 @@
 {
-  "TableName": "SERVICES_EVENTS_ADMIN_SERVICE_LOCAL",
+  "TableName": "SERVICES_EVENTS_ADMIN_SERVICE",
   "KeySchema": [
     {
       "AttributeName": "partitionKey",
