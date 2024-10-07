@@ -11,12 +11,12 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
 public class FileStorageConfig {
-  @Value("${fileLocation.endpoint:`File storage endpoint not found in environment`}")
+  @Value("${storage.endpoint:`File storage endpoint not found in environment`}")
   protected String endpoint;
 
   @Bean
   @Profile({"local"})
-  public S3Client localClientInstantiation() {
+  public S3Client localS3ClientInstantiation() {
     return S3Client.builder()
         .forcePathStyle(true)
         .endpointOverride(URI.create(endpoint))

@@ -2,8 +2,8 @@ package com.ebsolutions.eventsadminservice.location;
 
 import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.model.Location;
+import com.ebsolutions.eventsadminservice.shared.Constants;
 import com.ebsolutions.eventsadminservice.shared.SortKeyType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
@@ -31,7 +31,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 @AllArgsConstructor
 public class LocationDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
-  private final DatabaseConfig databaseConfig;
 
   public Location read(String clientId, String locationId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
@@ -39,7 +38,7 @@ public class LocationDao {
       Key key = KeyBuilder.build(clientId, SortKeyType.LOCATION, locationId);
 
       DynamoDbTable<LocationDto> clientDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(LocationDto.class));
 
       LocationDto locationDto = clientDtoDynamoDbTable.getItem(key);
@@ -67,7 +66,7 @@ public class LocationDao {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<LocationDto> locationDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(LocationDto.class));
 
       List<LocationDto> locationDtos = locationDtoDynamoDbTable
@@ -117,7 +116,7 @@ public class LocationDao {
       );
 
       DynamoDbTable<LocationDto> locationDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(LocationDto.class));
 
       WriteBatch.Builder<LocationDto> writeBatchBuilder = WriteBatch.builder(
@@ -183,7 +182,7 @@ public class LocationDao {
           .build();
 
       DynamoDbTable<LocationDto> locationDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(LocationDto.class));
 
       locationDtoDynamoDbTable.putItem(locationDto);
@@ -211,7 +210,7 @@ public class LocationDao {
       Key key = KeyBuilder.build(clientId, SortKeyType.LOCATION, locationId);
 
       DynamoDbTable<LocationDto> locationDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(LocationDto.class));
 
       locationDtoDynamoDbTable.deleteItem(key);

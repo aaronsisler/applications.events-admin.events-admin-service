@@ -2,8 +2,8 @@ package com.ebsolutions.eventsadminservice.event;
 
 import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.model.Event;
+import com.ebsolutions.eventsadminservice.shared.Constants;
 import com.ebsolutions.eventsadminservice.shared.SortKeyType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
@@ -31,7 +31,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 @AllArgsConstructor
 public class EventDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
-  private final DatabaseConfig databaseConfig;
 
   public Event read(String clientId, String eventId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
@@ -39,7 +38,7 @@ public class EventDao {
       Key key = KeyBuilder.build(clientId, SortKeyType.EVENT, eventId);
 
       DynamoDbTable<EventDto> eventDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(EventDto.class));
 
       EventDto eventDto = eventDtoDynamoDbTable.getItem(key);
@@ -71,7 +70,7 @@ public class EventDao {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<EventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(EventDto.class));
 
       List<EventDto> eventDtos = dtoDynamoDbTable
@@ -128,7 +127,7 @@ public class EventDao {
       );
 
       DynamoDbTable<EventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(EventDto.class));
 
       WriteBatch.Builder<EventDto> writeBatchBuilder =
@@ -200,7 +199,7 @@ public class EventDao {
           .build();
 
       DynamoDbTable<EventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(EventDto.class));
 
       dtoDynamoDbTable.putItem(eventDto);
@@ -232,7 +231,7 @@ public class EventDao {
       Key key = KeyBuilder.build(clientId, SortKeyType.EVENT, eventId);
 
       DynamoDbTable<EventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(EventDto.class));
 
       dtoDynamoDbTable.deleteItem(key);

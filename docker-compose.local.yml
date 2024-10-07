@@ -5,18 +5,11 @@ services:
     ports:
       - "4566:4566"
     environment:
-      - SERVICES=cloudformation,dynamodb
+      - SERVICES=dynamodb,s3
     #      - DEFAULT_REGION=us-east-1
     #      - AWS_DEFAULT_REGION=us-east-1
     volumes:
       # This is called when Localstack container is starting up.
       # Using this for AWS CLI commands currently.
-      - ./database/init-scripts/init-localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
-      - ./database/init-scripts/dynamodb-table-definition.json:/opt/code/localstack/dynamodb-table-definition.json
-
-  file-storage:
-    image: adobe/s3mock:3.3.0
-    environment:
-      - initialBuckets=event-admin-service-file-storage
-    ports:
-      - 9090:9090
+      - ./storage/init-scripts/init-localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
+      - ./storage/init-scripts/dynamodb-table-definition.json:/opt/code/localstack/dynamodb-table-definition.json

@@ -1,7 +1,7 @@
 package com.ebsolutions.eventsadminservice.publishedeventschedule;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.model.PublishedEventSchedule;
+import com.ebsolutions.eventsadminservice.shared.Constants;
 import com.ebsolutions.eventsadminservice.shared.SortKeyType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
@@ -23,7 +23,6 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 @AllArgsConstructor
 public class PublishedEventScheduleDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
-  private final DatabaseConfig databaseConfig;
 
   public PublishedEventSchedule read(String clientId, String publishedEventScheduleId)
       throws DataProcessingException {
@@ -34,7 +33,7 @@ public class PublishedEventScheduleDao {
           publishedEventScheduleId);
 
       DynamoDbTable<PublishedEventScheduleDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(PublishedEventScheduleDto.class));
 
       PublishedEventScheduleDto publishedEventScheduleDto = dtoDynamoDbTable.getItem(key);
@@ -81,7 +80,7 @@ public class PublishedEventScheduleDao {
           .build();
 
       DynamoDbTable<PublishedEventScheduleDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(PublishedEventScheduleDto.class));
 
       dtoDynamoDbTable.updateItem(publishedEventScheduleDto);

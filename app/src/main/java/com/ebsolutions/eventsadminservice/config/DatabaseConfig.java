@@ -2,7 +2,6 @@ package com.ebsolutions.eventsadminservice.config;
 
 
 import java.net.URI;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,16 +14,12 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @Configuration
 public class DatabaseConfig {
-  @Getter
-  @Value("${database.tableName:`Database table name not found in environment`}")
-  public String tableName;
-
-  @Value("${database.endpoint:`Database endpoint not found in environment`}")
+  @Value("${storage.endpoint:`Database endpoint not found in environment`}")
   protected String endpoint;
 
   @Bean
   @Profile({"local"})
-  public DynamoDbEnhancedClient localClientInstantiation() {
+  public DynamoDbEnhancedClient localDynamoDbEnhancedClientInstantiation() {
     DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
         .endpointOverride(URI.create(endpoint))
         .region(Region.US_EAST_1)

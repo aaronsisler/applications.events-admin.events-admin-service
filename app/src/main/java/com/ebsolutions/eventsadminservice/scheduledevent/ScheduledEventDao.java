@@ -2,10 +2,10 @@ package com.ebsolutions.eventsadminservice.scheduledevent;
 
 import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.model.ScheduledEvent;
 import com.ebsolutions.eventsadminservice.model.ScheduledEventInterval;
 import com.ebsolutions.eventsadminservice.model.ScheduledEventType;
+import com.ebsolutions.eventsadminservice.shared.Constants;
 import com.ebsolutions.eventsadminservice.shared.SortKeyType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.DayOfWeekConverter;
@@ -34,7 +34,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 @AllArgsConstructor
 public class ScheduledEventDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
-  private final DatabaseConfig databaseConfig;
 
   public ScheduledEvent read(String eventScheduleId, String scheduledEventId)
       throws DataProcessingException {
@@ -43,7 +42,7 @@ public class ScheduledEventDao {
       Key key = KeyBuilder.build(eventScheduleId, SortKeyType.SCHEDULED_EVENT, scheduledEventId);
 
       DynamoDbTable<ScheduledEventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(ScheduledEventDto.class));
 
       ScheduledEventDto scheduledEventDto = dtoDynamoDbTable.getItem(key);
@@ -88,7 +87,7 @@ public class ScheduledEventDao {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<ScheduledEventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(ScheduledEventDto.class));
 
       List<ScheduledEventDto> scheduledEventDtos = dtoDynamoDbTable
@@ -172,7 +171,7 @@ public class ScheduledEventDao {
           ));
 
       DynamoDbTable<ScheduledEventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(ScheduledEventDto.class));
 
       WriteBatch.Builder<ScheduledEventDto> writeBatchBuilder =
@@ -268,7 +267,7 @@ public class ScheduledEventDao {
           .build();
 
       DynamoDbTable<ScheduledEventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(ScheduledEventDto.class));
 
       dtoDynamoDbTable.putItem(scheduledEventDto);
@@ -313,7 +312,7 @@ public class ScheduledEventDao {
       Key key = KeyBuilder.build(eventScheduleId, SortKeyType.SCHEDULED_EVENT, scheduledEventId);
 
       DynamoDbTable<ScheduledEventDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(ScheduledEventDto.class));
 
       dtoDynamoDbTable.deleteItem(key);

@@ -2,8 +2,8 @@ package com.ebsolutions.eventsadminservice.organizer;
 
 import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.model.Organizer;
+import com.ebsolutions.eventsadminservice.shared.Constants;
 import com.ebsolutions.eventsadminservice.shared.SortKeyType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
@@ -31,7 +31,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 @AllArgsConstructor
 public class OrganizerDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
-  private final DatabaseConfig databaseConfig;
 
   public Organizer read(String clientId, String organizerId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
@@ -39,7 +38,7 @@ public class OrganizerDao {
       Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
 
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(OrganizerDto.class));
 
       OrganizerDto organizerDto = dtoDynamoDbTable.getItem(key);
@@ -67,7 +66,7 @@ public class OrganizerDao {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(OrganizerDto.class));
 
       List<OrganizerDto> organizerDtos = dtoDynamoDbTable
@@ -117,7 +116,7 @@ public class OrganizerDao {
       );
 
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(OrganizerDto.class));
 
       WriteBatch.Builder<OrganizerDto> writeBatchBuilder = WriteBatch.builder(OrganizerDto.class)
@@ -181,7 +180,7 @@ public class OrganizerDao {
           .build();
 
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(OrganizerDto.class));
 
       dtoDynamoDbTable.putItem(organizerDto);
@@ -209,7 +208,7 @@ public class OrganizerDao {
       Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
 
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(OrganizerDto.class));
 
       dtoDynamoDbTable.deleteItem(key);

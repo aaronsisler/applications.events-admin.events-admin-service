@@ -2,8 +2,8 @@ package com.ebsolutions.eventsadminservice.client;
 
 import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.keyEqualTo;
 
-import com.ebsolutions.eventsadminservice.config.DatabaseConfig;
 import com.ebsolutions.eventsadminservice.model.Client;
+import com.ebsolutions.eventsadminservice.shared.Constants;
 import com.ebsolutions.eventsadminservice.shared.SortKeyType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
@@ -31,7 +31,6 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 @AllArgsConstructor
 public class ClientDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
-  private final DatabaseConfig databaseConfig;
 
   public Client read(String clientId) throws DataProcessingException {
     MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
@@ -39,7 +38,7 @@ public class ClientDao {
       Key key = KeyBuilder.build(SortKeyType.CLIENT.name(), SortKeyType.CLIENT, clientId);
 
       DynamoDbTable<ClientDto> clientDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(ClientDto.class));
       ClientDto clientDto = clientDtoDynamoDbTable.getItem(key);
 
@@ -65,7 +64,7 @@ public class ClientDao {
     MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
       DynamoDbTable<ClientDto> clientDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(ClientDto.class));
       List<ClientDto> clientDtos = clientDtoDynamoDbTable
           .query(r -> r.queryConditional(
@@ -112,7 +111,7 @@ public class ClientDao {
       );
 
       DynamoDbTable<ClientDto> clientDtoDynamoDbTable =
-          dynamoDbEnhancedClient.table(databaseConfig.getTableName(),
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(ClientDto.class));
       WriteBatch.Builder<ClientDto> writeBatchBuilder = WriteBatch.builder(ClientDto.class)
           .mappedTableResource(clientDtoDynamoDbTable);

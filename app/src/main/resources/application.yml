@@ -16,8 +16,5 @@ spring:
   config:
     activate:
       on-profile: local, default
-database:
-  tableName: SERVICES_EVENTS_ADMIN_SERVICE_LOCAL
+storage:
   endpoint: http://localhost:4566
-fileLocation:
-  endpoint: http://localhost:9090
