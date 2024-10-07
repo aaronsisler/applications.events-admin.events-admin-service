@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.ebsolutions.eventsadminservice</groupId>
         <artifactId>events-admin-service-parent</artifactId>
-        <version>0.12.0</version>
+        <version>0.13.0</version>
     </parent>
 
     <artifactId>events-admin-service</artifactId>
@@ -117,12 +117,6 @@
             <version>1.18.34</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
-        </dependency>
-
         <!-- StringUtils util that checks for empty strings, etc. -->
         <!-- Version: Explicit -->
         <dependency>
@@ -152,6 +146,8 @@
 
     <build>
         <plugins>
+            <!-- Maintains strict Code Styles -->
+            <!-- Version: Parent Pom -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -178,7 +174,7 @@
                 </executions>
             </plugin>
             <!-- Generates Java classes from OpenAPI contracts -->
-            <!-- Version: Explicit: Parent Pom -->
+            <!-- Version: Parent Pom -->
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>

@@ -14,6 +14,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.13.0]
+
+### Changed
+
+- Speeding things up so I can make this project stable for building UI
+- Side project for understanding how Cucumber can be utilized is in flight
+
+### Removed
+
+- All tests and dependencies around testing
+
 ## [0.12.0]
 
 ### Fixed
