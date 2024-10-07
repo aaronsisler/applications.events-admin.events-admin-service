@@ -19,7 +19,7 @@
         <!-- Versions: Plugins-->
 
         <!-- Versions: Dependencies -->
-        <software.amazon.awssdk.bom.version>2.25.55</software.amazon.awssdk.bom.version>
+        <software.amazon.awssdk.bom.version>2.28.16</software.amazon.awssdk.bom.version>
         <commons-lang3.version>3.13.0</commons-lang3.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
