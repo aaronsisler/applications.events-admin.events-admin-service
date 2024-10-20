@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Profile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @Configuration
@@ -17,12 +16,12 @@ public class DatabaseConfig {
   @Value("${storage.endpoint:`Database endpoint not found in environment`}")
   protected String endpoint;
 
+
   @Bean
   @Profile({"local"})
   public DynamoDbEnhancedClient localDynamoDbEnhancedClientInstantiation() {
     DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
         .endpointOverride(URI.create(endpoint))
-        .region(Region.US_EAST_1)
         .credentialsProvider(staticCredentialsProvider())
         .build();
 
