@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.shared;
 
-public enum SortKeyType {
+public enum RecordType {
   CLIENT,
   LOCATION,
   ORGANIZER,

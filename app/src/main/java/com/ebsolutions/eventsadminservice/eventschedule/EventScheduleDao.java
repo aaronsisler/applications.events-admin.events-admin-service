@@ -4,7 +4,7 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.so
 
 import com.ebsolutions.eventsadminservice.model.EventSchedule;
 import com.ebsolutions.eventsadminservice.shared.Constants;
-import com.ebsolutions.eventsadminservice.shared.SortKeyType;
+import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.shared.util.MetricsStopwatch;
@@ -37,7 +37,7 @@ public class EventScheduleDao {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
 
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.EVENT_SCHEDULE, eventScheduleId);
+      Key key = KeyBuilder.build(clientId, RecordType.EVENT_SCHEDULE, eventScheduleId);
 
       DynamoDbTable<EventScheduleDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -50,7 +50,7 @@ public class EventScheduleDao {
           : EventSchedule.builder()
           .clientId(eventScheduleDto.getPartitionKey())
           .eventScheduleId(
-              StringUtils.remove(eventScheduleDto.getSortKey(), SortKeyType.EVENT_SCHEDULE.name()))
+              StringUtils.remove(eventScheduleDto.getSortKey(), RecordType.EVENT_SCHEDULE.name()))
           .name(eventScheduleDto.getName())
           .description(eventScheduleDto.getDescription())
           .createdOn(eventScheduleDto.getCreatedOn())
@@ -76,7 +76,7 @@ public class EventScheduleDao {
       List<EventScheduleDto> eventScheduleDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(SortKeyType.EVENT_SCHEDULE.name())
+                  -> s.partitionValue(clientId).sortValue(RecordType.EVENT_SCHEDULE.name())
                   .build()))
           )
           .items()
@@ -89,7 +89,7 @@ public class EventScheduleDao {
                   .clientId(eventScheduleDto.getPartitionKey())
                   .eventScheduleId(
                       StringUtils.remove(eventScheduleDto.getSortKey(),
-                          SortKeyType.EVENT_SCHEDULE.name()))
+                          RecordType.EVENT_SCHEDULE.name()))
                   .name(eventScheduleDto.getName())
                   .description(eventScheduleDto.getDescription())
                   .createdOn(eventScheduleDto.getCreatedOn())
@@ -116,7 +116,7 @@ public class EventScheduleDao {
           eventScheduleDtos.add(
               EventScheduleDto.builder()
                   .partitionKey(eventSchedule.getClientId())
-                  .sortKey(SortKeyType.EVENT_SCHEDULE + UniqueIdGenerator.generate())
+                  .sortKey(RecordType.EVENT_SCHEDULE + UniqueIdGenerator.generate())
                   .name(eventSchedule.getName())
                   .description(eventSchedule.getDescription())
                   .createdOn(now)
@@ -154,7 +154,7 @@ public class EventScheduleDao {
               .clientId(eventScheduleDto.getPartitionKey())
               .eventScheduleId(
                   StringUtils.remove(eventScheduleDto.getSortKey(),
-                      SortKeyType.EVENT_SCHEDULE.name()))
+                      RecordType.EVENT_SCHEDULE.name()))
               .name(eventScheduleDto.getName())
               .description(eventScheduleDto.getDescription())
               .createdOn(eventScheduleDto.getCreatedOn())
@@ -186,7 +186,7 @@ public class EventScheduleDao {
       EventScheduleDto
           eventScheduleDto = EventScheduleDto.builder()
           .partitionKey(eventSchedule.getClientId())
-          .sortKey(SortKeyType.EVENT_SCHEDULE + eventSchedule.getEventScheduleId())
+          .sortKey(RecordType.EVENT_SCHEDULE + eventSchedule.getEventScheduleId())
           .name(eventSchedule.getName())
           .description(eventSchedule.getDescription())
           .createdOn(eventSchedule.getCreatedOn())
@@ -202,7 +202,7 @@ public class EventScheduleDao {
       return EventSchedule.builder()
           .clientId(eventScheduleDto.getPartitionKey())
           .eventScheduleId(
-              StringUtils.remove(eventScheduleDto.getSortKey(), SortKeyType.EVENT_SCHEDULE.name()))
+              StringUtils.remove(eventScheduleDto.getSortKey(), RecordType.EVENT_SCHEDULE.name()))
           .name(eventScheduleDto.getName())
           .createdOn(eventScheduleDto.getCreatedOn())
           .lastUpdatedOn(eventScheduleDto.getLastUpdatedOn())
@@ -220,7 +220,7 @@ public class EventScheduleDao {
   public void delete(String clientId, String eventScheduleId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.EVENT_SCHEDULE, eventScheduleId);
+      Key key = KeyBuilder.build(clientId, RecordType.EVENT_SCHEDULE, eventScheduleId);
 
       DynamoDbTable<EventScheduleDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,

@@ -4,7 +4,7 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.so
 
 import com.ebsolutions.eventsadminservice.model.Location;
 import com.ebsolutions.eventsadminservice.shared.Constants;
-import com.ebsolutions.eventsadminservice.shared.SortKeyType;
+import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.shared.util.MetricsStopwatch;
@@ -35,7 +35,7 @@ public class LocationDao {
   public Location read(String clientId, String locationId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.LOCATION, locationId);
+      Key key = KeyBuilder.build(clientId, RecordType.LOCATION, locationId);
 
       DynamoDbTable<LocationDto> clientDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -47,7 +47,7 @@ public class LocationDao {
           ? null
           : Location.builder()
           .clientId(locationDto.getPartitionKey())
-          .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
+          .locationId(StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()))
           .name(locationDto.getName())
           .createdOn(locationDto.getCreatedOn())
           .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -72,7 +72,7 @@ public class LocationDao {
       List<LocationDto> locationDtos = locationDtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(SortKeyType.LOCATION.name()).build()))
+                  -> s.partitionValue(clientId).sortValue(RecordType.LOCATION.name()).build()))
           )
           .items()
           .stream()
@@ -83,7 +83,7 @@ public class LocationDao {
               Location.builder()
                   .clientId(locationDto.getPartitionKey())
                   .locationId(
-                      StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
+                      StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()))
                   .name(locationDto.getName())
                   .createdOn(locationDto.getCreatedOn())
                   .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -108,7 +108,7 @@ public class LocationDao {
       locations.forEach(location ->
           locationDtos.add(LocationDto.builder()
               .partitionKey(location.getClientId())
-              .sortKey(SortKeyType.LOCATION + UniqueIdGenerator.generate())
+              .sortKey(RecordType.LOCATION + UniqueIdGenerator.generate())
               .name(location.getName())
               .createdOn(now)
               .lastUpdatedOn(now)
@@ -144,7 +144,7 @@ public class LocationDao {
           Location.builder()
               .clientId(locationDto.getPartitionKey())
               .locationId(
-                  StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
+                  StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()))
               .name(locationDto.getName())
               .createdOn(locationDto.getCreatedOn())
               .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -175,7 +175,7 @@ public class LocationDao {
       LocationDto
           locationDto = LocationDto.builder()
           .partitionKey(location.getClientId())
-          .sortKey(SortKeyType.LOCATION + location.getLocationId())
+          .sortKey(RecordType.LOCATION + location.getLocationId())
           .name(location.getName())
           .createdOn(location.getCreatedOn())
           .lastUpdatedOn(LocalDateTime.now())
@@ -189,7 +189,7 @@ public class LocationDao {
 
       return Location.builder()
           .clientId(locationDto.getPartitionKey())
-          .locationId(StringUtils.remove(locationDto.getSortKey(), SortKeyType.LOCATION.name()))
+          .locationId(StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()))
           .name(locationDto.getName())
           .createdOn(locationDto.getCreatedOn())
           .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -207,7 +207,7 @@ public class LocationDao {
   public void delete(String clientId, String locationId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.LOCATION, locationId);
+      Key key = KeyBuilder.build(clientId, RecordType.LOCATION, locationId);
 
       DynamoDbTable<LocationDto> locationDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,

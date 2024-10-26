@@ -4,7 +4,7 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.so
 
 import com.ebsolutions.eventsadminservice.model.Event;
 import com.ebsolutions.eventsadminservice.shared.Constants;
-import com.ebsolutions.eventsadminservice.shared.SortKeyType;
+import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.shared.util.MetricsStopwatch;
@@ -35,7 +35,7 @@ public class EventDao {
   public Event read(String clientId, String eventId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.EVENT, eventId);
+      Key key = KeyBuilder.build(clientId, RecordType.EVENT, eventId);
 
       DynamoDbTable<EventDto> eventDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -47,7 +47,7 @@ public class EventDao {
           ? null
           : Event.builder()
           .clientId(eventDto.getPartitionKey())
-          .eventId(StringUtils.remove(eventDto.getSortKey(), SortKeyType.EVENT.name()))
+          .eventId(StringUtils.remove(eventDto.getSortKey(), RecordType.EVENT.name()))
           .locationId(eventDto.getLocationId())
           .organizerId(eventDto.getOrganizerId())
           .name(eventDto.getName())
@@ -76,7 +76,7 @@ public class EventDao {
       List<EventDto> eventDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(SortKeyType.EVENT.name()).build()))
+                  -> s.partitionValue(clientId).sortValue(RecordType.EVENT.name()).build()))
           )
           .items()
           .stream()
@@ -86,7 +86,7 @@ public class EventDao {
           .map(eventDto ->
               Event.builder()
                   .clientId(eventDto.getPartitionKey())
-                  .eventId(StringUtils.remove(eventDto.getSortKey(), SortKeyType.EVENT.name()))
+                  .eventId(StringUtils.remove(eventDto.getSortKey(), RecordType.EVENT.name()))
                   .locationId(eventDto.getLocationId())
                   .organizerId(eventDto.getOrganizerId())
                   .name(eventDto.getName())
@@ -115,7 +115,7 @@ public class EventDao {
       events.forEach(event ->
           eventDtos.add(EventDto.builder()
               .partitionKey(event.getClientId())
-              .sortKey(SortKeyType.EVENT + UniqueIdGenerator.generate())
+              .sortKey(RecordType.EVENT + UniqueIdGenerator.generate())
               .locationId(event.getLocationId())
               .organizerId(event.getOrganizerId())
               .name(event.getName())
@@ -155,7 +155,7 @@ public class EventDao {
       return eventDtos.stream().map(eventDto ->
           Event.builder()
               .clientId(eventDto.getPartitionKey())
-              .eventId(StringUtils.remove(eventDto.getSortKey(), SortKeyType.EVENT.name()))
+              .eventId(StringUtils.remove(eventDto.getSortKey(), RecordType.EVENT.name()))
               .locationId(eventDto.getLocationId())
               .organizerId(eventDto.getOrganizerId())
               .name(eventDto.getName())
@@ -188,7 +188,7 @@ public class EventDao {
 
       EventDto eventDto = EventDto.builder()
           .partitionKey(event.getClientId())
-          .sortKey(SortKeyType.EVENT + event.getEventId())
+          .sortKey(RecordType.EVENT + event.getEventId())
           .locationId(event.getLocationId())
           .organizerId(event.getOrganizerId())
           .name(event.getName())
@@ -206,7 +206,7 @@ public class EventDao {
 
       return Event.builder()
           .clientId(eventDto.getPartitionKey())
-          .eventId(StringUtils.remove(eventDto.getSortKey(), SortKeyType.EVENT.name()))
+          .eventId(StringUtils.remove(eventDto.getSortKey(), RecordType.EVENT.name()))
           .locationId(eventDto.getLocationId())
           .organizerId(eventDto.getOrganizerId())
           .name(eventDto.getName())
@@ -228,7 +228,7 @@ public class EventDao {
   public void delete(String clientId, String eventId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.EVENT, eventId);
+      Key key = KeyBuilder.build(clientId, RecordType.EVENT, eventId);
 
       DynamoDbTable<EventDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,

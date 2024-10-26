@@ -4,7 +4,7 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.ke
 
 import com.ebsolutions.eventsadminservice.model.User;
 import com.ebsolutions.eventsadminservice.shared.Constants;
-import com.ebsolutions.eventsadminservice.shared.SortKeyType;
+import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.shared.util.MetricsStopwatch;
@@ -35,7 +35,7 @@ public class UserDao {
   public User read(String userId) throws DataProcessingException {
     MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(SortKeyType.USER.name(), SortKeyType.USER, userId);
+      Key key = KeyBuilder.build(RecordType.USER.name(), RecordType.USER, userId);
 
       DynamoDbTable<UserDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -45,7 +45,7 @@ public class UserDao {
       return userDto == null
           ? null
           : User.builder()
-          .userId(StringUtils.remove(userDto.getSortKey(), SortKeyType.USER.name()))
+          .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
           .name(userDto.getName())
           .clientIds(userDto.getClientIds())
           .createdOn(userDto.getCreatedOn())
@@ -69,7 +69,7 @@ public class UserDao {
               TableSchema.fromBean(UserDto.class));
       List<UserDto> userDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
-              keyEqualTo(s -> s.partitionValue(SortKeyType.USER.name()).build()))
+              keyEqualTo(s -> s.partitionValue(RecordType.USER.name()).build()))
           )
           .items()
           .stream()
@@ -78,7 +78,7 @@ public class UserDao {
       return userDtos.stream()
           .map(userDto ->
               User.builder()
-                  .userId(StringUtils.remove(userDto.getSortKey(), SortKeyType.USER.name()))
+                  .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
                   .name(userDto.getName())
                   .clientIds(userDto.getClientIds())
                   .createdOn(userDto.getCreatedOn())
@@ -104,8 +104,8 @@ public class UserDao {
 
       users.forEach(user ->
           userDtos.add(UserDto.builder()
-              .partitionKey(SortKeyType.USER.name())
-              .sortKey(SortKeyType.USER + UniqueIdGenerator.generate())
+              .partitionKey(RecordType.USER.name())
+              .sortKey(RecordType.USER + UniqueIdGenerator.generate())
               .name(user.getName())
               .clientIds(user.getClientIds())
               .createdOn(now)
@@ -139,7 +139,7 @@ public class UserDao {
 
       return userDtos.stream().map(userDto ->
           User.builder()
-              .userId(StringUtils.remove(userDto.getSortKey(), SortKeyType.USER.name()))
+              .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
               .name(userDto.getName())
               .clientIds(userDto.getClientIds())
               .createdOn(userDto.getCreatedOn())
@@ -154,6 +154,70 @@ public class UserDao {
     } finally {
       metricsStopWatch.logElapsedTime(
           MessageFormat.format("{0}::{1}", this.getClass().getName(), "create"));
+    }
+  }
+
+  /**
+   * This will replace the entire database object with the input user
+   *
+   * @param user the object to replace the current database object
+   */
+  public User update(User user) {
+    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
+
+    try {
+      assert user.getUserId() != null;
+
+      UserDto
+          userDto = UserDto.builder()
+          .partitionKey(RecordType.USER.name())
+          .sortKey(RecordType.USER.name() + user.getUserId())
+          .name(user.getName())
+          .clientIds(user.getClientIds())
+          .createdOn(user.getCreatedOn())
+          .lastUpdatedOn(LocalDateTime.now())
+          .build();
+
+      DynamoDbTable<UserDto> dtoDynamoDbTable =
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
+              TableSchema.fromBean(UserDto.class));
+
+      dtoDynamoDbTable.putItem(userDto);
+
+      return User.builder()
+          .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+          .name(userDto.getName())
+          .clientIds(userDto.getClientIds())
+          .createdOn(userDto.getCreatedOn())
+          .lastUpdatedOn(userDto.getLastUpdatedOn())
+          .build();
+    } catch (Exception e) {
+      log.error("ERROR::{}", this.getClass().getName(), e);
+      throw new DataProcessingException(
+          MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
+    } finally {
+      metricsStopwatch.logElapsedTime(
+          MessageFormat.format("{0}::{1}", this.getClass().getName(), "update"));
+    }
+  }
+
+  public void delete(String userId) {
+    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
+    try {
+      Key key = KeyBuilder.build(RecordType.USER.name(), RecordType.USER, userId);
+
+      DynamoDbTable<UserDto> dtoDynamoDbTable =
+          dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
+              TableSchema.fromBean(UserDto.class));
+
+      dtoDynamoDbTable.deleteItem(key);
+    } catch (Exception e) {
+      log.error("ERROR::{}", this.getClass().getName(), e);
+      throw new DataProcessingException(
+          MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
+    } finally {
+      metricsStopwatch.logElapsedTime(
+          MessageFormat.format("{0}::{1}", this.getClass().getName(), "delete"));
     }
   }
 }

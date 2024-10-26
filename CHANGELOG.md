@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.15.0]
+
+### Added
+
+- User GET, GET ALL, POST, PUT, DELETE
+- Adding in `dev` profile that will be used in Docker containing database, file storage, and running application
+
 ## [0.14.0]
 
 ### Added
@@ -65,20 +72,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Scheduled Events GET, POST, PUT, DELETE
-- Event Schedules GET, POST, PUT, DELETE
-- Published Event Schedules GET, POST
+- Scheduled Events GET, GET ALL, POST, PUT, DELETE
+- Event Schedules GET, GET ALL, POST, PUT, DELETE
+- Published Event Schedules GET, GET ALL, POST
 
 ## [0.6.0] Events APIs
 
 ### Added
 
-- Events GET, POST, PUT, DELETE
+- Events GET, GET ALL, POST, PUT, DELETE
 
 ## [0.5.0] Clients, Locations, Organizer APIs
 
 ### Added
 
-- Organizers GET, POST, PUT, DELETE
-- Locations GET, POST, PUT, DELETE
-- Clients GET, POST, PUT, DELETE
+- Organizers GET, GET ALL, POST, PUT, DELETE
+- Locations GET, GET ALL, POST, PUT, DELETE
+- Clients GET, GET ALL, POST

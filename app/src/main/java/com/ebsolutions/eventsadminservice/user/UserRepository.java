@@ -21,4 +21,12 @@ public class UserRepository {
   public List<User> readAll() {
     return userDao.readAll();
   }
+
+  public User update(User user) {
+    return userDao.update(user);
+  }
+
+  public void delete(String userId) {
+    userDao.delete(userId);
+  }
 }

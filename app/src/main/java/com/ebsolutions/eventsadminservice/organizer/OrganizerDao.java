@@ -4,7 +4,7 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.so
 
 import com.ebsolutions.eventsadminservice.model.Organizer;
 import com.ebsolutions.eventsadminservice.shared.Constants;
-import com.ebsolutions.eventsadminservice.shared.SortKeyType;
+import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.shared.util.MetricsStopwatch;
@@ -35,7 +35,7 @@ public class OrganizerDao {
   public Organizer read(String clientId, String organizerId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
+      Key key = KeyBuilder.build(clientId, RecordType.ORGANIZER, organizerId);
 
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -47,7 +47,7 @@ public class OrganizerDao {
           ? null
           : Organizer.builder()
           .clientId(organizerDto.getPartitionKey())
-          .organizerId(StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
+          .organizerId(StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
           .name(organizerDto.getName())
           .createdOn(organizerDto.getCreatedOn())
           .lastUpdatedOn(organizerDto.getLastUpdatedOn())
@@ -72,7 +72,7 @@ public class OrganizerDao {
       List<OrganizerDto> organizerDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(SortKeyType.ORGANIZER.name()).build()))
+                  -> s.partitionValue(clientId).sortValue(RecordType.ORGANIZER.name()).build()))
           )
           .items()
           .stream()
@@ -83,7 +83,7 @@ public class OrganizerDao {
               Organizer.builder()
                   .clientId(organizerDto.getPartitionKey())
                   .organizerId(
-                      StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
+                      StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
                   .name(organizerDto.getName())
                   .createdOn(organizerDto.getCreatedOn())
                   .lastUpdatedOn(organizerDto.getLastUpdatedOn())
@@ -108,7 +108,7 @@ public class OrganizerDao {
       organizers.forEach(organizer ->
           organizerDtos.add(OrganizerDto.builder()
               .partitionKey(organizer.getClientId())
-              .sortKey(SortKeyType.ORGANIZER + UniqueIdGenerator.generate())
+              .sortKey(RecordType.ORGANIZER + UniqueIdGenerator.generate())
               .name(organizer.getName())
               .createdOn(now)
               .lastUpdatedOn(now)
@@ -143,7 +143,7 @@ public class OrganizerDao {
           Organizer.builder()
               .clientId(organizerDto.getPartitionKey())
               .organizerId(
-                  StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
+                  StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
               .name(organizerDto.getName())
               .createdOn(organizerDto.getCreatedOn())
               .lastUpdatedOn(organizerDto.getLastUpdatedOn())
@@ -173,7 +173,7 @@ public class OrganizerDao {
 
       OrganizerDto organizerDto = OrganizerDto.builder()
           .partitionKey(organizer.getClientId())
-          .sortKey(SortKeyType.ORGANIZER + organizer.getOrganizerId())
+          .sortKey(RecordType.ORGANIZER + organizer.getOrganizerId())
           .name(organizer.getName())
           .createdOn(organizer.getCreatedOn())
           .lastUpdatedOn(LocalDateTime.now())
@@ -187,7 +187,7 @@ public class OrganizerDao {
 
       return Organizer.builder()
           .clientId(organizerDto.getPartitionKey())
-          .organizerId(StringUtils.remove(organizerDto.getSortKey(), SortKeyType.ORGANIZER.name()))
+          .organizerId(StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
           .name(organizerDto.getName())
           .createdOn(organizerDto.getCreatedOn())
           .lastUpdatedOn(organizerDto.getLastUpdatedOn())
@@ -205,7 +205,7 @@ public class OrganizerDao {
   public void delete(String clientId, String organizerId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.ORGANIZER, organizerId);
+      Key key = KeyBuilder.build(clientId, RecordType.ORGANIZER, organizerId);
 
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
