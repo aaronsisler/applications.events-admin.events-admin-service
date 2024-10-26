@@ -185,15 +185,6 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>models-shared</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>models-client</id>
                         <goals>
                             <goal>generate</goal>
@@ -254,6 +245,24 @@
                         </goals>
                         <configuration>
                             <inputSpec>${pom.basedir}/contracts/scheduled-event.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>models-shared</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>models-user</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${pom.basedir}/contracts/user.yaml</inputSpec>
                         </configuration>
                     </execution>
                 </executions>
