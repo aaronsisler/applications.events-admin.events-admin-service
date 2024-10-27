@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - User GET, GET ALL, POST, PUT, DELETE
 - Adding in `dev` profile that will be used in Docker containing database, file storage, and running application
+- Adding in a base client and a base user that is associated with that client for UI purposes until AuthN/Z is ready
 
 ## [0.14.0]
 

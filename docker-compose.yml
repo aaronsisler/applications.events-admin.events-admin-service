@@ -12,7 +12,8 @@ services:
       # Using this for AWS CLI commands currently.
       - ./storage/init-scripts/init-localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
       - ./storage/init-scripts/dynamodb-table-definition.json:/opt/code/localstack/dynamodb-table-definition.json
-
+      - ./storage/init-scripts/data/base-user.json:/opt/code/localstack/data/base-user.json
+      - ./storage/init-scripts/data/base-client.json:/opt/code/localstack/data/base-client.json
   app:
     depends_on:
       - storage
