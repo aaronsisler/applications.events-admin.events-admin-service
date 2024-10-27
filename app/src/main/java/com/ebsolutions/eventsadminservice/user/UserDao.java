@@ -1,8 +1,8 @@
-package com.ebsolutions.eventsadminservice.organizer;
+package com.ebsolutions.eventsadminservice.user;
 
-import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
+import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.keyEqualTo;
 
-import com.ebsolutions.eventsadminservice.model.Organizer;
+import com.ebsolutions.eventsadminservice.model.User;
 import com.ebsolutions.eventsadminservice.shared.Constants;
 import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
@@ -29,64 +29,60 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 @Slf4j
 @Repository
 @AllArgsConstructor
-public class OrganizerDao {
+public class UserDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
-  public Organizer read(String clientId, String organizerId) throws DataProcessingException {
-    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
+  public User read(String userId) throws DataProcessingException {
+    MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.ORGANIZER, organizerId);
+      Key key = KeyBuilder.build(RecordType.USER.name(), RecordType.USER, userId);
 
-      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
+      DynamoDbTable<UserDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
-              TableSchema.fromBean(OrganizerDto.class));
+              TableSchema.fromBean(UserDto.class));
+      UserDto userDto = dtoDynamoDbTable.getItem(key);
 
-      OrganizerDto organizerDto = dtoDynamoDbTable.getItem(key);
-
-      return organizerDto == null
+      return userDto == null
           ? null
-          : Organizer.builder()
-          .clientId(organizerDto.getPartitionKey())
-          .organizerId(StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
-          .name(organizerDto.getName())
-          .createdOn(organizerDto.getCreatedOn())
-          .lastUpdatedOn(organizerDto.getLastUpdatedOn())
+          : User.builder()
+          .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+          .name(userDto.getName())
+          .clientIds(userDto.getClientIds())
+          .createdOn(userDto.getCreatedOn())
+          .lastUpdatedOn(userDto.getLastUpdatedOn())
           .build();
     } catch (Exception e) {
       log.error("ERROR::{}", this.getClass().getName(), e);
       throw new DataProcessingException(
           MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
     } finally {
-      metricsStopwatch.logElapsedTime(
+      metricsStopWatch.logElapsedTime(
           MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
     }
   }
 
-  public List<Organizer> readAll(String clientId) throws DataProcessingException {
-    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
+  public List<User> readAll() throws DataProcessingException {
+    MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
-      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
+      DynamoDbTable<UserDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
-              TableSchema.fromBean(OrganizerDto.class));
-
-      List<OrganizerDto> organizerDtos = dtoDynamoDbTable
+              TableSchema.fromBean(UserDto.class));
+      List<UserDto> userDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
-              sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(RecordType.ORGANIZER.name()).build()))
+              keyEqualTo(s -> s.partitionValue(RecordType.USER.name()).build()))
           )
           .items()
           .stream()
           .toList();
 
-      return organizerDtos.stream()
-          .map(organizerDto ->
-              Organizer.builder()
-                  .clientId(organizerDto.getPartitionKey())
-                  .organizerId(
-                      StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
-                  .name(organizerDto.getName())
-                  .createdOn(organizerDto.getCreatedOn())
-                  .lastUpdatedOn(organizerDto.getLastUpdatedOn())
+      return userDtos.stream()
+          .map(userDto ->
+              User.builder()
+                  .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+                  .name(userDto.getName())
+                  .clientIds(userDto.getClientIds())
+                  .createdOn(userDto.getCreatedOn())
+                  .lastUpdatedOn(userDto.getLastUpdatedOn())
                   .build()
           ).collect(Collectors.toList());
     } catch (Exception e) {
@@ -94,35 +90,37 @@ public class OrganizerDao {
       throw new DataProcessingException(
           MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
     } finally {
-      metricsStopwatch.logElapsedTime(
+      metricsStopWatch.logElapsedTime(
           MessageFormat.format("{0}::{1}", this.getClass().getName(), "read"));
     }
   }
 
-  public List<Organizer> create(List<Organizer> organizers) {
-    MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
-    List<OrganizerDto> organizerDtos = new ArrayList<>();
-    LocalDateTime now = LocalDateTime.now();
-
+  public List<User> create(List<User> users) {
+    MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
-      organizers.forEach(organizer ->
-          organizerDtos.add(OrganizerDto.builder()
-              .partitionKey(organizer.getClientId())
-              .sortKey(RecordType.ORGANIZER + UniqueIdGenerator.generate())
-              .name(organizer.getName())
+      LocalDateTime now = LocalDateTime.now();
+
+      List<UserDto> userDtos = new ArrayList<>();
+
+      users.forEach(user ->
+          userDtos.add(UserDto.builder()
+              .partitionKey(RecordType.USER.name())
+              .sortKey(RecordType.USER + UniqueIdGenerator.generate())
+              .name(user.getName())
+              .clientIds(user.getClientIds())
               .createdOn(now)
               .lastUpdatedOn(now)
               .build())
       );
 
-      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
+      DynamoDbTable<UserDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
-              TableSchema.fromBean(OrganizerDto.class));
-
-      WriteBatch.Builder<OrganizerDto> writeBatchBuilder = WriteBatch.builder(OrganizerDto.class)
+              TableSchema.fromBean(UserDto.class));
+      WriteBatch.Builder<UserDto> writeBatchBuilder = WriteBatch.builder(
+              UserDto.class)
           .mappedTableResource(dtoDynamoDbTable);
 
-      organizerDtos.forEach(writeBatchBuilder::addPutItem);
+      userDtos.forEach(writeBatchBuilder::addPutItem);
 
       WriteBatch writeBatch = writeBatchBuilder.build();
 
@@ -139,14 +137,13 @@ public class OrganizerDao {
             log.info(key.toString()));
       }
 
-      return organizerDtos.stream().map(organizerDto ->
-          Organizer.builder()
-              .clientId(organizerDto.getPartitionKey())
-              .organizerId(
-                  StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
-              .name(organizerDto.getName())
-              .createdOn(organizerDto.getCreatedOn())
-              .lastUpdatedOn(organizerDto.getLastUpdatedOn())
+      return userDtos.stream().map(userDto ->
+          User.builder()
+              .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+              .name(userDto.getName())
+              .clientIds(userDto.getClientIds())
+              .createdOn(userDto.getCreatedOn())
+              .lastUpdatedOn(userDto.getLastUpdatedOn())
               .build()
       ).collect(Collectors.toList());
 
@@ -155,42 +152,44 @@ public class OrganizerDao {
       throw new DataProcessingException(
           MessageFormat.format("Error in {0}: {1}", this.getClass().getName(), e.getMessage()));
     } finally {
-      metricsStopwatch.logElapsedTime(
+      metricsStopWatch.logElapsedTime(
           MessageFormat.format("{0}::{1}", this.getClass().getName(), "create"));
     }
   }
 
   /**
-   * This will replace the entire database object with the input organizer
+   * This will replace the entire database object with the input user
    *
-   * @param organizer the object to replace the current database object
+   * @param user the object to replace the current database object
    */
-  public Organizer update(Organizer organizer) {
+  public User update(User user) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
 
     try {
-      assert organizer.getOrganizerId() != null;
+      assert user.getUserId() != null;
 
-      OrganizerDto organizerDto = OrganizerDto.builder()
-          .partitionKey(organizer.getClientId())
-          .sortKey(RecordType.ORGANIZER + organizer.getOrganizerId())
-          .name(organizer.getName())
-          .createdOn(organizer.getCreatedOn())
+      UserDto
+          userDto = UserDto.builder()
+          .partitionKey(RecordType.USER.name())
+          .sortKey(RecordType.USER.name() + user.getUserId())
+          .name(user.getName())
+          .clientIds(user.getClientIds())
+          .createdOn(user.getCreatedOn())
           .lastUpdatedOn(LocalDateTime.now())
           .build();
 
-      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
+      DynamoDbTable<UserDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
-              TableSchema.fromBean(OrganizerDto.class));
+              TableSchema.fromBean(UserDto.class));
 
-      dtoDynamoDbTable.putItem(organizerDto);
+      dtoDynamoDbTable.putItem(userDto);
 
-      return Organizer.builder()
-          .clientId(organizerDto.getPartitionKey())
-          .organizerId(StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
-          .name(organizerDto.getName())
-          .createdOn(organizerDto.getCreatedOn())
-          .lastUpdatedOn(organizerDto.getLastUpdatedOn())
+      return User.builder()
+          .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+          .name(userDto.getName())
+          .clientIds(userDto.getClientIds())
+          .createdOn(userDto.getCreatedOn())
+          .lastUpdatedOn(userDto.getLastUpdatedOn())
           .build();
     } catch (Exception e) {
       log.error("ERROR::{}", this.getClass().getName(), e);
@@ -202,14 +201,14 @@ public class OrganizerDao {
     }
   }
 
-  public void delete(String clientId, String organizerId) {
+  public void delete(String userId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.ORGANIZER, organizerId);
+      Key key = KeyBuilder.build(RecordType.USER.name(), RecordType.USER, userId);
 
-      DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
+      DynamoDbTable<UserDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
-              TableSchema.fromBean(OrganizerDto.class));
+              TableSchema.fromBean(UserDto.class));
 
       dtoDynamoDbTable.deleteItem(key);
     } catch (Exception e) {

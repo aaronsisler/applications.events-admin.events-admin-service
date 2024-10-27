@@ -4,7 +4,7 @@ import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.ke
 
 import com.ebsolutions.eventsadminservice.model.Client;
 import com.ebsolutions.eventsadminservice.shared.Constants;
-import com.ebsolutions.eventsadminservice.shared.SortKeyType;
+import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.shared.util.MetricsStopwatch;
@@ -35,7 +35,7 @@ public class ClientDao {
   public Client read(String clientId) throws DataProcessingException {
     MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(SortKeyType.CLIENT.name(), SortKeyType.CLIENT, clientId);
+      Key key = KeyBuilder.build(RecordType.CLIENT.name(), RecordType.CLIENT, clientId);
 
       DynamoDbTable<ClientDto> clientDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -45,7 +45,7 @@ public class ClientDao {
       return clientDto == null
           ? null
           : Client.builder()
-          .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
+          .clientId(StringUtils.remove(clientDto.getSortKey(), RecordType.CLIENT.name()))
           .name(clientDto.getName())
           .createdOn(clientDto.getCreatedOn())
           .lastUpdatedOn(clientDto.getLastUpdatedOn())
@@ -68,7 +68,7 @@ public class ClientDao {
               TableSchema.fromBean(ClientDto.class));
       List<ClientDto> clientDtos = clientDtoDynamoDbTable
           .query(r -> r.queryConditional(
-              keyEqualTo(s -> s.partitionValue(SortKeyType.CLIENT.name()).build()))
+              keyEqualTo(s -> s.partitionValue(RecordType.CLIENT.name()).build()))
           )
           .items()
           .stream()
@@ -77,7 +77,7 @@ public class ClientDao {
       return clientDtos.stream()
           .map(clientDto ->
               Client.builder()
-                  .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
+                  .clientId(StringUtils.remove(clientDto.getSortKey(), RecordType.CLIENT.name()))
                   .name(clientDto.getName())
                   .createdOn(clientDto.getCreatedOn())
                   .lastUpdatedOn(clientDto.getLastUpdatedOn())
@@ -102,8 +102,8 @@ public class ClientDao {
 
       clients.forEach(client ->
           clientDtos.add(ClientDto.builder()
-              .partitionKey(SortKeyType.CLIENT.name())
-              .sortKey(SortKeyType.CLIENT + UniqueIdGenerator.generate())
+              .partitionKey(RecordType.CLIENT.name())
+              .sortKey(RecordType.CLIENT + UniqueIdGenerator.generate())
               .name(client.getName())
               .createdOn(now)
               .lastUpdatedOn(now)
@@ -135,7 +135,7 @@ public class ClientDao {
 
       return clientDtos.stream().map(clientDto ->
           Client.builder()
-              .clientId(StringUtils.remove(clientDto.getSortKey(), SortKeyType.CLIENT.name()))
+              .clientId(StringUtils.remove(clientDto.getSortKey(), RecordType.CLIENT.name()))
               .name(clientDto.getName())
               .createdOn(clientDto.getCreatedOn())
               .lastUpdatedOn(clientDto.getLastUpdatedOn())

@@ -1,5 +1,9 @@
 # services.events-admin-service
 
+## TODOs
+
+- Figure out if you can avoid needing to send the createdOn field but still get it back on the save
+
 ## Definition of Done
 
 <details>

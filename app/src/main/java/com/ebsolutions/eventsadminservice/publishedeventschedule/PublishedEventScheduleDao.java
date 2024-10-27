@@ -2,7 +2,7 @@ package com.ebsolutions.eventsadminservice.publishedeventschedule;
 
 import com.ebsolutions.eventsadminservice.model.PublishedEventSchedule;
 import com.ebsolutions.eventsadminservice.shared.Constants;
-import com.ebsolutions.eventsadminservice.shared.SortKeyType;
+import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import com.ebsolutions.eventsadminservice.shared.util.KeyBuilder;
 import com.ebsolutions.eventsadminservice.shared.util.MetricsStopwatch;
@@ -29,7 +29,7 @@ public class PublishedEventScheduleDao {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
 
     try {
-      Key key = KeyBuilder.build(clientId, SortKeyType.PUBLISHED_EVENT_SCHEDULE,
+      Key key = KeyBuilder.build(clientId, RecordType.PUBLISHED_EVENT_SCHEDULE,
           publishedEventScheduleId);
 
       DynamoDbTable<PublishedEventScheduleDto> dtoDynamoDbTable =
@@ -43,7 +43,7 @@ public class PublishedEventScheduleDao {
           : PublishedEventSchedule.builder()
           .clientId(publishedEventScheduleDto.getPartitionKey())
           .publishedEventScheduleId(StringUtils.remove(publishedEventScheduleDto.getSortKey(),
-              SortKeyType.PUBLISHED_EVENT_SCHEDULE.name()))
+              RecordType.PUBLISHED_EVENT_SCHEDULE.name()))
           .eventScheduleId(publishedEventScheduleDto.getEventScheduleId())
           .name(publishedEventScheduleDto.getName())
           .eventScheduleYear(publishedEventScheduleDto.getEventScheduleYear())
@@ -69,7 +69,7 @@ public class PublishedEventScheduleDao {
     try {
       PublishedEventScheduleDto publishedEventScheduleDto = PublishedEventScheduleDto.builder()
           .partitionKey(publishedEventSchedule.getClientId())
-          .sortKey(SortKeyType.PUBLISHED_EVENT_SCHEDULE + UniqueIdGenerator.generate())
+          .sortKey(RecordType.PUBLISHED_EVENT_SCHEDULE + UniqueIdGenerator.generate())
           .eventScheduleId(publishedEventSchedule.getEventScheduleId())
           .name(publishedEventSchedule.getName())
           .eventScheduleYear(publishedEventSchedule.getEventScheduleYear())
@@ -88,7 +88,7 @@ public class PublishedEventScheduleDao {
       return PublishedEventSchedule.builder()
           .clientId(publishedEventScheduleDto.getPartitionKey())
           .publishedEventScheduleId(StringUtils.remove(publishedEventScheduleDto.getSortKey(),
-              SortKeyType.PUBLISHED_EVENT_SCHEDULE.name()))
+              RecordType.PUBLISHED_EVENT_SCHEDULE.name()))
           .eventScheduleId(publishedEventScheduleDto.getEventScheduleId())
           .name(publishedEventScheduleDto.getName())
           .eventScheduleYear(publishedEventScheduleDto.getEventScheduleYear())

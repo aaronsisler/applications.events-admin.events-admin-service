@@ -15,7 +15,7 @@ public class FileStorageConfig {
   protected String endpoint;
 
   @Bean
-  @Profile({"local"})
+  @Profile({"local", "dev"})
   public S3Client localS3ClientInstantiation() {
     return S3Client.builder()
         .forcePathStyle(true)

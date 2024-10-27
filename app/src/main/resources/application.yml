@@ -17,5 +17,13 @@ spring:
     activate:
       on-profile: local, default
 storage:
-  #  endpoint: http://localhost:4566
+  endpoint: http://localhost:4566
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+storage:
   endpoint: http://storage:4566
