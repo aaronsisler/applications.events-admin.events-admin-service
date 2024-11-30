@@ -7,7 +7,7 @@
             "S": "CLIENT"
           },
           "sortKey": {
-            "S": "CLIENTbase-client-id"
+            "S": "CLIENT#base-client-id"
           },
           "name": {
             "S": "Base Client"

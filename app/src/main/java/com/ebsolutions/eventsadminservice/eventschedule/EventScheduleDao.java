@@ -50,7 +50,8 @@ public class EventScheduleDao {
           : EventSchedule.builder()
           .clientId(eventScheduleDto.getPartitionKey())
           .eventScheduleId(
-              StringUtils.remove(eventScheduleDto.getSortKey(), RecordType.EVENT_SCHEDULE.name()))
+              StringUtils.remove(eventScheduleDto.getSortKey(), RecordType.EVENT_SCHEDULE.name()
+                  .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(eventScheduleDto.getName())
           .description(eventScheduleDto.getDescription())
           .createdOn(eventScheduleDto.getCreatedOn())
@@ -76,7 +77,8 @@ public class EventScheduleDao {
       List<EventScheduleDto> eventScheduleDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(RecordType.EVENT_SCHEDULE.name())
+                  -> s.partitionValue(clientId).sortValue(
+                      RecordType.EVENT_SCHEDULE.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
                   .build()))
           )
           .items()
@@ -89,7 +91,8 @@ public class EventScheduleDao {
                   .clientId(eventScheduleDto.getPartitionKey())
                   .eventScheduleId(
                       StringUtils.remove(eventScheduleDto.getSortKey(),
-                          RecordType.EVENT_SCHEDULE.name()))
+                          RecordType.EVENT_SCHEDULE.name()
+                              .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .name(eventScheduleDto.getName())
                   .description(eventScheduleDto.getDescription())
                   .createdOn(eventScheduleDto.getCreatedOn())
@@ -116,7 +119,9 @@ public class EventScheduleDao {
           eventScheduleDtos.add(
               EventScheduleDto.builder()
                   .partitionKey(eventSchedule.getClientId())
-                  .sortKey(RecordType.EVENT_SCHEDULE + UniqueIdGenerator.generate())
+                  .sortKey(RecordType.EVENT_SCHEDULE +
+                      Constants.DATABASE_RECORD_TYPE_DELIMITER +
+                      UniqueIdGenerator.generate())
                   .name(eventSchedule.getName())
                   .description(eventSchedule.getDescription())
                   .createdOn(now)
@@ -154,7 +159,8 @@ public class EventScheduleDao {
               .clientId(eventScheduleDto.getPartitionKey())
               .eventScheduleId(
                   StringUtils.remove(eventScheduleDto.getSortKey(),
-                      RecordType.EVENT_SCHEDULE.name()))
+                      RecordType.EVENT_SCHEDULE.name()
+                          .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .name(eventScheduleDto.getName())
               .description(eventScheduleDto.getDescription())
               .createdOn(eventScheduleDto.getCreatedOn())
@@ -186,7 +192,9 @@ public class EventScheduleDao {
       EventScheduleDto
           eventScheduleDto = EventScheduleDto.builder()
           .partitionKey(eventSchedule.getClientId())
-          .sortKey(RecordType.EVENT_SCHEDULE + eventSchedule.getEventScheduleId())
+          .sortKey(RecordType.EVENT_SCHEDULE +
+              Constants.DATABASE_RECORD_TYPE_DELIMITER +
+              eventSchedule.getEventScheduleId())
           .name(eventSchedule.getName())
           .description(eventSchedule.getDescription())
           .createdOn(eventSchedule.getCreatedOn())
@@ -202,7 +210,8 @@ public class EventScheduleDao {
       return EventSchedule.builder()
           .clientId(eventScheduleDto.getPartitionKey())
           .eventScheduleId(
-              StringUtils.remove(eventScheduleDto.getSortKey(), RecordType.EVENT_SCHEDULE.name()))
+              StringUtils.remove(eventScheduleDto.getSortKey(), RecordType.EVENT_SCHEDULE.name()
+                  .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(eventScheduleDto.getName())
           .createdOn(eventScheduleDto.getCreatedOn())
           .lastUpdatedOn(eventScheduleDto.getLastUpdatedOn())

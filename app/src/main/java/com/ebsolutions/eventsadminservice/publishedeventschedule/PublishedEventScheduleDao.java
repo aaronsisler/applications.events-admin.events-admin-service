@@ -43,7 +43,8 @@ public class PublishedEventScheduleDao {
           : PublishedEventSchedule.builder()
           .clientId(publishedEventScheduleDto.getPartitionKey())
           .publishedEventScheduleId(StringUtils.remove(publishedEventScheduleDto.getSortKey(),
-              RecordType.PUBLISHED_EVENT_SCHEDULE.name()))
+              RecordType.PUBLISHED_EVENT_SCHEDULE.name()
+                  .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .eventScheduleId(publishedEventScheduleDto.getEventScheduleId())
           .name(publishedEventScheduleDto.getName())
           .eventScheduleYear(publishedEventScheduleDto.getEventScheduleYear())
@@ -69,7 +70,9 @@ public class PublishedEventScheduleDao {
     try {
       PublishedEventScheduleDto publishedEventScheduleDto = PublishedEventScheduleDto.builder()
           .partitionKey(publishedEventSchedule.getClientId())
-          .sortKey(RecordType.PUBLISHED_EVENT_SCHEDULE + UniqueIdGenerator.generate())
+          .sortKey(RecordType.PUBLISHED_EVENT_SCHEDULE +
+              Constants.DATABASE_RECORD_TYPE_DELIMITER +
+              UniqueIdGenerator.generate())
           .eventScheduleId(publishedEventSchedule.getEventScheduleId())
           .name(publishedEventSchedule.getName())
           .eventScheduleYear(publishedEventSchedule.getEventScheduleYear())
@@ -88,7 +91,8 @@ public class PublishedEventScheduleDao {
       return PublishedEventSchedule.builder()
           .clientId(publishedEventScheduleDto.getPartitionKey())
           .publishedEventScheduleId(StringUtils.remove(publishedEventScheduleDto.getSortKey(),
-              RecordType.PUBLISHED_EVENT_SCHEDULE.name()))
+              RecordType.PUBLISHED_EVENT_SCHEDULE.name()
+                  .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .eventScheduleId(publishedEventScheduleDto.getEventScheduleId())
           .name(publishedEventScheduleDto.getName())
           .eventScheduleYear(publishedEventScheduleDto.getEventScheduleYear())

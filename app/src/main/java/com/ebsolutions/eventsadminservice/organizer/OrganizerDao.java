@@ -47,7 +47,8 @@ public class OrganizerDao {
           ? null
           : Organizer.builder()
           .clientId(organizerDto.getPartitionKey())
-          .organizerId(StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
+          .organizerId(StringUtils.remove(organizerDto.getSortKey(),
+              RecordType.ORGANIZER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(organizerDto.getName())
           .createdOn(organizerDto.getCreatedOn())
           .lastUpdatedOn(organizerDto.getLastUpdatedOn())
@@ -72,7 +73,9 @@ public class OrganizerDao {
       List<OrganizerDto> organizerDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(RecordType.ORGANIZER.name()).build()))
+                  -> s.partitionValue(clientId).sortValue(
+                      RecordType.ORGANIZER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
+                  .build()))
           )
           .items()
           .stream()
@@ -83,7 +86,8 @@ public class OrganizerDao {
               Organizer.builder()
                   .clientId(organizerDto.getPartitionKey())
                   .organizerId(
-                      StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
+                      StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()
+                          .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .name(organizerDto.getName())
                   .createdOn(organizerDto.getCreatedOn())
                   .lastUpdatedOn(organizerDto.getLastUpdatedOn())
@@ -108,7 +112,9 @@ public class OrganizerDao {
       organizers.forEach(organizer ->
           organizerDtos.add(OrganizerDto.builder()
               .partitionKey(organizer.getClientId())
-              .sortKey(RecordType.ORGANIZER + UniqueIdGenerator.generate())
+              .sortKey(RecordType.ORGANIZER +
+                  Constants.DATABASE_RECORD_TYPE_DELIMITER +
+                  UniqueIdGenerator.generate())
               .name(organizer.getName())
               .createdOn(now)
               .lastUpdatedOn(now)
@@ -143,7 +149,8 @@ public class OrganizerDao {
           Organizer.builder()
               .clientId(organizerDto.getPartitionKey())
               .organizerId(
-                  StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
+                  StringUtils.remove(organizerDto.getSortKey(),
+                      RecordType.ORGANIZER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .name(organizerDto.getName())
               .createdOn(organizerDto.getCreatedOn())
               .lastUpdatedOn(organizerDto.getLastUpdatedOn())
@@ -173,7 +180,9 @@ public class OrganizerDao {
 
       OrganizerDto organizerDto = OrganizerDto.builder()
           .partitionKey(organizer.getClientId())
-          .sortKey(RecordType.ORGANIZER + organizer.getOrganizerId())
+          .sortKey(RecordType.ORGANIZER +
+              Constants.DATABASE_RECORD_TYPE_DELIMITER +
+              organizer.getOrganizerId())
           .name(organizer.getName())
           .createdOn(organizer.getCreatedOn())
           .lastUpdatedOn(LocalDateTime.now())
@@ -187,7 +196,8 @@ public class OrganizerDao {
 
       return Organizer.builder()
           .clientId(organizerDto.getPartitionKey())
-          .organizerId(StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()))
+          .organizerId(StringUtils.remove(organizerDto.getSortKey(),
+              RecordType.ORGANIZER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(organizerDto.getName())
           .createdOn(organizerDto.getCreatedOn())
           .lastUpdatedOn(organizerDto.getLastUpdatedOn())
