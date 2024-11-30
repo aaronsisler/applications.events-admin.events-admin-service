@@ -50,29 +50,6 @@ docker compose -f ./docker-compose.local.yml down
 
 </details>
 
-<br />
-
-<details>
-  <summary>Running application in a container locally</summary>
-
-This is how to create a new build of the Application and package it into a Docker container
-
-```bash
-mvn package -Dpackaging=docker
-```
-
-Start the Event Admin Service in Docker
-
-```bash
-docker run -d --name events-admin-service -e MICRONAUT_ENVIRONMENTS=dev -e AWS_REGION=us-east-1 -p 8080:8080 events-admin-service:latest
-```
-
-```bash
-docker stop events-admin-service
-```
-
-</details>
-
 ## AWS
 
 <details>
@@ -82,7 +59,7 @@ docker stop events-admin-service
 following:
 
 ```bash
-awslocalddb=aws --profile=local --endpoint-url http://localhost:8000
+awslocalddb=aws --profile=local --endpoint-url http://localhost:4566
 ```
 
 List out the tables created
@@ -94,7 +71,7 @@ awslocalddb dynamodb list-tables
 List out data in a table
 
 ```bash
-awslocalddb dynamodb scan --table-name SERVICES_EVENTS_ADMIN_SERVICE_LOCAL
+awslocalddb dynamodb scan --table-name SERVICES_EVENTS_ADMIN_SERVICE
 ```
 
 </details>
@@ -108,7 +85,7 @@ awslocalddb dynamodb scan --table-name SERVICES_EVENTS_ADMIN_SERVICE_LOCAL
 following:
 
 ```
-awslocals3=aws --profile=local --endpoint-url http://localhost:9090
+awslocals3=aws --profile=local --endpoint-url http://localhost:4566
 ```
 
 List out the buckets that exits
