@@ -45,7 +45,8 @@ public class UserDao {
       return userDto == null
           ? null
           : User.builder()
-          .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+          .userId(StringUtils.remove(userDto.getSortKey(),
+              RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(userDto.getName())
           .clientIds(userDto.getClientIds())
           .createdOn(userDto.getCreatedOn())
@@ -69,7 +70,8 @@ public class UserDao {
               TableSchema.fromBean(UserDto.class));
       List<UserDto> userDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
-              keyEqualTo(s -> s.partitionValue(RecordType.USER.name()).build()))
+              keyEqualTo(s -> s.partitionValue(
+                  RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)).build()))
           )
           .items()
           .stream()
@@ -78,7 +80,8 @@ public class UserDao {
       return userDtos.stream()
           .map(userDto ->
               User.builder()
-                  .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+                  .userId(StringUtils.remove(userDto.getSortKey(),
+                      RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .name(userDto.getName())
                   .clientIds(userDto.getClientIds())
                   .createdOn(userDto.getCreatedOn())
@@ -105,7 +108,9 @@ public class UserDao {
       users.forEach(user ->
           userDtos.add(UserDto.builder()
               .partitionKey(RecordType.USER.name())
-              .sortKey(RecordType.USER + UniqueIdGenerator.generate())
+              .sortKey(RecordType.USER +
+                  Constants.DATABASE_RECORD_TYPE_DELIMITER +
+                  UniqueIdGenerator.generate())
               .name(user.getName())
               .clientIds(user.getClientIds())
               .createdOn(now)
@@ -139,7 +144,8 @@ public class UserDao {
 
       return userDtos.stream().map(userDto ->
           User.builder()
-              .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+              .userId(StringUtils.remove(userDto.getSortKey(),
+                  RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .name(userDto.getName())
               .clientIds(userDto.getClientIds())
               .createdOn(userDto.getCreatedOn())
@@ -171,7 +177,9 @@ public class UserDao {
       UserDto
           userDto = UserDto.builder()
           .partitionKey(RecordType.USER.name())
-          .sortKey(RecordType.USER.name() + user.getUserId())
+          .sortKey(RecordType.USER.name() +
+              Constants.DATABASE_RECORD_TYPE_DELIMITER +
+              user.getUserId())
           .name(user.getName())
           .clientIds(user.getClientIds())
           .createdOn(user.getCreatedOn())
@@ -185,7 +193,8 @@ public class UserDao {
       dtoDynamoDbTable.putItem(userDto);
 
       return User.builder()
-          .userId(StringUtils.remove(userDto.getSortKey(), RecordType.USER.name()))
+          .userId(StringUtils.remove(userDto.getSortKey(),
+              RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(userDto.getName())
           .clientIds(userDto.getClientIds())
           .createdOn(userDto.getCreatedOn())

@@ -52,7 +52,7 @@ public class ScheduledEventDao {
           : ScheduledEvent.builder()
           .eventScheduleId(scheduledEventDto.getPartitionKey())
           .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(),
-              RecordType.SCHEDULED_EVENT.name()))
+              RecordType.SCHEDULED_EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .clientId(scheduledEventDto.getClientId())
           .eventId(scheduledEventDto.getEventId())
           .locationId(scheduledEventDto.getLocationId())
@@ -93,7 +93,8 @@ public class ScheduledEventDao {
       List<ScheduledEventDto> scheduledEventDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(eventScheduleId).sortValue(RecordType.SCHEDULED_EVENT.name())
+                  -> s.partitionValue(eventScheduleId).sortValue(RecordType.SCHEDULED_EVENT.name()
+                      .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
                   .build()))
           )
           .items()
@@ -105,7 +106,8 @@ public class ScheduledEventDao {
               ScheduledEvent.builder()
                   .eventScheduleId(scheduledEventDto.getPartitionKey())
                   .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(),
-                      RecordType.SCHEDULED_EVENT.name()))
+                      RecordType.SCHEDULED_EVENT.name()
+                          .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .clientId(scheduledEventDto.getClientId())
                   .eventId(scheduledEventDto.getEventId())
                   .locationId(scheduledEventDto.getLocationId())
@@ -148,7 +150,9 @@ public class ScheduledEventDao {
           scheduledEventDtos.add(
               ScheduledEventDto.builder()
                   .partitionKey(scheduledEvent.getEventScheduleId())
-                  .sortKey(RecordType.SCHEDULED_EVENT + UniqueIdGenerator.generate())
+                  .sortKey(RecordType.SCHEDULED_EVENT +
+                      Constants.DATABASE_RECORD_TYPE_DELIMITER +
+                      UniqueIdGenerator.generate())
                   .clientId(scheduledEvent.getClientId())
                   .eventId(scheduledEvent.getEventId())
                   .locationId(scheduledEvent.getLocationId())
@@ -200,7 +204,8 @@ public class ScheduledEventDao {
           ScheduledEvent.builder()
               .eventScheduleId(scheduledEventDto.getPartitionKey())
               .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(),
-                  RecordType.SCHEDULED_EVENT.name()))
+                  RecordType.SCHEDULED_EVENT.name()
+                      .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .clientId(scheduledEventDto.getClientId())
               .eventId(scheduledEventDto.getEventId())
               .locationId(scheduledEventDto.getLocationId())
@@ -245,7 +250,9 @@ public class ScheduledEventDao {
 
       ScheduledEventDto scheduledEventDto = ScheduledEventDto.builder()
           .partitionKey(scheduledEvent.getEventScheduleId())
-          .sortKey(RecordType.SCHEDULED_EVENT + scheduledEvent.getScheduledEventId())
+          .sortKey(RecordType.SCHEDULED_EVENT +
+              Constants.DATABASE_RECORD_TYPE_DELIMITER +
+              scheduledEvent.getScheduledEventId())
           .clientId(scheduledEvent.getClientId())
           .eventId(scheduledEvent.getEventId())
           .locationId(scheduledEvent.getLocationId())
@@ -275,7 +282,7 @@ public class ScheduledEventDao {
       return ScheduledEvent.builder()
           .eventScheduleId(scheduledEventDto.getPartitionKey())
           .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(),
-              RecordType.SCHEDULED_EVENT.name()))
+              RecordType.SCHEDULED_EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .clientId(scheduledEventDto.getClientId())
           .eventId(scheduledEventDto.getEventId())
           .locationId(scheduledEventDto.getLocationId())

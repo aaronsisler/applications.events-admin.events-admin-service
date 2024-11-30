@@ -45,7 +45,8 @@ public class ClientDao {
       return clientDto == null
           ? null
           : Client.builder()
-          .clientId(StringUtils.remove(clientDto.getSortKey(), RecordType.CLIENT.name()))
+          .clientId(StringUtils.remove(clientDto.getSortKey(),
+              RecordType.CLIENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(clientDto.getName())
           .createdOn(clientDto.getCreatedOn())
           .lastUpdatedOn(clientDto.getLastUpdatedOn())
@@ -68,7 +69,9 @@ public class ClientDao {
               TableSchema.fromBean(ClientDto.class));
       List<ClientDto> clientDtos = clientDtoDynamoDbTable
           .query(r -> r.queryConditional(
-              keyEqualTo(s -> s.partitionValue(RecordType.CLIENT.name()).build()))
+              keyEqualTo(s -> s.partitionValue(
+                      RecordType.CLIENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
+                  .build()))
           )
           .items()
           .stream()
@@ -77,7 +80,8 @@ public class ClientDao {
       return clientDtos.stream()
           .map(clientDto ->
               Client.builder()
-                  .clientId(StringUtils.remove(clientDto.getSortKey(), RecordType.CLIENT.name()))
+                  .clientId(StringUtils.remove(clientDto.getSortKey(),
+                      RecordType.CLIENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .name(clientDto.getName())
                   .createdOn(clientDto.getCreatedOn())
                   .lastUpdatedOn(clientDto.getLastUpdatedOn())
@@ -103,7 +107,9 @@ public class ClientDao {
       clients.forEach(client ->
           clientDtos.add(ClientDto.builder()
               .partitionKey(RecordType.CLIENT.name())
-              .sortKey(RecordType.CLIENT + UniqueIdGenerator.generate())
+              .sortKey(RecordType.CLIENT +
+                  Constants.DATABASE_RECORD_TYPE_DELIMITER +
+                  UniqueIdGenerator.generate())
               .name(client.getName())
               .createdOn(now)
               .lastUpdatedOn(now)
@@ -135,7 +141,8 @@ public class ClientDao {
 
       return clientDtos.stream().map(clientDto ->
           Client.builder()
-              .clientId(StringUtils.remove(clientDto.getSortKey(), RecordType.CLIENT.name()))
+              .clientId(StringUtils.remove(clientDto.getSortKey(),
+                  RecordType.CLIENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .name(clientDto.getName())
               .createdOn(clientDto.getCreatedOn())
               .lastUpdatedOn(clientDto.getLastUpdatedOn())

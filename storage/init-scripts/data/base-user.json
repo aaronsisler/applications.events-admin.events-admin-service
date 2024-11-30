@@ -7,7 +7,7 @@
             "S": "USER"
           },
           "sortKey": {
-            "S": "USERbase-user-id"
+            "S": "USER#base-user-id"
           },
           "clientIds": {
             "SS": [

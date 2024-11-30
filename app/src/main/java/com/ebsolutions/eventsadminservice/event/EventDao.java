@@ -47,7 +47,8 @@ public class EventDao {
           ? null
           : Event.builder()
           .clientId(eventDto.getPartitionKey())
-          .eventId(StringUtils.remove(eventDto.getSortKey(), RecordType.EVENT.name()))
+          .eventId(StringUtils.remove(eventDto.getSortKey(),
+              RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .locationId(eventDto.getLocationId())
           .organizerId(eventDto.getOrganizerId())
           .name(eventDto.getName())
@@ -76,7 +77,9 @@ public class EventDao {
       List<EventDto> eventDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(RecordType.EVENT.name()).build()))
+                  -> s.partitionValue(clientId).sortValue(
+                      RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
+                  .build()))
           )
           .items()
           .stream()
@@ -86,7 +89,8 @@ public class EventDao {
           .map(eventDto ->
               Event.builder()
                   .clientId(eventDto.getPartitionKey())
-                  .eventId(StringUtils.remove(eventDto.getSortKey(), RecordType.EVENT.name()))
+                  .eventId(StringUtils.remove(eventDto.getSortKey(),
+                      RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .locationId(eventDto.getLocationId())
                   .organizerId(eventDto.getOrganizerId())
                   .name(eventDto.getName())
@@ -115,7 +119,8 @@ public class EventDao {
       events.forEach(event ->
           eventDtos.add(EventDto.builder()
               .partitionKey(event.getClientId())
-              .sortKey(RecordType.EVENT + UniqueIdGenerator.generate())
+              .sortKey(RecordType.EVENT + Constants.DATABASE_RECORD_TYPE_DELIMITER +
+                  UniqueIdGenerator.generate())
               .locationId(event.getLocationId())
               .organizerId(event.getOrganizerId())
               .name(event.getName())
@@ -155,7 +160,8 @@ public class EventDao {
       return eventDtos.stream().map(eventDto ->
           Event.builder()
               .clientId(eventDto.getPartitionKey())
-              .eventId(StringUtils.remove(eventDto.getSortKey(), RecordType.EVENT.name()))
+              .eventId(StringUtils.remove(eventDto.getSortKey(),
+                  RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .locationId(eventDto.getLocationId())
               .organizerId(eventDto.getOrganizerId())
               .name(eventDto.getName())
@@ -188,7 +194,7 @@ public class EventDao {
 
       EventDto eventDto = EventDto.builder()
           .partitionKey(event.getClientId())
-          .sortKey(RecordType.EVENT + event.getEventId())
+          .sortKey(RecordType.EVENT + Constants.DATABASE_RECORD_TYPE_DELIMITER + event.getEventId())
           .locationId(event.getLocationId())
           .organizerId(event.getOrganizerId())
           .name(event.getName())
@@ -206,7 +212,8 @@ public class EventDao {
 
       return Event.builder()
           .clientId(eventDto.getPartitionKey())
-          .eventId(StringUtils.remove(eventDto.getSortKey(), RecordType.EVENT.name()))
+          .eventId(StringUtils.remove(eventDto.getSortKey(),
+              RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .locationId(eventDto.getLocationId())
           .organizerId(eventDto.getOrganizerId())
           .name(eventDto.getName())

@@ -47,7 +47,8 @@ public class LocationDao {
           ? null
           : Location.builder()
           .clientId(locationDto.getPartitionKey())
-          .locationId(StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()))
+          .locationId(StringUtils.remove(locationDto.getSortKey(),
+              RecordType.LOCATION.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(locationDto.getName())
           .createdOn(locationDto.getCreatedOn())
           .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -72,7 +73,9 @@ public class LocationDao {
       List<LocationDto> locationDtos = locationDtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(RecordType.LOCATION.name()).build()))
+                  -> s.partitionValue(clientId).sortValue(
+                      RecordType.LOCATION.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
+                  .build()))
           )
           .items()
           .stream()
@@ -83,7 +86,8 @@ public class LocationDao {
               Location.builder()
                   .clientId(locationDto.getPartitionKey())
                   .locationId(
-                      StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()))
+                      StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()
+                          .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .name(locationDto.getName())
                   .createdOn(locationDto.getCreatedOn())
                   .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -108,7 +112,9 @@ public class LocationDao {
       locations.forEach(location ->
           locationDtos.add(LocationDto.builder()
               .partitionKey(location.getClientId())
-              .sortKey(RecordType.LOCATION + UniqueIdGenerator.generate())
+              .sortKey(RecordType.LOCATION +
+                  Constants.DATABASE_RECORD_TYPE_DELIMITER +
+                  UniqueIdGenerator.generate())
               .name(location.getName())
               .createdOn(now)
               .lastUpdatedOn(now)
@@ -144,7 +150,8 @@ public class LocationDao {
           Location.builder()
               .clientId(locationDto.getPartitionKey())
               .locationId(
-                  StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()))
+                  StringUtils.remove(locationDto.getSortKey(),
+                      RecordType.LOCATION.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .name(locationDto.getName())
               .createdOn(locationDto.getCreatedOn())
               .lastUpdatedOn(locationDto.getLastUpdatedOn())
@@ -175,7 +182,9 @@ public class LocationDao {
       LocationDto
           locationDto = LocationDto.builder()
           .partitionKey(location.getClientId())
-          .sortKey(RecordType.LOCATION + location.getLocationId())
+          .sortKey(RecordType.LOCATION +
+              Constants.DATABASE_RECORD_TYPE_DELIMITER +
+              location.getLocationId())
           .name(location.getName())
           .createdOn(location.getCreatedOn())
           .lastUpdatedOn(LocalDateTime.now())
@@ -189,7 +198,8 @@ public class LocationDao {
 
       return Location.builder()
           .clientId(locationDto.getPartitionKey())
-          .locationId(StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()))
+          .locationId(StringUtils.remove(locationDto.getSortKey(),
+              RecordType.LOCATION.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(locationDto.getName())
           .createdOn(locationDto.getCreatedOn())
           .lastUpdatedOn(locationDto.getLastUpdatedOn())

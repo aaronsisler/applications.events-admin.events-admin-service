@@ -14,6 +14,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.16.0]
+
+### Changed
+
+- Bumping Spring Boot version from 3.3.X to 3.4.X
+
+### Fixed
+
+- Updating the Record Type to have a trailing delimiter given a bug with EVENT and EVENT_SCHEDULE not playing well
+  together on the GET ALL query
+
 ## [0.15.0]
 
 ### Added
