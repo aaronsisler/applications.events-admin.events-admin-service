@@ -1,0 +1,34 @@
+{
+  "SERVICES_EVENTS_ADMIN_SERVICE": [
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "base-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#base-event-id"
+          },
+          "clientId": {
+            "S": "base-client-id"
+          },
+          "name": {
+            "S": "Base Event Name"
+          },
+          "description": {
+            "S": "Base Event Description"
+          },
+          "category": {
+            "S": "Base Event Category"
+          },
+          "createdOn": {
+            "S": "2024-10-26T01:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2024-10-26T01:02:34"
+          }
+        }
+      }
+    }
+  ]
+}

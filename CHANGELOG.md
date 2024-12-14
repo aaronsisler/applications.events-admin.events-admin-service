@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.17.0]
+
+### Fixed
+
+- Client: Updating the query for GET ALL given the delimiter
+- User: Updating the query for GET ALL given the delimiter
+
 ## [0.16.0]
 
 ### Changed
