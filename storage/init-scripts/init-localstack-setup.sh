@@ -27,6 +27,13 @@ awslocal dynamodb batch-write-item \
   --request-items file://data/base-user.json
 echo "End: DynamoDB -> Load Base User"
 #
+echo "Begin: DynamoDB -> Load Base Event"
+#
+awslocal dynamodb batch-write-item \
+  --region us-east-1 \
+  --request-items file://data/base-event.json
+echo "End: DynamoDB -> Load Event"
+#
 echo "Start: DynamoDB -> Scan table"
 awslocal dynamodb scan \
     --region us-east-1 \

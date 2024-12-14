@@ -1,6 +1,6 @@
 package com.ebsolutions.eventsadminservice.user;
 
-import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.keyEqualTo;
+import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
 
 import com.ebsolutions.eventsadminservice.model.User;
 import com.ebsolutions.eventsadminservice.shared.Constants;
@@ -68,10 +68,14 @@ public class UserDao {
       DynamoDbTable<UserDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
               TableSchema.fromBean(UserDto.class));
+
       List<UserDto> userDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
-              keyEqualTo(s -> s.partitionValue(
-                  RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)).build()))
+              sortBeginsWith(s
+                  -> s.partitionValue(RecordType.USER.name())
+                  .sortValue(
+                      RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
+                  .build()))
           )
           .items()
           .stream()
