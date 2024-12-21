@@ -16,7 +16,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @AllArgsConstructor
 public class PublishedEventScheduleDto extends DatabaseDto {
   private String eventScheduleId;
-  private Integer eventScheduleYear;
-  private Integer eventScheduleMonth;
+  private Integer targetYear;
+  private Integer targetMonth;
   private String filename;
 }

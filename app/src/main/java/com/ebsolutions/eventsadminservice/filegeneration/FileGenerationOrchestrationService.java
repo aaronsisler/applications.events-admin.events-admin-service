@@ -69,8 +69,8 @@ public class FileGenerationOrchestrationService {
         .collect(Collectors.toMap(Location::getLocationId, Function.identity()));
 
     // Create the list of dates from 1st of month to the end of month for given year/month in request
-    LocalDate startOfMonth = LocalDate.of(publishedEventSchedule.getEventScheduleYear(),
-        publishedEventSchedule.getEventScheduleMonth(), 1);
+    LocalDate startOfMonth = LocalDate.of(publishedEventSchedule.getTargetYear(),
+        publishedEventSchedule.getTargetMonth(), 1);
     LocalDate startOfNextMonth = startOfMonth.plusMonths(1);
     List<LocalDate> spanOfDates = startOfMonth.datesUntil(startOfNextMonth).toList();
 
