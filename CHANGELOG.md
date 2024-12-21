@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.18.0]
+
+### Changed
+
+- Updating the Published Event Schedule
+    - Require event schedule id
+    - Shortening the year and month attribute name
+
 ## [0.17.0]
 
 ### Fixed
