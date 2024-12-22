@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.19.0]
+
+### Added
+
+- Published Event Schedule GET ALL
+
 ## [0.18.0]
 
 ### Changed
