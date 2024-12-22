@@ -69,8 +69,8 @@ components:
       required:
         - clientId
         - eventScheduleId
-        - eventScheduleYear
-        - eventScheduleMonth
+        - targetYear
+        - targetMonth
       properties:
         clientId:
           type: string
