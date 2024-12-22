@@ -6,6 +6,18 @@ paths:
   /clients/{clientId}/published-event-schedules:
     parameters:
       - $ref: "client.yaml#/components/parameters/ClientId"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublishedEventSchedule"
+        '5XX':
+          description: Server error
     post:
       requestBody:
         required: true

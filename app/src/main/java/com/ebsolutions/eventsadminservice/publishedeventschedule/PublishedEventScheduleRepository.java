@@ -1,6 +1,7 @@
 package com.ebsolutions.eventsadminservice.publishedeventschedule;
 
 import com.ebsolutions.eventsadminservice.model.PublishedEventSchedule;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,5 +16,9 @@ public class PublishedEventScheduleRepository {
 
   public PublishedEventSchedule read(String clientId, String publishedEventScheduleId) {
     return publishedEventScheduleDao.read(clientId, publishedEventScheduleId);
+  }
+
+  public List<PublishedEventSchedule> readAll(String clientId) {
+    return publishedEventScheduleDao.readAll(clientId);
   }
 }
