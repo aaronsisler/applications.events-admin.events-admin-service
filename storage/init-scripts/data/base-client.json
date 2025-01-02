@@ -7,16 +7,16 @@
             "S": "CLIENT"
           },
           "sortKey": {
-            "S": "CLIENT#base-client-id"
+            "S": "CLIENT#body-kinect-wellness-center-client-id"
           },
           "name": {
-            "S": "Base Client"
+            "S": "Body Kinect Wellness Center"
           },
           "createdOn": {
-            "S": "2024-10-26T01:02:34"
+            "S": "2025-01-01T22:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2024-10-26T01:02:34"
+            "S": "2025-01-01T22:02:34"
           }
         }
       }
