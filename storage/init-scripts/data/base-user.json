@@ -7,21 +7,21 @@
             "S": "USER"
           },
           "sortKey": {
-            "S": "USER#base-user-id"
+            "S": "USER#aaron-sisler-id"
           },
           "clientIds": {
             "SS": [
-              "base-client-id"
+              "body-kinect-wellness-center-client-id"
             ]
           },
           "name": {
-            "S": "Base User"
+            "S": "Aaron Sisler"
           },
           "createdOn": {
-            "S": "2024-10-26T01:02:34"
+            "S": "2025-01-01T22:02:34"
           },
           "lastUpdatedOn": {
-            "S": "2024-10-26T01:02:34"
+            "S": "2025-01-01T22:02:34"
           }
         }
       }
