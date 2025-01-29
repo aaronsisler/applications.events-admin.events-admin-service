@@ -1,0 +1,274 @@
+{
+  "SERVICES_EVENTS_ADMIN_SERVICE": [
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Chair yoga"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Chair yoga"
+          },
+          "description": {
+            "S": "This class is suitable for everyone. Within this class, our asanas are performed in a chair or in standing. Emphasis is on range of motion, stretching, strengthening, balance and breath work."
+          },
+          "category": {
+            "S": "Yoga"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Embodied Flow"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Embodied Flow"
+          },
+          "description": {
+            "S": ""
+          },
+          "category": {
+            "S": "Wellness Center"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Foundational yoga"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Foundational yoga"
+          },
+          "description": {
+            "S": "This class is appropriate for beginners and advanced yogis who want to assure they are learning yoga that aligns with the physical. mental and emotional bodies within themselves. Come learn from the ground up what the asanas feel like within your body. Our instructor will guide you throughout the class."
+          },
+          "category": {
+            "S": "Yoga"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Fow Into Yin"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Fow Into Yin"
+          },
+          "description": {
+            "S": ""
+          },
+          "category": {
+            "S": "Yoga"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Mixed Fit"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Mixed Fit"
+          },
+          "description": {
+            "S": ""
+          },
+          "category": {
+            "S": "Wellness Center"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Slow Flow"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Slow Flow"
+          },
+          "description": {
+            "S": ""
+          },
+          "category": {
+            "S": "Wellness Center"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Vinyasa for everybody"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Vinyasa for everybody"
+          },
+          "description": {
+            "S": "This class is suitable for everybody. Movement is so important for our bodies. Movement increases our metabolism, works on our immune system, stretches our fascia and muscles. Learn asanas and put them together with breath and movement for a full body experience."
+          },
+          "category": {
+            "S": "Wellness Center"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Yin yoga"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Yin yoga"
+          },
+          "description": {
+            "S": "Yin Yoga is a practice that is suitable for anyone who wants to go deeper into their stretch and soft tissue. Works on the meridian system to help balance out health and well being while going deeper into your own practice."
+          },
+          "category": {
+            "S": "Yoga"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Yoga for everybody"
+          },
+          "clientId": {
+            "S": "body-kinect-wellness-center-client-id"
+          },
+          "name": {
+            "S": "Yoga for everybody"
+          },
+          "description": {
+            "S": "This class is suitable for all yoga levels and for all ages. Come move, stretch, balance, relax and have fun."
+          },
+          "category": {
+            "S": ""
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    }
+  ]
+}
