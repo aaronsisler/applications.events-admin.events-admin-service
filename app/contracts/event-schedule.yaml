@@ -9,6 +9,7 @@ paths:
     parameters:
       - $ref: "client.yaml#/components/parameters/ClientId"
     get:
+      operationId: getEventSchedules
       responses:
         200:
           description: OK
@@ -21,12 +22,15 @@ paths:
         '5XX':
           description: Server error
     post:
+      operationId: postEventSchedules
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventSchedule"
+              type: array
+              items:
+                $ref: "#/components/schemas/EventSchedule"
       responses:
         200:
           description: OK
@@ -41,6 +45,7 @@ paths:
       - $ref: "client.yaml#/components/parameters/ClientId"
       - $ref: "#/components/parameters/EventScheduleId"
     get:
+      operationId: getEventScheduleById
       responses:
         200:
           description: OK
@@ -51,6 +56,7 @@ paths:
         '5XX':
           description: Server Error
     delete:
+      operationId: deleteEventScheduleById
       responses:
         204:
           description: The resource was deleted successfully.

@@ -10,6 +10,7 @@ paths:
       - $ref: "client.yaml#/components/parameters/ClientId"
       - $ref: "#/components/parameters/Filename"
     get:
+      operationId: getFileByFilename
       responses:
         200:
           description: OK
