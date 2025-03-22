@@ -2,6 +2,7 @@ openapi: 3.0.0
 info:
   title: Published Event Schedules REST API
   version: "1.0"
+servers: [ ]
 paths:
   /clients/{clientId}/published-event-schedules:
     parameters:

@@ -2,6 +2,7 @@ openapi: 3.0.0
 info:
   title: Scheduled Events REST API
   version: "1.0"
+servers: [ ]
 paths:
   /event-schedules/{eventScheduleId}/scheduled-events:
     parameters:
