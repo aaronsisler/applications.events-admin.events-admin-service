@@ -1,10 +1,13 @@
 openapi: 3.0.0
 info:
   title: Health REST API
-  version: 1.0
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
 paths:
-  /health:
+  /actuator/health:
     get:
+      operationId: getHealth
       responses:
         200:
           description: OK

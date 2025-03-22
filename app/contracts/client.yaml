@@ -2,16 +2,20 @@ openapi: 3.0.0
 info:
   title: Clients REST API
   version: "1.0"
+servers:
+  - url: http://localhost:8080
 paths:
   /clients:
     post:
+      operationId: postClients
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: array
-              $ref: "#/components/schemas/Client"
+              items:
+                $ref: "#/components/schemas/Client"
       responses:
         200:
           description: OK
@@ -19,10 +23,12 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: "#/components/schemas/Client"
+                items:
+                  $ref: "#/components/schemas/Client"
         '5XX':
           description: Server Error
     get:
+      operationId: getClients
       responses:
         200:
           description: OK
@@ -36,6 +42,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/ClientId"
     get:
+      operationId: getClientById
       responses:
         200:
           description: OK

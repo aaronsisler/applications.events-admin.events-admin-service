@@ -2,11 +2,14 @@ openapi: 3.0.0
 info:
   title: Locations REST API
   version: "1.0"
+servers:
+  - url: http://localhost:8080
 paths:
   /clients/{clientId}/locations:
     parameters:
       - $ref: "client.yaml#/components/parameters/ClientId"
     get:
+      operationId: getLocations
       responses:
         200:
           description: OK
@@ -19,12 +22,15 @@ paths:
         '5XX':
           description: Server error
     post:
+      operationId: postLocations
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Location"
+              type: array
+              items:
+                $ref: "#/components/schemas/Location"
       responses:
         200:
           description: OK
@@ -39,6 +45,7 @@ paths:
       - $ref: "client.yaml#/components/parameters/ClientId"
       - $ref: "#/components/parameters/LocationId"
     get:
+      operationId: getLocationById
       responses:
         200:
           description: OK
@@ -49,6 +56,7 @@ paths:
         '5XX':
           description: Server Error
     delete:
+      operationId: deleteLocationById
       responses:
         204:
           description: The resource was deleted successfully.
