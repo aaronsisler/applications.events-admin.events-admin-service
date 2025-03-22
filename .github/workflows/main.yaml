@@ -37,7 +37,7 @@ jobs:
       #        run: mvn clean package --activate-profiles docker-build --no-transfer-progress --batch-mode
 
       - name: Build Docker image
-        run: cd app & docker build . --tag events-admin-service --file app/Dockerfile
+        run: docker build . --tag events-admin-service --file app/Dockerfile
 
 #      - name: Get Docker Image Name
 #        id: set-docker-image-tag
