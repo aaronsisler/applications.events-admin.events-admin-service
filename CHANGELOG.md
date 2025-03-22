@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.22.0]
+
+### Added
+
+- GHA for the Docker image being published to AWS ECR
+
 ## [0.21.0]
 
 ### Added
