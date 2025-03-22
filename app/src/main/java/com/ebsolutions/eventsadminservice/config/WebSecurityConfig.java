@@ -16,12 +16,12 @@ public class WebSecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(authorization ->
-                authorization
-                    .requestMatchers("/actuator/health")
-                    .permitAll()
-//                .requestMatchers("/actuator/info")
-//                .permitAll()
-                    .anyRequest().authenticated()
+            authorization
+                .requestMatchers("/actuator/health")
+                .permitAll()
+                .requestMatchers("/actuator/info")
+                .permitAll()
+                .anyRequest().authenticated()
         )
         .httpBasic(withDefaults());
     return http.build();
