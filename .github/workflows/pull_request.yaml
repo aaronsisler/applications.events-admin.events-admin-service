@@ -20,4 +20,7 @@ jobs:
           cache: "maven"
 
       - name: Build Application
-        run: mvn clean install
+        run: mvn clean package --no-transfer-progress --batch-mode
+
+      - name: Build Docker image
+        run: docker build . --tag events-admin-service --file app/Dockerfile

@@ -2,7 +2,7 @@ name: Pull Request
 on:
   push:
     branches:
-      - feature/publish-ecr
+      - main
 
 jobs:
   Publish-Docker-Container:
