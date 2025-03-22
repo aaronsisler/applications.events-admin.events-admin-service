@@ -31,7 +31,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Application
-        run: mvn clean package
+        run: mvn clean package --no-transfer-progress --batch-mode
 
 #      - name: Get Docker Image Name
 #        id: set-docker-image-tag
