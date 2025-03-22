@@ -5,6 +5,7 @@ info:
 paths:
   /clients:
     post:
+      operationId: postClients
       requestBody:
         required: true
         content:
@@ -23,6 +24,7 @@ paths:
         '5XX':
           description: Server Error
     get:
+      operationId: getClients
       responses:
         200:
           description: OK
@@ -36,6 +38,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/ClientId"
     get:
+      operationId: getClientById
       responses:
         200:
           description: OK

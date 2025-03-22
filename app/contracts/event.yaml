@@ -7,6 +7,7 @@ paths:
     parameters:
       - $ref: "client.yaml#/components/parameters/ClientId"
     get:
+      operationId: getEvents
       responses:
         200:
           description: OK
@@ -19,6 +20,7 @@ paths:
         '5XX':
           description: Server error
     post:
+      operationId: postEvents
       requestBody:
         required: true
         content:
@@ -39,6 +41,7 @@ paths:
       - $ref: "client.yaml#/components/parameters/ClientId"
       - $ref: "#/components/parameters/EventId"
     get:
+      operationId: getEventById
       responses:
         200:
           description: OK
@@ -49,6 +52,7 @@ paths:
         '5XX':
           description: Server Error
     delete:
+      operationId: deleteEventById
       responses:
         204:
           description: The resource was deleted successfully.
