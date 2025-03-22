@@ -272,6 +272,7 @@
             </plugin>
         </plugins>
     </build>
+
     <profiles>
         <profile>
             <id>docker-build</id>
@@ -287,7 +288,7 @@
                             <!-- Brings up the storage and app containers -->
                             <execution>
                                 <id>docker-compose-up</id>
-                                <phase>install</phase>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
