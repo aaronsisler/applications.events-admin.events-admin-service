@@ -16,8 +16,16 @@ spring:
   config:
     activate:
       on-profile: local, default
+
+  security:
+    user:
+      name: johnny-appleseed
+      password: taco
+
 storage:
   endpoint: http://localhost:4566
+
+
 
 ---
 

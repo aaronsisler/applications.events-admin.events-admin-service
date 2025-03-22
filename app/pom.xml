@@ -51,6 +51,10 @@
 
     <dependencies>
         <!-- START: Spring Dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <!-- Contains Spring Boot Starter and Tomcat web server -->
         <!-- Version: Spring Parent -->
