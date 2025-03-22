@@ -35,7 +35,7 @@ dockerlocalup
 ```
 
 ```bash
-docker compose -f ./docker-compose.local.yml up -d
+docker compose -f ./compose.local.yaml up -d
 ```
 
 #### Stop the containers
@@ -45,7 +45,7 @@ dockerlocaldown
 ```
 
 ```bash
-docker compose -f ./docker-compose.local.yml down
+docker compose -f ./compose.local.yaml down
 ```
 
 </details>

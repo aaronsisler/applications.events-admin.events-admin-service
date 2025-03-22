@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.21.0]
+
+### Added
+
+- Changes for authentication being needed
+- Adding in the flatten plugin for making version bumping easier
+
 ## [0.20.0]
 
 ### Changed
