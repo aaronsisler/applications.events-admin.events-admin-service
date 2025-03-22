@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.ebsolutions.eventsadminservice</groupId>
         <artifactId>events-admin-service-parent</artifactId>
-        <version>0.20.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>events-admin-service</artifactId>
@@ -16,16 +16,12 @@
         <packaging>jar</packaging>
         <start-class>com.ebsolutions.eventsadminservice.EventsAdminServiceApplication</start-class>
 
-        <!-- Versions: Plugins-->
-
         <!-- Versions: Dependencies -->
-        <software.amazon.awssdk.bom.version>2.28.16</software.amazon.awssdk.bom.version>
         <commons-lang3.version>3.13.0</commons-lang3.version>
-        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
         <fastcsv.version>3.3.1</fastcsv.version>
-
-        <!-- Versions: Testing -->
+        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+        <software.amazon.awssdk.bom.version>2.28.16</software.amazon.awssdk.bom.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -51,10 +47,6 @@
 
     <dependencies>
         <!-- START: Spring Dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
 
         <!-- Contains Spring Boot Starter and Tomcat web server -->
         <!-- Version: Spring Parent -->
@@ -88,6 +80,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Used for authentication -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!-- END: Spring Dependencies -->
