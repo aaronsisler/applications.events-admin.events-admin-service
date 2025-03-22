@@ -20,7 +20,7 @@ spring:
   security:
     user:
       name: johnny-appleseed
-      password: taco
+      password: taco2
 
 storage:
   endpoint: http://localhost:4566
