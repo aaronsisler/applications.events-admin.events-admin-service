@@ -2,12 +2,14 @@ openapi: 3.0.0
 info:
   title: Published Event Schedules REST API
   version: "1.0"
-servers: [ ]
+servers:
+  - url: http://localhost:8080
 paths:
   /clients/{clientId}/published-event-schedules:
     parameters:
       - $ref: "client.yaml#/components/parameters/ClientId"
     get:
+      operationId: getEventSchedules
       responses:
         200:
           description: OK
@@ -20,6 +22,7 @@ paths:
         '5XX':
           description: Server error
     post:
+      operationId: postEventSchedules
       requestBody:
         required: true
         content:
@@ -32,7 +35,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublishedEventSchedule"
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublishedEventSchedule"
         '5XX':
           description: Server Error
   /clients/{clientId}/published-event-schedules/{publishedEventScheduleId}:
@@ -40,6 +45,7 @@ paths:
       - $ref: "client.yaml#/components/parameters/ClientId"
       - $ref: "#/components/parameters/PublishedEventScheduleId"
     get:
+      operationId: getEventScheduleById
       responses:
         200:
           description: OK
@@ -52,30 +58,6 @@ paths:
 
 components:
   schemas:
-    #    LocationBlackout:
-    #      type: object
-    #      required:
-    #        - locationId
-    #        - blackoutDate
-    #      properties:
-    #        locationId:
-    #          type: string
-    #        blackoutDate:
-    #          type: string
-    #          format: local-date
-    #          example: "2019-05-17"
-    #    EventBlackout:
-    #      type: object
-    #      required:
-    #        - eventId
-    #        - blackoutDate
-    #      properties:
-    #        eventId:
-    #          type: string
-    #        blackoutDate:
-    #          type: string
-    #          format: local-date
-    #          example: "2019-05-17"
     PublishedEventSchedule:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
@@ -97,14 +79,6 @@ components:
           type: integer
         filename:
           type: string
-  #        locationBlackouts:
-  #          type: array
-  #          items:
-  #            $ref: "#/components/schemas/LocationBlackout"
-  #        eventBlackouts:
-  #          type: array
-  #          items:
-  #            $ref: "#/components/schemas/EventBlackout"
   parameters:
     PublishedEventScheduleId:
       in: path

@@ -2,12 +2,14 @@ openapi: 3.0.0
 info:
   title: Organizers REST API
   version: "1.0"
-servers: [ ]
+servers:
+  - url: http://localhost:8080
 paths:
   /clients/{clientId}/organizers:
     parameters:
       - $ref: "client.yaml#/components/parameters/ClientId"
     get:
+      operationId: getOrganizers
       responses:
         200:
           description: OK
@@ -20,12 +22,15 @@ paths:
         '5XX':
           description: Server error
     post:
+      operationId: postUsers
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Organizer"
+              type: array
+              items:
+                $ref: "#/components/schemas/Organizer"
       responses:
         200:
           description: OK
@@ -40,6 +45,7 @@ paths:
       - $ref: "client.yaml#/components/parameters/ClientId"
       - $ref: "#/components/parameters/OrganizerId"
     get:
+      operationId: getOrganizerById
       responses:
         200:
           description: OK
@@ -50,6 +56,7 @@ paths:
         '5XX':
           description: Server Error
     delete:
+      operationId: deleteOrganizerById
       responses:
         204:
           description: The resource was deleted successfully.
