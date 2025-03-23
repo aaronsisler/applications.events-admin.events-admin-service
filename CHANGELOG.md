@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.24.0]
+
+### Changed
+
+- Moving around the repo in GH and the folder structure
+
 ## [0.23.0]
 
 ### Changed
