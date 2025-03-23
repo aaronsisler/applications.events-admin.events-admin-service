@@ -17,8 +17,8 @@ public class DatabaseConfig {
   protected String endpoint;
 
   @Bean
-  @Profile({"prod"})
-  public DynamoDbEnhancedClient prodDynamoDbEnhancedClientInstantiation() {
+  @Profile({"default"})
+  public DynamoDbEnhancedClient defaultDynamoDbEnhancedClientInstantiation() {
     DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
         .build();
 

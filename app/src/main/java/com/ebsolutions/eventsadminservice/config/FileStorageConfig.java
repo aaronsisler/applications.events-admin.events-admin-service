@@ -15,8 +15,8 @@ public class FileStorageConfig {
   protected String endpoint;
 
   @Bean
-  @Profile({"prod"})
-  public S3Client prodS3ClientInstantiation() {
+  @Profile({"default"})
+  public S3Client defaultS3ClientInstantiation() {
     return S3Client.builder()
         .build();
   }
