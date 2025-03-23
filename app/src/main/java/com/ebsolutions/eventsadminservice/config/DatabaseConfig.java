@@ -16,6 +16,14 @@ public class DatabaseConfig {
   @Value("${storage.endpoint:`Database endpoint not found in environment`}")
   protected String endpoint;
 
+  @Bean
+  @Profile({"prod"})
+  public DynamoDbEnhancedClient prodDynamoDbEnhancedClientInstantiation() {
+    DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
+        .build();
+
+    return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
+  }
 
   @Bean
   @Profile({"local", "dev"})
@@ -27,6 +35,7 @@ public class DatabaseConfig {
 
     return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
   }
+
 
   private StaticCredentialsProvider staticCredentialsProvider() {
     String awsAccessKeyId = "accessKeyId";
