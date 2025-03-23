@@ -138,4 +138,22 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <scm>
+        <connection>scm:git@github.com:aaronsisler/services.events-admin-service.git</connection>
+        <developerConnection>scm:git@github.com:aaronsisler/services.events-admin-service.git</developerConnection>
+        <url>https://github.com/aaronsisler/services.events-admin-service</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>aaron-sisler</id>
+            <name>Aaron Sisler</name>
+            <email>aaron.sisler@eandbsolutions.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>America/New_York</timezone>
+        </developer>
+    </developers>
 </project>

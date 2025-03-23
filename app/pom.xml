@@ -193,7 +193,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/client.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/client.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>
@@ -202,7 +202,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/event.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/event.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>
@@ -211,7 +211,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/event-schedule.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/event-schedule.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>
@@ -220,7 +220,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/location.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/location.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>
@@ -229,7 +229,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/organizer.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/organizer.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>
@@ -238,7 +238,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/published-event-schedule.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/published-event-schedule.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>
@@ -247,7 +247,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/scheduled-event.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/scheduled-event.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>
@@ -256,7 +256,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/shared.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/shared.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>
@@ -265,7 +265,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${pom.basedir}/contracts/user.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/user.yaml</inputSpec>
                         </configuration>
                     </execution>
                 </executions>

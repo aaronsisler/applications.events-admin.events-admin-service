@@ -1,4 +1,4 @@
-# services.events-admin-service
+# applications.events-admin.events-admin-service
 
 ## TODOs
 
