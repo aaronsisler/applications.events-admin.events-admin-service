@@ -15,7 +15,7 @@ management:
 spring:
   config:
     activate:
-      on-profile: local, default
+      on-profile: local
 
   security:
     user:
@@ -39,7 +39,7 @@ storage:
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: default
 
   security:
     user:

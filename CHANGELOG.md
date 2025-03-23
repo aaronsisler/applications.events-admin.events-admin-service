@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.23.0]
+
+### Changed
+
+- Changed the prod profile to be default so we don't need to pass the profile for our first tries at deploying to AWS
+
 ## [0.22.0]
 
 ### Added
