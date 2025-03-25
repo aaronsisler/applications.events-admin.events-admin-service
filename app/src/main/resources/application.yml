@@ -40,8 +40,10 @@ spring:
   config:
     activate:
       on-profile: default
-
   security:
     user:
       name: admin
       password: tacopanda
+
+server:
+  port: 80
