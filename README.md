@@ -50,6 +50,16 @@ docker compose -f ./compose.local.yaml down
 
 </details>
 
+Running outside of Docker compose
+
+```
+docker container run  -d -e SPRING_PROFILES_ACTIVE=local -e AWS_EC2_METADATA_DISABLED=true -e AWS_REGION=us-east-1  events-admin-service
+```
+
+```
+docker container run -d -e AWS_EC2_METADATA_DISABLED=true -e AWS_REGION=us-east-1 events-admin-service
+```
+
 ## AWS
 
 <details>
