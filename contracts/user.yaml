@@ -58,7 +58,7 @@ components:
       properties:
         userId:
           type: string
-        clientIds:
+        establishmentIds:
           type: array
           items:
             type: string

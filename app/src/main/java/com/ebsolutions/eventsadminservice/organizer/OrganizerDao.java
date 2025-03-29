@@ -32,10 +32,10 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 public class OrganizerDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
-  public Organizer read(String clientId, String organizerId) throws DataProcessingException {
+  public Organizer read(String establishmentId, String organizerId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.ORGANIZER, organizerId);
+      Key key = KeyBuilder.build(establishmentId, RecordType.ORGANIZER, organizerId);
 
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -46,7 +46,7 @@ public class OrganizerDao {
       return organizerDto == null
           ? null
           : Organizer.builder()
-          .clientId(organizerDto.getPartitionKey())
+          .establishmentId(organizerDto.getPartitionKey())
           .organizerId(StringUtils.remove(organizerDto.getSortKey(),
               RecordType.ORGANIZER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(organizerDto.getName())
@@ -63,7 +63,7 @@ public class OrganizerDao {
     }
   }
 
-  public List<Organizer> readAll(String clientId) throws DataProcessingException {
+  public List<Organizer> readAll(String establishmentId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
@@ -73,7 +73,7 @@ public class OrganizerDao {
       List<OrganizerDto> organizerDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(
+                  -> s.partitionValue(establishmentId).sortValue(
                       RecordType.ORGANIZER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
                   .build()))
           )
@@ -84,7 +84,7 @@ public class OrganizerDao {
       return organizerDtos.stream()
           .map(organizerDto ->
               Organizer.builder()
-                  .clientId(organizerDto.getPartitionKey())
+                  .establishmentId(organizerDto.getPartitionKey())
                   .organizerId(
                       StringUtils.remove(organizerDto.getSortKey(), RecordType.ORGANIZER.name()
                           .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
@@ -111,7 +111,7 @@ public class OrganizerDao {
     try {
       organizers.forEach(organizer ->
           organizerDtos.add(OrganizerDto.builder()
-              .partitionKey(organizer.getClientId())
+              .partitionKey(organizer.getEstablishmentId())
               .sortKey(RecordType.ORGANIZER +
                   Constants.DATABASE_RECORD_TYPE_DELIMITER +
                   UniqueIdGenerator.generate())
@@ -147,7 +147,7 @@ public class OrganizerDao {
 
       return organizerDtos.stream().map(organizerDto ->
           Organizer.builder()
-              .clientId(organizerDto.getPartitionKey())
+              .establishmentId(organizerDto.getPartitionKey())
               .organizerId(
                   StringUtils.remove(organizerDto.getSortKey(),
                       RecordType.ORGANIZER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
@@ -179,7 +179,7 @@ public class OrganizerDao {
       assert organizer.getOrganizerId() != null;
 
       OrganizerDto organizerDto = OrganizerDto.builder()
-          .partitionKey(organizer.getClientId())
+          .partitionKey(organizer.getEstablishmentId())
           .sortKey(RecordType.ORGANIZER +
               Constants.DATABASE_RECORD_TYPE_DELIMITER +
               organizer.getOrganizerId())
@@ -195,7 +195,7 @@ public class OrganizerDao {
       dtoDynamoDbTable.putItem(organizerDto);
 
       return Organizer.builder()
-          .clientId(organizerDto.getPartitionKey())
+          .establishmentId(organizerDto.getPartitionKey())
           .organizerId(StringUtils.remove(organizerDto.getSortKey(),
               RecordType.ORGANIZER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(organizerDto.getName())
@@ -212,10 +212,10 @@ public class OrganizerDao {
     }
   }
 
-  public void delete(String clientId, String organizerId) {
+  public void delete(String establishmentId, String organizerId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.ORGANIZER, organizerId);
+      Key key = KeyBuilder.build(establishmentId, RecordType.ORGANIZER, organizerId);
 
       DynamoDbTable<OrganizerDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,

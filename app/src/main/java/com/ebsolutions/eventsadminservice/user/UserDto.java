@@ -16,5 +16,5 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto extends DatabaseDto {
-  private List<String> clientIds;
+  private List<String> establishmentIds;
 }

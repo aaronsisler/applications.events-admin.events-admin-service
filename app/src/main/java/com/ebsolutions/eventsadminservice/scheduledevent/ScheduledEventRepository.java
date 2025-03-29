@@ -18,8 +18,8 @@ public class ScheduledEventRepository {
     return scheduledEventDao.read(eventScheduleId, scheduledEventId);
   }
 
-  public List<ScheduledEvent> readAll(String clientId) {
-    return scheduledEventDao.readAll(clientId);
+  public List<ScheduledEvent> readAll(String establishmentId) {
+    return scheduledEventDao.readAll(establishmentId);
   }
 
   public ScheduledEvent update(ScheduledEvent scheduledEvent) {

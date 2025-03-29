@@ -81,7 +81,7 @@ components:
         - $ref: "shared.yaml#/components/schemas/Base"
       required:
         - eventScheduleId
-        - clientId
+        - establishmentId
         - eventId
         - scheduledEventType
         - startTime
@@ -91,7 +91,7 @@ components:
           type: string
         scheduledEventId:
           type: string
-        clientId:
+        establishmentId:
           type: string
         eventId:
           type: string

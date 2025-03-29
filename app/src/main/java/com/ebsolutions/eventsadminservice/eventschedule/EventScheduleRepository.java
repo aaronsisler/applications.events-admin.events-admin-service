@@ -14,19 +14,19 @@ public class EventScheduleRepository {
     return eventScheduleDao.create(eventSchedules);
   }
 
-  public EventSchedule read(String clientId, String eventScheduleId) {
-    return eventScheduleDao.read(clientId, eventScheduleId);
+  public EventSchedule read(String establishmentId, String eventScheduleId) {
+    return eventScheduleDao.read(establishmentId, eventScheduleId);
   }
 
-  public List<EventSchedule> readAll(String clientId) {
-    return eventScheduleDao.readAll(clientId);
+  public List<EventSchedule> readAll(String establishmentId) {
+    return eventScheduleDao.readAll(establishmentId);
   }
 
   public EventSchedule update(EventSchedule eventSchedule) {
     return eventScheduleDao.update(eventSchedule);
   }
 
-  public void delete(String clientId, String eventScheduleId) {
-    eventScheduleDao.delete(clientId, eventScheduleId);
+  public void delete(String establishmentId, String eventScheduleId) {
+    eventScheduleDao.delete(establishmentId, eventScheduleId);
   }
 }

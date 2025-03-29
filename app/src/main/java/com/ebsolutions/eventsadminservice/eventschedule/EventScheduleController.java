@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients/{clientId}/event-schedules")
+@RequestMapping("establishments/{establishmentId}/event-schedules")
 public class EventScheduleController {
   private final EventScheduleRepository eventScheduleRepository;
 
@@ -35,10 +35,10 @@ public class EventScheduleController {
   }
 
   @GetMapping(value = "/{eventScheduleId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId,
                                @NotBlank @PathVariable String eventScheduleId) {
     try {
-      EventSchedule eventSchedule = eventScheduleRepository.read(clientId, eventScheduleId);
+      EventSchedule eventSchedule = eventScheduleRepository.read(establishmentId, eventScheduleId);
 
       return eventSchedule != null ? ResponseEntity.ok(eventSchedule) :
           ResponseEntity.noContent().build();
@@ -48,9 +48,9 @@ public class EventScheduleController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> getAll(@NotBlank @PathVariable String clientId) {
+  public ResponseEntity<?> getAll(@NotBlank @PathVariable String establishmentId) {
     try {
-      List<EventSchedule> eventSchedules = eventScheduleRepository.readAll(clientId);
+      List<EventSchedule> eventSchedules = eventScheduleRepository.readAll(establishmentId);
 
       return !eventSchedules.isEmpty() ? ResponseEntity.ok(eventSchedules) :
           ResponseEntity.noContent().build();
@@ -69,10 +69,10 @@ public class EventScheduleController {
   }
 
   @DeleteMapping(value = "/{eventScheduleId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> delete(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> delete(@NotBlank @PathVariable String establishmentId,
                                   @NotBlank @PathVariable String eventScheduleId) {
     try {
-      eventScheduleRepository.delete(clientId, eventScheduleId);
+      eventScheduleRepository.delete(establishmentId, eventScheduleId);
 
       return ResponseEntity.ok().build();
     } catch (DataProcessingException dpe) {

@@ -188,12 +188,12 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>models-client</id>
+                        <id>models-establishment</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.parent.basedir}/contracts/client.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/contracts/establishment.yaml</inputSpec>
                         </configuration>
                     </execution>
                     <execution>

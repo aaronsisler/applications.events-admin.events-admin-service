@@ -28,12 +28,12 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 public class PublishedEventScheduleDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
-  public PublishedEventSchedule read(String clientId, String publishedEventScheduleId)
+  public PublishedEventSchedule read(String establishmentId, String publishedEventScheduleId)
       throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
 
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.PUBLISHED_EVENT_SCHEDULE,
+      Key key = KeyBuilder.build(establishmentId, RecordType.PUBLISHED_EVENT_SCHEDULE,
           publishedEventScheduleId);
 
       DynamoDbTable<PublishedEventScheduleDto> dtoDynamoDbTable =
@@ -45,7 +45,7 @@ public class PublishedEventScheduleDao {
       return publishedEventScheduleDto == null
           ? null
           : PublishedEventSchedule.builder()
-          .clientId(publishedEventScheduleDto.getPartitionKey())
+          .establishmentId(publishedEventScheduleDto.getPartitionKey())
           .publishedEventScheduleId(StringUtils.remove(publishedEventScheduleDto.getSortKey(),
               RecordType.PUBLISHED_EVENT_SCHEDULE.name()
                   .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
@@ -67,7 +67,8 @@ public class PublishedEventScheduleDao {
     }
   }
 
-  public List<PublishedEventSchedule> readAll(String clientId) throws DataProcessingException {
+  public List<PublishedEventSchedule> readAll(String establishmentId)
+      throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<PublishedEventScheduleDto> dtoDynamoDbTable =
@@ -77,7 +78,7 @@ public class PublishedEventScheduleDao {
       List<PublishedEventScheduleDto> publishedEventScheduleDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(
+                  -> s.partitionValue(establishmentId).sortValue(
                       RecordType.PUBLISHED_EVENT_SCHEDULE.name()
                           .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
                   .build()))
@@ -89,7 +90,7 @@ public class PublishedEventScheduleDao {
       return publishedEventScheduleDtos.stream()
           .map(publishedEventScheduleDto ->
               PublishedEventSchedule.builder()
-                  .clientId(publishedEventScheduleDto.getPartitionKey())
+                  .establishmentId(publishedEventScheduleDto.getPartitionKey())
                   .publishedEventScheduleId(
                       StringUtils.remove(publishedEventScheduleDto.getSortKey(),
                           RecordType.PUBLISHED_EVENT_SCHEDULE.name()
@@ -119,7 +120,7 @@ public class PublishedEventScheduleDao {
 
     try {
       PublishedEventScheduleDto publishedEventScheduleDto = PublishedEventScheduleDto.builder()
-          .partitionKey(publishedEventSchedule.getClientId())
+          .partitionKey(publishedEventSchedule.getEstablishmentId())
           .sortKey(RecordType.PUBLISHED_EVENT_SCHEDULE +
               Constants.DATABASE_RECORD_TYPE_DELIMITER +
               UniqueIdGenerator.generate())
@@ -139,7 +140,7 @@ public class PublishedEventScheduleDao {
       dtoDynamoDbTable.updateItem(publishedEventScheduleDto);
 
       return PublishedEventSchedule.builder()
-          .clientId(publishedEventScheduleDto.getPartitionKey())
+          .establishmentId(publishedEventScheduleDto.getPartitionKey())
           .publishedEventScheduleId(StringUtils.remove(publishedEventScheduleDto.getSortKey(),
               RecordType.PUBLISHED_EVENT_SCHEDULE.name()
                   .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))

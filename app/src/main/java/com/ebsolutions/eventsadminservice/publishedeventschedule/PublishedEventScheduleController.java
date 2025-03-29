@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients/{clientId}/published-event-schedules")
+@RequestMapping("establishments/{establishmentId}/published-event-schedules")
 public class PublishedEventScheduleController {
   private final PublishedEventScheduleRepository publishedEventScheduleRepository;
   private final FileGenerationOrchestrationService fileGenerationOrchestrationService;
@@ -36,11 +36,11 @@ public class PublishedEventScheduleController {
   }
 
   @GetMapping(value = "/{publishedEventScheduleId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId,
                                @NotBlank @PathVariable String publishedEventScheduleId) {
     try {
       PublishedEventSchedule publishedEventSchedule =
-          publishedEventScheduleRepository.read(clientId, publishedEventScheduleId);
+          publishedEventScheduleRepository.read(establishmentId, publishedEventScheduleId);
 
       return publishedEventSchedule != null ? ResponseEntity.ok(publishedEventSchedule) :
           ResponseEntity.noContent().build();
@@ -50,10 +50,10 @@ public class PublishedEventScheduleController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> getAll(@NotBlank @PathVariable String clientId) {
+  public ResponseEntity<?> getAll(@NotBlank @PathVariable String establishmentId) {
     try {
       List<PublishedEventSchedule> publishedEventSchedules =
-          publishedEventScheduleRepository.readAll(clientId);
+          publishedEventScheduleRepository.readAll(establishmentId);
 
       return !publishedEventSchedules.isEmpty() ? ResponseEntity.ok(publishedEventSchedules) :
           ResponseEntity.noContent().build();

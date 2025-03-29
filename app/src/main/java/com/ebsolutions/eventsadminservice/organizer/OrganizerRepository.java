@@ -14,19 +14,19 @@ public class OrganizerRepository {
     return organizerDao.create(organizers);
   }
 
-  public Organizer read(String clientId, String organizerId) {
-    return organizerDao.read(clientId, organizerId);
+  public Organizer read(String establishmentId, String organizerId) {
+    return organizerDao.read(establishmentId, organizerId);
   }
 
-  public List<Organizer> readAll(String clientId) {
-    return organizerDao.readAll(clientId);
+  public List<Organizer> readAll(String establishmentId) {
+    return organizerDao.readAll(establishmentId);
   }
 
   public Organizer update(Organizer organizer) {
     return organizerDao.update(organizer);
   }
 
-  public void delete(String clientId, String organizerId) {
-    organizerDao.delete(clientId, organizerId);
+  public void delete(String establishmentId, String organizerId) {
+    organizerDao.delete(establishmentId, organizerId);
   }
 }

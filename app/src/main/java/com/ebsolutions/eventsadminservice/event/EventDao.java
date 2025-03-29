@@ -32,10 +32,10 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 public class EventDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
-  public Event read(String clientId, String eventId) throws DataProcessingException {
+  public Event read(String establishmentId, String eventId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.EVENT, eventId);
+      Key key = KeyBuilder.build(establishmentId, RecordType.EVENT, eventId);
 
       DynamoDbTable<EventDto> eventDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -46,7 +46,7 @@ public class EventDao {
       return eventDto == null
           ? null
           : Event.builder()
-          .clientId(eventDto.getPartitionKey())
+          .establishmentId(eventDto.getPartitionKey())
           .eventId(StringUtils.remove(eventDto.getSortKey(),
               RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .locationId(eventDto.getLocationId())
@@ -67,7 +67,7 @@ public class EventDao {
     }
   }
 
-  public List<Event> readAll(String clientId) throws DataProcessingException {
+  public List<Event> readAll(String establishmentId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<EventDto> dtoDynamoDbTable =
@@ -77,7 +77,7 @@ public class EventDao {
       List<EventDto> eventDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(
+                  -> s.partitionValue(establishmentId).sortValue(
                       RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
                   .build()))
           )
@@ -88,7 +88,7 @@ public class EventDao {
       return eventDtos.stream()
           .map(eventDto ->
               Event.builder()
-                  .clientId(eventDto.getPartitionKey())
+                  .establishmentId(eventDto.getPartitionKey())
                   .eventId(StringUtils.remove(eventDto.getSortKey(),
                       RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .locationId(eventDto.getLocationId())
@@ -118,7 +118,7 @@ public class EventDao {
 
       events.forEach(event ->
           eventDtos.add(EventDto.builder()
-              .partitionKey(event.getClientId())
+              .partitionKey(event.getEstablishmentId())
               .sortKey(RecordType.EVENT + Constants.DATABASE_RECORD_TYPE_DELIMITER +
                   UniqueIdGenerator.generate())
               .locationId(event.getLocationId())
@@ -159,7 +159,7 @@ public class EventDao {
 
       return eventDtos.stream().map(eventDto ->
           Event.builder()
-              .clientId(eventDto.getPartitionKey())
+              .establishmentId(eventDto.getPartitionKey())
               .eventId(StringUtils.remove(eventDto.getSortKey(),
                   RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .locationId(eventDto.getLocationId())
@@ -189,11 +189,11 @@ public class EventDao {
   public Event update(Event event) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      assert event.getClientId() != null;
+      assert event.getEstablishmentId() != null;
       assert event.getEventId() != null;
 
       EventDto eventDto = EventDto.builder()
-          .partitionKey(event.getClientId())
+          .partitionKey(event.getEstablishmentId())
           .sortKey(RecordType.EVENT + Constants.DATABASE_RECORD_TYPE_DELIMITER + event.getEventId())
           .locationId(event.getLocationId())
           .organizerId(event.getOrganizerId())
@@ -211,7 +211,7 @@ public class EventDao {
       dtoDynamoDbTable.putItem(eventDto);
 
       return Event.builder()
-          .clientId(eventDto.getPartitionKey())
+          .establishmentId(eventDto.getPartitionKey())
           .eventId(StringUtils.remove(eventDto.getSortKey(),
               RecordType.EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .locationId(eventDto.getLocationId())
@@ -232,10 +232,10 @@ public class EventDao {
     }
   }
 
-  public void delete(String clientId, String eventId) {
+  public void delete(String establishmentId, String eventId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.EVENT, eventId);
+      Key key = KeyBuilder.build(establishmentId, RecordType.EVENT, eventId);
 
       DynamoDbTable<EventDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,

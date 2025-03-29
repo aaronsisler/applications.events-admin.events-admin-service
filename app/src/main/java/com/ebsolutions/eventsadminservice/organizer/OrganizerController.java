@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients/{clientId}/organizers")
+@RequestMapping("establishments/{establishmentId}/organizers")
 public class OrganizerController {
   private final OrganizerRepository organizerRepository;
 
@@ -35,10 +35,10 @@ public class OrganizerController {
   }
 
   @GetMapping(value = "/{organizerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId,
                                @NotBlank @PathVariable String organizerId) {
     try {
-      Organizer organizer = organizerRepository.read(clientId, organizerId);
+      Organizer organizer = organizerRepository.read(establishmentId, organizerId);
 
       return organizer != null ? ResponseEntity.ok(organizer) : ResponseEntity.noContent().build();
     } catch (DataProcessingException dpe) {
@@ -47,9 +47,9 @@ public class OrganizerController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> getAll(@NotBlank @PathVariable String clientId) {
+  public ResponseEntity<?> getAll(@NotBlank @PathVariable String establishmentId) {
     try {
-      List<Organizer> organizers = organizerRepository.readAll(clientId);
+      List<Organizer> organizers = organizerRepository.readAll(establishmentId);
 
       return !organizers.isEmpty() ? ResponseEntity.ok(organizers) :
           ResponseEntity.noContent().build();
@@ -68,10 +68,10 @@ public class OrganizerController {
   }
 
   @DeleteMapping(value = "/{organizerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> delete(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> delete(@NotBlank @PathVariable String establishmentId,
                                   @NotBlank @PathVariable String organizerId) {
     try {
-      organizerRepository.delete(clientId, organizerId);
+      organizerRepository.delete(establishmentId, organizerId);
 
       return ResponseEntity.ok().build();
     } catch (DataProcessingException dpe) {

@@ -4,13 +4,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Chair yoga"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Chair yoga"
@@ -34,13 +34,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Embodied Flow"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Embodied Flow"
@@ -64,13 +64,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Foundational yoga"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Foundational yoga"
@@ -94,13 +94,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Fow Into Yin"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Fow Into Yin"
@@ -124,13 +124,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Mixed Fit"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Mixed Fit"
@@ -154,13 +154,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Slow Flow"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Slow Flow"
@@ -184,13 +184,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Vinyasa for everybody"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Vinyasa for everybody"
@@ -214,13 +214,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Yin yoga"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Yin yoga"
@@ -244,13 +244,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Yoga for everybody"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Yoga for everybody"

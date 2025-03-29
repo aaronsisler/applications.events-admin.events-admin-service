@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients/{clientId}/events")
+@RequestMapping("establishments/{establishmentId}/events")
 public class EventController {
   private final EventRepository eventRepository;
 
@@ -35,10 +35,10 @@ public class EventController {
   }
 
   @GetMapping(value = "/{eventId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId,
                                @NotBlank @PathVariable String eventId) {
     try {
-      Event event = eventRepository.read(clientId, eventId);
+      Event event = eventRepository.read(establishmentId, eventId);
 
       return event != null ? ResponseEntity.ok(event) : ResponseEntity.noContent().build();
     } catch (DataProcessingException dpe) {
@@ -47,9 +47,9 @@ public class EventController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> getAll(@NotBlank @PathVariable String clientId) {
+  public ResponseEntity<?> getAll(@NotBlank @PathVariable String establishmentId) {
     try {
-      List<Event> events = eventRepository.readAll(clientId);
+      List<Event> events = eventRepository.readAll(establishmentId);
 
       return !events.isEmpty() ? ResponseEntity.ok(events) :
           ResponseEntity.noContent().build();
@@ -68,10 +68,10 @@ public class EventController {
   }
 
   @DeleteMapping(value = "/{eventId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> delete(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> delete(@NotBlank @PathVariable String establishmentId,
                                   @NotBlank @PathVariable String eventId) {
     try {
-      eventRepository.delete(clientId, eventId);
+      eventRepository.delete(establishmentId, eventId);
 
       return ResponseEntity.ok().build();
     } catch (DataProcessingException dpe) {

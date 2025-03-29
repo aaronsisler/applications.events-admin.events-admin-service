@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients/{clientId}/files")
+@RequestMapping("establishments/{establishmentId}/files")
 public class FileController {
   private FileDao fileDao;
 
   @GetMapping(value = "/{filename}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId,
                                @NotBlank @PathVariable String filename) {
     try {
-      String fileLocation = FileLocationUtil.build(clientId, filename);
+      String fileLocation = FileLocationUtil.build(establishmentId, filename);
 
       URL url = fileDao.read(fileLocation);
 

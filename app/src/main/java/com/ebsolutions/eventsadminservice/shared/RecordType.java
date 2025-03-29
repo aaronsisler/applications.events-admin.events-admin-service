@@ -1,7 +1,7 @@
 package com.ebsolutions.eventsadminservice.shared;
 
 public enum RecordType {
-  CLIENT,
+  ESTABLISHMENT,
   LOCATION,
   ORGANIZER,
   EVENT,

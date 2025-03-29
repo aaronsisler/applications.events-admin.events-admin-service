@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients/{clientId}/locations")
+@RequestMapping("establishments/{establishmentId}/locations")
 public class LocationController {
   private final LocationRepository locationRepository;
 
@@ -35,10 +35,10 @@ public class LocationController {
   }
 
   @GetMapping(value = "/{locationId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId,
                                @NotBlank @PathVariable String locationId) {
     try {
-      Location location = locationRepository.read(clientId, locationId);
+      Location location = locationRepository.read(establishmentId, locationId);
 
       return location != null ? ResponseEntity.ok(location) : ResponseEntity.noContent().build();
     } catch (DataProcessingException dpe) {
@@ -47,9 +47,9 @@ public class LocationController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> getAll(@NotBlank @PathVariable String clientId) {
+  public ResponseEntity<?> getAll(@NotBlank @PathVariable String establishmentId) {
     try {
-      List<Location> locations = locationRepository.readAll(clientId);
+      List<Location> locations = locationRepository.readAll(establishmentId);
 
       return !locations.isEmpty() ? ResponseEntity.ok(locations) :
           ResponseEntity.noContent().build();
@@ -68,10 +68,10 @@ public class LocationController {
   }
 
   @DeleteMapping(value = "/{locationId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> delete(@NotBlank @PathVariable String clientId,
+  public ResponseEntity<?> delete(@NotBlank @PathVariable String establishmentId,
                                   @NotBlank @PathVariable String locationId) {
     try {
-      locationRepository.delete(clientId, locationId);
+      locationRepository.delete(establishmentId, locationId);
 
       return ResponseEntity.ok().build();
     } catch (DataProcessingException dpe) {

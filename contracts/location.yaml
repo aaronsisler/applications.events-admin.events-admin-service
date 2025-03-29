@@ -5,9 +5,9 @@ info:
 servers:
   - url: http://localhost:8080
 paths:
-  /clients/{clientId}/locations:
+  /establishments/{establishmentId}/locations:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "establishment.yaml#/components/parameters/EstablishmentId"
     get:
       operationId: getLocations
       responses:
@@ -40,9 +40,9 @@ paths:
                 $ref: "#/components/schemas/Location"
         '5XX':
           description: Server Error
-  /clients/{clientId}/locations/{locationId}:
+  /establishments/{establishmentId}/locations/{locationId}:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "establishment.yaml#/components/parameters/EstablishmentId"
       - $ref: "#/components/parameters/LocationId"
     get:
       operationId: getLocationById
@@ -69,9 +69,9 @@ components:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
       required:
-        - clientId
+        - establishmentId
       properties:
-        clientId:
+        establishmentId:
           type: string
         locationId:
           type: string
