@@ -1,0 +1,49 @@
+Description: ALB And Lambdas
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  SecurityGroupIds:
+    Type: CommaDelimitedList
+    Default: sg-003e6ce74c0ec695d, sg-039879afee519f8a8
+  SubnetIds:
+    Type: CommaDelimitedList
+    Default: subnet-01405f62e49e3721d, subnet-03a2d434cd2925e93, subnet-095ddd203f02bcfa2, subnet-0cc9d8c14b31e5042, subnet-0f9184e762d15e064, subnet-0a11cbaf3d16480a1
+  VpcId:
+    Type: String
+    Default: vpc-0836c2a075ecb38cc
+
+Resources:
+  # Create a Service on the default ECS cluster
+  EcsService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: default
+      ServiceName: events-admin-service
+      TaskDefinition: arn:aws:ecs:us-east-1:654918520080:task-definition/events-admin-service-task:1
+      LaunchType: FARGATE
+      PlatformVersion: LATEST
+      SchedulingStrategy: REPLICA
+      DesiredCount: 1
+      AvailabilityZoneRebalancing: ENABLED
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups: !Ref SecurityGroupIds
+          Subnets: !Ref SubnetIds
+      LoadBalancers:
+        - ContainerPort: 80
+          ContainerName: events-admin-service-container
+          TargetGroupArn: !ImportValue EventsAdminServiceLoadBalancerTargetGroup
+      DeploymentConfiguration:
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      ServiceConnectConfiguration:
+        Enabled: false
+      Tags:
+        - Key: "CostCenter"
+          Value: "applications.events-admin.events-admin-service"

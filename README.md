@@ -23,6 +23,16 @@
 
 </details>
 
+## Deployment of Cloud Formation stacks
+
+1. Deploy Alb
+
+- `aws cloudformation create-stack --stack-name events-admin-service-alb --template-body file://infrastructure/alb.yaml`
+
+1. Deploy Service
+
+- `aws cloudformation create-stack --stack-name events-admin-service-ecs --template-body file://infrastructure/ecs.yaml`
+
 ## Docker
 
 <details>
