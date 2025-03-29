@@ -3,7 +3,7 @@ package com.ebsolutions.eventsadminservice.config;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,14 +21,14 @@ public class WebSecurityConfig {
         .cors(cors -> cors
             .configurationSource(request -> this.createCorsConfiguration())
         )
-        .authorizeHttpRequests(authorization ->
-            authorization
-                .requestMatchers("/actuator/health")
-                .permitAll()
-                .requestMatchers("/actuator/info")
-                .permitAll()
-                .anyRequest().authenticated()
-        )
+//        .authorizeHttpRequests(authorization ->
+//            authorization
+//                .requestMatchers("/actuator/health")
+//                .permitAll()
+//                .requestMatchers("/actuator/info")
+//                .permitAll()
+//                .anyRequest().authenticated()
+//        )
         .httpBasic(withDefaults());
     return http.build();
   }
@@ -40,7 +40,7 @@ public class WebSecurityConfig {
     configuration.setAllowCredentials(true);
 
     configuration.setAllowedOrigins(
-        Collections.singletonList("http://localhost:3000")); // Replace with your origin
+        List.of("http://localhost:3000", "https://events.otterandcow.com"));
 
     return configuration;
   }
