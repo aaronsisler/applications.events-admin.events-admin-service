@@ -13,12 +13,12 @@ awslocal dynamodb list-tables
 #
 echo "End: DynamoDB -> List Tables"
 #
-echo "Begin: DynamoDB -> Load Base Client"
+echo "Begin: DynamoDB -> Load Base Establishment"
 #
 awslocal dynamodb batch-write-item \
   --region us-east-1 \
-  --request-items file://data/base-client.json
-echo "End: DynamoDB -> Load Base Client"
+  --request-items file://data/base-establishment.json
+echo "End: DynamoDB -> Load Base Establishment"
 #
 echo "Begin: DynamoDB -> Load Base User"
 #
