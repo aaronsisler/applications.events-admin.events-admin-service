@@ -84,10 +84,11 @@
 
         <!-- Used for authentication -->
         <!-- Version: Spring Parent -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+        <!-- Commenting out since this causes AuthZ to be in place... -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-security</artifactId>-->
+        <!--        </dependency>-->
 
         <!-- END: Spring Dependencies -->
 
