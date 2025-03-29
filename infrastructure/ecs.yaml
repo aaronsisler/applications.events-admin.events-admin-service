@@ -19,7 +19,7 @@ Resources:
     Properties:
       Cluster: default
       ServiceName: events-admin-service
-      TaskDefinition: arn:aws:ecs:us-east-1:654918520080:task-definition/events-admin-service-task:1
+      TaskDefinition: arn:aws:ecs:us-east-1:654918520080:task-definition/events-admin-service-task:2
       LaunchType: FARGATE
       PlatformVersion: LATEST
       SchedulingStrategy: REPLICA
