@@ -16,7 +16,7 @@ Resources:
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: events-admin-service-lb
+      Name: events-admin-service-lb-test
       SecurityGroups: !Ref SecurityGroupIds
       Subnets: !Ref SubnetIds
       Tags:
@@ -26,7 +26,7 @@ Resources:
   LoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: events-admin-service-tg
+      Name: events-admin-service-tg-test
       VpcId: !Ref VpcId
       Port: 443
       Protocol: HTTPS
@@ -53,49 +53,3 @@ Resources:
         - Type: forward
           TargetGroupArn: !Ref LoadBalancerTargetGroup
 
-  Route53Record:
-    DependsOn: [ LoadBalancer ]
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: ZR2VAHLVW389H
-      Name: events-service.otterandcow.com.
-      Type: A
-      AliasTarget:
-        HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
-        DNSName: !GetAtt LoadBalancer.DNSName
-        EvaluateTargetHealth: "true"
-
-  EcsService:
-    DependsOn: [ LoadBalancer, LoadBalancerTargetGroup, LoadBalancerListener ]
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster: default
-      ServiceName: events-admin-service
-      TaskDefinition: arn:aws:ecs:us-east-1:654918520080:task-definition/events-admin-service-task:2
-      LaunchType: FARGATE
-      PlatformVersion: LATEST
-      SchedulingStrategy: REPLICA
-      DesiredCount: 1
-      AvailabilityZoneRebalancing: ENABLED
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          AssignPublicIp: ENABLED
-          SecurityGroups: !Ref SecurityGroupIds
-          Subnets: !Ref SubnetIds
-      LoadBalancers:
-        - ContainerPort: 80
-          ContainerName: events-admin-service-container
-          TargetGroupArn: !Ref LoadBalancerTargetGroup
-      DeploymentConfiguration:
-        DeploymentCircuitBreaker:
-          Enable: true
-          Rollback: true
-        MaximumPercent: 200
-        MinimumHealthyPercent: 100
-      DeploymentController:
-        Type: ECS
-      ServiceConnectConfiguration:
-        Enabled: false
-      Tags:
-        - Key: "CostCenter"
-          Value: "applications.events-admin.events-admin-service"

@@ -33,6 +33,11 @@
 
 - `aws cloudformation create-stack --stack-name events-admin-service-ecs --template-body file://infrastructure/ecs.yaml`
 
+1. Deploy Stack
+
+-
+`aws cloudformation create-stack --stack-name events-admin-service-stack --template-body file://infrastructure/stack.yaml`
+
 ## Docker
 
 <details>

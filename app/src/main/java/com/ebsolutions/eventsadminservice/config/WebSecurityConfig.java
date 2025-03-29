@@ -3,14 +3,12 @@ package com.ebsolutions.eventsadminservice.config;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class WebSecurityConfig {
   private static final List<String> ALLOWED_ORIGINS =
       List.of(
@@ -25,11 +23,16 @@ public class WebSecurityConfig {
     httpSecurity
         .cors(cors -> cors
             .configurationSource(request -> this.corsConfiguration())
-        );
+        )
+        .authorizeHttpRequests(authorize -> authorize
+            .requestMatchers("/clients").permitAll() // Allows everyone
+            .anyRequest().permitAll() // Other requests need authentication
+        )
+    ;
     return httpSecurity.build();
   }
 
-  @Bean
+  //  @Bean
   CorsConfiguration corsConfiguration() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));

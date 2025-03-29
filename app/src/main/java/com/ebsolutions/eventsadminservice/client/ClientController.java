@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients")
+@RequestMapping("clie")
 public class ClientController {
   private final ClientRepository clientRepository;
 
