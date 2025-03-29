@@ -28,8 +28,8 @@ Resources:
     Properties:
       Name: events-admin-service-tg
       VpcId: !Ref VpcId
-      Port: 80
-      Protocol: HTTP
+      Port: 443
+      Protocol: HTTPS
       TargetType: ip
       HealthCheckProtocol: HTTP
       HealthCheckPath: /actuator/health
@@ -44,10 +44,11 @@ Resources:
     DependsOn: [ LoadBalancer, LoadBalancerTargetGroup ]
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-      Protocol: HTTP
-      # Certificate: arn:aws:acm:us-east-1:654918520080:certificate/b4d67bb3-5d56-4d5e-bf83-cdf7cb04d4ba
+      Protocol: HTTPS
+      Certificates:
+        - arn:aws:acm:us-east-1:654918520080:certificate/b4d67bb3-5d56-4d5e-bf83-cdf7cb04d4ba
       LoadBalancerArn: !Ref LoadBalancer
-      Port: 80
+      Port: 443
       DefaultActions:
         - Type: forward
           TargetGroupArn: !Ref LoadBalancerTargetGroup
@@ -65,7 +66,7 @@ Resources:
         EvaluateTargetHealth: "true"
 
   EcsService:
-    DependsOn: [ LoadBalancerTargetGroup ]
+    DependsOn: [ LoadBalancer, LoadBalancerTargetGroup, LoadBalancerListener ]
     Type: AWS::ECS::Service
     Properties:
       Cluster: default
@@ -82,7 +83,7 @@ Resources:
           SecurityGroups: !Ref SecurityGroupIds
           Subnets: !Ref SubnetIds
       LoadBalancers:
-        - ContainerPort: 80
+        - ContainerPort: 8080
           ContainerName: events-admin-service-container
           TargetGroupArn: !Ref LoadBalancerTargetGroup
       DeploymentConfiguration:
