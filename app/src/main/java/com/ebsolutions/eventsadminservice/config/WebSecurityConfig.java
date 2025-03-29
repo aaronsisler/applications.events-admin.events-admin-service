@@ -40,7 +40,7 @@ public class WebSecurityConfig {
     configuration.setAllowCredentials(true);
 
     configuration.setAllowedOrigins(
-        List.of("http://localhost:3000", "https://events.otterandcow.com"));
+        List.of("http://localhost:3000", "https://events.otterandcow.com", "64.98.122.48"));
 
     return configuration;
   }
