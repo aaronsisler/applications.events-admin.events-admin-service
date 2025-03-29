@@ -48,7 +48,7 @@ Resources:
       Certificates:
         - arn:aws:acm:us-east-1:654918520080:certificate/b4d67bb3-5d56-4d5e-bf83-cdf7cb04d4ba
       LoadBalancerArn: !Ref LoadBalancer
-      Port:
+      Port: 8080
       DefaultActions:
         - Type: forward
           TargetGroupArn: !Ref LoadBalancerTargetGroup
