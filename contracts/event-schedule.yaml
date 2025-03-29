@@ -5,9 +5,9 @@ info:
 servers:
   - url: http://localhost:8080
 paths:
-  /clients/{clientId}/event-schedules:
+  /establishments/{establishmentId}/event-schedules:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "establishment.yaml#/components/parameters/EstablishmentId"
     get:
       operationId: getEventSchedules
       responses:
@@ -40,9 +40,9 @@ paths:
                 $ref: "#/components/schemas/EventSchedule"
         '5XX':
           description: Server Error
-  /clients/{clientId}/event-schedule/{eventScheduleId}:
+  /establishments/{establishmentId}/event-schedule/{eventScheduleId}:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "establishment.yaml#/components/parameters/EstablishmentId"
       - $ref: "#/components/parameters/EventScheduleId"
     get:
       operationId: getEventScheduleById
@@ -68,9 +68,9 @@ components:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
       required:
-        - clientId
+        - establishmentId
       properties:
-        clientId:
+        establishmentId:
           type: string
         eventScheduleId:
           type: string

@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  title: Clients REST API
+  title: Establishments REST API
   version: "1.0"
 servers:
   - url: http://localhost:8080
 paths:
-  /clients:
+  /establishments:
     post:
-      operationId: postClients
+      operationId: postEstablishments
       requestBody:
         required: true
         content:
@@ -15,7 +15,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/Client"
+                $ref: "#/components/schemas/Establishment"
       responses:
         200:
           description: OK
@@ -24,11 +24,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Client"
+                  $ref: "#/components/schemas/Establishment"
         '5XX':
           description: Server Error
     get:
-      operationId: getClients
+      operationId: getEstablishments
       responses:
         200:
           description: OK
@@ -37,34 +37,34 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Client"
-  /clients/{clientId}:
+                  $ref: "#/components/schemas/Establishment"
+  /establishments/{establishmentId}:
     parameters:
-      - $ref: "#/components/parameters/ClientId"
+      - $ref: "#/components/parameters/EstablishmentId"
     get:
-      operationId: getClientById
+      operationId: getEstablishmentById
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Client"
+                $ref: "#/components/schemas/Establishment"
         '5XX':
           description: Server Error
 
 components:
   schemas:
-    Client:
+    Establishment:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
       properties:
-        clientId:
+        establishmentId:
           type: string
   parameters:
-    ClientId:
+    EstablishmentId:
       in: path
-      name: clientId
+      name: establishmentId
       required: true
       schema:
         type: string

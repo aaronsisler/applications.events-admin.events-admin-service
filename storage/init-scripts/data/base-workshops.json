@@ -4,13 +4,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Body Wisdom Meetup"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Body Wisdom Meetup"
@@ -34,13 +34,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Couples Massage Workshop"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Couples Massage Workshop"
@@ -64,13 +64,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Line Dancing"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Line Dancing"
@@ -94,13 +94,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Reiki Restorative Yoga Workshop"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Reiki Restorative Yoga Workshop"
@@ -124,13 +124,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Rooted in Wellness Herbal Workshop"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Rooted in Wellness Herbal Workshop"
@@ -154,13 +154,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Sound Bath"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Sound Bath"
@@ -184,13 +184,13 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "body-kinect-wellness-center-client-id"
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
             "S": "EVENT#Women's Circle"
           },
-          "clientId": {
-            "S": "body-kinect-wellness-center-client-id"
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Women's Circle"

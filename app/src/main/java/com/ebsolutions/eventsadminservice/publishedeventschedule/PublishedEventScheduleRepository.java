@@ -14,11 +14,11 @@ public class PublishedEventScheduleRepository {
     return publishedEventScheduleDao.create(publishedEventSchedule);
   }
 
-  public PublishedEventSchedule read(String clientId, String publishedEventScheduleId) {
-    return publishedEventScheduleDao.read(clientId, publishedEventScheduleId);
+  public PublishedEventSchedule read(String establishmentId, String publishedEventScheduleId) {
+    return publishedEventScheduleDao.read(establishmentId, publishedEventScheduleId);
   }
 
-  public List<PublishedEventSchedule> readAll(String clientId) {
-    return publishedEventScheduleDao.readAll(clientId);
+  public List<PublishedEventSchedule> readAll(String establishmentId) {
+    return publishedEventScheduleDao.readAll(establishmentId);
   }
 }

@@ -17,7 +17,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduledEventDto extends DatabaseDto {
-  private String clientId;
+  private String establishmentId;
   private String eventId;
   private String locationId;
   private String organizerId;

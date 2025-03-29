@@ -48,7 +48,7 @@ public class UserDao {
           .userId(StringUtils.remove(userDto.getSortKey(),
               RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(userDto.getName())
-          .clientIds(userDto.getClientIds())
+          .establishmentIds(userDto.getEstablishmentIds())
           .createdOn(userDto.getCreatedOn())
           .lastUpdatedOn(userDto.getLastUpdatedOn())
           .build();
@@ -87,7 +87,7 @@ public class UserDao {
                   .userId(StringUtils.remove(userDto.getSortKey(),
                       RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
                   .name(userDto.getName())
-                  .clientIds(userDto.getClientIds())
+                  .establishmentIds(userDto.getEstablishmentIds())
                   .createdOn(userDto.getCreatedOn())
                   .lastUpdatedOn(userDto.getLastUpdatedOn())
                   .build()
@@ -116,7 +116,7 @@ public class UserDao {
                   Constants.DATABASE_RECORD_TYPE_DELIMITER +
                   UniqueIdGenerator.generate())
               .name(user.getName())
-              .clientIds(user.getClientIds())
+              .establishmentIds(user.getEstablishmentIds())
               .createdOn(now)
               .lastUpdatedOn(now)
               .build())
@@ -151,7 +151,7 @@ public class UserDao {
               .userId(StringUtils.remove(userDto.getSortKey(),
                   RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
               .name(userDto.getName())
-              .clientIds(userDto.getClientIds())
+              .establishmentIds(userDto.getEstablishmentIds())
               .createdOn(userDto.getCreatedOn())
               .lastUpdatedOn(userDto.getLastUpdatedOn())
               .build()
@@ -185,7 +185,7 @@ public class UserDao {
               Constants.DATABASE_RECORD_TYPE_DELIMITER +
               user.getUserId())
           .name(user.getName())
-          .clientIds(user.getClientIds())
+          .establishmentIds(user.getEstablishmentIds())
           .createdOn(user.getCreatedOn())
           .lastUpdatedOn(LocalDateTime.now())
           .build();
@@ -200,7 +200,7 @@ public class UserDao {
           .userId(StringUtils.remove(userDto.getSortKey(),
               RecordType.USER.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(userDto.getName())
-          .clientIds(userDto.getClientIds())
+          .establishmentIds(userDto.getEstablishmentIds())
           .createdOn(userDto.getCreatedOn())
           .lastUpdatedOn(userDto.getLastUpdatedOn())
           .build();

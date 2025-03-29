@@ -32,12 +32,12 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 public class EventScheduleDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
-  public EventSchedule read(String clientId, String eventScheduleId)
+  public EventSchedule read(String establishmentId, String eventScheduleId)
       throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
 
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.EVENT_SCHEDULE, eventScheduleId);
+      Key key = KeyBuilder.build(establishmentId, RecordType.EVENT_SCHEDULE, eventScheduleId);
 
       DynamoDbTable<EventScheduleDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -48,7 +48,7 @@ public class EventScheduleDao {
       return eventScheduleDto == null
           ? null
           : EventSchedule.builder()
-          .clientId(eventScheduleDto.getPartitionKey())
+          .establishmentId(eventScheduleDto.getPartitionKey())
           .eventScheduleId(
               StringUtils.remove(eventScheduleDto.getSortKey(), RecordType.EVENT_SCHEDULE.name()
                   .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
@@ -67,7 +67,7 @@ public class EventScheduleDao {
     }
   }
 
-  public List<EventSchedule> readAll(String clientId) throws DataProcessingException {
+  public List<EventSchedule> readAll(String establishmentId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<EventScheduleDto> dtoDynamoDbTable =
@@ -77,7 +77,7 @@ public class EventScheduleDao {
       List<EventScheduleDto> eventScheduleDtos = dtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(
+                  -> s.partitionValue(establishmentId).sortValue(
                       RecordType.EVENT_SCHEDULE.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
                   .build()))
           )
@@ -88,7 +88,7 @@ public class EventScheduleDao {
       return eventScheduleDtos.stream()
           .map(eventScheduleDto ->
               EventSchedule.builder()
-                  .clientId(eventScheduleDto.getPartitionKey())
+                  .establishmentId(eventScheduleDto.getPartitionKey())
                   .eventScheduleId(
                       StringUtils.remove(eventScheduleDto.getSortKey(),
                           RecordType.EVENT_SCHEDULE.name()
@@ -118,7 +118,7 @@ public class EventScheduleDao {
       eventSchedules.forEach(eventSchedule ->
           eventScheduleDtos.add(
               EventScheduleDto.builder()
-                  .partitionKey(eventSchedule.getClientId())
+                  .partitionKey(eventSchedule.getEstablishmentId())
                   .sortKey(RecordType.EVENT_SCHEDULE +
                       Constants.DATABASE_RECORD_TYPE_DELIMITER +
                       UniqueIdGenerator.generate())
@@ -156,7 +156,7 @@ public class EventScheduleDao {
 
       return eventScheduleDtos.stream().map(eventScheduleDto ->
           EventSchedule.builder()
-              .clientId(eventScheduleDto.getPartitionKey())
+              .establishmentId(eventScheduleDto.getPartitionKey())
               .eventScheduleId(
                   StringUtils.remove(eventScheduleDto.getSortKey(),
                       RecordType.EVENT_SCHEDULE.name()
@@ -191,7 +191,7 @@ public class EventScheduleDao {
 
       EventScheduleDto
           eventScheduleDto = EventScheduleDto.builder()
-          .partitionKey(eventSchedule.getClientId())
+          .partitionKey(eventSchedule.getEstablishmentId())
           .sortKey(RecordType.EVENT_SCHEDULE +
               Constants.DATABASE_RECORD_TYPE_DELIMITER +
               eventSchedule.getEventScheduleId())
@@ -208,7 +208,7 @@ public class EventScheduleDao {
       dtoDynamoDbTable.putItem(eventScheduleDto);
 
       return EventSchedule.builder()
-          .clientId(eventScheduleDto.getPartitionKey())
+          .establishmentId(eventScheduleDto.getPartitionKey())
           .eventScheduleId(
               StringUtils.remove(eventScheduleDto.getSortKey(), RecordType.EVENT_SCHEDULE.name()
                   .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
@@ -226,10 +226,10 @@ public class EventScheduleDao {
     }
   }
 
-  public void delete(String clientId, String eventScheduleId) {
+  public void delete(String establishmentId, String eventScheduleId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.EVENT_SCHEDULE, eventScheduleId);
+      Key key = KeyBuilder.build(establishmentId, RecordType.EVENT_SCHEDULE, eventScheduleId);
 
       DynamoDbTable<EventScheduleDto> dtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,

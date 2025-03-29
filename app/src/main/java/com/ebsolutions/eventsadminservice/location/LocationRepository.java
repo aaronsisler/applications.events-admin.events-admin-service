@@ -14,19 +14,19 @@ public class LocationRepository {
     return locationDao.create(locations);
   }
 
-  public Location read(String clientId, String locationId) {
-    return locationDao.read(clientId, locationId);
+  public Location read(String establishmentId, String locationId) {
+    return locationDao.read(establishmentId, locationId);
   }
 
-  public List<Location> readAll(String clientId) {
-    return locationDao.readAll(clientId);
+  public List<Location> readAll(String establishmentId) {
+    return locationDao.readAll(establishmentId);
   }
 
   public Location update(Location location) {
     return locationDao.update(location);
   }
 
-  public void delete(String clientId, String locationId) {
-    locationDao.delete(clientId, locationId);
+  public void delete(String establishmentId, String locationId) {
+    locationDao.delete(establishmentId, locationId);
   }
 }

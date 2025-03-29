@@ -1,6 +1,6 @@
-package com.ebsolutions.eventsadminservice.client;
+package com.ebsolutions.eventsadminservice.establishment;
 
-import com.ebsolutions.eventsadminservice.model.Client;
+import com.ebsolutions.eventsadminservice.model.Establishment;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,25 +19,26 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("clients")
-public class ClientController {
-  private final ClientRepository clientRepository;
+@RequestMapping("establishments")
+public class EstablishmentController {
+  private final EstablishmentRepository establishmentRepository;
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> post(@RequestBody List<@Valid Client> clients) {
+  public ResponseEntity<?> post(@RequestBody List<@Valid Establishment> establishments) {
     try {
-      return ResponseEntity.ok(clientRepository.create(clients));
+      return ResponseEntity.ok(establishmentRepository.create(establishments));
     } catch (DataProcessingException dpe) {
       return ResponseEntity.internalServerError().body(dpe.getMessage());
     }
   }
 
-  @GetMapping(value = "/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String clientId) {
+  @GetMapping(value = "/{establishmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId) {
     try {
-      Client client = clientRepository.read(clientId);
+      Establishment establishment = establishmentRepository.read(establishmentId);
 
-      return client != null ? ResponseEntity.ok(client) : ResponseEntity.noContent().build();
+      return establishment != null ? ResponseEntity.ok(establishment) :
+          ResponseEntity.noContent().build();
     } catch (DataProcessingException dpe) {
       return ResponseEntity.internalServerError().body(dpe.getMessage());
     }
@@ -46,9 +47,10 @@ public class ClientController {
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> getAll() {
     try {
-      List<Client> clients = clientRepository.readAll();
+      List<Establishment> establishments = establishmentRepository.readAll();
 
-      return !clients.isEmpty() ? ResponseEntity.ok(clients) : ResponseEntity.noContent().build();
+      return !establishments.isEmpty() ? ResponseEntity.ok(establishments) :
+          ResponseEntity.noContent().build();
     } catch (DataProcessingException dpe) {
       return ResponseEntity.internalServerError().body(dpe.getMessage());
     }

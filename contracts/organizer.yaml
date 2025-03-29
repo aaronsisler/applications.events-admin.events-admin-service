@@ -5,9 +5,9 @@ info:
 servers:
   - url: http://localhost:8080
 paths:
-  /clients/{clientId}/organizers:
+  /establishments/{establishmentId}/organizers:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "establishment.yaml#/components/parameters/EstablishmentId"
     get:
       operationId: getOrganizers
       responses:
@@ -40,9 +40,9 @@ paths:
                 $ref: "#/components/schemas/Organizer"
         '5XX':
           description: Server Error
-  /clients/{clientId}/organizers/{organizerId}:
+  /establishments/{establishmentId}/organizers/{organizerId}:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "establishment.yaml#/components/parameters/EstablishmentId"
       - $ref: "#/components/parameters/OrganizerId"
     get:
       operationId: getOrganizerById
@@ -69,9 +69,9 @@ components:
       allOf:
         - $ref: "shared.yaml#/components/schemas/Base"
       required:
-        - clientId
+        - establishmentId
       properties:
-        clientId:
+        establishmentId:
           type: string
         organizerId:
           type: string

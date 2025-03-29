@@ -32,10 +32,10 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 public class LocationDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
-  public Location read(String clientId, String locationId) throws DataProcessingException {
+  public Location read(String establishmentId, String locationId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.LOCATION, locationId);
+      Key key = KeyBuilder.build(establishmentId, RecordType.LOCATION, locationId);
 
       DynamoDbTable<LocationDto> clientDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
@@ -46,7 +46,7 @@ public class LocationDao {
       return locationDto == null
           ? null
           : Location.builder()
-          .clientId(locationDto.getPartitionKey())
+          .establishmentId(locationDto.getPartitionKey())
           .locationId(StringUtils.remove(locationDto.getSortKey(),
               RecordType.LOCATION.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(locationDto.getName())
@@ -63,7 +63,7 @@ public class LocationDao {
     }
   }
 
-  public List<Location> readAll(String clientId) throws DataProcessingException {
+  public List<Location> readAll(String establishmentId) throws DataProcessingException {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
       DynamoDbTable<LocationDto> locationDtoDynamoDbTable =
@@ -73,7 +73,7 @@ public class LocationDao {
       List<LocationDto> locationDtos = locationDtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(clientId).sortValue(
+                  -> s.partitionValue(establishmentId).sortValue(
                       RecordType.LOCATION.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
                   .build()))
           )
@@ -84,7 +84,7 @@ public class LocationDao {
       return locationDtos.stream()
           .map(locationDto ->
               Location.builder()
-                  .clientId(locationDto.getPartitionKey())
+                  .establishmentId(locationDto.getPartitionKey())
                   .locationId(
                       StringUtils.remove(locationDto.getSortKey(), RecordType.LOCATION.name()
                           .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
@@ -111,7 +111,7 @@ public class LocationDao {
     try {
       locations.forEach(location ->
           locationDtos.add(LocationDto.builder()
-              .partitionKey(location.getClientId())
+              .partitionKey(location.getEstablishmentId())
               .sortKey(RecordType.LOCATION +
                   Constants.DATABASE_RECORD_TYPE_DELIMITER +
                   UniqueIdGenerator.generate())
@@ -148,7 +148,7 @@ public class LocationDao {
 
       return locationDtos.stream().map(locationDto ->
           Location.builder()
-              .clientId(locationDto.getPartitionKey())
+              .establishmentId(locationDto.getPartitionKey())
               .locationId(
                   StringUtils.remove(locationDto.getSortKey(),
                       RecordType.LOCATION.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
@@ -181,7 +181,7 @@ public class LocationDao {
 
       LocationDto
           locationDto = LocationDto.builder()
-          .partitionKey(location.getClientId())
+          .partitionKey(location.getEstablishmentId())
           .sortKey(RecordType.LOCATION +
               Constants.DATABASE_RECORD_TYPE_DELIMITER +
               location.getLocationId())
@@ -197,7 +197,7 @@ public class LocationDao {
       locationDtoDynamoDbTable.putItem(locationDto);
 
       return Location.builder()
-          .clientId(locationDto.getPartitionKey())
+          .establishmentId(locationDto.getPartitionKey())
           .locationId(StringUtils.remove(locationDto.getSortKey(),
               RecordType.LOCATION.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
           .name(locationDto.getName())
@@ -214,10 +214,10 @@ public class LocationDao {
     }
   }
 
-  public void delete(String clientId, String locationId) {
+  public void delete(String establishmentId, String locationId) {
     MetricsStopwatch metricsStopwatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(clientId, RecordType.LOCATION, locationId);
+      Key key = KeyBuilder.build(establishmentId, RecordType.LOCATION, locationId);
 
       DynamoDbTable<LocationDto> locationDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,

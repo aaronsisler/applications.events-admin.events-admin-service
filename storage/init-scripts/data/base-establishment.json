@@ -4,10 +4,10 @@
       "PutRequest": {
         "Item": {
           "partitionKey": {
-            "S": "CLIENT"
+            "S": "ESTABLISHMENT"
           },
           "sortKey": {
-            "S": "CLIENT#body-kinect-wellness-center-client-id"
+            "S": "ESTABLISHMENT#body-kinect-wellness-center-establishment-id"
           },
           "name": {
             "S": "Body Kinect Wellness Center"

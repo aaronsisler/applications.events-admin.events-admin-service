@@ -53,7 +53,7 @@ public class ScheduledEventDao {
           .eventScheduleId(scheduledEventDto.getPartitionKey())
           .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(),
               RecordType.SCHEDULED_EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
-          .clientId(scheduledEventDto.getClientId())
+          .establishmentId(scheduledEventDto.getEstablishmentId())
           .eventId(scheduledEventDto.getEventId())
           .locationId(scheduledEventDto.getLocationId())
           .organizerId(scheduledEventDto.getOrganizerId())
@@ -108,7 +108,7 @@ public class ScheduledEventDao {
                   .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(),
                       RecordType.SCHEDULED_EVENT.name()
                           .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
-                  .clientId(scheduledEventDto.getClientId())
+                  .establishmentId(scheduledEventDto.getEstablishmentId())
                   .eventId(scheduledEventDto.getEventId())
                   .locationId(scheduledEventDto.getLocationId())
                   .organizerId(scheduledEventDto.getOrganizerId())
@@ -153,7 +153,7 @@ public class ScheduledEventDao {
                   .sortKey(RecordType.SCHEDULED_EVENT +
                       Constants.DATABASE_RECORD_TYPE_DELIMITER +
                       UniqueIdGenerator.generate())
-                  .clientId(scheduledEvent.getClientId())
+                  .establishmentId(scheduledEvent.getEstablishmentId())
                   .eventId(scheduledEvent.getEventId())
                   .locationId(scheduledEvent.getLocationId())
                   .organizerId(scheduledEvent.getOrganizerId())
@@ -206,7 +206,7 @@ public class ScheduledEventDao {
               .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(),
                   RecordType.SCHEDULED_EVENT.name()
                       .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
-              .clientId(scheduledEventDto.getClientId())
+              .establishmentId(scheduledEventDto.getEstablishmentId())
               .eventId(scheduledEventDto.getEventId())
               .locationId(scheduledEventDto.getLocationId())
               .organizerId(scheduledEventDto.getOrganizerId())
@@ -253,7 +253,7 @@ public class ScheduledEventDao {
           .sortKey(RecordType.SCHEDULED_EVENT +
               Constants.DATABASE_RECORD_TYPE_DELIMITER +
               scheduledEvent.getScheduledEventId())
-          .clientId(scheduledEvent.getClientId())
+          .establishmentId(scheduledEvent.getEstablishmentId())
           .eventId(scheduledEvent.getEventId())
           .locationId(scheduledEvent.getLocationId())
           .organizerId(scheduledEvent.getOrganizerId())
@@ -283,7 +283,7 @@ public class ScheduledEventDao {
           .eventScheduleId(scheduledEventDto.getPartitionKey())
           .scheduledEventId(StringUtils.remove(scheduledEventDto.getSortKey(),
               RecordType.SCHEDULED_EVENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
-          .clientId(scheduledEventDto.getClientId())
+          .establishmentId(scheduledEventDto.getEstablishmentId())
           .eventId(scheduledEventDto.getEventId())
           .locationId(scheduledEventDto.getLocationId())
           .organizerId(scheduledEventDto.getOrganizerId())

@@ -1,8 +1,8 @@
-package com.ebsolutions.eventsadminservice.client;
+package com.ebsolutions.eventsadminservice.establishment;
 
 import static software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.sortBeginsWith;
 
-import com.ebsolutions.eventsadminservice.model.Client;
+import com.ebsolutions.eventsadminservice.model.Establishment;
 import com.ebsolutions.eventsadminservice.shared.Constants;
 import com.ebsolutions.eventsadminservice.shared.RecordType;
 import com.ebsolutions.eventsadminservice.shared.exception.DataProcessingException;
@@ -29,27 +29,28 @@ import software.amazon.awssdk.enhanced.dynamodb.model.WriteBatch;
 @Slf4j
 @Repository
 @AllArgsConstructor
-public class ClientDao {
+public class EstablishmentDao {
   private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
-  public Client read(String clientId) throws DataProcessingException {
+  public Establishment read(String establishmentId) throws DataProcessingException {
     MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
-      Key key = KeyBuilder.build(RecordType.CLIENT.name(), RecordType.CLIENT, clientId);
+      Key key = KeyBuilder.build(RecordType.ESTABLISHMENT.name(), RecordType.ESTABLISHMENT,
+          establishmentId);
 
-      DynamoDbTable<ClientDto> clientDtoDynamoDbTable =
+      DynamoDbTable<EstablishmentDto> establishmentDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
-              TableSchema.fromBean(ClientDto.class));
-      ClientDto clientDto = clientDtoDynamoDbTable.getItem(key);
+              TableSchema.fromBean(EstablishmentDto.class));
+      EstablishmentDto establishmentDto = establishmentDtoDynamoDbTable.getItem(key);
 
-      return clientDto == null
+      return establishmentDto == null
           ? null
-          : Client.builder()
-          .clientId(StringUtils.remove(clientDto.getSortKey(),
-              RecordType.CLIENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
-          .name(clientDto.getName())
-          .createdOn(clientDto.getCreatedOn())
-          .lastUpdatedOn(clientDto.getLastUpdatedOn())
+          : Establishment.builder()
+          .establishmentId(StringUtils.remove(establishmentDto.getSortKey(),
+              RecordType.ESTABLISHMENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
+          .name(establishmentDto.getName())
+          .createdOn(establishmentDto.getCreatedOn())
+          .lastUpdatedOn(establishmentDto.getLastUpdatedOn())
           .build();
     } catch (Exception e) {
       log.error("ERROR::{}", this.getClass().getName(), e);
@@ -61,33 +62,35 @@ public class ClientDao {
     }
   }
 
-  public List<Client> readAll() throws DataProcessingException {
+  public List<Establishment> readAll() throws DataProcessingException {
     MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
-      DynamoDbTable<ClientDto> clientDtoDynamoDbTable =
+      DynamoDbTable<EstablishmentDto> establishmentDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
-              TableSchema.fromBean(ClientDto.class));
+              TableSchema.fromBean(EstablishmentDto.class));
 
-      List<ClientDto> clientDtos = clientDtoDynamoDbTable
+      List<EstablishmentDto> establishmentDtos = establishmentDtoDynamoDbTable
           .query(r -> r.queryConditional(
               sortBeginsWith(s
-                  -> s.partitionValue(RecordType.CLIENT.name())
+                  -> s.partitionValue(RecordType.ESTABLISHMENT.name())
                   .sortValue(
-                      RecordType.CLIENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
+                      RecordType.ESTABLISHMENT.name()
+                          .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER))
                   .build()))
           )
           .items()
           .stream()
           .toList();
 
-      return clientDtos.stream()
-          .map(clientDto ->
-              Client.builder()
-                  .clientId(StringUtils.remove(clientDto.getSortKey(),
-                      RecordType.CLIENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
-                  .name(clientDto.getName())
-                  .createdOn(clientDto.getCreatedOn())
-                  .lastUpdatedOn(clientDto.getLastUpdatedOn())
+      return establishmentDtos.stream()
+          .map(establishmentDto ->
+              Establishment.builder()
+                  .establishmentId(StringUtils.remove(establishmentDto.getSortKey(),
+                      RecordType.ESTABLISHMENT.name()
+                          .concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
+                  .name(establishmentDto.getName())
+                  .createdOn(establishmentDto.getCreatedOn())
+                  .lastUpdatedOn(establishmentDto.getLastUpdatedOn())
                   .build()
           ).collect(Collectors.toList());
     } catch (Exception e) {
@@ -100,32 +103,33 @@ public class ClientDao {
     }
   }
 
-  public List<Client> create(List<Client> clients) {
+  public List<Establishment> create(List<Establishment> establishments) {
     MetricsStopwatch metricsStopWatch = new MetricsStopwatch();
     try {
       LocalDateTime now = LocalDateTime.now();
 
-      List<ClientDto> clientDtos = new ArrayList<>();
+      List<EstablishmentDto> establishmentDtos = new ArrayList<>();
 
-      clients.forEach(client ->
-          clientDtos.add(ClientDto.builder()
-              .partitionKey(RecordType.CLIENT.name())
-              .sortKey(RecordType.CLIENT +
+      establishments.forEach(establishment ->
+          establishmentDtos.add(EstablishmentDto.builder()
+              .partitionKey(RecordType.ESTABLISHMENT.name())
+              .sortKey(RecordType.ESTABLISHMENT +
                   Constants.DATABASE_RECORD_TYPE_DELIMITER +
                   UniqueIdGenerator.generate())
-              .name(client.getName())
+              .name(establishment.getName())
               .createdOn(now)
               .lastUpdatedOn(now)
               .build())
       );
 
-      DynamoDbTable<ClientDto> clientDtoDynamoDbTable =
+      DynamoDbTable<EstablishmentDto> establishmentDtoDynamoDbTable =
           dynamoDbEnhancedClient.table(Constants.TABLE_NAME,
-              TableSchema.fromBean(ClientDto.class));
-      WriteBatch.Builder<ClientDto> writeBatchBuilder = WriteBatch.builder(ClientDto.class)
-          .mappedTableResource(clientDtoDynamoDbTable);
+              TableSchema.fromBean(EstablishmentDto.class));
+      WriteBatch.Builder<EstablishmentDto> writeBatchBuilder =
+          WriteBatch.builder(EstablishmentDto.class)
+              .mappedTableResource(establishmentDtoDynamoDbTable);
 
-      clientDtos.forEach(writeBatchBuilder::addPutItem);
+      establishmentDtos.forEach(writeBatchBuilder::addPutItem);
 
       WriteBatch writeBatch = writeBatchBuilder.build();
 
@@ -137,18 +141,18 @@ public class ClientDao {
       BatchWriteResult batchWriteResult =
           dynamoDbEnhancedClient.batchWriteItem(batchWriteItemEnhancedRequest);
 
-      if (!batchWriteResult.unprocessedPutItemsForTable(clientDtoDynamoDbTable).isEmpty()) {
-        batchWriteResult.unprocessedPutItemsForTable(clientDtoDynamoDbTable).forEach(key ->
+      if (!batchWriteResult.unprocessedPutItemsForTable(establishmentDtoDynamoDbTable).isEmpty()) {
+        batchWriteResult.unprocessedPutItemsForTable(establishmentDtoDynamoDbTable).forEach(key ->
             log.info(key.toString()));
       }
 
-      return clientDtos.stream().map(clientDto ->
-          Client.builder()
-              .clientId(StringUtils.remove(clientDto.getSortKey(),
-                  RecordType.CLIENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
-              .name(clientDto.getName())
-              .createdOn(clientDto.getCreatedOn())
-              .lastUpdatedOn(clientDto.getLastUpdatedOn())
+      return establishmentDtos.stream().map(establishmentDto ->
+          Establishment.builder()
+              .establishmentId(StringUtils.remove(establishmentDto.getSortKey(),
+                  RecordType.ESTABLISHMENT.name().concat(Constants.DATABASE_RECORD_TYPE_DELIMITER)))
+              .name(establishmentDto.getName())
+              .createdOn(establishmentDto.getCreatedOn())
+              .lastUpdatedOn(establishmentDto.getLastUpdatedOn())
               .build()
       ).collect(Collectors.toList());
 

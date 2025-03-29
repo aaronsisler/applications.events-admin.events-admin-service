@@ -57,16 +57,17 @@ public class FileGenerationOrchestrationService {
 
     // Get list of all Organizers for client id and then filter out Organizers not needed
     Map<String, Organizer>
-        organizers = organizerDao.readAll(publishedEventSchedule.getClientId())
+        organizers = organizerDao.readAll(publishedEventSchedule.getEstablishmentId())
         .stream()
         .filter(organizer -> organizerIds.contains(organizer.getOrganizerId()))
         .collect(Collectors.toMap(Organizer::getOrganizerId, Function.identity()));
 
     // Get list of all Locations for client id and then filter out Locations not needed
-    Map<String, Location> locations = locationDao.readAll(publishedEventSchedule.getClientId())
-        .stream()
-        .filter(location -> locationIds.contains(location.getLocationId()))
-        .collect(Collectors.toMap(Location::getLocationId, Function.identity()));
+    Map<String, Location> locations =
+        locationDao.readAll(publishedEventSchedule.getPublishedEventScheduleId())
+            .stream()
+            .filter(location -> locationIds.contains(location.getLocationId()))
+            .collect(Collectors.toMap(Location::getLocationId, Function.identity()));
 
     // Create the list of dates from 1st of month to the end of month for given year/month in request
     LocalDate startOfMonth = LocalDate.of(publishedEventSchedule.getTargetYear(),
@@ -81,9 +82,6 @@ public class FileGenerationOrchestrationService {
             .forEach(scheduledEvent ->
                 publishedScheduledEvents.addAll(
                     this.populatePublishedScheduledEvents(localDate, scheduledEvent))));
-
-    // TODO Remove the scheduled events that fall on a location's blackout date
-    // TODO Remove the scheduled events that fall on a scheduled event's blackout date
 
     publishedScheduledEvents.stream()
         .filter(publishedScheduledEvent -> !StringUtils.isBlank(
@@ -103,7 +101,7 @@ public class FileGenerationOrchestrationService {
     // Format the CSV into bytes and push to File Storage
     String filename = MessageFormat.format("{0}.csv", LocalDateTime.now().toString());
     String fileLocation =
-        FileLocationUtil.build(publishedEventSchedule.getClientId(), filename);
+        FileLocationUtil.build(publishedEventSchedule.getEstablishmentId(), filename);
     this.fileDao.create(fileLocation, byteBuffer);
     // Add the CSV Location to the Published Event Schedule
     publishedEventSchedule.setFilename(filename);

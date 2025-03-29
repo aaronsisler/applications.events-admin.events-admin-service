@@ -5,9 +5,9 @@ info:
 servers:
   - url: http://localhost:8080
 paths:
-  /clients/{clientId}/files/{filename}:
+  /establishments/{establishmentId}/files/{filename}:
     parameters:
-      - $ref: "client.yaml#/components/parameters/ClientId"
+      - $ref: "establishment.yaml#/components/parameters/EstablishmentId"
       - $ref: "#/components/parameters/Filename"
     get:
       operationId: getFileByFilename

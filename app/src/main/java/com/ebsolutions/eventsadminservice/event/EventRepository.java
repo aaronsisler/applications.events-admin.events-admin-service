@@ -14,19 +14,19 @@ public class EventRepository {
     return eventDao.create(events);
   }
 
-  public Event read(String clientId, String eventId) {
-    return eventDao.read(clientId, eventId);
+  public Event read(String establishmentId, String eventId) {
+    return eventDao.read(establishmentId, eventId);
   }
 
-  public List<Event> readAll(String clientId) {
-    return eventDao.readAll(clientId);
+  public List<Event> readAll(String establishmentId) {
+    return eventDao.readAll(establishmentId);
   }
 
   public Event update(Event event) {
     return eventDao.update(event);
   }
 
-  public void delete(String clientId, String eventId) {
-    eventDao.delete(clientId, eventId);
+  public void delete(String establishmentId, String eventId) {
+    eventDao.delete(establishmentId, eventId);
   }
 }

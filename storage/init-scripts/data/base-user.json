@@ -9,9 +9,9 @@
           "sortKey": {
             "S": "USER#aaron-sisler-id"
           },
-          "clientIds": {
+          "establishmentIds": {
             "SS": [
-              "body-kinect-wellness-center-client-id"
+              "body-kinect-wellness-center-establishment-id"
             ]
           },
           "name": {

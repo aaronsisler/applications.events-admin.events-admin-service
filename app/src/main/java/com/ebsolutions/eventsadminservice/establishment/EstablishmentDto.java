@@ -1,4 +1,4 @@
-package com.ebsolutions.eventsadminservice.client;
+package com.ebsolutions.eventsadminservice.establishment;
 
 import com.ebsolutions.eventsadminservice.shared.DatabaseDto;
 import lombok.AllArgsConstructor;
@@ -12,5 +12,5 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @DynamoDbBean
 @SuperBuilder
 @AllArgsConstructor
-public class ClientDto extends DatabaseDto {
+public class EstablishmentDto extends DatabaseDto {
 }
