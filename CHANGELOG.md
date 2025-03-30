@@ -14,6 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.32.0]
+
+### Added
+
+- Adding some SSL/HTTPS things
+
+### Changed
+
+- Some port info in the CF stack
+
 ## [0.30.0 - 0.31.0]
 
 ### Changed

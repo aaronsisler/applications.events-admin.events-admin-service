@@ -13,9 +13,9 @@ public class CorsConfig implements CorsConfigurationSource {
       List.of(
           "http://localhost:3000",
           "https://events.otterandcow.com",
-          // House or gym
+          // House
           "64.98.122.48",
-          // House or gym
+          // Gym
           "96.10.245.210",
           // Tavern
           "107.12.84.23"
