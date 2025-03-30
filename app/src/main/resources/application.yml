@@ -8,6 +8,8 @@ management:
   info:
     env:
       enabled: true
+server:
+  use-forward-headers: true
 
 # Everything above these dashes will be applied to all profiles
 ---

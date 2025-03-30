@@ -28,10 +28,11 @@ Resources:
     Properties:
       Name: events-admin-service-tg
       VpcId: !Ref VpcId
-      Port: 80
-      Protocol: HTTP
+      Protocol: HTTPS
+      Port: 8443
       TargetType: ip
-      HealthCheckProtocol: HTTP
+      HealthCheckProtocol: HTTPS
+      HealthCheckPort: 8443
       HealthCheckPath: /actuator/health
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
@@ -44,11 +45,11 @@ Resources:
     DependsOn: [ LoadBalancer, LoadBalancerTargetGroup ]
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-      Protocol: HTTP
-      #      Certificates:
-      #        - arn:aws:acm:us-east-1:654918520080:certificate/b4d67bb3-5d56-4d5e-bf83-cdf7cb04d4ba
+      Protocol: HTTPS
+      Certificates:
+        - arn:aws:acm:us-east-1:654918520080:certificate/b4d67bb3-5d56-4d5e-bf83-cdf7cb04d4ba
       LoadBalancerArn: !Ref LoadBalancer
-      Port: 80
+      Port: 443
       DefaultActions:
         - Type: forward
           TargetGroupArn: !Ref LoadBalancerTargetGroup
@@ -83,7 +84,7 @@ Resources:
           SecurityGroups: !Ref SecurityGroupIds
           Subnets: !Ref SubnetIds
       LoadBalancers:
-        - ContainerPort: 8080
+        - ContainerPort: 8443
           ContainerName: events-admin-service-container
           TargetGroupArn: !Ref LoadBalancerTargetGroup
       DeploymentConfiguration:
