@@ -7,6 +7,7 @@ ARG JAR_FILE=app/target/*.jar
 COPY ${JAR_FILE} app.jar
 
 # Expose the port your application listens on
+EXPOSE 8080
 EXPOSE 8443
 
 # Run the application
