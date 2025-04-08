@@ -55,16 +55,16 @@ public class FileGenerationOrchestrationService {
         .distinct()
         .toList();
 
-    // Get list of all Organizers for client id and then filter out Organizers not needed
+    // Get list of all Organizers for establishment id and then filter out Organizers not needed
     Map<String, Organizer>
         organizers = organizerDao.readAll(publishedEventSchedule.getEstablishmentId())
         .stream()
         .filter(organizer -> organizerIds.contains(organizer.getOrganizerId()))
         .collect(Collectors.toMap(Organizer::getOrganizerId, Function.identity()));
 
-    // Get list of all Locations for client id and then filter out Locations not needed
+    // Get list of all Locations for establishment id and then filter out Locations not needed
     Map<String, Location> locations =
-        locationDao.readAll(publishedEventSchedule.getPublishedEventScheduleId())
+        locationDao.readAll(publishedEventSchedule.getEstablishmentId())
             .stream()
             .filter(location -> locationIds.contains(location.getLocationId()))
             .collect(Collectors.toMap(Location::getLocationId, Function.identity()));

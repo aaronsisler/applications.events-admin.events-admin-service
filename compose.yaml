@@ -2,6 +2,8 @@ services:
   storage:
     container_name: storage
     image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
     environment:
       - SERVICES=dynamodb,s3
       - AWS_DEFAULT_REGION=us-east-1
