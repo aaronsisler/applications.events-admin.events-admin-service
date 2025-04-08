@@ -2,8 +2,8 @@ services:
   storage:
     container_name: storage
     image: localstack/localstack:latest
-    #    ports:
-    #      - "4566:4566"
+    ports:
+      - "4566:4566"
     environment:
       - SERVICES=dynamodb,s3
       - AWS_DEFAULT_REGION=us-east-1
@@ -17,10 +17,11 @@ services:
     depends_on:
       - storage
     container_name: app
-    build: ./app
+    build: # "context" and "dockerfile" fields have to be under "build"
+      context: .
+      dockerfile: app/Dockerfile
     ports:
       - "8080:8080"
-      - "8443:8443"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - AWS_REGION=us-east-1

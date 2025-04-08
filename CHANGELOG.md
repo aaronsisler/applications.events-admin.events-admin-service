@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.33.0]
+
+### Changed
+
+- Updated compose for local generation
+- Update app.yaml for local generation
+- Update a messed up usage of id in the file generation process
+
 ## [0.32.0]
 
 ### Added
