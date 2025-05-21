@@ -9,15 +9,6 @@ management:
     env:
       enabled: true
 
-server:
-  port: 8443
-  ssl:
-    enabled: true
-    key-store: classpath:otterandcow.com.p12
-    key-store-password: changeit
-    key-store-type: PKCS12
-    key-alias: otterandcow.com
-
 # Everything above these dashes will be applied to all profiles
 ---
 
@@ -25,11 +16,6 @@ spring:
   config:
     activate:
       on-profile: local
-
-  security:
-    user:
-      name: johnny-appleseed
-      password: taco
 
 storage:
   endpoint: http://localhost:4566
@@ -42,3 +28,18 @@ spring:
       on-profile: dev
 storage:
   endpoint: http://storage:4566
+
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:otterandcow.com.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    key-alias: otterandcow.com
