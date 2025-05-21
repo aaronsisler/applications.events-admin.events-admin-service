@@ -12,6 +12,7 @@ public class CorsConfig implements CorsConfigurationSource {
   private static final List<String> ALLOWED_ORIGINS =
       List.of(
           "http://localhost:3000",
+          "http://localhost:4200",
           "https://events.otterandcow.com",
           // House
           "64.98.122.48",
