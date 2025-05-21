@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.34.0]
+
+### Added
+
+- Adding in HTTPS and working through kinks of ECS
+
 ## [0.33.0]
 
 ### Changed
