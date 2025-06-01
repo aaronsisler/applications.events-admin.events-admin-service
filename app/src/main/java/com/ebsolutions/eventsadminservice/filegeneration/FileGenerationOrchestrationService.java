@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class FileGenerationOrchestrationService {
   private final CsvGenerator csvGenerator;
-  private final FileDao fileDao;
+  private final FileService fileService;
   private final LocationDao locationDao;
   private final OrganizerDao organizerDao;
   private final PublishedEventScheduleDao publishedEventScheduleDao;
@@ -102,7 +102,7 @@ public class FileGenerationOrchestrationService {
     String filename = MessageFormat.format("{0}.csv", LocalDateTime.now().toString());
     String fileLocation =
         FileLocationUtil.build(publishedEventSchedule.getEstablishmentId(), filename);
-    this.fileDao.create(fileLocation, byteBuffer);
+    this.fileService.create(fileLocation, byteBuffer);
     // Add the CSV Location to the Published Event Schedule
     publishedEventSchedule.setFilename(filename);
     // Save and return the Published Event Schedule to database
