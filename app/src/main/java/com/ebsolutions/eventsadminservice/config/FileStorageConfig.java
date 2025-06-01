@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 @Configuration
 public class FileStorageConfig {
@@ -26,6 +27,15 @@ public class FileStorageConfig {
   public S3Client localS3ClientInstantiation() {
     return S3Client.builder()
         .forcePathStyle(true)
+        .endpointOverride(URI.create(endpoint))
+        .credentialsProvider(staticCredentialsProvider())
+        .build();
+  }
+
+  @Bean
+  @Profile({"local", "dev"})
+  public S3Presigner localS3Presigner() {
+    return S3Presigner.builder()
         .endpointOverride(URI.create(endpoint))
         .credentialsProvider(staticCredentialsProvider())
         .build();
