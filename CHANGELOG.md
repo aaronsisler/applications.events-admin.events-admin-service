@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.35.0]
+
+### Added
+
+- Logic to returned a presigned url to access S3 files
+
 ## [0.34.0]
 
 ### Added

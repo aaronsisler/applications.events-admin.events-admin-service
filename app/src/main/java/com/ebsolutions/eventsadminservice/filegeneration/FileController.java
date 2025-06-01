@@ -23,7 +23,7 @@ public class FileController {
   public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId,
                                @NotBlank @PathVariable String filename) {
     try {
-      URL url = fileService.getFileUrl(establishmentId, filename);
+      URL url = fileService.get(establishmentId, filename);
 
       return url != null ? ResponseEntity.ok(url) : ResponseEntity.noContent().build();
     } catch (DataProcessingException dbe) {

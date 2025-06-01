@@ -20,7 +20,7 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 @Slf4j
 @Repository
 @AllArgsConstructor
-public class FileDao {
+class FileDao {
   private final S3Client s3Client;
   private final S3Presigner s3Presigner;
 
