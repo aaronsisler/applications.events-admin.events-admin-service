@@ -33,6 +33,13 @@ public class FileStorageConfig {
   }
 
   @Bean
+  @Profile({"default"})
+  public S3Presigner defaultS3Presigner() {
+    return S3Presigner.builder()
+        .build();
+  }
+
+  @Bean
   @Profile({"local", "dev"})
   public S3Presigner localS3Presigner() {
     return S3Presigner.builder()
