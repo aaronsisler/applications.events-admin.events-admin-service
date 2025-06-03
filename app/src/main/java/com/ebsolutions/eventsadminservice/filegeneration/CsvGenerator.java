@@ -54,7 +54,9 @@ public class CsvGenerator {
         .eventEndDate(publishedScheduledEvent.getEventEndDate().toString())
         .eventEndTime(publishedScheduledEvent.getEventEndTime().toString())
         .eventName(publishedScheduledEvent.getEventName())
-        .eventCategory(publishedScheduledEvent.getEventCategory())
+        .eventCategory(publishedScheduledEvent.getEventCategory() != null
+            ? publishedScheduledEvent.getEventCategory()
+            : StringUtils.EMPTY)
         .eventDescription(publishedScheduledEvent.getEventDescription())
         .build();
 

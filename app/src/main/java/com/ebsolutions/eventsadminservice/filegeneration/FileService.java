@@ -19,6 +19,12 @@ public class FileService {
     return this.fileDao.createPresignedUrl(fileLocation);
   }
 
+  public URL getLocal(String establishmentId, String filename) {
+    String fileLocation = FileLocationUtil.build(establishmentId, filename);
+
+    return this.fileDao.createLocalUrl(fileLocation);
+  }
+
   public void create(String fileLocation, ByteBuffer inputByteBuffer) {
     this.fileDao.create(fileLocation, inputByteBuffer);
   }
