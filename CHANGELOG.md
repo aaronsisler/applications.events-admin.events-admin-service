@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.36.0]
+
+### Changed
+
+- Split the FileController into a local and a default version based on profile to allow for easier checking of the file
+  locally
+
 ## [0.35.0]
 
 ### Added
