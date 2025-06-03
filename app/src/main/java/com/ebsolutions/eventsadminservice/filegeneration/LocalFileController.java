@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("establishments/{establishmentId}/files")
-@Profile({"default"})
-public class FileController {
+@Profile({"local", "dev"})
+public class LocalFileController {
   private FileService fileService;
 
   @GetMapping(value = "/{filename}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> get(@NotBlank @PathVariable String establishmentId,
-                               @NotBlank @PathVariable String filename) {
+  public ResponseEntity<?> getLocal(@NotBlank @PathVariable String establishmentId,
+                                    @NotBlank @PathVariable String filename) {
     try {
-      URL url = fileService.get(establishmentId, filename);
+      URL url = fileService.getLocal(establishmentId, filename);
 
       return url != null ? ResponseEntity.ok(url) : ResponseEntity.noContent().build();
     } catch (DataProcessingException dbe) {
