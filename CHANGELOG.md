@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Split the FileController into a local and a default version based on profile to allow for easier checking of the file
   locally
+- Handling the Category being null and replacing with an empty string
 
 ## [0.35.0]
 
