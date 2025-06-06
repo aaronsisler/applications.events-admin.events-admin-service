@@ -67,6 +67,66 @@
             "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
+            "S": "EVENT#Fit Within"
+          },
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
+          },
+          "name": {
+            "S": "Fit Within"
+          },
+          "description": {
+            "S": ""
+          },
+          "category": {
+            "S": "Wellness Center"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-establishment-id"
+          },
+          "sortKey": {
+            "S": "EVENT#Flow Into Yin"
+          },
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
+          },
+          "name": {
+            "S": "Flow Into Yin"
+          },
+          "description": {
+            "S": ""
+          },
+          "category": {
+            "S": "Yoga"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-establishment-id"
+          },
+          "sortKey": {
             "S": "EVENT#Foundational yoga"
           },
           "establishmentId": {
@@ -97,13 +157,13 @@
             "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
-            "S": "EVENT#Fow Into Yin"
+            "S": "EVENT#Go with the flow"
           },
           "establishmentId": {
             "S": "body-kinect-wellness-center-establishment-id"
           },
           "name": {
-            "S": "Fow Into Yin"
+            "S": "Go with the flow"
           },
           "description": {
             "S": ""
