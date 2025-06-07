@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Fixed` for any bug fixes.
 * `Security` in case of vulnerabilities.
 
+## [0.37.0]
+
+### Fixed
+
+- Changing the User contract object and DTO to have a set of establishmentIds instead of a list.
+
 ## [0.36.0]
 
 ### Changed
