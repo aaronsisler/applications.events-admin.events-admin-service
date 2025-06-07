@@ -1,7 +1,7 @@
 package com.ebsolutions.eventsadminservice.user;
 
 import com.ebsolutions.eventsadminservice.shared.DatabaseDto;
-import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +16,5 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto extends DatabaseDto {
-  private List<String> establishmentIds;
+  private Set<String> establishmentIds;
 }

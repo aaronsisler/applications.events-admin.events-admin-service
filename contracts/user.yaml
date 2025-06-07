@@ -62,6 +62,7 @@ components:
           type: string
         establishmentIds:
           type: array
+          uniqueItems: true
           items:
             type: string
   parameters:
