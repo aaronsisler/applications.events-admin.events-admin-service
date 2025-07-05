@@ -26,12 +26,12 @@ public class ScheduledEventController {
   private final ScheduledEventRepository scheduledEventRepository;
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> post(@RequestBody List<@Valid ScheduledEvent> scheduledEvents) {
-    try {
-      return ResponseEntity.ok(scheduledEventRepository.create(scheduledEvents));
-    } catch (DataProcessingException dpe) {
-      return ResponseEntity.internalServerError().body(dpe.getMessage());
-    }
+  public ResponseEntity<?> post(@Valid @RequestBody List<@Valid ScheduledEvent> scheduledEvents) {
+//    try {
+    return ResponseEntity.ok(scheduledEventRepository.create(scheduledEvents));
+//    } catch (DataProcessingException dpe) {
+//      return ResponseEntity.internalServerError().body(dpe.getMessage());
+//    }
   }
 
   @GetMapping(value = "/{eventId}", produces = MediaType.APPLICATION_JSON_VALUE)
