@@ -7,6 +7,36 @@
             "S": "body-kinect-wellness-center-establishment-id"
           },
           "sortKey": {
+            "S": "EVENT#Chair One Fitness"
+          },
+          "establishmentId": {
+            "S": "body-kinect-wellness-center-establishment-id"
+          },
+          "name": {
+            "S": "Chair One Fitness"
+          },
+          "description": {
+            "S": ""
+          },
+          "category": {
+            "S": "Wellness Center"
+          },
+          "createdOn": {
+            "S": "2025-01-01T22:02:34"
+          },
+          "lastUpdatedOn": {
+            "S": "2025-01-01T22:02:34"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "partitionKey": {
+            "S": "body-kinect-wellness-center-establishment-id"
+          },
+          "sortKey": {
             "S": "EVENT#Chair yoga"
           },
           "establishmentId": {
